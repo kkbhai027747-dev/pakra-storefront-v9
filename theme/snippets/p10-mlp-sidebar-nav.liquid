@@ -1,0 +1,215 @@
+{% liquid
+  assign show_mlp_sidebar = false
+  assign p10_mlp_sidebar_handles = '|mlp-1|cn-mlp-card-boxes|cn-shadow-edition-card-boxes|cn-moon-edition-card-boxes|cn-rainbow-edition-card-boxes|cn-fan-xin-edition-card-boxes|mlp-tier-2shadow|mlp-tier2shadow|mlp-tier4moon-hui-yue|mlp-tier-5fan-xing|mlp-reesee|mlp-auldey|mlp-funism|mlp-searchfun|mlp-pinkypinky|mlp-baimao|mlp-kader-kaduo|mlp-new-merch-arrivals|'
+  assign p10_current_handle_key = collection.handle | prepend: '|' | append: '|'
+  if p10_mlp_sidebar_handles contains p10_current_handle_key
+    assign show_mlp_sidebar = true
+  endif
+%}
+
+{% if show_mlp_sidebar %}
+  <style>
+    #CollectionSection-{{ section.id }} .p10-mlp-sidebar-nav {
+      background: #fff9fd;
+      border: 1px solid #f5d5e4;
+      border-radius: 6px;
+      color: #232323;
+      margin: 0 0 18px;
+      overflow: hidden;
+    }
+
+    #CollectionSection-{{ section.id }} .p10-mlp-sidebar-nav__head {
+      border-bottom: 1px solid #f5d5e4;
+      padding: 16px 16px 12px;
+    }
+
+    #CollectionSection-{{ section.id }} .p10-mlp-sidebar-nav__eyebrow {
+      color: #ed5d86;
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0;
+      line-height: 1.2;
+      margin: 0 0 5px;
+      text-transform: uppercase;
+    }
+
+    #CollectionSection-{{ section.id }} .p10-mlp-sidebar-nav__title {
+      font-family: var(--font-heading-family);
+      font-size: 18px;
+      font-weight: 800;
+      line-height: 1.2;
+      margin: 0;
+      text-transform: none;
+    }
+
+    #CollectionSection-{{ section.id }} .p10-mlp-sidebar-nav__body {
+      padding: 8px 14px 14px;
+    }
+
+    #CollectionSection-{{ section.id }} .p10-mlp-sidebar-nav__link,
+    #CollectionSection-{{ section.id }} .p10-mlp-sidebar-nav__summary,
+    #CollectionSection-{{ section.id }} .p10-mlp-sidebar-nav__item {
+      align-items: center;
+      border-radius: 4px;
+      color: #232323;
+      display: flex;
+      font-size: 13px;
+      font-weight: 700;
+      justify-content: space-between;
+      line-height: 1.35;
+      min-height: 34px;
+      padding: 8px 10px;
+      text-decoration: none;
+    }
+
+    #CollectionSection-{{ section.id }} .p10-mlp-sidebar-nav__link:hover,
+    #CollectionSection-{{ section.id }} .p10-mlp-sidebar-nav__summary:hover {
+      background: #fbe8f1;
+      color: #ed5d86;
+    }
+
+    #CollectionSection-{{ section.id }} .p10-mlp-sidebar-nav__link.is-active {
+      background: #fbe8f1;
+      color: #ed5d86;
+    }
+
+    #CollectionSection-{{ section.id }} .p10-mlp-sidebar-nav__summary {
+      cursor: pointer;
+      list-style: none;
+      margin-top: 6px;
+      text-transform: uppercase;
+    }
+
+    #CollectionSection-{{ section.id }} .p10-mlp-sidebar-nav__summary::-webkit-details-marker {
+      display: none;
+    }
+
+    #CollectionSection-{{ section.id }} .p10-mlp-sidebar-nav__summary::after {
+      color: #ed5d86;
+      content: "+";
+      font-size: 16px;
+      font-weight: 800;
+      margin-left: 10px;
+    }
+
+    #CollectionSection-{{ section.id }} details[open] > .p10-mlp-sidebar-nav__summary::after {
+      content: "-";
+    }
+
+    #CollectionSection-{{ section.id }} .p10-mlp-sidebar-nav__group {
+      border-top: 1px solid rgba(245, 213, 228, .75);
+      margin-top: 6px;
+      padding-top: 6px;
+    }
+
+    #CollectionSection-{{ section.id }} .p10-mlp-sidebar-nav__children {
+      padding: 0 0 4px 10px;
+    }
+
+    #CollectionSection-{{ section.id }} .p10-mlp-sidebar-nav__children .p10-mlp-sidebar-nav__link {
+      font-size: 12px;
+      font-weight: 600;
+      min-height: 30px;
+      padding-left: 10px;
+    }
+
+    #CollectionSection-{{ section.id }} .p10-mlp-sidebar-nav__series {
+      color: #00a991;
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      line-height: 1.2;
+      margin: 10px 0 3px;
+      padding: 0 10px;
+      text-transform: uppercase;
+    }
+
+    #CollectionSection-{{ section.id }} .p10-mlp-sidebar-nav__badge {
+      background: #f3ead4;
+      border-radius: 999px;
+      color: #9c7320;
+      flex: 0 0 auto;
+      font-size: 10px;
+      font-weight: 800;
+      line-height: 1;
+      margin-left: 8px;
+      padding: 4px 6px;
+      text-transform: uppercase;
+    }
+
+    #CollectionSection-{{ section.id }} .p10-mlp-sidebar-nav__note {
+      color: #777;
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      line-height: 1.35;
+      padding: 8px 10px 0;
+    }
+
+    @media (max-width: 1024px) {
+      #CollectionSection-{{ section.id }} .p10-mlp-sidebar-nav {
+        margin-top: 12px;
+      }
+    }
+  </style>
+
+  <nav class="p10-mlp-sidebar-nav" aria-label="My Little Pony product navigation">
+    <div class="p10-mlp-sidebar-nav__head">
+      <span class="p10-mlp-sidebar-nav__eyebrow">MLP Navigator</span>
+      <h2 class="p10-mlp-sidebar-nav__title">Find MLP Products</h2>
+    </div>
+
+    <div class="p10-mlp-sidebar-nav__body">
+      <a class="p10-mlp-sidebar-nav__link{% if collection.handle == 'mlp-1' and current_tags == blank %} is-active{% endif %}" href="{{ routes.collections_url }}/mlp-1">
+        <span>All MLP products</span>
+      </a>
+
+      <details class="p10-mlp-sidebar-nav__group" open>
+        <summary class="p10-mlp-sidebar-nav__summary">Cards</summary>
+        <div class="p10-mlp-sidebar-nav__children">
+          <a class="p10-mlp-sidebar-nav__link{% if collection.handle == 'cn-mlp-card-boxes' %} is-active{% endif %}" href="{{ routes.collections_url }}/cn-mlp-card-boxes">
+            <span>Card boxes</span>
+            <span class="p10-mlp-sidebar-nav__badge">CCG</span>
+          </a>
+          <a class="p10-mlp-sidebar-nav__link{% if current_tags contains 'mlp-single-card' %} is-active{% endif %}" href="{{ routes.collections_url }}/mlp-1/mlp-single-card">
+            <span>Single cards</span>
+            <span class="p10-mlp-sidebar-nav__badge">CCG</span>
+          </a>
+        </div>
+      </details>
+
+      <details class="p10-mlp-sidebar-nav__group" open>
+        <summary class="p10-mlp-sidebar-nav__summary">CCG Card Boxes</summary>
+        <div class="p10-mlp-sidebar-nav__children">
+          <a class="p10-mlp-sidebar-nav__link{% if collection.handle == 'cn-shadow-edition-card-boxes' or collection.handle == 'mlp-tier-2shadow' %} is-active{% endif %}" href="{{ routes.collections_url }}/cn-shadow-edition-card-boxes">Fun Moments Edition</a>
+          <a class="p10-mlp-sidebar-nav__link{% if collection.handle == 'cn-moon-edition-card-boxes' or collection.handle == 'mlp-tier4moon-hui-yue' %} is-active{% endif %}" href="{{ routes.collections_url }}/cn-moon-edition-card-boxes">Moon Edition</a>
+          <a class="p10-mlp-sidebar-nav__link{% if collection.handle == 'cn-rainbow-edition-card-boxes' or collection.handle == 'mlp-tier2shadow' %} is-active{% endif %}" href="{{ routes.collections_url }}/cn-rainbow-edition-card-boxes">Rainbow Edition</a>
+          <a class="p10-mlp-sidebar-nav__link{% if collection.handle == 'cn-fan-xin-edition-card-boxes' or collection.handle == 'mlp-tier-5fan-xing' %} is-active{% endif %}" href="{{ routes.collections_url }}/cn-fan-xin-edition-card-boxes">Star Edition</a>
+        </div>
+      </details>
+
+      <details class="p10-mlp-sidebar-nav__group" open>
+        <summary class="p10-mlp-sidebar-nav__summary">Single Cards</summary>
+        <div class="p10-mlp-sidebar-nav__children">
+          <a class="p10-mlp-sidebar-nav__link{% if current_tags contains 't4w10' %} is-active{% endif %}" href="{{ routes.collections_url }}/mlp-1/mlp-single-card+t4w10">Moon Series 10 (T4W10)</a>
+          <a class="p10-mlp-sidebar-nav__link{% if current_tags contains 't4w11' %} is-active{% endif %}" href="{{ routes.collections_url }}/mlp-1/mlp-single-card+t4w11">Moon Series 11 (T4W11)</a>
+          <span class="p10-mlp-sidebar-nav__series">Rarity</span>
+          <a class="p10-mlp-sidebar-nav__link{% if current_tags contains 'sc' %} is-active{% endif %}" href="{{ routes.collections_url }}/mlp-1/mlp-single-card+sc">SC singles</a>
+          <a class="p10-mlp-sidebar-nav__link{% if current_tags contains 'zr' %} is-active{% endif %}" href="{{ routes.collections_url }}/mlp-1/mlp-single-card+zr">ZR singles</a>
+        </div>
+      </details>
+
+      <details class="p10-mlp-sidebar-nav__group" open>
+        <summary class="p10-mlp-sidebar-nav__summary">Merch by Brand</summary>
+        <div class="p10-mlp-sidebar-nav__children">
+          <a class="p10-mlp-sidebar-nav__link{% if current_tags contains 'reesee' or collection.handle == 'mlp-reesee' %} is-active{% endif %}" href="{{ routes.collections_url }}/mlp-1/reesee">Reesee plush and merch</a>
+          <a class="p10-mlp-sidebar-nav__link{% if current_tags contains 'auldey' or collection.handle == 'mlp-auldey' %} is-active{% endif %}" href="{{ routes.collections_url }}/mlp-1/auldey">AULDEY toys and dioramas</a>
+          <a class="p10-mlp-sidebar-nav__link{% if current_tags contains 'miniso' or collection.handle == 'miniso' %} is-active{% endif %}" href="{{ routes.collections_url }}/mlp-1/miniso">MINISO figures</a>
+        </div>
+      </details>
+
+      <span class="p10-mlp-sidebar-nav__note">Only active MLP listings are linked here.</span>
+    </div>
+  </nav>
+{% endif %}

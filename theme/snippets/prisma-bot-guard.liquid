@@ -1,0 +1,49 @@
+{%- comment -%}
+  Lightweight Prisma bot guard.
+  This is a deterrence layer for automated scrapers. It does not replace CDN/WAF rules.
+{%- endcomment -%}
+<script>
+  (function () {
+    var ua = navigator.userAgent || '';
+    var goodBot = /(googlebot|bingbot|duckduckbot|slurp|baiduspider|yandexbot|facebookexternalhit|twitterbot|pinterestbot)/i;
+    var badBot = /(gptbot|ccbot|claudebot|claude-searchbot|anthropic-ai|perplexitybot|bytespider|petalbot|amazonbot|ahrefsbot|semrushbot|mj12bot|dotbot|blexbot|dataforseobot|scrapy|python-requests|curl|wget|libwww-perl|aiohttp|httpclient|go-http-client|java\/|phantomjs|headlesschrome)/i;
+
+    if (goodBot.test(ua)) return;
+
+    var automatedSignal = navigator.webdriver === true || /headless|bot|crawl|spider|scanner/i.test(ua);
+    var suspected = badBot.test(ua) || automatedSignal;
+    if (!suspected) return;
+
+    document.documentElement.setAttribute('data-prisma-bot-guard', 'suspected');
+    window.__prismaBotGuard = {
+      suspected: true,
+      userAgent: ua.slice(0, 180)
+    };
+
+    try {
+      var meta = document.createElement('meta');
+      meta.name = 'robots';
+      meta.content = 'noindex,nofollow,noarchive,nosnippet';
+      document.head.appendChild(meta);
+    } catch (error) {}
+
+    function addHoneypot() {
+      if (document.querySelector('[data-prisma-bot-honeypot]')) return;
+      var link = document.createElement('a');
+      link.href = '/pages/bot-check?prisma_guard=1';
+      link.rel = 'nofollow noindex';
+      link.tabIndex = -1;
+      link.setAttribute('aria-hidden', 'true');
+      link.setAttribute('data-prisma-bot-honeypot', 'true');
+      link.style.cssText = 'position:absolute;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden;';
+      link.textContent = 'bot check';
+      document.body.appendChild(link);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', addHoneypot, { once: true });
+    } else {
+      addHoneypot();
+    }
+  })();
+</script>

@@ -1,0 +1,38 @@
+{%- liquid
+  assign blocked = false
+  assign normalized_type = product.type | strip | downcase
+  assign excluded_handles = excluded_collection_handles | default: 'single,singles-gallery' | downcase | replace: ' ', ''
+  assign excluded_handles = ',' | append: excluded_handles | append: ','
+
+  if normalized_type contains 'single card'
+    assign blocked = true
+  elsif normalized_type == 'single trading card' or normalized_type == 'single trading cards' or normalized_type == 'collectible card bundle'
+    assign blocked = true
+  endif
+
+  unless blocked
+    for product_tag in product.tags
+      assign normalized_tag = product_tag | strip | downcase
+      if normalized_tag == 'single card' or normalized_tag == 'single cards' or normalized_tag == 'single trading card' or normalized_tag == 'single trading cards' or normalized_tag == 'single card bundle'
+        assign blocked = true
+        break
+      endif
+    endfor
+  endunless
+
+  unless blocked
+    for product_collection in product.collections
+      assign collection_token = ',' | append: product_collection.handle | downcase | append: ','
+      if excluded_handles contains collection_token
+        assign blocked = true
+        break
+      endif
+    endfor
+  endunless
+
+  if blocked
+    echo 'blocked'
+  else
+    echo 'allowed'
+  endif
+-%}

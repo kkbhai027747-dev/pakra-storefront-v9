@@ -1,0 +1,143 @@
+{%- liquid
+  assign product_brand = product.metafields.custom.product_brand.value | default: product.vendor
+  assign card_media = product.featured_media
+  assign card_image = card_media.preview_image
+  assign sale_format = 'Collectible'
+  assign preorder = false
+  assign preview_only = false
+  assign placeholder_price = false
+  assign product_search_text = product.title | append: ' ' | append: product.vendor
+  assign product_tag_tokens = '|'
+  assign destination_url = product.url
+
+  if product.price == 1
+    assign placeholder_price = true
+  endif
+
+  if product_view == 'keegan'
+    assign destination_url = destination_url | append: '?view=keegan'
+  endif
+
+  case lane
+    when 'sealed'
+      assign sale_format = 'Sealed product'
+    when 'merch'
+      assign sale_format = 'Merch & collectible'
+  endcase
+
+  for tag in product.tags
+    assign normalized_tag = tag | downcase | strip
+    assign normalized_tag_token = tag | strip | downcase | url_encode
+    assign product_search_text = product_search_text | append: ' ' | append: tag
+    if normalized_tag_token != blank
+      assign product_tag_tokens = product_tag_tokens | append: normalized_tag_token | append: '|'
+    endif
+    if normalized_tag == 'pre-order' or normalized_tag == 'preorder'
+      assign preorder = true
+    endif
+    if normalized_tag == 'preview only' or normalized_tag == 'preview-only' or normalized_tag == 'display only'
+      assign preview_only = true
+    endif
+  endfor
+-%}
+
+<article
+  class="p10-ip-storefront__product"
+  data-product-id="{{ product.id }}"
+  data-product-handle="{{ product.handle | downcase | escape }}"
+  data-lane="{{ lane | escape }}"
+  data-collections="{{ intent_handles | escape }}"
+  data-product-type="{{ product.type | handleize | escape }}"
+  data-product-tags="{{ product_tag_tokens | escape }}"
+  data-available="{{ product.available }}"
+  data-search-text="{{ product_search_text | downcase | escape }}"
+>
+  <a
+    class="p10-ip-storefront__product-link"
+    href="{{ destination_url }}"
+    aria-label="{{ product.title | escape }}"
+  >
+    <div class="p10-ip-storefront__product-media">
+      {%- if card_image != blank -%}
+        {%- liquid
+          assign card_media_mode = 'contain'
+          assign card_image_url = card_image | image_url: width: 900
+        -%}
+        <span
+          class="p10-ip-storefront__media-frame"
+          data-media-mode="{{ card_media_mode | escape }}"
+        >
+          {{
+            card_image_url
+            | image_tag:
+              loading: 'lazy',
+              widths: '240, 360, 480, 640, 900',
+              sizes: '(min-width: 1200px) 20vw, (min-width: 750px) 30vw, 46vw',
+              alt: card_media.alt | default: product.title,
+              class: 'p10-ip-storefront__media-art'
+          }}
+        </span>
+      {%- else -%}
+        <div
+          class="p10-ip-storefront__media-missing"
+          aria-label="Product image unavailable"
+        >
+          <span>Image unavailable</span>
+        </div>
+      {%- endif -%}
+
+      <div class="p10-ip-storefront__product-badges" aria-label="Product status">
+        <span class="p10-ip-storefront__format">{{ sale_format }}</span>
+        {%- if recommendation_badge != blank -%}
+          <span class="p10-ip-storefront__recommendation-badge">
+            {{ recommendation_badge | escape }}
+          </span>
+        {%- endif -%}
+        {%- if preorder -%}
+          <span class="p10-ip-storefront__preorder">Pre-order</span>
+        {%- endif -%}
+        {%- if placeholder_price or preview_only -%}
+          <span class="p10-ip-storefront__preorder">Preview only</span>
+        {%- endif -%}
+      </div>
+      {%- if show_sold_out and product.available == false -%}
+        <div class="p10-ip-storefront__sold-out">
+          <span>{{ 'products.product.sold_out' | t }}</span>
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="p10-ip-storefront__product-body">
+      {%- if product_brand != blank -%}
+        <p class="p10-ip-storefront__vendor">{{ product_brand | escape }}</p>
+      {%- endif -%}
+      <h3 class="p10-ip-storefront__product-title">{{ product.title | escape }}</h3>
+      <div class="p10-ip-storefront__product-meta">
+        {%- if placeholder_price -%}
+          <span class="p10-ip-storefront__stock p10-ip-storefront__stock--preview">Preview only</span>
+          <span class="p10-ip-storefront__price p10-ip-storefront__price--contact">Contact HAO</span>
+        {%- else -%}
+          <span class="p10-ip-storefront__stock">
+            {%- if preview_only -%}
+              Preview only &middot; {{ product.variants.first.inventory_quantity }} draws
+            {%- elsif product.available -%}
+              In stock
+            {%- else -%}
+              Sold out
+            {%- endif -%}
+          </span>
+          <span class="p10-ip-storefront__price">{{ product.price | money }}</span>
+        {%- endif -%}
+      </div>
+      {%- if placeholder_price -%}
+        <p class="p10-ip-storefront__preview-notice">
+          Not available for checkout. Contact HAO or use the chat support button to purchase.
+        </p>
+      {%- endif -%}
+      <span class="p10-ip-storefront__view">
+        {%- if placeholder_price or preview_only -%}View preview{%- else -%}View product{%- endif -%}
+        <span aria-hidden="true">→</span>
+      </span>
+    </div>
+  </a>
+</article>

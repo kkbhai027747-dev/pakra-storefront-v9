@@ -1,0 +1,118 @@
+/* Keep standard collection cards image-led without changing Shopify quick-add behavior. */
+@media (min-width: 1025px) and (hover: hover) and (pointer: fine) {
+  .productListing.productGrid .product-item .card-product__wrapper {
+    position: relative;
+  }
+
+  .productListing.productGrid .product-item .card-action,
+  .productListing.productGrid .product-item .card-action.has-compare {
+    right: auto;
+    left: 50%;
+    bottom: 12px;
+    width: auto;
+    min-width: 0;
+    padding: 0;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translate3d(-50%, 8px, 0);
+    transition:
+      transform 160ms ease,
+      opacity 140ms ease,
+      visibility 140ms ease;
+  }
+
+  .productListing.productGrid .product-item .card-action.has-compare {
+    bottom: 42px;
+  }
+
+  .productListing.productGrid .product-item .card:hover .card-action,
+  .productListing.productGrid .product-item .card:focus-within .card-action {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translate3d(-50%, 0, 0);
+  }
+
+  .productListing.productGrid .product-item .card-action > form {
+    width: auto;
+    min-width: 0;
+    margin: 0;
+  }
+
+  .productListing.productGrid .product-item .card-action .button-ATC,
+  .productListing.productGrid .product-item .card-action .product-form__submit {
+    width: auto;
+    min-width: 132px;
+    min-height: 34px;
+    height: 34px;
+    padding: 0 16px;
+    line-height: 32px;
+    white-space: nowrap;
+    box-shadow: 0 6px 18px rgba(20, 16, 28, 0.18);
+  }
+
+  .product-card-layout-01 .productListing.productGrid .card .card-media.has-compare:after,
+  .product-card-layout-05 .productListing.productGrid .card .card-media.has-compare:after {
+    content: none;
+  }
+
+  .product-card-layout-01 .productListing.productGrid .card-compare:not(.card-compareIcon),
+  .product-card-layout-05 .productListing.productGrid .card-compare:not(.card-compareIcon) {
+    bottom: 9px;
+    padding: 2px 9px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 3px 12px rgba(20, 16, 28, 0.11);
+    transform: translate(-50%, 8px);
+  }
+
+  .product-card-layout-01 .productListing.productGrid .card:hover .card-compare:not(.card-compareIcon),
+  .product-card-layout-01 .productListing.productGrid .card:focus-within .card-compare:not(.card-compareIcon),
+  .product-card-layout-05 .productListing.productGrid .card:hover .card-compare:not(.card-compareIcon),
+  .product-card-layout-05 .productListing.productGrid .card:focus-within .card-compare:not(.card-compareIcon) {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translate(-50%, 0);
+  }
+
+  /* Restore the original full action panel only while a multi-variant quick shop is open. */
+  .productListing.productGrid .product-item.quickshop-popup-show .card-action,
+  .productListing.productGrid .product-item.quickshop-popup-show .card-action.has-compare {
+    right: 0;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: none;
+  }
+
+  .productListing.productGrid .product-item.quickshop-popup-show .card-action > form {
+    width: 100%;
+  }
+}
+
+/* Ignore a stale two/three-column view state on desktop and refill the available row. */
+@media (min-width: 1025px) {
+  .template-collection .productListing.productGrid > .product,
+  .template-search .productListing.productGrid > .product {
+    width: 25% !important;
+  }
+}
+
+@media (min-width: 750px) and (max-width: 1024px) {
+  .template-collection .productListing.productGrid > .product,
+  .template-search .productListing.productGrid > .product {
+    width: 33.333333% !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .productListing.productGrid .product-item .card-action,
+  .productListing.productGrid .product-item .card-compare {
+    transition: none;
+  }
+}

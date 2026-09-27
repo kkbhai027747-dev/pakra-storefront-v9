@@ -1,0 +1,94 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "p10_ip_storefront_pokemon_cn": {
+      "type": "p10-ip-storefront",
+      "blocks": {
+        "sealed_all": {
+          "type": "lane_source",
+          "settings": {
+            "lane": "sealed",
+            "collection": "pokemon-tcg-cn",
+            "allowed_product_types": "",
+            "additional_product_handles": ""
+          }
+        },
+        "intent_display_boxes": {
+          "type": "intent",
+          "settings": {
+            "lane": "sealed",
+            "label": "Booster boxes",
+            "filter_kind": "product_type",
+            "collection": "",
+            "product_types": "Trading Card Booster Box",
+            "product_handles": "",
+            "classification_level": "product_format",
+            "link": ""
+          }
+        },
+        "intent_gift_sets": {
+          "type": "intent",
+          "settings": {
+            "lane": "sealed",
+            "label": "Gift sets",
+            "filter_kind": "product_type",
+            "collection": "",
+            "product_types": "Trading Card Gift Set",
+            "product_handles": "",
+            "classification_level": "product_format",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "sealed_all",
+        "intent_display_boxes",
+        "intent_gift_sets"
+      ],
+      "settings": {
+        "ip_key": "pokemon",
+        "skin": "pokemon",
+        "eyebrow": "POKÉMON TCG CN",
+        "heading": "Pokémon",
+        "subheading": "Browse Simplified Chinese Pokémon TCG booster boxes, Gem Packs and gift sets.",
+        "source_collection": "pokemon-tcg-cn",
+        "universal_publisher": "",
+        "universal_product_type": "TCG",
+        "isolate_card_type": false,
+        "universal_market": "CN",
+        "universal_source_collection": "pokemon-tcg-cn",
+        "show_intro_header": true,
+        "show_search": true,
+        "lane_order": "sealed",
+        "enable_sealed": true,
+        "sealed_label": "TCG card products",
+        "sealed_copy": "Explore Simplified Chinese Pokémon TCG booster boxes, Gem Packs and gift sets.",
+        "sealed_link": "",
+        "enable_merch": false,
+        "merch_label": "Merch & Collectibles",
+        "merch_copy": "",
+        "merch_link": "",
+        "initial_products_desktop": 12,
+        "initial_products_mobile": 8,
+        "load_more_step": 12,
+        "excluded_collection_handles": "single,singles-gallery,type-single-cards",
+        "single_card_catalog_link": "",
+        "show_content": false,
+        "show_page_content": false,
+        "keep_empty_intents": false,
+        "empty_state_link": ""
+      }
+    }
+  },
+  "order": [
+    "p10_ip_storefront_pokemon_cn"
+  ]
+}

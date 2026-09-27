@@ -1,0 +1,150 @@
+{%- liquid
+  assign p10_nav_kind = title | default: link.title | handle
+  assign p10_group_type = collections['group-shop-by-type']
+  assign p10_group_featured = collections['group-featured']
+  assign p10_sealed = collections['type-sealed-cards']
+  assign p10_single_catalog = pages['kayou-mlp-card-catalog']
+  assign p10_merchandise = collections['type-merchandise']
+  assign p10_accessories = collections['type-card-accessories']
+  assign p10_new = collections['featured-new-arrivals']
+  assign p10_buyer = collections['buyer-favorites']
+  assign p10_trending = collections['featured-trending-now']
+  assign p10_guest = collections['featured-guest-picks']
+
+  assign p10_group_type_url = p10_group_type.url | default: '/collections/group-shop-by-type'
+  assign p10_group_featured_url = p10_group_featured.url | default: '/collections/group-featured'
+  assign p10_sealed_url = p10_sealed.url | default: '/collections/type-sealed-cards'
+  assign p10_single_url = p10_single_catalog.url | default: '/pages/kayou-mlp-card-catalog'
+  assign p10_merchandise_url = p10_merchandise.url | default: '/collections/type-merchandise'
+  assign p10_accessories_url = p10_accessories.url | default: '/collections/type-card-accessories'
+  assign p10_new_url = p10_new.url | default: '/collections/featured-new-arrivals'
+  assign p10_buyer_url = p10_buyer.url | default: '/collections/buyer-favorites'
+  assign p10_trending_url = p10_trending.url | default: '/collections/featured-trending-now'
+  assign p10_guest_url = p10_guest.url | default: '/collections/featured-guest-picks'
+
+  assign p10_is_featured = false
+  assign p10_title = 'Shop by Type'
+  assign p10_eyebrow = 'Product Taxonomy'
+  assign p10_group_url = p10_group_type_url
+  assign p10_primary_url = p10_sealed_url
+  assign p10_primary_label = 'Shop sealed cards'
+  assign p10_secondary_url = p10_single_url
+  assign p10_secondary_label = 'Shop single cards'
+  assign p10_promo_collection = p10_sealed
+  assign p10_promo_description = 'Browse by stable product type while IP, brand, language, and format details remain in product data.'
+  if p10_nav_kind == 'featured'
+    assign p10_is_featured = true
+    assign p10_title = 'Featured'
+    assign p10_eyebrow = 'Store Highlights'
+    assign p10_group_url = p10_group_featured_url
+    assign p10_primary_url = p10_new_url
+    assign p10_primary_label = 'Shop new arrivals'
+    assign p10_secondary_url = p10_buyer_url
+    assign p10_secondary_label = 'Buyer favorites'
+    assign p10_promo_collection = p10_new
+    assign p10_promo_description = 'Explore the active editorial collections selected for the V6 storefront.'
+  endif
+-%}
+
+<li class="menu-lv-item menu-lv-1 has-megamenu dropdown block_layout--full p10-sealed-mega" data-p10-sealed-mega data-p10-active-region="main">
+  <a class="menu-lv-1__action header__menu-item list-menu__item link focus-inset menu_mobile_link link-effect" href="{{ p10_group_url }}">
+    <span class="text p-relative">{{ link.title | escape }}</span>
+    <span class="icon-dropdown" data-toggle-menu-mb="">{% render 'icon-caret-right' %}</span>
+  </a>
+
+  <div class="menu-dropdown custom-scrollbar megamenu_style_1 p10-sealed-mega__dropdown p-absolute top-auto left-0 w-100 zi-10 o-x-hidden o-y-auto text-left opacity-0">
+    <div class="container-full">
+      <div class="p10-sealed-mega__shell">
+        <div class="p10-sealed-mega__bar">
+          <div class="p10-sealed-mega__bar-copy">
+            <span class="p10-sealed-mega__eyebrow">{{ p10_eyebrow }}</span>
+            <strong>{{ p10_title }}</strong>
+          </div>
+          <a class="p10-sealed-mega__bar-link" href="{{ p10_group_url }}" data-p10-sealed-active-link>View all {{ p10_title | downcase }}</a>
+        </div>
+
+        <div class="p10-sealed-mega__grid">
+          <div class="p10-sealed-mega__panels">
+            <div class="p10-sealed-mega__panel is-active" data-p10-sealed-region-panel="main" data-region-label="{{ p10_title }}" data-region-action-label="{{ p10_primary_label }}" data-region-url="{{ p10_primary_url }}">
+              {%- if p10_is_featured -%}
+                <div class="p10-sealed-mega__column p10-sealed-mega__column--primary">
+                  <a class="p10-sealed-mega__region" href="{{ p10_group_featured_url }}"><span>Featured collections</span><small>Current V6 storefront highlights</small></a>
+                  <ul class="p10-sealed-mega__links">
+                    <li><a href="{{ p10_new_url }}">New Arrivals</a></li>
+                    <li><a href="{{ p10_buyer_url }}">Buyer Favorites</a></li>
+                  </ul>
+                </div>
+                <div class="p10-sealed-mega__column">
+                  <h3>Discover</h3>
+                  <ul class="p10-sealed-mega__links">
+                    <li><a href="{{ p10_trending_url }}">Trending Now</a></li>
+                    <li><a href="{{ p10_guest_url }}">Guest Picks</a></li>
+                  </ul>
+                </div>
+                <div class="p10-sealed-mega__column">
+                  <h3>Browse</h3>
+                  <ul class="p10-sealed-mega__links">
+                    <li><a href="{{ p10_group_featured_url }}">All featured collections</a></li>
+                  </ul>
+                </div>
+              {%- else -%}
+                <div class="p10-sealed-mega__column p10-sealed-mega__column--primary">
+                  <a class="p10-sealed-mega__region" href="{{ p10_group_type_url }}"><span>Shop by Product Type</span><small>Cards, merchandise, and card accessories</small></a>
+                  <ul class="p10-sealed-mega__links">
+                    <li><a href="{{ p10_sealed_url }}">Sealed Cards</a></li>
+                    <li><a href="{{ p10_single_url }}">Single Cards</a></li>
+                  </ul>
+                </div>
+                <div class="p10-sealed-mega__column">
+                  <h3>Goods &amp; Accessories</h3>
+                  <ul class="p10-sealed-mega__links">
+                    <li><a href="{{ p10_merchandise_url }}">Merchandise</a></li>
+                    <li><a href="{{ p10_accessories_url }}">Card Accessories</a></li>
+                  </ul>
+                </div>
+                <div class="p10-sealed-mega__column">
+                  <h3>Browse</h3>
+                  <ul class="p10-sealed-mega__links">
+                    <li><a href="{{ p10_group_type_url }}">All product types</a></li>
+                  </ul>
+                </div>
+              {%- endif -%}
+            </div>
+          </div>
+
+          <aside class="p10-sealed-mega__rail" aria-label="Featured shopping shortcuts">
+            <div class="p10-sealed-mega__region-stack">
+              <a class="p10-sealed-mega__swap-card" href="{{ p10_primary_url }}"><span>{{ p10_primary_label }}</span><small>Main collection</small></a>
+              <a class="p10-sealed-mega__swap-card" href="{{ p10_secondary_url }}"><span>{{ p10_secondary_label }}</span><small>Fast shortcut</small></a>
+            </div>
+            <div class="p10-sealed-mega__promo" aria-label="Featured products" data-p10-sealed-promo>
+              <div class="p10-sealed-mega__promo-media" data-p10-sealed-promo-media>
+                <div class="p10-sealed-mega__promo-region is-active" data-p10-sealed-promo-region="main" data-promo-kicker="{{ p10_eyebrow }}" data-promo-title="{{ p10_title }}" data-promo-description="{{ p10_promo_description | escape }}" data-promo-primary-label="{{ p10_primary_label }}" data-promo-primary-url="{{ p10_primary_url }}" data-promo-secondary-label="{{ p10_secondary_label }}" data-promo-secondary-url="{{ p10_secondary_url }}">
+                  {%- assign p10_slide_count = 0 -%}
+                  {%- for product in p10_promo_collection.products limit: 8 -%}
+                    {%- if product.featured_image != blank -%}
+                      {%- assign p10_slide_count = p10_slide_count | plus: 1 -%}
+                      <a class="p10-sealed-mega__promo-slide{% if p10_slide_count == 1 %} is-active{% endif %}" href="{{ product.url }}" data-p10-sealed-promo-slide aria-hidden="{% if p10_slide_count == 1 %}false{% else %}true{% endif %}" tabindex="{% if p10_slide_count == 1 %}0{% else %}-1{% endif %}">
+                        {{ product.featured_image | image_url: width: 520 | image_tag: loading: 'lazy', widths: '260, 360, 420, 520', sizes: '240px', class: 'p10-sealed-mega__promo-image', alt: product.title }}
+                      </a>
+                    {%- endif -%}
+                  {%- endfor -%}
+                  {%- if p10_slide_count == 0 -%}<a class="p10-sealed-mega__promo-slide p10-sealed-mega__promo-slide--empty is-active" href="{{ p10_primary_url }}" data-p10-sealed-promo-slide aria-hidden="false" tabindex="0"><span>{{ p10_eyebrow }}</span><strong>{{ p10_title }}</strong></a>{%- endif -%}
+                </div>
+              </div>
+              <div class="p10-sealed-mega__promo-copy">
+                <span data-p10-sealed-promo-kicker>{{ p10_eyebrow }}</span>
+                <strong data-p10-sealed-promo-title>{{ p10_title }}</strong>
+                <p data-p10-sealed-promo-description>{{ p10_promo_description }}</p>
+                <div class="p10-sealed-mega__promo-actions">
+                  <a href="{{ p10_primary_url }}" data-p10-sealed-promo-primary>{{ p10_primary_label }}</a>
+                  <a href="{{ p10_secondary_url }}" data-p10-sealed-promo-secondary>{{ p10_secondary_label }}</a>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </div>
+</li>

@@ -1,0 +1,85 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "p10_ip_storefront_mlp_tcg_cn": {
+      "type": "p10-ip-storefront",
+      "blocks": {
+        "sealed_tcg_cn": {
+          "type": "lane_source",
+          "settings": {
+            "lane": "sealed",
+            "collection": "cn-mlp-card-boxes",
+            "allowed_product_types": "Trading Card Box, Trading Card Boxes"
+          }
+        },
+        "intent_nightmare_night": {
+          "type": "intent",
+          "settings": {
+            "lane": "sealed",
+            "label": "Nightmare Night",
+            "filter_kind": "product_tag",
+            "collection": "",
+            "product_types": "",
+            "product_tags": "Nightmare Night",
+            "product_handles": "",
+            "classification_level": "series",
+            "link": ""
+          }
+        },
+        "intent_gift_boxes": {
+          "type": "intent",
+          "settings": {
+            "lane": "sealed",
+            "label": "Gift boxes",
+            "filter_kind": "product_tag",
+            "collection": "",
+            "product_types": "",
+            "product_tags": "Gift Box",
+            "product_handles": "",
+            "classification_level": "product_format",
+            "link": ""
+          }
+        }
+      },
+      "block_order": ["sealed_tcg_cn", "intent_nightmare_night", "intent_gift_boxes"],
+      "settings": {
+        "ip_key": "mlp",
+        "skin": "mlp",
+        "eyebrow": "KAYOU MY LITTLE PONY TCG",
+        "heading": "My Little Pony",
+        "subheading": "Browse KAYOU My Little Pony TCG sealed products for the Chinese market.",
+        "source_collection": "cn-tcg-card-boxes",
+        "universal_publisher": "KAYOU",
+        "universal_product_type": "TCG",
+        "universal_market": "CN",
+        "universal_source_collection": "cn-mlp-card-boxes",
+        "show_search": true,
+        "lane_order": "sealed,merch",
+        "enable_sealed": true,
+        "sealed_label": "TCG sealed products",
+        "sealed_copy": "Sealed KAYOU My Little Pony TCG display boxes and gift sets.",
+        "sealed_link": "",
+        "enable_merch": false,
+        "merch_label": "Merch & collectibles",
+        "merch_copy": "",
+        "merch_link": "",
+        "initial_products_desktop": 12,
+        "initial_products_mobile": 8,
+        "load_more_step": 12,
+        "excluded_collection_handles": "single,singles-gallery",
+        "single_card_catalog_link": "/pages/single-cards",
+        "show_content": false,
+        "empty_state_link": ""
+      }
+    }
+  },
+  "order": ["p10_ip_storefront_mlp_tcg_cn"]
+}

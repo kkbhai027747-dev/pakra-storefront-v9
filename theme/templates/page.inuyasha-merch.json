@@ -1,0 +1,56 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "p10_ip_storefront_inuyasha_merch": {
+      "type": "p10-ip-storefront",
+      "blocks": {
+        "merch_all": {
+          "type": "lane_source",
+          "settings": {
+            "lane": "merch",
+            "collection": "inuyasha",
+            "allowed_product_types": "Collectible Toys"
+          }
+        }
+      },
+      "block_order": ["merch_all"],
+      "settings": {
+        "ip_key": "inuyasha",
+        "skin": "inuyasha",
+        "eyebrow": "INUYASHA MERCH & COLLECTIBLES",
+        "heading": "Inuyasha",
+        "subheading": "Browse Inuyasha figures and collectible merchandise.",
+        "source_collection": "inuyasha",
+        "universal_product_type": "Merch & Collectibles",
+        "universal_market": "",
+        "universal_source_collection": "inuyasha",
+        "show_search": true,
+        "lane_order": "sealed,merch",
+        "enable_sealed": false,
+        "sealed_label": "Sealed card boxes",
+        "sealed_copy": "",
+        "sealed_link": "",
+        "enable_merch": true,
+        "merch_label": "Merch & collectibles",
+        "merch_copy": "Figure blind boxes and character collectibles.",
+        "merch_link": "",
+        "initial_products_desktop": 12,
+        "initial_products_mobile": 8,
+        "load_more_step": 12,
+        "excluded_collection_handles": "single,singles-gallery",
+        "single_card_catalog_link": "/pages/single-cards",
+        "show_content": false,
+        "empty_state_link": ""
+      }
+    }
+  },
+  "order": ["p10_ip_storefront_inuyasha_merch"]
+}

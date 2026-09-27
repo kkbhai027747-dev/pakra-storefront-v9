@@ -1,0 +1,42 @@
+{
+  "capturedOn": "2026-09-26",
+  "themeId": "158535483580",
+  "sourceChanged": false,
+  "command": "shopify theme check --path storefront/theme --output json",
+  "commandInThisRepository": "shopify theme check --path theme --output json",
+  "relocationNote": "The command above records the original 2026-09-26 run. commandInThisRepository is the equivalent command after the 2026-09-27 repository split; it was not rerun for this split.",
+  "exitCode": 1,
+  "severity": {
+    "error": 3832,
+    "warning": 1513
+  },
+  "checks": {
+    "ImgWidthAndHeight": 148,
+    "DeprecatedFilter": 667,
+    "UnusedAssign": 170,
+    "UndefinedObject": 121,
+    "HardcodedRoutes": 47,
+    "ExcessiveSettingsCount": 46,
+    "LiquidHTMLSyntaxError": 6,
+    "UnclosedHTMLElement": 39,
+    "VariableName": 249,
+    "AssetPreload": 8,
+    "RemoteAsset": 57,
+    "DeprecatedTag": 4,
+    "DeprecateLazysizes": 5,
+    "MissingTemplate": 2,
+    "TranslationKeyExists": 13,
+    "OrphanedSnippet": 36,
+    "LiquidComplexity": 29,
+    "DuplicateRenderSnippetArguments": 2,
+    "ValidSchemaName": 5,
+    "ParserBlockingScript": 18,
+    "MissingAsset": 2,
+    "ContentForHeaderModification": 2,
+    "PaginationSize": 2,
+    "LiquidNestingDepth": 29,
+    "BlockIdUsage": 2,
+    "MatchingTranslations": 3636
+  },
+  "interpretation": "Existing static findings in the unchanged V9 source. This lint run did not pass; this report is not rendered website acceptance."
+}

@@ -1,0 +1,44 @@
+{%- liquid
+  assign p10_blog_url = pages['blog'].url | default: '/pages/blog'
+  assign p10_guides_url = blogs['guide'].url | default: '/blogs/guide'
+  assign p10_database_url = pages['kayou-mlp-card-catalog'].url | default: '/pages/kayou-mlp-card-catalog'
+  assign p10_diy_url = blogs['diy'].url | default: '/blogs/diy'
+  assign p10_story_url = blogs['ambers-ponycove'].url | default: '/blogs/ambers-ponycove'
+  assign p10_blog_active = false
+  if request.path == p10_blog_url or request.path contains '/blogs/'
+    assign p10_blog_active = true
+  endif
+-%}
+<li class="menu-lv-item menu-lv-1 text-left no-megamenu dropdown p10-blog-nav">
+  <a href="{{ p10_blog_url }}" class="menu-lv-1__action header__menu-item list-menu__item link focus-inset menu_mobile_link link-effect" aria-haspopup="true">
+    <span class="text{% if p10_blog_active %} header__active-menu-item{% endif %} p-relative">Blog</span>
+    <span class="icon-dropdown" aria-hidden="true">{% render 'icon-caret-right' %}</span>
+  </a>
+  <ul class="header__submenu list-menu list-menu--disclosure list-menu--disclosure-1 caption-large motion-reduce p10-blog-nav__menu" role="list">
+    <li class="menu-lv-item menu-lv-2 text-left">
+      <a href="{{ p10_blog_url }}" class="menu-lv-2__action header__menu-item list-menu__item link link--text focus-inset">
+        <span class="text">Latest Articles</span>
+      </a>
+    </li>
+    <li class="menu-lv-item menu-lv-2 text-left">
+      <a href="{{ p10_guides_url }}" class="menu-lv-2__action header__menu-item list-menu__item link link--text focus-inset">
+        <span class="text">Collector Guides</span>
+      </a>
+    </li>
+    <li class="menu-lv-item menu-lv-2 text-left">
+      <a href="{{ p10_diy_url }}" class="menu-lv-2__action header__menu-item list-menu__item link link--text focus-inset">
+        <span class="text">DIY &amp; Display</span>
+      </a>
+    </li>
+    <li class="menu-lv-item menu-lv-2 text-left">
+      <a href="{{ p10_database_url }}" class="menu-lv-2__action header__menu-item list-menu__item link link--text focus-inset">
+        <span class="text">TCG Database</span>
+      </a>
+    </li>
+    <li class="menu-lv-item menu-lv-2 text-left">
+      <a href="{{ p10_story_url }}" class="menu-lv-2__action header__menu-item list-menu__item link link--text focus-inset">
+        <span class="text">Our Story</span>
+      </a>
+    </li>
+  </ul>
+</li>

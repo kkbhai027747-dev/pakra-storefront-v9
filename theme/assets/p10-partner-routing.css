@@ -1,0 +1,146 @@
+.p10-shop-by-ip__navigator-breadcrumb--partner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+}
+
+.p10-shop-by-ip__partner {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  max-width: 100%;
+  min-height: 44px;
+}
+
+.p10-shop-by-ip__partner img {
+  display: block;
+  width: 112px;
+  max-width: 100%;
+  height: auto;
+}
+
+.p10-shop-by-ip__partner:focus-visible {
+  outline: 2px solid var(--p10-ip-ink);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.p10-shop-by-ip__mobile-context--partner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: 12px;
+  align-items: center;
+}
+
+.p10-shop-by-ip__mobile-context--partner > :not(.p10-shop-by-ip__partner) {
+  grid-column: 1;
+}
+
+.p10-shop-by-ip__mobile-context--partner > .p10-shop-by-ip__partner {
+  grid-column: 2;
+  grid-row: 1 / 4;
+}
+
+.prisma-logo-pc .p10-partner-guide {
+  display: grid;
+  flex: 0 0 auto;
+  align-content: center;
+  min-height: 44px;
+  margin-left: 2px;
+  padding: 2px 0 2px 13px;
+  border-left: 1px solid rgba(166, 123, 10, 0.42);
+  color: #8b6810;
+  font-family: "Bahnschrift SemiCondensed", "DIN Condensed", "Roboto Condensed", sans-serif;
+  letter-spacing: 0.08em;
+  line-height: 1;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.prisma-logo-pc .p10-partner-guide > span {
+  font-size: 7px;
+  font-weight: 650;
+}
+
+.prisma-logo-pc .p10-partner-guide strong {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 3px;
+  color: #171717;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.prisma-logo-pc .p10-partner-guide:hover,
+.prisma-logo-pc .p10-partner-guide:focus-visible {
+  color: #171717;
+  border-left-color: #d4ad35;
+}
+
+.p10-cobrand-logo-mobile .p10-partner-entry-mobile {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2px;
+  min-height: 44px;
+  padding: 0 2px;
+  color: #7e600e;
+  text-decoration: none;
+}
+
+.p10-partner-entry-mobile__label {
+  display: block;
+  max-width: 78px;
+  overflow: hidden;
+  font-family: "Bahnschrift SemiCondensed", "DIN Condensed", "Roboto Condensed", sans-serif;
+  font-size: 6.5px;
+  font-weight: 750;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  text-align: center;
+  text-overflow: clip;
+  white-space: nowrap;
+}
+
+.p10-partner-entry-mobile:focus-visible {
+  border-radius: 4px;
+  outline: 2px solid #171717;
+  outline-offset: 2px;
+}
+
+@media (min-width: 1025px) and (max-width: 1200px) {
+  .prisma-logo-pc .p10-partner-guide {
+    margin-left: 0;
+    padding-left: 9px;
+  }
+
+  .prisma-logo-pc .p10-partner-guide > span {
+    font-size: 6px;
+  }
+
+  .prisma-logo-pc .p10-partner-guide strong {
+    font-size: 9px;
+  }
+}
+
+@media (max-width: 374px) {
+  .p10-cobrand-logo-mobile .p10-partner-entry-mobile {
+    min-width: 70px;
+    padding-inline: 0;
+  }
+
+  .p10-partner-entry-mobile__label {
+    max-width: 70px;
+    font-size: 6px;
+    letter-spacing: 0.04em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .p10-partner-guide,
+  .p10-partner-entry-mobile {
+    transition: none !important;
+  }
+}

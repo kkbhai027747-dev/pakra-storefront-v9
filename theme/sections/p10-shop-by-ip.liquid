@@ -1,0 +1,2223 @@
+<section
+  class="p10-shop-by-ip"
+  id="P10ShopByIp-{{ section.id }}"
+  data-p10-ip-directory-navigator
+>
+  <div class="p10-shop-by-ip__inner">
+    <header class="p10-shop-by-ip__header">
+      <div class="p10-shop-by-ip__title-wrap">
+        <p class="p10-shop-by-ip__eyebrow">{{ section.settings.eyebrow | default: 'Collector directory' | escape }}</p>
+        {%- if section.settings.heading != blank -%}
+          <h1 class="p10-shop-by-ip__heading">{{ section.settings.heading | escape }}</h1>
+        {%- endif -%}
+      </div>
+      {%- if section.settings.intro != blank -%}
+        <p class="p10-shop-by-ip__intro">{{ section.settings.intro | escape }}</p>
+      {%- endif -%}
+    </header>
+
+    <div class="p10-shop-by-ip__board" role="list" aria-label="Shop by IP">
+      {%- assign secondary_tier_started = false -%}
+      {%- for block in section.blocks -%}
+        {%- if block.settings.secondary_tier and secondary_tier_started == false -%}
+          <div class="p10-shop-by-ip__tier-divider display-empty" role="presentation" aria-hidden="true"></div>
+          {%- assign secondary_tier_started = true -%}
+        {%- endif -%}
+        {%- liquid
+          assign card_collection = block.settings.collection
+          assign display_title = block.settings.title
+          if display_title == blank and card_collection != blank
+            assign display_title = card_collection.title
+          endif
+          if display_title == blank
+            assign display_title = 'Collector world'
+          endif
+
+          assign card_url = block.settings.link
+          if card_url == blank and card_collection != blank
+            assign card_url = card_collection.url
+          endif
+
+          assign card_image = block.settings.image
+
+          assign fallback_image_url = block.settings.image_url
+          assign p10_icon_asset = ''
+          assign p10_match_key = block.settings.ip_key
+          if p10_match_key == blank or p10_match_key == 'custom'
+            assign p10_match_key = display_title | handleize
+          endif
+          if p10_match_key == blank and card_collection != blank
+            assign p10_match_key = card_collection.handle
+          endif
+
+          assign card_lane = block.settings.lane
+          assign card_description = block.settings.description
+          assign card_best = block.settings.best_for
+          assign card_find_1 = block.settings.tag_1
+          assign card_find_2 = block.settings.tag_2
+          assign card_find_3 = block.settings.tag_3
+          assign card_cta = block.settings.cta_label
+          assign card_accent = block.settings.accent
+          assign card_soft = block.settings.soft
+
+          case p10_match_key
+            when 'my-little-pony', 'mlp-1'
+              assign p10_icon_asset = 'p10-ip-my-little-pony.webp'
+              if card_lane == blank
+                assign card_lane = 'KAYOU MLP cards'
+              endif
+              if card_description == blank
+                assign card_description = 'Card releases and licensed collectibles.'
+              endif
+              if card_best == blank
+                assign card_best = 'Sealed card releases and licensed collectibles'
+              endif
+              if card_find_1 == blank
+                assign card_find_1 = 'Moon / Rainbow / Star'
+              endif
+              if card_find_2 == blank
+                assign card_find_2 = 'Fun Moments'
+              endif
+              if card_find_3 == blank
+                assign card_find_3 = 'Merch & Collectibles'
+              endif
+              if card_cta == blank
+                assign card_cta = 'Explore MLP'
+              endif
+              if card_accent == blank
+                assign card_accent = '#d49a25'
+              endif
+              if card_soft == blank
+                assign card_soft = '#fff8e8'
+              endif
+            when 'naruto', 'ninjia'
+              assign p10_icon_asset = 'p10-ip-naruto.webp'
+              if card_lane == blank
+                assign card_lane = 'KAYOU Naruto cards'
+              endif
+              if card_description == blank
+                assign card_description = 'KAYOU sealed card boxes and anime collector releases.'
+              endif
+              if card_best == blank
+                assign card_best = 'Sealed Naruto card boxes'
+              endif
+              if card_find_1 == blank
+                assign card_find_1 = 'Display boxes'
+              endif
+              if card_find_2 == blank
+                assign card_find_2 = 'Booster boxes'
+              endif
+              if card_find_3 == blank
+                assign card_find_3 = 'Chinese Edition'
+              endif
+              if card_cta == blank
+                assign card_cta = 'Explore Naruto'
+              endif
+              if card_accent == blank
+                assign card_accent = '#f06f24'
+              endif
+              if card_soft == blank
+                assign card_soft = '#fff2e8'
+              endif
+            when 'harry-potter'
+              assign p10_icon_asset = 'p10-ip-harry-potter.webp'
+              if card_lane == blank
+                assign card_lane = 'Harry Potter collector goods'
+              endif
+              if card_description == blank
+                assign card_description = 'Card releases, badges, standees, notebooks, and display goods.'
+              endif
+              if card_best == blank
+                assign card_best = 'Badges, standees, and paper goods'
+              endif
+              if card_find_1 == blank
+                assign card_find_1 = 'Badges'
+              endif
+              if card_find_2 == blank
+                assign card_find_2 = 'Standees'
+              endif
+              if card_find_3 == blank
+                assign card_find_3 = 'Notebooks'
+              endif
+              if card_cta == blank
+                assign card_cta = 'Explore Harry Potter'
+              endif
+              if card_accent == blank
+                assign card_accent = '#8f2f2f'
+              endif
+              if card_soft == blank
+                assign card_soft = '#fff6ea'
+              endif
+            when 'the-powerpuff-girls', 'powerpuff-girls'
+              assign p10_icon_asset = 'p10-ip-powerpuff-girls.webp'
+              if card_lane == blank
+                assign card_lane = 'Powerpuff goods'
+              endif
+              if card_description == blank
+                assign card_description = 'Badges, charms, figures, and character collectibles.'
+              endif
+              if card_best == blank
+                assign card_best = 'Character accessories and figures'
+              endif
+              if card_find_1 == blank
+                assign card_find_1 = 'Badges'
+              endif
+              if card_find_2 == blank
+                assign card_find_2 = 'Charms'
+              endif
+              if card_find_3 == blank
+                assign card_find_3 = 'Figures'
+              endif
+              if card_cta == blank
+                assign card_cta = 'Explore Powerpuff Girls'
+              endif
+              if card_accent == blank
+                assign card_accent = '#ec6f9d'
+              endif
+              if card_soft == blank
+                assign card_soft = '#fff0f7'
+              endif
+            when 'inuyasha'
+              assign p10_icon_asset = 'p10-ip-inuyasha.webp'
+              if card_lane == blank
+                assign card_lane = 'Inuyasha collectibles'
+              endif
+              if card_description == blank
+                assign card_description = 'CCG card products, figure blind boxes, and anime collectibles.'
+              endif
+              if card_best == blank
+                assign card_best = 'Blind boxes and CCG products'
+              endif
+              if card_find_1 == blank
+                assign card_find_1 = 'CCG booster box'
+              endif
+              if card_find_2 == blank
+                assign card_find_2 = 'Figure blind box'
+              endif
+              if card_find_3 == blank
+                assign card_find_3 = 'Anime collectible'
+              endif
+              if card_cta == blank
+                assign card_cta = 'Explore Inuyasha'
+              endif
+              if card_accent == blank
+                assign card_accent = '#b7282d'
+              endif
+              if card_soft == blank
+                assign card_soft = '#fff1ed'
+              endif
+            when 'arknights'
+              assign p10_icon_asset = 'p10-ip-arknights.png'
+              if card_lane == blank
+                assign card_lane = 'KAYOU Arknights goods'
+              endif
+              if card_description == blank
+                assign card_description = 'Card products, figures, blind boxes, and character goods.'
+              endif
+              if card_best == blank
+                assign card_best = 'Cards and character goods'
+              endif
+              if card_find_1 == blank
+                assign card_find_1 = 'Card boxes'
+              endif
+              if card_find_2 == blank
+                assign card_find_2 = 'Blind boxes'
+              endif
+              if card_find_3 == blank
+                assign card_find_3 = 'Character goods'
+              endif
+              if card_cta == blank
+                assign card_cta = 'Explore Arknights'
+              endif
+              if card_accent == blank
+                assign card_accent = '#4f63c6'
+              endif
+              if card_soft == blank
+                assign card_soft = '#eef2ff'
+              endif
+            when 'pokemon'
+              assign p10_icon_asset = 'p10-ip-pokemon.webp'
+              if card_lane == blank
+                assign card_lane = 'Pokémon trading cards'
+              endif
+              if card_description == blank
+                assign card_description = 'A dedicated Pokémon Trading Card Game route.'
+              endif
+              if card_best == blank
+                assign card_best = 'Pokémon TCG discovery'
+              endif
+              if card_find_1 == blank
+                assign card_find_1 = 'TCG'
+              endif
+              if card_find_2 == blank
+                assign card_find_2 = 'Trading Card Game'
+              endif
+              if card_find_3 == blank
+                assign card_find_3 = 'Sealed Cards'
+              endif
+              if card_cta == blank
+                assign card_cta = 'Explore Pokémon'
+              endif
+              if card_accent == blank
+                assign card_accent = '#2f75bb'
+              endif
+              if card_soft == blank
+                assign card_soft = '#fff8da'
+              endif
+            when 'disney'
+              assign p10_icon_asset = 'p10-ip-disney.webp'
+              if card_lane == blank
+                assign card_lane = 'Disney collector hub'
+              endif
+              if card_description == blank
+                assign card_description = 'CCG, TCG, merchandise, and collectibles routes.'
+              endif
+              if card_best == blank
+                assign card_best = 'Cards and character collectibles'
+              endif
+              if card_find_1 == blank
+                assign card_find_1 = 'CCG'
+              endif
+              if card_find_2 == blank
+                assign card_find_2 = 'TCG'
+              endif
+              if card_find_3 == blank
+                assign card_find_3 = 'Merch & Collectibles'
+              endif
+              if card_cta == blank
+                assign card_cta = 'Explore Disney'
+              endif
+              if card_accent == blank
+                assign card_accent = '#1e5aa8'
+              endif
+              if card_soft == blank
+                assign card_soft = '#f2f7fd'
+              endif
+            when 'marvel'
+              assign p10_icon_asset = 'p10-ip-marvel.webp'
+              if card_lane == blank
+                assign card_lane = 'Marvel collector hub'
+              endif
+              if card_description == blank
+                assign card_description = 'CCG, TCG, merchandise, and collectibles routes.'
+              endif
+              if card_best == blank
+                assign card_best = 'Cards and superhero collectibles'
+              endif
+              if card_find_1 == blank
+                assign card_find_1 = 'CCG'
+              endif
+              if card_find_2 == blank
+                assign card_find_2 = 'TCG'
+              endif
+              if card_find_3 == blank
+                assign card_find_3 = 'Merch & Collectibles'
+              endif
+              if card_cta == blank
+                assign card_cta = 'Explore Marvel'
+              endif
+              if card_accent == blank
+                assign card_accent = '#ed1d24'
+              endif
+              if card_soft == blank
+                assign card_soft = '#fff1f1'
+              endif
+            when 'dc'
+              assign p10_icon_asset = 'p10-ip-dc.webp'
+              if card_lane == blank
+                assign card_lane = 'DC collector hub'
+              endif
+              if card_description == blank
+                assign card_description = 'CCG, TCG, merchandise, and collectibles routes.'
+              endif
+              if card_best == blank
+                assign card_best = 'Cards and superhero collectibles'
+              endif
+              if card_find_1 == blank
+                assign card_find_1 = 'CCG'
+              endif
+              if card_find_2 == blank
+                assign card_find_2 = 'TCG'
+              endif
+              if card_find_3 == blank
+                assign card_find_3 = 'Merch & Collectibles'
+              endif
+              if card_cta == blank
+                assign card_cta = 'Explore DC'
+              endif
+              if card_accent == blank
+                assign card_accent = '#0b76b7'
+              endif
+              if card_soft == blank
+                assign card_soft = '#edf7fd'
+              endif
+            when 'one-piece'
+              assign p10_icon_asset = 'p10-ip-icon-one-piece.png'
+            when 'final-fantasy'
+              assign p10_icon_asset = 'p10-ip-magic-the-gathering.png'
+          endcase
+
+          assign p10_icon_asset = block.settings.logo_asset | strip | default: p10_icon_asset
+
+          if card_lane == blank
+            assign card_lane = 'Collector world'
+          endif
+          if card_description == blank
+            assign card_description = 'Browse this collector world through a focused product route.'
+          endif
+          if card_best == blank
+            assign card_best = 'Focused browsing by IP'
+          endif
+          if card_find_1 == blank
+            assign card_find_1 = 'Featured products'
+          endif
+          if card_find_2 == blank and block.settings.secondary_tier != true
+            assign card_find_2 = 'New arrivals'
+          endif
+          if card_find_3 == blank and block.settings.secondary_tier != true
+            assign card_find_3 = 'Collector goods'
+          endif
+          if card_cta == blank
+            assign card_cta = 'Explore collection'
+          endif
+          if card_accent == blank
+            assign card_accent = '#8f6a2d'
+          endif
+          if card_soft == blank
+            assign card_soft = '#f5f0e7'
+          endif
+
+          assign navigator_panel_id = 'P10IpNavigator-' | append: section.id | append: '-' | append: block.id
+
+          assign image_alt = display_title | append: ' logo'
+          if p10_match_key == 'final-fantasy'
+            assign image_alt = 'Magic: The Gathering logo'
+          endif
+          if p10_icon_asset == blank and card_image != blank and card_image.alt != blank
+            assign image_alt = card_image.alt
+          endif
+        -%}
+
+        {%- capture media_content -%}
+          {%- if p10_icon_asset != blank -%}
+            <img
+              src="{{ p10_icon_asset | asset_url }}"
+              alt="{{ image_alt | escape }}"
+              width="700"
+              height="700"
+              loading="lazy"
+              decoding="async"
+              class="p10-shop-by-ip__image p10-shop-by-ip__image--asset{% if p10_match_key == 'one-piece' %} p10-shop-by-ip__image--one-piece{% elsif p10_match_key == 'final-fantasy' %} p10-shop-by-ip__image--wordmark{% endif %}"
+            >
+          {%- elsif card_image != blank -%}
+            {{
+              card_image
+              | image_url: width: 700
+              | image_tag:
+                loading: 'lazy',
+                widths: '160, 220, 320, 480, 600, 700',
+                sizes: '(min-width: 1200px) 9vw, (min-width: 750px) 14vw, 28vw',
+                alt: image_alt,
+                class: 'p10-shop-by-ip__image'
+            }}
+          {%- elsif fallback_image_url != blank -%}
+            <img
+              src="{{ fallback_image_url | escape }}"
+              alt="{{ image_alt | escape }}"
+              width="700"
+              height="700"
+              loading="lazy"
+              decoding="async"
+              class="p10-shop-by-ip__image"
+            >
+          {%- else -%}
+            <span class="p10-shop-by-ip__fallback" aria-hidden="true">{{ display_title | slice: 0, 2 | upcase }}</span>
+          {%- endif -%}
+        {%- endcapture -%}
+
+        {%- capture card_content -%}
+          <span class="p10-shop-by-ip__main">
+            <span class="p10-shop-by-ip__media">
+              {{ media_content }}
+            </span>
+
+            <span class="p10-shop-by-ip__content">
+              <span class="p10-shop-by-ip__topline">
+                <span class="p10-shop-by-ip__number">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+                <span class="p10-shop-by-ip__lane">{{ card_lane | escape }}</span>
+                <span
+                  class="p10-shop-by-ip__default-publisher"
+                  data-p10-ip-default-publisher
+                  hidden
+                ></span>
+              </span>
+              <span class="p10-shop-by-ip__title-line">
+                <span class="p10-shop-by-ip__title">{{ display_title | escape }}</span>
+                <span class="p10-shop-by-ip__publisher-badge" data-p10-ip-publisher-badge hidden></span>
+              </span>
+              <span class="p10-shop-by-ip__description p10-shop-by-ip__description--legacy">{{ card_description | escape }}</span>
+              <span
+                class="p10-shop-by-ip__description p10-shop-by-ip__description--default"
+                data-p10-ip-default-description
+                hidden
+              ></span>
+            </span>
+          </span>
+
+          <span class="p10-shop-by-ip__find p10-shop-by-ip__find--legacy" aria-label="Browse options">
+            <span>{{ card_find_1 | escape }}</span>
+            {%- if card_find_2 != blank -%}<span>{{ card_find_2 | escape }}</span>{%- endif -%}
+            {%- if card_find_3 != blank -%}<span>{{ card_find_3 | escape }}</span>{%- endif -%}
+          </span>
+
+          <span
+            class="p10-shop-by-ip__find p10-shop-by-ip__find--default"
+            data-p10-ip-default-product-types
+            aria-label="Product types"
+            hidden
+          ></span>
+
+          <span class="p10-shop-by-ip__best">
+            <span class="p10-shop-by-ip__best-label">Best for</span>
+            <span class="p10-shop-by-ip__best-copy">{{ card_best | escape }}</span>
+          </span>
+
+          <span class="p10-shop-by-ip__footer">
+            <span class="p10-shop-by-ip__cta">
+              <span>{{ card_cta | escape }}</span>
+              <span class="p10-shop-by-ip__arrow" aria-hidden="true">&rarr;</span>
+            </span>
+            {%- if card_collection != blank and card_collection.all_products_count > 0 -%}
+              <span class="p10-shop-by-ip__count">{{ card_collection.all_products_count }} items</span>
+            {%- endif -%}
+          </span>
+        {%- endcapture -%}
+
+        <div
+          class="p10-shop-by-ip__card{% if block.settings.secondary_tier %} p10-shop-by-ip__card--secondary{% endif %}"
+          role="listitem"
+          data-p10-ip-desktop-only="{{ block.settings.desktop_only }}"
+          style="--p10-ip-accent: {{ card_accent }}; --p10-ip-soft: {{ card_soft }};"
+          {{ block.shopify_attributes }}
+        >
+          {%- if card_url != blank -%}
+            <a
+              class="p10-shop-by-ip__card-link"
+              href="{{ card_url }}"
+              aria-label="{{ card_cta | escape }}"
+              data-p10-ip-directory-card
+              data-p10-ip-key="{{ p10_match_key | escape }}"
+              data-p10-ip-name="{{ display_title | escape }}"
+              aria-controls="{{ navigator_panel_id }}"
+            >
+              {{ card_content }}
+            </a>
+          {%- else -%}
+            <div class="p10-shop-by-ip__card-link">
+              {{ card_content }}
+            </div>
+          {%- endif -%}
+
+          <div
+            class="p10-shop-by-ip__navigator"
+            id="{{ navigator_panel_id }}"
+            data-p10-ip-navigator-panel
+            hidden
+          ></div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": {{ section.settings.heading | default: 'Shop by IP' | json }},
+    "description": {{ section.settings.intro | default: 'Browse collector products by IP.' | json }},
+    "url": {{ canonical_url | json }},
+    "mainEntity": {
+      "@type": "ItemList",
+      "numberOfItems": {{ section.blocks.size | json }},
+      "itemListElement": [
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign schema_collection = block.settings.collection
+            assign schema_title = block.settings.title
+            if schema_title == blank and schema_collection != blank
+              assign schema_title = schema_collection.title
+            endif
+            assign schema_url = block.settings.link
+            if schema_url == blank and schema_collection != blank
+              assign schema_url = schema_collection.url
+            endif
+            if schema_url contains '://'
+              assign schema_absolute_url = schema_url
+            else
+              assign schema_absolute_url = request.origin | append: schema_url
+            endif
+          -%}
+          {
+            "@type": "ListItem",
+            "position": {{ forloop.index | json }},
+            "name": {{ schema_title | json }},
+            "url": {{ schema_absolute_url | json }}
+          }{% unless forloop.last %},{% endunless %}
+        {%- endfor -%}
+      ]
+    }
+  }
+</script>
+
+<script src="{{ 'gsap.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'p10-ip-directory-navigator-config.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'p10-ip-directory-navigator.js' | asset_url }}" defer="defer"></script>
+
+{% stylesheet %}
+  .p10-shop-by-ip {
+    --p10-ip-page: #f7f3ec;
+    --p10-ip-panel: #fffdf9;
+    --p10-ip-ink: #17151c;
+    --p10-ip-copy: #65606c;
+    --p10-ip-line: rgba(23, 21, 28, 0.14);
+    --p10-ip-chip: rgba(255, 255, 255, 0.82);
+    --p10-ip-mobile-board: #fff4bd;
+    --p10-ip-mobile-tile: #fffdf8;
+    background:
+      radial-gradient(circle at 92% 0%, rgba(218, 194, 151, 0.16), transparent 29rem),
+      var(--p10-ip-page);
+    color: var(--p10-ip-ink);
+    padding: 54px 0 64px;
+  }
+
+  .p10-shop-by-ip__inner {
+    width: min(100% - 56px, 1540px);
+    margin: 0 auto;
+  }
+
+  .p10-shop-by-ip__header {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr);
+    gap: 48px;
+    align-items: end;
+    margin-bottom: 26px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--p10-ip-line);
+  }
+
+  .p10-shop-by-ip__eyebrow {
+    margin: 0 0 9px;
+    color: #9c6816;
+    font-size: 11px;
+    font-weight: 900;
+    line-height: 1.2;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+  }
+
+  .p10-shop-by-ip__heading {
+    margin: 0;
+    color: var(--p10-ip-ink);
+    font-size: clamp(38px, 4vw, 62px);
+    font-weight: 900;
+    line-height: 0.93;
+    letter-spacing: -0.045em;
+    text-transform: uppercase;
+  }
+
+  .p10-shop-by-ip__intro {
+    max-width: 520px;
+    margin: 0;
+    color: var(--p10-ip-copy);
+    font-size: 15px;
+    font-weight: 650;
+    line-height: 1.6;
+  }
+
+  .p10-shop-by-ip__board {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+  }
+
+  .p10-shop-by-ip__tier-divider {
+    grid-column: 1 / -1;
+    margin-block: 10px;
+    border-top: 1px solid var(--p10-ip-line);
+  }
+
+  .p10-shop-by-ip__card {
+    position: relative;
+    display: flex;
+    min-width: 0;
+    min-height: 348px;
+    overflow: hidden;
+    flex-direction: column;
+    padding: 22px;
+    border: 1px solid color-mix(in srgb, var(--p10-ip-accent) 24%, var(--p10-ip-line));
+    border-radius: 18px;
+    background:
+      linear-gradient(135deg, var(--p10-ip-panel) 0 62%, color-mix(in srgb, var(--p10-ip-soft) 72%, var(--p10-ip-panel)) 100%);
+    box-shadow: 0 16px 40px rgba(39, 31, 21, 0.07);
+    color: var(--p10-ip-ink);
+    text-decoration: none;
+    transition:
+      border-color 220ms ease,
+      box-shadow 220ms ease,
+      transform 220ms ease;
+  }
+
+  .p10-shop-by-ip__card-link {
+    display: flex;
+    min-width: 0;
+    flex: 1 1 auto;
+    flex-direction: column;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .p10-shop-by-ip__card::before {
+    position: absolute;
+    inset: 18px auto 18px 0;
+    width: 4px;
+    border-radius: 0 99px 99px 0;
+    background: var(--p10-ip-accent);
+    content: '';
+  }
+
+  .p10-shop-by-ip__card:hover,
+  .p10-shop-by-ip__card:focus-visible {
+    border-color: color-mix(in srgb, var(--p10-ip-accent) 56%, var(--p10-ip-line));
+    box-shadow: 0 22px 52px rgba(39, 31, 21, 0.12);
+    transform: translateY(-3px);
+  }
+
+  .p10-shop-by-ip__card:focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--p10-ip-accent) 42%, #ffffff);
+    outline-offset: 3px;
+  }
+
+  .p10-shop-by-ip__main {
+    display: grid;
+    grid-template-columns: 116px minmax(0, 1fr);
+    gap: 18px;
+    align-items: center;
+  }
+
+  .p10-shop-by-ip__media {
+    display: flex;
+    width: 116px;
+    height: 116px;
+    overflow: hidden;
+    align-items: center;
+    justify-content: center;
+    padding: 17px;
+    border: 1px solid rgba(23, 21, 28, 0.09);
+    border-radius: 15px;
+    background: #ffffff;
+  }
+
+  .p10-shop-by-ip__image {
+    display: block;
+    width: 100%;
+    max-width: 82px;
+    height: 100%;
+    max-height: 82px;
+    object-fit: contain;
+    object-position: center;
+  }
+
+  .p10-shop-by-ip__fallback {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    color: var(--p10-ip-accent);
+    font-size: 28px;
+    font-weight: 900;
+    line-height: 1;
+  }
+
+  .p10-shop-by-ip__content {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+  }
+
+  .p10-shop-by-ip__topline {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    min-width: 0;
+    margin-bottom: 8px;
+  }
+
+  .p10-shop-by-ip__number {
+    color: var(--p10-ip-accent);
+    font-size: 11px;
+    font-weight: 950;
+    line-height: 1;
+    letter-spacing: 0.08em;
+  }
+
+  .p10-shop-by-ip__lane {
+    overflow: hidden;
+    color: var(--p10-ip-copy);
+    font-size: 10px;
+    font-weight: 900;
+    line-height: 1.15;
+    letter-spacing: 0.09em;
+    text-overflow: ellipsis;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .p10-shop-by-ip__default-publisher {
+    display: none;
+  }
+
+  .p10-shop-by-ip__title {
+    display: block;
+    color: var(--p10-ip-ink);
+    font-size: clamp(22px, 2vw, 30px);
+    font-weight: 900;
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+  }
+
+  .p10-shop-by-ip__title-line {
+    display: block;
+  }
+
+  .p10-shop-by-ip__publisher-badge {
+    display: none;
+  }
+
+  .p10-shop-by-ip__description {
+    display: -webkit-box;
+    min-height: 39px;
+    overflow: hidden;
+    margin-top: 9px;
+    color: var(--p10-ip-copy);
+    font-size: 12px;
+    font-weight: 620;
+    line-height: 1.5;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .p10-shop-by-ip__description--default {
+    display: none;
+  }
+
+  .p10-shop-by-ip__find {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    min-height: 32px;
+    margin-top: 20px;
+  }
+
+  .p10-shop-by-ip__find--default {
+    display: none;
+  }
+
+  .p10-shop-by-ip__find > span {
+    display: inline-flex;
+    max-width: 100%;
+    min-height: 26px;
+    align-items: center;
+    padding: 6px 9px;
+    border: 1px solid rgba(23, 21, 28, 0.1);
+    border-radius: 999px;
+    background: var(--p10-ip-chip);
+    color: #46414d;
+    font-size: 10px;
+    font-weight: 800;
+    line-height: 1.15;
+  }
+
+  .p10-shop-by-ip__best {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 9px;
+    align-items: baseline;
+    margin-top: 17px;
+    padding-top: 15px;
+    border-top: 1px solid var(--p10-ip-line);
+  }
+
+  .p10-shop-by-ip__best-label {
+    color: var(--p10-ip-accent);
+    font-size: 9px;
+    font-weight: 950;
+    line-height: 1;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .p10-shop-by-ip__best-copy {
+    color: var(--p10-ip-ink);
+    font-size: 11px;
+    font-weight: 750;
+    line-height: 1.4;
+  }
+
+  .p10-shop-by-ip__footer {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+    padding-top: 18px;
+  }
+
+  .p10-shop-by-ip__cta {
+    display: inline-flex;
+    gap: 16px;
+    min-width: 0;
+    align-items: center;
+    color: var(--p10-ip-ink);
+    font-size: 11px;
+    font-weight: 950;
+    line-height: 1.15;
+    text-transform: uppercase;
+  }
+
+  .p10-shop-by-ip__arrow {
+    color: var(--p10-ip-accent);
+    font-size: 17px;
+    line-height: 1;
+    transition: transform 220ms ease;
+  }
+
+  .p10-shop-by-ip__card:hover .p10-shop-by-ip__arrow,
+  .p10-shop-by-ip__card:focus-visible .p10-shop-by-ip__arrow {
+    transform: translateX(4px);
+  }
+
+  .p10-shop-by-ip__count {
+    color: var(--p10-ip-copy);
+    font-size: 10px;
+    font-weight: 800;
+    line-height: 1.1;
+    white-space: nowrap;
+  }
+
+  .p10-shop-by-ip__navigator {
+    display: none;
+  }
+
+  @media (min-width: 990px) {
+    .p10-shop-by-ip .p10-shop-by-ip__board {
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 14px;
+      overflow-anchor: none;
+    }
+
+    .p10-shop-by-ip .p10-shop-by-ip__card {
+      min-height: 240px;
+      padding: 16px;
+    }
+
+    .p10-shop-by-ip .p10-shop-by-ip__card--secondary {
+      min-height: 210px;
+      box-shadow: 0 8px 22px rgba(39, 31, 21, 0.04);
+    }
+
+    .p10-shop-by-ip .p10-shop-by-ip__card::before {
+      inset-block: 14px;
+    }
+
+    .p10-shop-by-ip .p10-shop-by-ip__main {
+      grid-template-columns: 84px minmax(0, 1fr);
+      gap: 13px;
+    }
+
+    .p10-shop-by-ip .p10-shop-by-ip__media {
+      width: 84px;
+      height: 84px;
+      padding: 12px;
+      border-radius: 12px;
+    }
+
+    .p10-shop-by-ip .p10-shop-by-ip__image {
+      max-width: 60px;
+      max-height: 60px;
+    }
+
+    .p10-shop-by-ip .p10-shop-by-ip__title {
+      font-size: clamp(20px, 1.5vw, 24px);
+    }
+
+    .p10-shop-by-ip .p10-shop-by-ip__find {
+      min-height: 0;
+      margin-top: 14px;
+    }
+
+    .p10-shop-by-ip .p10-shop-by-ip__footer {
+      padding-top: 14px;
+    }
+
+    .p10-shop-by-ip .p10-shop-by-ip__lane,
+    .p10-shop-by-ip .p10-shop-by-ip__description--legacy,
+    .p10-shop-by-ip .p10-shop-by-ip__find--legacy,
+    .p10-shop-by-ip__best,
+    .p10-shop-by-ip__count {
+      display: none;
+    }
+
+    .p10-shop-by-ip .p10-shop-by-ip__default-publisher:not([hidden]) {
+      display: inline-flex;
+      min-height: 20px;
+      align-items: center;
+      padding: 4px 7px;
+      border: 1px solid color-mix(in srgb, var(--p10-ip-accent) 38%, var(--p10-ip-line));
+      border-radius: 999px;
+      background: var(--p10-ip-chip);
+      color: var(--p10-ip-accent);
+      font-size: 8px;
+      font-weight: 950;
+      line-height: 1;
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+    }
+
+    .p10-shop-by-ip .p10-shop-by-ip__description--default:not([hidden]) {
+      display: -webkit-box;
+    }
+
+    .p10-shop-by-ip .p10-shop-by-ip__find--default:not([hidden]) {
+      display: flex;
+    }
+
+    .p10-shop-by-ip .p10-shop-by-ip__card.is-navigator-active {
+      border-color: var(--p10-ip-accent);
+      box-shadow: 0 0 0 1px var(--p10-ip-accent);
+      transform: none;
+    }
+
+    .p10-shop-by-ip__board > .p10-shop-by-ip__navigator:not([hidden]) {
+      display: grid;
+      grid-column: 1 / -1;
+      min-width: 0;
+      gap: 14px;
+      padding: 24px;
+      border: 1px solid color-mix(in srgb, var(--p10-ip-accent) 60%, var(--p10-ip-line));
+      border-inline-start: 4px solid var(--p10-ip-accent);
+      border-radius: 18px;
+      background: color-mix(in srgb, var(--p10-ip-accent) 5%, var(--p10-ip-panel));
+      color: var(--p10-ip-ink);
+      box-shadow: 0 12px 30px rgba(39, 31, 21, 0.08);
+    }
+
+    .p10-shop-by-ip__navigator-crumb:first-child {
+      color: var(--p10-ip-ink);
+      font-size: 16px;
+    }
+
+    .p10-shop-by-ip__navigator-level {
+      display: grid;
+      gap: 10px;
+    }
+
+    .p10-shop-by-ip__navigator-breadcrumb {
+      padding-bottom: 3px;
+    }
+
+    .p10-shop-by-ip__navigator-breadcrumb ol {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .p10-shop-by-ip__navigator-crumb {
+      display: inline-flex;
+      align-items: center;
+      color: var(--p10-ip-copy);
+      font-size: 11px;
+      font-weight: 800;
+      line-height: 1.25;
+    }
+
+    .p10-shop-by-ip__navigator-crumb + .p10-shop-by-ip__navigator-crumb::before {
+      margin-right: 7px;
+      color: var(--p10-ip-accent);
+      content: '/';
+    }
+
+    .p10-shop-by-ip__navigator-label {
+      color: var(--p10-ip-copy);
+      font-size: 10px;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+
+    .p10-shop-by-ip__navigator-value {
+      color: var(--p10-ip-ink);
+      font-size: 18px;
+      font-weight: 900;
+      line-height: 1.2;
+    }
+
+    .p10-shop-by-ip__navigator-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .p10-shop-by-ip__navigator-option {
+      min-height: 36px;
+      padding: 8px 13px;
+      border: 1px solid color-mix(in srgb, var(--p10-ip-accent) 38%, var(--p10-ip-line));
+      border-radius: 999px;
+      background: var(--p10-ip-chip);
+      color: var(--p10-ip-ink);
+      cursor: pointer;
+      font: inherit;
+      font-size: 12px;
+      font-weight: 850;
+      line-height: 1.1;
+      transition: border-color 180ms ease, background 180ms ease, color 180ms ease, transform 180ms ease;
+    }
+
+    [data-p10-ip-product-type-level] .p10-shop-by-ip__navigator-options {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      width: 100%;
+      gap: 16px;
+    }
+
+    [data-p10-ip-product-type-level] .p10-shop-by-ip__navigator-option {
+      display: flex;
+      min-height: 64px;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 16px;
+      border-width: 2px;
+      border-radius: 10px;
+      background: color-mix(in srgb, var(--p10-ip-accent) 9%, var(--p10-ip-chip));
+      font-size: clamp(14px, 1.05vw, 17px);
+      font-weight: 950;
+      line-height: 1.15;
+      text-align: center;
+      box-shadow: 0 8px 18px rgba(39, 31, 21, 0.1);
+    }
+
+    [data-p10-ip-market-level] .p10-shop-by-ip__navigator-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      width: 100%;
+      gap: 16px;
+    }
+
+    [data-p10-ip-market-level] .p10-shop-by-ip__navigator-option {
+      display: flex;
+      min-height: 64px;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 16px;
+      border-width: 2px;
+      border-radius: 10px;
+      background: color-mix(in srgb, var(--p10-ip-accent) 9%, var(--p10-ip-chip));
+      font-size: clamp(14px, 1.05vw, 17px);
+      font-weight: 950;
+      line-height: 1.15;
+      text-align: center;
+      box-shadow: 0 8px 18px rgba(39, 31, 21, 0.1);
+    }
+
+    .p10-shop-by-ip__navigator-option:hover,
+    .p10-shop-by-ip__navigator-option:focus-visible,
+    .p10-shop-by-ip__navigator-option.is-selected {
+      border-color: var(--p10-ip-accent);
+      background: var(--p10-ip-accent);
+      color: #ffffff;
+    }
+
+    .p10-shop-by-ip__navigator-option:hover,
+    .p10-shop-by-ip__navigator-option:focus-visible {
+      transform: translateY(-1px);
+    }
+
+    .p10-shop-by-ip__navigator-option:focus-visible {
+      outline: 3px solid color-mix(in srgb, var(--p10-ip-accent) 36%, #ffffff);
+      outline-offset: 2px;
+    }
+
+  }
+
+  html[data-p10-color-mode='dark'] .p10-shop-by-ip,
+  html[data-color-mode='dark'] .p10-shop-by-ip,
+  html[data-theme='dark'] .p10-shop-by-ip,
+  html.p10-dark .p10-shop-by-ip,
+  html.dark .p10-shop-by-ip,
+  body.dark-mode .p10-shop-by-ip {
+    --p10-ip-page: #141218;
+    --p10-ip-panel: #1d1a22;
+    --p10-ip-ink: #f1edf3;
+    --p10-ip-copy: #b8b1bd;
+    --p10-ip-mobile-board: #2a242d;
+    --p10-ip-mobile-tile: #1d1a22;
+    --p10-ip-line: rgba(244, 238, 246, 0.14);
+    --p10-ip-chip: rgba(255, 255, 255, 0.065);
+    background:
+      radial-gradient(circle at 92% 0%, rgba(218, 194, 151, 0.09), transparent 28rem),
+      var(--p10-ip-page);
+  }
+
+  html[data-p10-color-mode='dark'] .p10-shop-by-ip__card,
+  html[data-color-mode='dark'] .p10-shop-by-ip__card,
+  html[data-theme='dark'] .p10-shop-by-ip__card,
+  html.p10-dark .p10-shop-by-ip__card,
+  html.dark .p10-shop-by-ip__card,
+  body.dark-mode .p10-shop-by-ip__card {
+    background: linear-gradient(135deg, #1d1a22 0 64%, #242027 100%);
+    box-shadow: 0 18px 46px rgba(0, 0, 0, 0.24);
+  }
+
+  html[data-p10-color-mode='dark'] .p10-shop-by-ip__media,
+  html[data-color-mode='dark'] .p10-shop-by-ip__media,
+  html[data-theme='dark'] .p10-shop-by-ip__media,
+  html.p10-dark .p10-shop-by-ip__media,
+  html.dark .p10-shop-by-ip__media,
+  body.dark-mode .p10-shop-by-ip__media {
+    border-color: rgba(255, 255, 255, 0.1);
+    background: #27232b;
+  }
+
+  html[data-p10-color-mode='dark'] .p10-shop-by-ip__find > span,
+  html[data-color-mode='dark'] .p10-shop-by-ip__find > span,
+  html[data-theme='dark'] .p10-shop-by-ip__find > span,
+  html.p10-dark .p10-shop-by-ip__find > span,
+  html.dark .p10-shop-by-ip__find > span,
+  body.dark-mode .p10-shop-by-ip__find > span {
+    border-color: rgba(255, 255, 255, 0.11);
+    color: #d8d1dc;
+  }
+
+  @media (max-width: 989px) {
+    .p10-shop-by-ip__card[data-p10-ip-desktop-only='true'] {
+      display: none;
+    }
+
+    .p10-shop-by-ip {
+      padding: 42px 0 50px;
+    }
+
+    .p10-shop-by-ip__inner {
+      width: min(100% - 32px, 940px);
+    }
+
+    .p10-shop-by-ip__header {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 18px;
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+    }
+
+    .p10-shop-by-ip__intro {
+      max-width: 660px;
+    }
+
+    .p10-shop-by-ip__board {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .p10-shop-by-ip__card {
+      min-height: 330px;
+      padding: 19px;
+    }
+
+    .p10-shop-by-ip__main {
+      grid-template-columns: 96px minmax(0, 1fr);
+      gap: 14px;
+    }
+
+    .p10-shop-by-ip__media {
+      width: 96px;
+      height: 96px;
+      padding: 13px;
+    }
+
+    .p10-shop-by-ip__image {
+      max-width: 68px;
+      max-height: 68px;
+    }
+  }
+
+  @media (max-width: 749px) {
+    .p10-shop-by-ip {
+      --p10-ip-mobile-board: #fffdfa;
+      --p10-ip-mobile-tile: #ffffff;
+      --p10-ip-mobile-field: #f5f1ed;
+      --p10-ip-mobile-line: #ddd6df;
+      --p10-ip-mobile-selected: #755278;
+      --p10-ip-mobile-selected-soft: #f1eaf2;
+      --p10-ip-mobile-action: #312537;
+      --p10-ip-mobile-action-ink: #fffafd;
+      --p10-ip-mobile-logo: #ffffff;
+      --p10-ip-mobile-shadow: 0 5px 16px rgba(49, 37, 55, 0.07);
+      padding: 28px 0 36px;
+    }
+
+    html[data-p10-color-mode='dark'] .p10-shop-by-ip,
+    html[data-color-mode='dark'] .p10-shop-by-ip,
+    html[data-theme='dark'] .p10-shop-by-ip,
+    html.p10-dark .p10-shop-by-ip,
+    html.dark .p10-shop-by-ip,
+    body.dark-mode .p10-shop-by-ip {
+      --p10-ip-mobile-board: #211d29;
+      --p10-ip-mobile-tile: #2a2533;
+      --p10-ip-mobile-field: #302a3a;
+      --p10-ip-mobile-line: #51475c;
+      --p10-ip-mobile-selected: #d5b3df;
+      --p10-ip-mobile-selected-soft: #3d3046;
+      --p10-ip-mobile-action: #e9d8ef;
+      --p10-ip-mobile-action-ink: #281e30;
+      --p10-ip-mobile-logo: #f9f7fb;
+      --p10-ip-mobile-shadow: 0 5px 16px rgba(0, 0, 0, 0.18);
+    }
+
+    .p10-shop-by-ip__inner {
+      width: min(100% - 24px, 520px);
+    }
+
+    .p10-shop-by-ip__heading {
+      font-size: clamp(30px, 9vw, 38px);
+    }
+
+    .p10-shop-by-ip__intro {
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .p10-shop-by-ip__board {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      padding: 12px 8px;
+      border: 1px solid var(--p10-ip-mobile-line);
+      border-radius: 18px;
+      background: var(--p10-ip-mobile-board);
+      box-shadow: var(--p10-ip-mobile-shadow);
+    }
+
+    .p10-shop-by-ip .p10-shop-by-ip__board .p10-shop-by-ip__card {
+      display: block;
+      min-height: 0;
+      overflow: visible;
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    .p10-shop-by-ip .p10-shop-by-ip__board .p10-shop-by-ip__card[data-p10-ip-desktop-only='true'] {
+      display: none;
+    }
+
+    .p10-shop-by-ip__card::before {
+      display: none;
+    }
+
+    .p10-shop-by-ip__card:hover {
+      border: 0;
+      box-shadow: none;
+      transform: none;
+    }
+
+    .p10-shop-by-ip__main {
+      display: block;
+    }
+
+    .p10-shop-by-ip__card-link {
+      display: block;
+      min-height: 116px;
+      padding: 10px 3px;
+      border: 1px solid transparent;
+      border-radius: 12px;
+    }
+
+    .p10-shop-by-ip__card-link[aria-pressed='true'] {
+      border-color: var(--p10-ip-mobile-selected);
+      background: var(--p10-ip-mobile-selected-soft);
+    }
+
+    .p10-shop-by-ip .p10-shop-by-ip__board .p10-shop-by-ip__media {
+      width: min(100%, 62px);
+      height: auto;
+      aspect-ratio: 1;
+      margin: 0 auto;
+      padding: 3px;
+      border: 1px solid var(--p10-ip-mobile-line);
+      border-radius: 50%;
+      background: var(--p10-ip-mobile-logo);
+      box-shadow: var(--p10-ip-mobile-shadow);
+    }
+
+    .p10-shop-by-ip__image {
+      width: 100%;
+      max-width: none;
+      height: 100%;
+      max-height: none;
+      border-radius: 50%;
+      padding: 6px;
+      object-fit: contain;
+    }
+
+    .p10-shop-by-ip__fallback {
+      border-radius: 50%;
+      background: color-mix(in srgb, var(--p10-ip-accent) 15%, var(--p10-ip-mobile-tile));
+      font-size: 18px;
+    }
+
+    .p10-shop-by-ip__content {
+      display: block;
+      width: 100%;
+      margin-top: 8px;
+      text-align: center;
+    }
+
+    .p10-shop-by-ip__topline,
+    .p10-shop-by-ip__description,
+    .p10-shop-by-ip__find,
+    .p10-shop-by-ip__best,
+    .p10-shop-by-ip__footer {
+      display: none !important;
+    }
+
+    .p10-shop-by-ip__title-line {
+      display: block;
+    }
+
+    .p10-shop-by-ip__title {
+      display: block;
+      overflow-wrap: anywhere;
+      color: var(--p10-ip-ink);
+      font-size: 12px;
+      font-weight: 650;
+      letter-spacing: 0;
+      line-height: 1.35;
+      text-transform: none;
+    }
+
+    .p10-shop-by-ip__publisher-badge {
+      display: none !important;
+    }
+
+    .p10-shop-by-ip__card-link:focus-visible {
+      outline: none;
+    }
+
+    .p10-shop-by-ip__card-link:hover .p10-shop-by-ip__media,
+    .p10-shop-by-ip__card-link:focus-visible .p10-shop-by-ip__media {
+      border-color: var(--p10-ip-mobile-selected);
+      transform: translateY(-2px);
+    }
+
+    .p10-shop-by-ip__card-link:focus-visible .p10-shop-by-ip__media {
+      outline: 2px solid var(--p10-ip-mobile-selected);
+      outline-offset: 3px;
+    }
+
+    .p10-shop-by-ip.is-mobile-navigator-active .p10-shop-by-ip__board {
+      display: block;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+
+    .p10-shop-by-ip.is-mobile-navigator-active .p10-shop-by-ip__tier-divider,
+    .p10-shop-by-ip.is-mobile-navigator-active .p10-shop-by-ip__card:not(.is-mobile-navigator-active) {
+      display: none;
+    }
+
+    .p10-shop-by-ip.is-mobile-navigator-active .p10-shop-by-ip__card.is-mobile-navigator-active {
+      overflow: hidden;
+      border-radius: 18px;
+    }
+
+    .p10-shop-by-ip.is-mobile-navigator-active .p10-shop-by-ip__card.is-mobile-navigator-active .p10-shop-by-ip__card-link {
+      display: none;
+    }
+
+    .p10-shop-by-ip.is-mobile-navigator-active .p10-shop-by-ip__card.is-mobile-navigator-active .p10-shop-by-ip__navigator {
+      display: block;
+    }
+
+    .p10-shop-by-ip__mobile-stage {
+      position: relative;
+      overflow: hidden;
+      padding: 12px 14px 10px;
+      border: 1px solid var(--p10-ip-mobile-line);
+      border-radius: 18px;
+      background: var(--p10-ip-mobile-board);
+      color: var(--p10-ip-ink);
+      box-shadow: var(--p10-ip-mobile-shadow);
+    }
+
+    .p10-shop-by-ip__mobile-toolbar {
+      display: flex;
+      min-height: 44px;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .p10-shop-by-ip__mobile-all-ip,
+    .p10-shop-by-ip__mobile-back {
+      min-height: 44px;
+      padding: 10px 12px;
+      border: 1px solid var(--p10-ip-mobile-line);
+      border-radius: 999px;
+      background: var(--p10-ip-mobile-tile);
+      color: var(--p10-ip-ink);
+      font: inherit;
+      font-size: 12px;
+      font-weight: 600;
+      line-height: 1.25;
+      cursor: pointer;
+    }
+
+    .p10-shop-by-ip__mobile-back[hidden] {
+      display: none;
+    }
+
+    .p10-shop-by-ip__mobile-directory-search {
+      width: fit-content;
+      max-width: 100%;
+      margin-bottom: 12px;
+    }
+
+    .p10-shop-by-ip__mobile-directory-search[hidden],
+    .p10-shop-by-ip__mobile-ip-result[hidden] {
+      display: none;
+    }
+
+    .p10-shop-by-ip__mobile-all-ip:focus-visible,
+    .p10-shop-by-ip__mobile-back:focus-visible,
+    .p10-shop-by-ip__mobile-option:focus-visible,
+    .p10-shop-by-ip__mobile-submit:focus-visible,
+    .p10-shop-by-ip__mobile-node:focus-visible,
+    .p10-shop-by-ip__mobile-page-button:focus-visible,
+    .p10-shop-by-ip__mobile-ip-dialog-close:focus-visible,
+    .p10-shop-by-ip__mobile-ip-search:focus-visible,
+    .p10-shop-by-ip__mobile-ip-search-clear:focus-visible,
+    .p10-shop-by-ip__mobile-ip-result:focus-visible,
+    .p10-shop-by-ip__mobile-ip-show-all:focus-visible {
+      outline: 2px solid var(--p10-ip-mobile-selected);
+      outline-offset: 3px;
+    }
+
+    .p10-shop-by-ip__mobile-context {
+      margin: 16px 0;
+      text-align: left;
+    }
+
+    .p10-shop-by-ip__mobile-kicker,
+    .p10-shop-by-ip__mobile-trail,
+    .p10-shop-by-ip__mobile-selection-hint,
+    .p10-shop-by-ip__mobile-choice-dock-label,
+    .p10-shop-by-ip__mobile-status,
+    .p10-shop-by-ip__mobile-switch-label {
+      margin: 0;
+    }
+
+    .p10-shop-by-ip .p10-shop-by-ip__mobile-stage .p10-shop-by-ip__mobile-kicker {
+      color: var(--p10-ip-copy);
+      font-size: 10px;
+      font-weight: 650;
+      letter-spacing: 0.08em;
+      line-height: 1.4;
+      text-transform: uppercase;
+    }
+
+    .p10-shop-by-ip .p10-shop-by-ip__mobile-stage .p10-shop-by-ip__mobile-trail {
+      margin-top: 4px;
+      overflow-wrap: anywhere;
+      color: var(--p10-ip-ink);
+      font-size: clamp(18px, 5.3vw, 23px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+    }
+
+    .p10-shop-by-ip .p10-shop-by-ip__mobile-stage .p10-shop-by-ip__mobile-selection-hint {
+      margin-top: 4px;
+      color: var(--p10-ip-copy);
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 1.45;
+    }
+
+    .p10-shop-by-ip__mobile-choice-dock {
+      margin: 0;
+      padding: 0;
+    }
+
+    .p10-shop-by-ip__mobile-choice-dock[hidden],
+    .p10-shop-by-ip__mobile-market[hidden] {
+      display: none;
+    }
+
+    .p10-shop-by-ip .p10-shop-by-ip__mobile-stage .p10-shop-by-ip__mobile-choice-dock-label {
+      margin-bottom: 8px;
+      color: var(--p10-ip-ink);
+      font-size: 13px;
+      font-weight: 650;
+      line-height: 1.4;
+      text-align: left;
+    }
+
+    .p10-shop-by-ip__mobile-choice-options {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .p10-shop-by-ip__mobile-option {
+      display: flex;
+      min-width: 0;
+      min-height: 62px;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 3px;
+      padding: 10px 12px;
+      border: 2px solid var(--p10-ip-mobile-line);
+      border-radius: 12px;
+      background: var(--p10-ip-mobile-tile);
+      color: var(--p10-ip-ink);
+      font: inherit;
+      text-align: left;
+      cursor: pointer;
+      transition: background-color 160ms ease, border-color 160ms ease;
+    }
+
+    .p10-shop-by-ip__mobile-option:last-child:nth-child(odd) {
+      grid-column: 1 / -1;
+    }
+
+    .p10-shop-by-ip__mobile-option[aria-pressed='true'] {
+      border-color: var(--p10-ip-mobile-selected);
+      background: var(--p10-ip-mobile-selected-soft);
+    }
+
+    .p10-shop-by-ip__mobile-option:hover:not(:disabled) {
+      border-color: var(--p10-ip-mobile-selected);
+    }
+
+    .p10-shop-by-ip__mobile-option:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .p10-shop-by-ip__mobile-option-title {
+      overflow-wrap: anywhere;
+      font-size: 14px;
+      font-weight: 650;
+      line-height: 1.3;
+    }
+
+    .p10-shop-by-ip__mobile-option-detail {
+      color: var(--p10-ip-copy);
+      font-size: 11px;
+      font-weight: 450;
+      line-height: 1.35;
+    }
+
+    .p10-shop-by-ip__mobile-market {
+      margin-top: 14px;
+    }
+
+    .p10-shop-by-ip .p10-shop-by-ip__mobile-stage .p10-shop-by-ip__mobile-status {
+      min-height: 18px;
+      margin: 10px 0 8px;
+      color: var(--p10-ip-copy);
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 1.5;
+    }
+
+    .p10-shop-by-ip__mobile-submit {
+      display: flex;
+      min-height: 46px;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 16px;
+      border: 1px solid transparent;
+      border-radius: 12px;
+      background: var(--p10-ip-mobile-action);
+      color: var(--p10-ip-mobile-action-ink);
+      font-size: 14px;
+      font-weight: 650;
+      line-height: 1.4;
+      text-align: center;
+      text-decoration: none;
+      transition: background-color 160ms ease;
+    }
+
+    .p10-shop-by-ip__mobile-submit[aria-disabled='true'] {
+      --p10-ip-mobile-action-ink: var(--p10-ip-copy);
+      background: var(--p10-ip-mobile-field);
+      cursor: not-allowed;
+    }
+
+    /* Keep the action legible when the theme's footer link colors use !important. */
+    .p10-shop-by-ip .p10-shop-by-ip__mobile-stage .p10-shop-by-ip__mobile-submit[aria-disabled] {
+      color: var(--p10-ip-mobile-action-ink) !important;
+    }
+
+    .p10-shop-by-ip .p10-shop-by-ip__mobile-stage .p10-shop-by-ip__mobile-switch-label {
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px solid var(--p10-ip-mobile-line);
+      color: var(--p10-ip-copy);
+      font-size: 12px;
+      font-weight: 550;
+      line-height: 1.4;
+      text-align: center;
+    }
+
+    .p10-shop-by-ip__mobile-orbit {
+      position: relative;
+      height: 288px;
+      margin-top: 4px;
+      touch-action: pan-y pinch-zoom;
+    }
+
+    .p10-shop-by-ip__mobile-orbit-items {
+      position: absolute;
+      inset: 0;
+    }
+
+    .p10-shop-by-ip__mobile-node {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      display: flex;
+      width: 76px;
+      min-height: 80px;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 5px;
+      padding: 4px 0;
+      border: 0;
+      background: transparent;
+      color: var(--p10-ip-ink);
+      font: inherit;
+      text-align: center;
+      transform: translate(-50%, -50%) translate(var(--p10-ip-node-x, 0px), var(--p10-ip-node-y, 0px));
+      cursor: pointer;
+    }
+
+    .p10-shop-by-ip__mobile-node--root {
+      width: 90px;
+      min-height: 96px;
+      gap: 7px;
+      color: var(--p10-ip-ink);
+      cursor: default;
+    }
+
+    .p10-shop-by-ip .p10-shop-by-ip__mobile-stage .p10-shop-by-ip__mobile-node-media {
+      display: flex;
+      width: 44px;
+      height: 44px;
+      overflow: hidden;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 auto;
+      margin: 0;
+      padding: 2px;
+      border: 1px solid var(--p10-ip-mobile-line);
+      border-radius: 50%;
+      background: var(--p10-ip-mobile-logo);
+      box-shadow: var(--p10-ip-mobile-shadow);
+      transition: border-color 160ms ease;
+    }
+
+    .p10-shop-by-ip__mobile-node-media .p10-shop-by-ip__image,
+    .p10-shop-by-ip__mobile-node-media .p10-shop-by-ip__fallback {
+      width: 100%;
+      max-width: none;
+      height: 100%;
+      max-height: none;
+      border-radius: 50%;
+      object-fit: contain;
+    }
+
+    .p10-shop-by-ip .p10-shop-by-ip__mobile-stage .p10-shop-by-ip__mobile-node--root .p10-shop-by-ip__mobile-node-media {
+      width: 64px;
+      height: 64px;
+      border-color: var(--p10-ip-mobile-selected);
+      box-shadow: 0 0 0 4px var(--p10-ip-mobile-selected-soft);
+    }
+
+    .p10-shop-by-ip .p10-shop-by-ip__mobile-stage .p10-shop-by-ip__mobile-node--ip:hover .p10-shop-by-ip__mobile-node-media {
+      border-color: var(--p10-ip-mobile-selected);
+    }
+
+    .p10-shop-by-ip__mobile-node-label {
+      display: block;
+      max-width: 100%;
+      overflow-wrap: anywhere;
+      font-size: 10.5px;
+      font-weight: 550;
+      letter-spacing: 0;
+      line-height: 1.3;
+      text-align: center;
+    }
+
+    .p10-shop-by-ip__mobile-node--root .p10-shop-by-ip__mobile-node-label {
+      font-size: 11px;
+      font-weight: 650;
+    }
+
+    .p10-shop-by-ip__mobile-orbit-pagination {
+      display: grid;
+      min-height: 48px;
+      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+      align-items: center;
+      gap: 10px;
+      padding: 2px 0;
+    }
+
+    .p10-shop-by-ip__mobile-orbit-pagination[hidden],
+    .p10-shop-by-ip__mobile-ip-search-clear[hidden] {
+      display: none;
+    }
+
+    .p10-shop-by-ip__mobile-page-button,
+    .p10-shop-by-ip__mobile-ip-dialog-close,
+    .p10-shop-by-ip__mobile-ip-search-clear,
+    .p10-shop-by-ip__mobile-ip-show-all {
+      min-width: 44px;
+      min-height: 44px;
+      padding: 10px 12px;
+      border: 1px solid var(--p10-ip-mobile-line);
+      border-radius: 10px;
+      background: var(--p10-ip-mobile-tile);
+      color: var(--p10-ip-ink);
+      font: inherit;
+      font-size: 12px;
+      font-weight: 600;
+      line-height: 1.4;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .p10-shop-by-ip__mobile-page-button:disabled,
+    .p10-shop-by-ip__mobile-ip-dialog-close:disabled,
+    .p10-shop-by-ip__mobile-ip-search-clear:disabled,
+    .p10-shop-by-ip__mobile-ip-show-all:disabled {
+      background: var(--p10-ip-mobile-field);
+      color: var(--p10-ip-copy);
+      cursor: not-allowed;
+    }
+
+    .p10-shop-by-ip__mobile-page-status {
+      min-width: 44px;
+      color: var(--p10-ip-copy);
+      font-size: 12px;
+      font-weight: 550;
+      line-height: 1.4;
+      text-align: center;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .p10-shop-by-ip__mobile-ip-dialog {
+      box-sizing: border-box;
+      width: min(calc(100% - 24px), 480px);
+      max-width: none;
+      max-height: min(80dvh, 720px);
+      overflow: hidden;
+      padding: 16px;
+      border: 1px solid var(--p10-ip-mobile-line);
+      border-radius: 18px;
+      background: var(--p10-ip-mobile-board);
+      color: var(--p10-ip-ink);
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.24);
+    }
+
+    .p10-shop-by-ip__mobile-ip-dialog[open] {
+      display: grid;
+      grid-template-rows: auto auto auto minmax(0, 1fr) auto;
+      gap: 12px;
+    }
+
+    .p10-shop-by-ip__mobile-ip-dialog::backdrop {
+      background: rgba(22, 17, 29, 0.48);
+    }
+
+    .p10-shop-by-ip__mobile-ip-dialog-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .p10-shop-by-ip .p10-shop-by-ip__mobile-ip-dialog .p10-shop-by-ip__mobile-ip-dialog-title {
+      margin: 0;
+      color: var(--p10-ip-ink);
+      font-size: 20px;
+      font-weight: 650;
+      line-height: 1.3;
+    }
+
+    .p10-shop-by-ip__mobile-ip-search-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .p10-shop-by-ip .p10-shop-by-ip__mobile-ip-dialog .p10-shop-by-ip__mobile-ip-search-wrap label {
+      flex-basis: 100%;
+      margin: 0;
+      color: var(--p10-ip-copy);
+      font-size: 12px;
+      font-weight: 550;
+      line-height: 1.4;
+    }
+
+    .p10-shop-by-ip__mobile-ip-search {
+      min-width: 0;
+      min-height: 44px;
+      flex: 1 1 0;
+      padding: 10px 12px;
+      border: 1px solid var(--p10-ip-mobile-line);
+      border-radius: 10px;
+      background: var(--p10-ip-mobile-field);
+      color: var(--p10-ip-ink);
+      font: inherit;
+      font-size: 16px;
+      line-height: 1.4;
+    }
+
+    .p10-shop-by-ip__mobile-ip-search::placeholder {
+      color: var(--p10-ip-copy);
+      opacity: 1;
+    }
+
+    .p10-shop-by-ip__mobile-ip-search::-webkit-search-cancel-button {
+      display: none;
+    }
+
+    .p10-shop-by-ip .p10-shop-by-ip__mobile-ip-dialog .p10-shop-by-ip__mobile-ip-search-status {
+      min-height: 18px;
+      margin: 0;
+      color: var(--p10-ip-copy);
+      font-size: 12px;
+      font-weight: 500;
+      line-height: 1.5;
+    }
+
+    .p10-shop-by-ip__mobile-ip-results {
+      display: grid;
+      min-height: 0;
+      overflow-y: auto;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-auto-rows: max-content;
+      align-content: start;
+      gap: 8px;
+      padding: 4px;
+      overscroll-behavior: contain;
+      scrollbar-gutter: stable;
+      touch-action: pan-y pinch-zoom;
+    }
+
+    .p10-shop-by-ip__mobile-ip-results:empty {
+      min-height: 80px;
+    }
+
+    .p10-shop-by-ip__mobile-ip-result {
+      display: flex;
+      min-width: 0;
+      min-height: 108px;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 8px;
+      padding: 12px 6px;
+      border: 2px solid var(--p10-ip-mobile-line);
+      border-radius: 12px;
+      background: var(--p10-ip-mobile-tile);
+      color: var(--p10-ip-ink);
+      font: inherit;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .p10-shop-by-ip__mobile-ip-result[aria-pressed='true'] {
+      border-color: var(--p10-ip-mobile-selected);
+      background: var(--p10-ip-mobile-selected-soft);
+    }
+
+    .p10-shop-by-ip__mobile-ip-result:hover:not(:disabled),
+    .p10-shop-by-ip__mobile-page-button:hover:not(:disabled),
+    .p10-shop-by-ip__mobile-ip-dialog-close:hover:not(:disabled),
+    .p10-shop-by-ip__mobile-ip-search-clear:hover:not(:disabled),
+    .p10-shop-by-ip__mobile-ip-show-all:hover:not(:disabled) {
+      border-color: var(--p10-ip-mobile-selected);
+    }
+
+    .p10-shop-by-ip__mobile-ip-result:disabled {
+      background: var(--p10-ip-mobile-field);
+      color: var(--p10-ip-copy);
+      cursor: not-allowed;
+    }
+
+    .p10-shop-by-ip .p10-shop-by-ip__mobile-ip-dialog .p10-shop-by-ip__mobile-node-media {
+      display: flex;
+      width: 48px;
+      height: 48px;
+      overflow: hidden;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 auto;
+      margin: 0;
+      padding: 2px;
+      border: 1px solid var(--p10-ip-mobile-line);
+      border-radius: 50%;
+      background: var(--p10-ip-mobile-logo);
+      box-shadow: var(--p10-ip-mobile-shadow);
+    }
+
+    .p10-shop-by-ip__mobile-ip-result-name {
+      display: block;
+      max-width: 100%;
+      flex: 0 0 auto;
+      overflow-wrap: anywhere;
+      font-size: 12px;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+
+    .p10-shop-by-ip__mobile-ip-show-all {
+      width: 100%;
+      background: var(--p10-ip-mobile-field);
+    }
+  }
+
+  @media (max-width: 359px) {
+    .p10-shop-by-ip__mobile-node--root {
+      width: 64px;
+      min-height: 64px;
+    }
+
+    .p10-shop-by-ip .p10-shop-by-ip__mobile-stage .p10-shop-by-ip__mobile-node--root .p10-shop-by-ip__mobile-node-media {
+      width: 48px;
+      height: 48px;
+    }
+
+    .p10-shop-by-ip__mobile-node--root .p10-shop-by-ip__mobile-node-label {
+      display: none;
+    }
+
+    .p10-shop-by-ip__mobile-ip-results {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 749px) and (max-height: 480px) {
+    .p10-shop-by-ip__mobile-ip-dialog[open] {
+      max-height: calc(100dvh - 24px);
+      overflow-y: auto;
+      grid-template-rows: auto;
+    }
+
+    .p10-shop-by-ip__mobile-ip-results {
+      overflow-y: visible;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .p10-shop-by-ip__card,
+    .p10-shop-by-ip__arrow,
+    .p10-shop-by-ip__navigator-option,
+    .p10-shop-by-ip__mobile-option,
+    .p10-shop-by-ip__mobile-submit,
+    .p10-shop-by-ip__mobile-node-media {
+      transition: none;
+    }
+
+    .p10-shop-by-ip__card:hover,
+    .p10-shop-by-ip__card:focus-visible,
+    .p10-shop-by-ip__card:hover .p10-shop-by-ip__arrow,
+    .p10-shop-by-ip__card:focus-visible .p10-shop-by-ip__arrow {
+      transform: none;
+    }
+  }
+
+  .p10-shop-by-ip .p10-shop-by-ip__image--one-piece {
+    background: #ffffff;
+    border-radius: 0;
+    object-fit: contain;
+    padding: 2px;
+  }
+  .p10-shop-by-ip .p10-shop-by-ip__image--wordmark {
+    padding: 5px;
+    background: #19171f;
+    object-fit: contain;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "SHOP BY IP",
+  "tag": "section",
+  "class": "section-p10-shop-by-ip",
+  "max_blocks": 50,
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Collector directory"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "SHOP BY IP"
+    },
+    {
+      "type": "textarea",
+      "id": "intro",
+      "label": "Intro",
+      "default": "Choose a collector world, then go straight to the products you want."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "ip_card",
+      "name": "IP directory card",
+      "settings": [
+        {
+          "type": "select",
+          "id": "ip_key",
+          "label": "Built-in IP style",
+          "default": "custom",
+          "options": [
+            { "value": "custom", "label": "Custom / new IP" },
+            { "value": "my-little-pony", "label": "My Little Pony" },
+            { "value": "naruto", "label": "Naruto" },
+            { "value": "harry-potter", "label": "Harry Potter" },
+            { "value": "the-powerpuff-girls", "label": "The Powerpuff Girls" },
+            { "value": "inuyasha", "label": "Inuyasha" },
+            { "value": "arknights", "label": "Arknights" },
+            { "value": "pokemon", "label": "Pokémon" },
+            { "value": "disney", "label": "Disney" },
+            { "value": "marvel", "label": "Marvel" },
+            { "value": "dc", "label": "DC" }
+          ]
+        },
+        {
+          "type": "checkbox",
+          "id": "desktop_only",
+          "label": "Show only on desktop",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "secondary_tier",
+          "label": "Secondary IP group",
+          "default": false
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "text",
+          "id": "lane",
+          "label": "Small category label"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Short description"
+        },
+        {
+          "type": "text",
+          "id": "tag_1",
+          "label": "Route tag 1"
+        },
+        {
+          "type": "text",
+          "id": "tag_2",
+          "label": "Route tag 2"
+        },
+        {
+          "type": "text",
+          "id": "tag_3",
+          "label": "Route tag 3"
+        },
+        {
+          "type": "text",
+          "id": "best_for",
+          "label": "Best for"
+        },
+        {
+          "type": "text",
+          "id": "cta_label",
+          "label": "Button label"
+        },
+        {
+          "type": "text",
+          "id": "logo_asset",
+          "label": "IP logo asset filename",
+          "info": "Use a verified IP logo from this theme's assets, not a product image."
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Custom IP logo"
+        },
+        {
+          "type": "url",
+          "id": "image_url",
+          "label": "IP logo URL"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Custom link"
+        },
+        {
+          "type": "color",
+          "id": "accent",
+          "label": "Accent color"
+        },
+        {
+          "type": "color",
+          "id": "soft",
+          "label": "Soft background color"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "SHOP BY IP"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,1262 @@
+{% liquid
+  assign section_id = 'p10-ip-ppg-' | append: section.id
+  assign ppg_collection = section.settings.source_collection
+  if ppg_collection == blank
+    assign ppg_collection = collections['the-powerpuff-girls']
+  endif
+
+  assign collection_url = section.settings.primary_link
+  if collection_url == blank and ppg_collection != blank
+    assign collection_url = ppg_collection.url
+  endif
+  if collection_url == blank
+    assign collection_url = '/collections/the-powerpuff-girls'
+  endif
+
+  assign badge_url = section.settings.badge_link
+  if badge_url == blank
+    assign badge_url = '/products/kayou-powerpuff-girls-tinplate-badge'
+  endif
+
+  assign charm_url = section.settings.charm_link
+  if charm_url == blank
+    assign charm_url = '/products/kayou-powerpuff-girls-fluffy-card-charm'
+  endif
+
+  assign figure_url = section.settings.figure_link
+  if figure_url == blank
+    assign figure_url = '/products/kayou-powerpuff-girls-claw-attack-face-changing-figure'
+  endif
+
+  assign plush_url = section.settings.plush_link
+  if plush_url == blank
+    assign plush_url = '/products/kayou-powerpuff-girls-cross-arms-plush-charm'
+  endif
+
+  assign standee_url = section.settings.standee_link
+  if standee_url == blank
+    assign standee_url = '/products/kayou-powerpuff-girls-acrylic-standee'
+  endif
+%}
+
+<section id="{{ section_id }}" class="p10-ip-ppg" data-p10-ip-ppg>
+  <div class="p10-ip-ppg__anchor" id="{{ section.settings.anchor_id | default: 'powerpuff-girls-collector-zone' | escape }}"></div>
+
+  <div class="p10-ip-ppg__pattern" aria-hidden="true">
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+
+  <div class="p10-ip-ppg__nav">
+    <a class="p10-ip-ppg__back" href="{{ section.settings.back_link | default: '/collections' }}">
+      <span aria-hidden="true">&larr;</span>
+      <span>{{ section.settings.back_label | default: 'Back' | escape }}</span>
+    </a>
+  </div>
+
+  <div class="p10-ip-ppg__hero">
+    <div class="p10-ip-ppg__copy">
+      <p class="p10-ip-ppg__eyebrow">{{ section.settings.eyebrow | default: 'KAYOU character goods route' | escape }}</p>
+      <h1 class="p10-ip-ppg__heading">{{ section.settings.heading | default: 'The Powerpuff Girls' | escape }}</h1>
+      <p class="p10-ip-ppg__subheading">
+        {{ section.settings.subheading | default: 'A bright collector zone for Powerpuff Girls badges, charms, figures, plush goods, acrylic standees, and display-box formats.' | escape }}
+      </p>
+
+      <form class="p10-ip-ppg__search" action="/search" method="get" role="search">
+  <input type="hidden" name="options[prefix]" value="last">
+  <input type="hidden" name="options[fields]" value="title,tag,product_type,variants.title,vendor">
+        <input type="hidden" name="type" value="product">
+        <label for="{{ section_id }}-search">Find</label>
+        <input id="{{ section_id }}-search" type="search" name="q" placeholder="Search Powerpuff goods">
+        <button type="submit">Search</button>
+      </form>
+
+      <div class="p10-ip-ppg__actions">
+        <a class="p10-ip-ppg__primary" href="{{ collection_url }}">Shop all Powerpuff</a>
+        <a class="p10-ip-ppg__secondary" href="#{{ section_id }}-products">View goods</a>
+      </div>
+    </div>
+
+    <div class="p10-ip-ppg__stage" aria-label="The Powerpuff Girls product preview">
+      <div class="p10-ip-ppg__logo">
+        <img
+          src="{{ 'p10-ip-powerpuff-girls.webp' | asset_url }}"
+          alt="The Powerpuff Girls"
+          width="700"
+          height="700"
+          loading="eager"
+          decoding="async"
+        >
+        <span>
+          <b>The Powerpuff Girls</b>
+          <small>{% if ppg_collection != blank %}{{ ppg_collection.all_products_count }} items{% else %}Collector goods{% endif %}</small>
+        </span>
+      </div>
+
+      <div class="p10-ip-ppg__stage-deck" aria-label="Powerpuff Girls quick shopping guide">
+        <a href="{{ badge_url }}">
+          <span>Badge route</span>
+          <strong>Series 1 / Series 2</strong>
+        </a>
+        <a href="{{ charm_url }}">
+          <span>Box formats</span>
+          <strong>Single box / display box</strong>
+        </a>
+        <a href="{{ figure_url }}">
+          <span>Goods mix</span>
+          <strong>Charms, figures, plush</strong>
+        </a>
+      </div>
+
+      <div class="p10-ip-ppg__stage-note">
+        <strong>Collector shortcut</strong>
+        <span>Pick a product path first, then compare sealed single-box and display-box formats inside each listing.</span>
+      </div>
+
+      <div class="p10-ip-ppg__floating-products">
+        {% if ppg_collection != blank and ppg_collection.all_products_count > 0 %}
+          {% for product in ppg_collection.products limit: 5 %}
+            <a class="p10-ip-ppg__float-card" href="{{ product.url }}" style="--p10-item: {{ forloop.index0 }};">
+              {% if product.featured_image != blank %}
+                {{
+                  product.featured_image
+                  | image_url: width: 520
+                  | image_tag:
+                    loading: 'eager',
+                    widths: '220, 320, 420, 520',
+                    sizes: '(min-width: 990px) 10vw, 34vw',
+                    alt: product.title,
+                    class: 'p10-ip-ppg__float-img'
+                }}
+              {% else %}
+                <img
+                  src="{{ 'p10-ip-powerpuff-girls.webp' | asset_url }}"
+                  alt="{{ product.title | escape }}"
+                  width="520"
+                  height="520"
+                  loading="eager"
+                  decoding="async"
+                  class="p10-ip-ppg__float-img"
+                >
+              {% endif %}
+            </a>
+          {% endfor %}
+        {% else %}
+          <span class="p10-ip-ppg__float-card p10-ip-ppg__float-card--empty">
+            <img
+              src="{{ 'p10-ip-powerpuff-girls.webp' | asset_url }}"
+              alt=""
+              width="520"
+              height="520"
+              loading="eager"
+              decoding="async"
+              class="p10-ip-ppg__float-img"
+            >
+          </span>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="p10-ip-ppg__paths" aria-label="Powerpuff Girls shopping paths">
+    <a class="p10-ip-ppg__path p10-ip-ppg__path--pink" href="{{ badge_url }}">
+      <span>Badges</span>
+      <strong>Tinplate badge packs</strong>
+      <small>Series 1 and Series 2 formats</small>
+    </a>
+    <a class="p10-ip-ppg__path p10-ip-ppg__path--blue" href="{{ charm_url }}">
+      <span>Charms</span>
+      <strong>Fluffy card charms</strong>
+      <small>Single box and display box</small>
+    </a>
+    <a class="p10-ip-ppg__path p10-ip-ppg__path--green" href="{{ figure_url }}">
+      <span>Figures</span>
+      <strong>Face-changing figures</strong>
+      <small>Random sealed goods</small>
+    </a>
+    <a class="p10-ip-ppg__path p10-ip-ppg__path--black" href="{{ plush_url }}">
+      <span>Plush</span>
+      <strong>Cross-arms plush charms</strong>
+      <small>Soft character goods</small>
+    </a>
+    <a class="p10-ip-ppg__path p10-ip-ppg__path--yellow" href="{{ standee_url }}">
+      <span>Display</span>
+      <strong>Acrylic standees</strong>
+      <small>Desk and shelf display pieces</small>
+    </a>
+  </div>
+
+  <div class="p10-ip-ppg__filter-shell" id="{{ section_id }}-products">
+    <div class="p10-ip-ppg__filter-head">
+      <div>
+        <p class="p10-ip-ppg__eyebrow">Product lab</p>
+        <h2>Powerpuff goods</h2>
+      </div>
+      <a href="{{ collection_url }}">Open collection</a>
+    </div>
+
+    <div class="p10-ip-ppg__filters" aria-label="Powerpuff Girls product filters">
+      <button class="is-active" type="button" data-ppg-filter="all" aria-pressed="true">All</button>
+      <button type="button" data-ppg-filter="badges" aria-pressed="false">Badges</button>
+      <button type="button" data-ppg-filter="charms" aria-pressed="false">Charms</button>
+      <button type="button" data-ppg-filter="figures" aria-pressed="false">Figures</button>
+      <button type="button" data-ppg-filter="plush" aria-pressed="false">Plush</button>
+      <button type="button" data-ppg-filter="standees" aria-pressed="false">Standees</button>
+    </div>
+
+    <div class="p10-ip-ppg__lane" data-ppg-products>
+      {% if ppg_collection != blank and ppg_collection.all_products_count > 0 %}
+        {% for product in ppg_collection.products limit: 12 %}
+          {% liquid
+            assign product_image_alt = product.title
+            if product.featured_image != blank and product.featured_image.alt != blank
+              assign product_image_alt = product.featured_image.alt
+            endif
+            assign product_tags_text = product.tags | join: ' '
+            assign product_search_text = product.title | append: ' ' | append: product.handle | append: ' ' | append: product.type | append: ' ' | append: product_tags_text | downcase
+            assign filter_tokens = 'all'
+
+            if product_search_text contains 'badge'
+              assign filter_tokens = filter_tokens | append: ' badges'
+            endif
+            if product_search_text contains 'charm' or product_search_text contains 'hanging'
+              assign filter_tokens = filter_tokens | append: ' charms'
+            endif
+            if product_search_text contains 'figure' or product_search_text contains 'mini'
+              assign filter_tokens = filter_tokens | append: ' figures'
+            endif
+            if product_search_text contains 'plush'
+              assign filter_tokens = filter_tokens | append: ' plush'
+            endif
+            if product_search_text contains 'standee' or product_search_text contains 'acrylic'
+              assign filter_tokens = filter_tokens | append: ' standees'
+            endif
+          %}
+          <article class="p10-ip-ppg__tile" data-ppg-token="{{ filter_tokens | escape }}">
+            <a class="p10-ip-ppg__tile-image" href="{{ product.url }}" aria-label="{{ product.title | escape }}">
+              {% if product.featured_image != blank %}
+                {{
+                  product.featured_image
+                  | image_url: width: 560
+                  | image_tag:
+                    loading: 'lazy',
+                    widths: '220, 320, 420, 560',
+                    sizes: '(min-width: 990px) 18vw, 44vw',
+                    alt: product_image_alt,
+                    class: 'p10-ip-ppg__tile-img'
+                }}
+              {% else %}
+                <img
+                  src="{{ 'p10-ip-powerpuff-girls.webp' | asset_url }}"
+                  alt="{{ product.title | escape }}"
+                  width="560"
+                  height="560"
+                  loading="lazy"
+                  decoding="async"
+                  class="p10-ip-ppg__tile-img"
+                >
+              {% endif %}
+            </a>
+            <div class="p10-ip-ppg__tile-body">
+              <h3>{{ product.title | escape }}</h3>
+              <div class="p10-ip-ppg__tile-meta">
+                <span>{{ product.variants.size }} option{% unless product.variants.size == 1 %}s{% endunless %}</span>
+                <span>From {{ product.price_min | money }}</span>
+              </div>
+              {% unless product.available %}
+                <span class="p10-ip-ppg__sold-out">Sold out</span>
+              {% endunless %}
+            </div>
+          </article>
+        {% endfor %}
+      {% else %}
+        <article class="p10-ip-ppg__empty">
+          <strong>Powerpuff Girls collection connected</strong>
+          <span>Products will appear here when this collection is available in the theme preview.</span>
+        </article>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="p10-ip-ppg__buyer-note">
+    <strong>Collector note</strong>
+    <span>Random sealed products may vary by character or design. No specific style is guaranteed unless it is selected as a named variant.</span>
+  </div>
+</section>
+
+<script>
+  (() => {
+    const root = document.currentScript.previousElementSibling;
+    if (!root || !root.matches('[data-p10-ip-ppg]')) return;
+    const buttons = [...root.querySelectorAll('[data-ppg-filter]')];
+    const cards = [...root.querySelectorAll('[data-ppg-token]')];
+    buttons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const filter = button.getAttribute('data-ppg-filter') || 'all';
+        buttons.forEach((item) => {
+          const active = item === button;
+          item.classList.toggle('is-active', active);
+          item.setAttribute('aria-pressed', active ? 'true' : 'false');
+        });
+        cards.forEach((card) => {
+          const tokens = (card.getAttribute('data-ppg-token') || '').split(/\s+/);
+          card.hidden = filter !== 'all' && !tokens.includes(filter);
+        });
+      });
+    });
+  })();
+</script>
+
+{% stylesheet %}
+  .p10-ip-ppg {
+    --ppg-ink: #131019;
+    --ppg-muted: #5e5968;
+    --ppg-pink: #f05b9a;
+    --ppg-blue: #3ca8f5;
+    --ppg-green: #65c85f;
+    --ppg-yellow: #ffd743;
+    --ppg-purple: #7a4fc2;
+    --ppg-line: rgba(19, 16, 25, 0.14);
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    padding: 34px 0 78px;
+    background:
+      linear-gradient(90deg, rgba(240,91,154,0.1), rgba(60,168,245,0.08) 35%, rgba(101,200,95,0.1) 70%, rgba(255,215,67,0.11)),
+      radial-gradient(circle at 10px 10px, rgba(19,16,25,0.08) 0 1px, transparent 1.5px) 0 0 / 22px 22px,
+      #fff9fb;
+    color: var(--ppg-ink);
+  }
+
+  .p10-ip-ppg *,
+  .p10-ip-ppg *::before,
+  .p10-ip-ppg *::after {
+    box-sizing: border-box;
+  }
+
+  .p10-ip-ppg::before {
+    position: absolute;
+    inset: 92px auto auto 4%;
+    z-index: 0;
+    width: min(34vw, 430px);
+    height: min(34vw, 430px);
+    border: 18px solid rgba(240,91,154,0.14);
+    transform: rotate(-18deg);
+    content: "";
+    clip-path: polygon(50% 0, 62% 34%, 98% 34%, 69% 56%, 80% 94%, 50% 70%, 20% 94%, 31% 56%, 2% 34%, 38% 34%);
+  }
+
+  .p10-ip-ppg::after {
+    position: absolute;
+    right: -120px;
+    bottom: 120px;
+    z-index: 0;
+    width: min(42vw, 560px);
+    height: min(42vw, 560px);
+    border: 1px solid rgba(19,16,25,0.16);
+    background:
+      linear-gradient(90deg, transparent 0 32%, rgba(60,168,245,0.12) 32% 40%, transparent 40% 63%, rgba(101,200,95,0.12) 63% 71%, transparent 71%),
+      rgba(255,255,255,0.28);
+    transform: rotate(12deg);
+    content: "";
+  }
+
+  .p10-ip-ppg__anchor {
+    position: absolute;
+    top: 0;
+  }
+
+  .p10-ip-ppg__pattern {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .p10-ip-ppg__pattern span {
+    position: absolute;
+    display: block;
+    opacity: 0.92;
+  }
+
+  .p10-ip-ppg__pattern span:nth-child(1) {
+    top: 118px;
+    left: 45%;
+    width: 230px;
+    height: 18px;
+    background: var(--ppg-pink);
+    transform: rotate(-8deg);
+  }
+
+  .p10-ip-ppg__pattern span:nth-child(2) {
+    top: 184px;
+    right: 11%;
+    width: 168px;
+    height: 18px;
+    background: var(--ppg-blue);
+    transform: rotate(9deg);
+  }
+
+  .p10-ip-ppg__pattern span:nth-child(3) {
+    bottom: 210px;
+    left: 9%;
+    width: 188px;
+    height: 18px;
+    background: var(--ppg-green);
+    transform: rotate(14deg);
+  }
+
+  .p10-ip-ppg__pattern span:nth-child(4) {
+    top: 302px;
+    left: 54%;
+    width: 86px;
+    height: 86px;
+    border: 10px solid var(--ppg-yellow);
+    transform: rotate(16deg);
+    clip-path: polygon(50% 0, 61% 34%, 96% 34%, 68% 55%, 79% 90%, 50% 68%, 21% 90%, 32% 55%, 4% 34%, 39% 34%);
+  }
+
+  .p10-ip-ppg__nav,
+  .p10-ip-ppg__hero,
+  .p10-ip-ppg__paths,
+  .p10-ip-ppg__filter-shell,
+  .p10-ip-ppg__buyer-note {
+    position: relative;
+    z-index: 1;
+    width: min(100% - 48px, 1280px);
+    margin: 0 auto;
+  }
+
+  .p10-ip-ppg__nav {
+    padding-bottom: 24px;
+  }
+
+  .p10-ip-ppg__back {
+    display: inline-flex;
+    min-height: 36px;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 16px;
+    border: 2px solid var(--ppg-ink);
+    border-radius: 999px;
+    background: #ffffff;
+    color: var(--ppg-ink);
+    font-size: 11px;
+    font-weight: 950;
+    line-height: 1;
+    text-decoration: none;
+    text-transform: uppercase;
+    box-shadow: 5px 5px 0 rgba(19,16,25,0.14);
+  }
+
+  .p10-ip-ppg__hero {
+    display: grid;
+    grid-template-columns: minmax(360px, 0.82fr) minmax(540px, 1.18fr);
+    gap: 42px;
+    align-items: start;
+    min-height: 0;
+  }
+
+  .p10-ip-ppg__copy {
+    position: relative;
+    display: grid;
+    gap: 18px;
+    max-width: 680px;
+    padding-top: 26px;
+  }
+
+  .p10-ip-ppg__eyebrow {
+    margin: 0;
+    color: var(--ppg-purple);
+    font-size: 10px;
+    font-weight: 950;
+    letter-spacing: 0;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  .p10-ip-ppg__heading {
+    margin: 0;
+    color: var(--ppg-ink);
+    font-size: 76px;
+    font-weight: 950;
+    letter-spacing: 0;
+    line-height: 0.95;
+    text-transform: uppercase;
+    text-shadow:
+      4px 4px 0 rgba(240,91,154,0.2),
+      8px 8px 0 rgba(60,168,245,0.13);
+  }
+
+  .p10-ip-ppg__subheading {
+    max-width: 600px;
+    margin: 0;
+    color: var(--ppg-muted);
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.62;
+  }
+
+  .p10-ip-ppg__search {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 10px;
+    max-width: 640px;
+    padding: 10px;
+    border: 2px solid var(--ppg-ink);
+    border-radius: 8px;
+    background: rgba(255,255,255,0.94);
+    box-shadow: 7px 7px 0 rgba(19,16,25,0.12);
+  }
+
+  .p10-ip-ppg__search label {
+    display: inline-grid;
+    min-height: 36px;
+    place-items: center;
+    padding: 0 12px;
+    border-radius: 5px;
+    background: var(--ppg-yellow);
+    color: var(--ppg-ink);
+    font-size: 10px;
+    font-weight: 950;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .p10-ip-ppg__search input {
+    width: 100%;
+    min-width: 0;
+    min-height: 38px;
+    border: 0;
+    background: transparent;
+    color: var(--ppg-ink);
+    font: inherit;
+    font-size: 13px;
+    font-weight: 760;
+    outline: none;
+  }
+
+  .p10-ip-ppg__search button,
+  .p10-ip-ppg__primary,
+  .p10-ip-ppg__filter-head a {
+    display: inline-flex;
+    min-height: 40px;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 16px;
+    border: 0;
+    border-radius: 6px;
+    background: var(--ppg-ink);
+    color: #ffffff;
+    font-size: 11px;
+    font-weight: 950;
+    line-height: 1;
+    text-decoration: none;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .p10-ip-ppg__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .p10-ip-ppg__secondary {
+    display: inline-flex;
+    min-height: 40px;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 16px;
+    border: 2px solid var(--ppg-ink);
+    border-radius: 6px;
+    background: #ffffff;
+    color: var(--ppg-ink);
+    font-size: 11px;
+    font-weight: 950;
+    line-height: 1;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  .p10-ip-ppg__stage {
+    position: relative;
+    display: grid;
+    min-height: 390px;
+    grid-template-rows: auto auto auto minmax(142px, 1fr);
+    gap: 14px;
+    padding: 16px;
+    border: 2px solid var(--ppg-ink);
+    border-radius: 8px;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,0.96), rgba(255,249,252,0.9)),
+      repeating-linear-gradient(90deg, rgba(240,91,154,0.1) 0 44px, rgba(60,168,245,0.09) 44px 88px, rgba(101,200,95,0.09) 88px 132px);
+    box-shadow: 14px 14px 0 rgba(19,16,25,0.12);
+  }
+
+  .p10-ip-ppg__stage::before {
+    position: absolute;
+    inset: 0;
+    border-radius: 6px;
+    background:
+      linear-gradient(90deg, var(--ppg-pink) 0 33%, var(--ppg-blue) 33% 66%, var(--ppg-green) 66% 100%);
+    content: "";
+    clip-path: polygon(0 0, 100% 0, 100% 9px, 0 9px);
+  }
+
+  .p10-ip-ppg__logo {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+  }
+
+  .p10-ip-ppg__logo img {
+    display: block;
+    width: 108px;
+    height: 84px;
+    object-fit: cover;
+    object-position: center 44%;
+    border: 2px solid var(--ppg-ink);
+    border-radius: 7px;
+    background: #f48db7;
+  }
+
+  .p10-ip-ppg__logo b,
+  .p10-ip-ppg__logo small {
+    display: block;
+  }
+
+  .p10-ip-ppg__logo b {
+    font-size: 18px;
+    font-weight: 950;
+    line-height: 1.05;
+  }
+
+  .p10-ip-ppg__logo small {
+    margin-top: 4px;
+    color: var(--ppg-muted);
+    font-size: 11px;
+    font-weight: 850;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  .p10-ip-ppg__stage-deck {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .p10-ip-ppg__stage-deck a {
+    display: grid;
+    min-height: 64px;
+    align-content: center;
+    gap: 5px;
+    padding: 10px 12px;
+    border: 2px solid var(--ppg-ink);
+    border-radius: 7px;
+    background: rgba(255,255,255,0.78);
+    color: var(--ppg-ink);
+    text-decoration: none;
+  }
+
+  .p10-ip-ppg__stage-deck a:nth-child(1) { border-bottom-color: var(--ppg-pink); }
+  .p10-ip-ppg__stage-deck a:nth-child(2) { border-bottom-color: var(--ppg-blue); }
+  .p10-ip-ppg__stage-deck a:nth-child(3) { border-bottom-color: var(--ppg-green); }
+
+  .p10-ip-ppg__stage-deck span {
+    color: var(--ppg-purple);
+    font-size: 9px;
+    font-weight: 950;
+    line-height: 1.1;
+    text-transform: uppercase;
+  }
+
+  .p10-ip-ppg__stage-deck strong {
+    font-size: 11px;
+    font-weight: 950;
+    line-height: 1.15;
+  }
+
+  .p10-ip-ppg__stage-note {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-left: 8px solid var(--ppg-yellow);
+    border-radius: 7px;
+    background: rgba(255,255,255,0.72);
+    color: var(--ppg-muted);
+    font-size: 12px;
+    font-weight: 760;
+    line-height: 1.35;
+  }
+
+  .p10-ip-ppg__stage-note strong {
+    flex: 0 0 auto;
+    color: var(--ppg-ink);
+    font-size: 10px;
+    font-weight: 950;
+    text-transform: uppercase;
+  }
+
+  .p10-ip-ppg__floating-products {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 10px;
+    align-items: center;
+    min-height: 142px;
+    margin-top: 0;
+  }
+
+  .p10-ip-ppg__float-card {
+    display: flex;
+    aspect-ratio: 0.78 / 1;
+    min-width: 0;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    border: 2px solid var(--ppg-ink);
+    border-radius: 8px;
+    background: #ffffff;
+    box-shadow: 7px 7px 0 rgba(19,16,25,0.1);
+    text-decoration: none;
+    transform: translateY(calc((var(--p10-item) - 2) * 5px)) rotate(calc((var(--p10-item) - 2) * 1.6deg));
+  }
+
+  .p10-ip-ppg__float-card:nth-child(2),
+  .p10-ip-ppg__float-card:nth-child(4) {
+    background: #fff3f8;
+  }
+
+  .p10-ip-ppg__float-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .p10-ip-ppg__paths {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: 46px;
+  }
+
+  .p10-ip-ppg__path {
+    display: grid;
+    min-height: 142px;
+    align-content: space-between;
+    gap: 10px;
+    padding: 14px;
+    border: 2px solid var(--ppg-ink);
+    border-radius: 8px;
+    background: #ffffff;
+    color: var(--ppg-ink);
+    text-decoration: none;
+    box-shadow: 6px 6px 0 rgba(19,16,25,0.1);
+    transition: transform 180ms ease, box-shadow 180ms ease;
+  }
+
+  .p10-ip-ppg__path:hover,
+  .p10-ip-ppg__path:focus-visible,
+  .p10-ip-ppg__tile:hover,
+  .p10-ip-ppg__tile:focus-within {
+    transform: translateY(-4px);
+    box-shadow: 9px 9px 0 rgba(19,16,25,0.16);
+  }
+
+  .p10-ip-ppg__path--pink { background: linear-gradient(180deg, #fff, #ffe9f3); }
+  .p10-ip-ppg__path--blue { background: linear-gradient(180deg, #fff, #e8f6ff); }
+  .p10-ip-ppg__path--green { background: linear-gradient(180deg, #fff, #ebffea); }
+  .p10-ip-ppg__path--black { background: linear-gradient(180deg, #fff, #f2f0f5); }
+  .p10-ip-ppg__path--yellow { background: linear-gradient(180deg, #fff, #fff7d9); }
+
+  .p10-ip-ppg__path span {
+    color: var(--ppg-purple);
+    font-size: 10px;
+    font-weight: 950;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  .p10-ip-ppg__path strong {
+    font-size: 17px;
+    font-weight: 950;
+    line-height: 1.06;
+  }
+
+  .p10-ip-ppg__path small {
+    color: var(--ppg-muted);
+    font-size: 11px;
+    font-weight: 800;
+    line-height: 1.25;
+  }
+
+  .p10-ip-ppg__filter-shell {
+    margin-top: 62px;
+    padding: 22px;
+    border: 2px solid var(--ppg-ink);
+    border-radius: 8px;
+    background: rgba(255,255,255,0.86);
+    box-shadow: 12px 12px 0 rgba(19,16,25,0.1);
+  }
+
+  .p10-ip-ppg__filter-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 16px;
+  }
+
+  .p10-ip-ppg__filter-head h2 {
+    margin: 7px 0 0;
+    color: var(--ppg-ink);
+    font-size: 38px;
+    font-weight: 950;
+    letter-spacing: 0;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .p10-ip-ppg__filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+
+  .p10-ip-ppg__filters button {
+    display: inline-flex;
+    min-height: 34px;
+    align-items: center;
+    padding: 9px 12px;
+    border: 2px solid var(--ppg-ink);
+    border-radius: 999px;
+    background: #ffffff;
+    color: var(--ppg-ink);
+    font-size: 11px;
+    font-weight: 950;
+    line-height: 1;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  .p10-ip-ppg__filters button.is-active {
+    background: var(--ppg-ink);
+    color: #ffffff;
+  }
+
+  .p10-ip-ppg__lane {
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 14px !important;
+  }
+
+  .p10-ip-ppg__tile,
+  .p10-ip-ppg__empty {
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    flex: none !important;
+    overflow: hidden;
+    border: 2px solid var(--ppg-ink);
+    border-radius: 8px;
+    background: #ffffff;
+    box-shadow: 6px 6px 0 rgba(19,16,25,0.09);
+    transition: transform 180ms ease, box-shadow 180ms ease;
+  }
+
+  .p10-ip-ppg__tile[hidden] {
+    display: none !important;
+  }
+
+  .p10-ip-ppg__tile-image {
+    display: flex;
+    aspect-ratio: 1 / 0.76;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+    background:
+      linear-gradient(135deg, rgba(240,91,154,0.1), rgba(60,168,245,0.08) 46%, rgba(101,200,95,0.08)),
+      #ffffff;
+  }
+
+  .p10-ip-ppg__tile-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .p10-ip-ppg__tile-body {
+    display: flex;
+    min-height: 134px;
+    flex-direction: column;
+    padding: 14px;
+  }
+
+  .p10-ip-ppg__tile-body h3 {
+    display: -webkit-box;
+    min-height: 54px;
+    margin: 0;
+    overflow: hidden;
+    color: var(--ppg-ink);
+    font-size: 14px;
+    font-weight: 920;
+    line-height: 1.28;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+
+  .p10-ip-ppg__tile-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: auto;
+    padding-top: 12px;
+    color: var(--ppg-purple);
+    font-size: 11px;
+    font-weight: 900;
+    line-height: 1.1;
+  }
+
+  .p10-ip-ppg__sold-out {
+    display: inline-flex;
+    width: fit-content;
+    min-height: 24px;
+    align-items: center;
+    margin-top: 10px;
+    padding: 6px 8px;
+    border-radius: 999px;
+    background: #f1eff4;
+    color: var(--ppg-muted);
+    font-size: 10px;
+    font-weight: 950;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .p10-ip-ppg__empty {
+    grid-column: 1 / -1;
+    padding: 22px;
+  }
+
+  .p10-ip-ppg__empty strong,
+  .p10-ip-ppg__empty span {
+    display: block;
+  }
+
+  .p10-ip-ppg__empty strong {
+    color: var(--ppg-ink);
+    font-size: 18px;
+    font-weight: 950;
+  }
+
+  .p10-ip-ppg__empty span {
+    margin-top: 8px;
+    color: var(--ppg-muted);
+    font-size: 13px;
+    font-weight: 750;
+  }
+
+  .p10-ip-ppg__buyer-note {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    margin-top: 18px;
+    padding: 16px 18px;
+    border: 2px solid var(--ppg-ink);
+    border-left: 10px solid var(--ppg-yellow);
+    border-radius: 8px;
+    background: rgba(255,255,255,0.9);
+    color: var(--ppg-muted);
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.5;
+  }
+
+  .p10-ip-ppg__buyer-note strong {
+    flex: 0 0 auto;
+    color: var(--ppg-ink);
+    font-size: 12px;
+    font-weight: 950;
+    text-transform: uppercase;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .p10-ip-ppg *,
+    .p10-ip-ppg *::before,
+    .p10-ip-ppg *::after {
+      animation: none !important;
+      transition: none !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  @media (max-width: 1180px) {
+    .p10-ip-ppg__heading {
+      font-size: 64px;
+    }
+
+    .p10-ip-ppg__paths {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 989px) {
+    .p10-ip-ppg {
+      padding: 26px 0 58px;
+    }
+
+    .p10-ip-ppg__nav,
+    .p10-ip-ppg__hero,
+    .p10-ip-ppg__paths,
+    .p10-ip-ppg__filter-shell,
+    .p10-ip-ppg__buyer-note {
+      width: min(100% - 32px, 900px);
+    }
+
+    .p10-ip-ppg__hero {
+      grid-template-columns: minmax(0, 1fr);
+      min-height: 0;
+      gap: 30px;
+    }
+
+    .p10-ip-ppg__copy {
+      padding-top: 0;
+    }
+
+    .p10-ip-ppg__heading {
+      font-size: 54px;
+    }
+
+    .p10-ip-ppg__stage {
+      min-height: 0;
+    }
+
+    .p10-ip-ppg__floating-products {
+      min-height: 180px;
+    }
+
+    .p10-ip-ppg__paths {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      margin-top: 38px;
+    }
+
+    .p10-ip-ppg__lane {
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      gap: 10px !important;
+    }
+
+    .p10-ip-ppg__filter-head {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .p10-ip-ppg__heading {
+      font-size: 36px;
+    }
+
+    .p10-ip-ppg__search {
+      grid-template-columns: 92px minmax(0, 1fr);
+    }
+
+    .p10-ip-ppg__search button,
+    .p10-ip-ppg__primary,
+    .p10-ip-ppg__secondary,
+    .p10-ip-ppg__filter-head a {
+      width: 100%;
+    }
+
+    .p10-ip-ppg__search button {
+      grid-column: 1 / -1;
+    }
+
+    .p10-ip-ppg__actions {
+      flex-direction: column;
+    }
+
+    .p10-ip-ppg__stage {
+      padding: 14px;
+    }
+
+    .p10-ip-ppg__logo {
+      align-items: flex-start;
+      justify-content: flex-start;
+    }
+
+    .p10-ip-ppg__logo img {
+      width: 96px;
+      height: 76px;
+    }
+
+    .p10-ip-ppg__stage-deck {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .p10-ip-ppg__stage-deck a {
+      min-height: 58px;
+    }
+
+    .p10-ip-ppg__stage-note {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .p10-ip-ppg__floating-products {
+      display: flex;
+      grid-template-columns: none;
+      min-height: 0;
+      overflow-x: auto;
+      padding: 2px 2px 10px;
+      scroll-snap-type: x mandatory;
+    }
+
+    .p10-ip-ppg__float-card {
+      flex: 0 0 136px;
+      scroll-snap-align: start;
+      transform: none;
+    }
+
+    .p10-ip-ppg__paths {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .p10-ip-ppg__filter-shell {
+      padding: 14px;
+    }
+
+    .p10-ip-ppg__tile-image {
+      aspect-ratio: 1 / 0.66;
+      padding: 12px;
+    }
+
+    .p10-ip-ppg__tile-body {
+      min-height: 140px;
+      padding: 12px;
+    }
+
+    .p10-ip-ppg__tile-body h3 {
+      min-height: 64px;
+      font-size: 12px;
+      line-height: 1.28;
+      overflow-wrap: anywhere;
+      -webkit-line-clamp: 4;
+    }
+
+    .p10-ip-ppg__tile-meta {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 5px;
+      font-size: 10px;
+    }
+
+    .p10-ip-ppg__buyer-note {
+      flex-direction: column;
+      gap: 6px;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "P10 Powerpuff IP Lounge",
+  "tag": "section",
+  "class": "section-p10-ip-powerpuff",
+  "settings": [
+    {
+      "type": "collection",
+      "id": "source_collection",
+      "label": "Source collection"
+    },
+    {
+      "type": "text",
+      "id": "anchor_id",
+      "label": "Anchor ID",
+      "default": "powerpuff-girls-collector-zone"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "KAYOU character goods route"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "The Powerpuff Girls"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "A bright collector zone for Powerpuff Girls badges, charms, figures, plush goods, acrylic standees, and display-box formats."
+    },
+    {
+      "type": "url",
+      "id": "primary_link",
+      "label": "Primary link"
+    },
+    {
+      "type": "url",
+      "id": "badge_link",
+      "label": "Badge link"
+    },
+    {
+      "type": "url",
+      "id": "charm_link",
+      "label": "Charm link"
+    },
+    {
+      "type": "url",
+      "id": "figure_link",
+      "label": "Figure link"
+    },
+    {
+      "type": "url",
+      "id": "plush_link",
+      "label": "Plush link"
+    },
+    {
+      "type": "url",
+      "id": "standee_link",
+      "label": "Standee link"
+    },
+    {
+      "type": "url",
+      "id": "back_link",
+      "label": "Back link"
+    },
+    {
+      "type": "text",
+      "id": "back_label",
+      "label": "Back label",
+      "default": "Back"
+    }
+  ],
+  "presets": [
+    {
+      "name": "P10 Powerpuff IP Lounge"
+    }
+  ]
+}
+{% endschema %}

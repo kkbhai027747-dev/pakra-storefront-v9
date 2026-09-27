@@ -1,0 +1,38 @@
+{%- liquid
+  assign preview_only = false
+  for tag in product.tags
+    assign normalized_tag = tag | downcase | strip
+    if normalized_tag == 'preview only' or normalized_tag == 'preview-only' or normalized_tag == 'display only'
+      assign preview_only = true
+    endif
+  endfor
+-%}
+{{ 'p10-keegan-product.css' | asset_url | stylesheet_tag }}
+<script>document.documentElement.classList.add('p10-keegan-product-view');</script>
+
+<section class="p10-keegan-product-bar" aria-label="Keegan recommendation">
+  <div class="p10-keegan-product-bar__inner">
+    <div class="p10-keegan-product-bar__identity">
+      {%- if preview_only -%}
+        <p data-preview-only-bar="true">KAYOU K-PRIZE &middot; {{ product.selected_or_first_available_variant.price | money }} PER DRAW &middot; {{ product.selected_or_first_available_variant.inventory_quantity }} DRAWS LISTED</p>
+        <strong>PREVIEW ONLY &middot; ORDERING NOT OPEN</strong>
+      {%- else -%}
+        <p>MLPEKAYOU &times; pakracards</p>
+        <strong>KEEGAN COMMUNITY PICK</strong>
+      {%- endif -%}
+    </div>
+    <a href="/collections/mlpekayou-guest-picks">Back to recommended picks</a>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Keegan product theme",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Keegan product theme"
+    }
+  ]
+}
+{% endschema %}

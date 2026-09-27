@@ -1,0 +1,833 @@
+{{ 'single-card-showcase.css' | asset_url | stylesheet_tag }}
+
+<style>
+  @media screen and (max-width: 749px) {
+    .p10-single-card-page {
+      overflow: visible;
+    }
+
+    .p10-single-card-tools {
+      position: sticky;
+      top: var(--p10-single-card-sticky-top, 0px);
+      z-index: 32;
+      width: 100vw;
+      margin-inline: calc(50% - 50vw);
+      padding: 12px 11px;
+      border-right: 0;
+      border-left: 0;
+      border-radius: 0;
+      max-height: calc(100dvh - var(--p10-single-card-sticky-top, 0px));
+      overflow: hidden;
+      transition: padding 180ms ease, box-shadow 180ms ease, background 180ms ease;
+      will-change: padding;
+    }
+
+    .p10-single-card-tools-spacer {
+      display: none;
+      height: 0;
+      pointer-events: none;
+    }
+
+    .p10-single-card-tools-spacer.is-active {
+      display: block;
+    }
+
+    .p10-single-card-tools.is-mobile-pinned {
+      position: fixed !important;
+      top: var(--p10-single-card-sticky-top, 0px);
+      right: 0;
+      left: 0;
+      z-index: 88;
+      width: 100vw;
+      margin: 0 !important;
+    }
+
+    body.p10-single-card-tools-pinned .section-header-mobile {
+      top: 0 !important;
+      z-index: 89;
+      transform: translateY(0) !important;
+    }
+
+    body.p10-single-card-tools-pinned .section-header-mobile .p10-mobile-shop-nav {
+      display: none !important;
+    }
+
+    body.p10-single-card-tools-pinned .section-header-mobile.shopify-section-header-hidden {
+      transform: translateY(0) !important;
+    }
+
+    body.p10-single-card-tools-pinned .section-header-mobile.shopify-section-header-hidden .header-mobile,
+    body.p10-single-card-tools-pinned .section-header-mobile.shopify-section-header-hidden .header-mobile--transparent {
+      transform: translateY(0) !important;
+    }
+
+    .p10-single-card-tools::before {
+      border-radius: 0;
+    }
+
+    .p10-single-card-tools.is-compact {
+      gap: 8px;
+      padding: 8px 10px 9px;
+      border-bottom-color: rgba(11, 49, 89, 0.18);
+      background: rgba(255, 255, 255, 0.97);
+      box-shadow: 0 16px 32px rgba(20, 23, 34, 0.16);
+    }
+
+    .p10-single-card-tools.is-compact .p10-single-card-tools__head {
+      display: none;
+    }
+
+    .p10-single-card-tools.is-compact .p10-single-card-tools__controls {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 116px;
+      gap: 8px;
+    }
+
+    .p10-single-card-tools.is-compact .p10-single-card-search input,
+    .p10-single-card-tools.is-compact .p10-single-card-sort select {
+      height: 36px;
+      border-radius: 6px;
+      font-size: 12px;
+    }
+
+    .p10-single-card-tools.is-compact .p10-single-card-search input {
+      padding-inline: 10px;
+    }
+
+    .p10-single-card-tools.is-compact .p10-single-card-sort select {
+      padding-left: 9px;
+      padding-right: 20px;
+    }
+
+    .p10-single-card-tools.is-compact .p10-single-card-filter-matrix {
+      gap: 5px;
+    }
+
+    .p10-single-card-tools.is-compact .p10-single-card-filter-row {
+      grid-template-columns: 70px minmax(0, 1fr);
+      gap: 7px;
+      align-items: center;
+      padding-top: 6px;
+    }
+
+    .p10-single-card-tools.is-compact .p10-single-card-filter-label {
+      min-height: 30px;
+      color: #39465a;
+      font-size: 10px;
+    }
+
+    .p10-single-card-tools.is-compact .p10-single-card-filter-options {
+      flex-wrap: nowrap;
+      gap: 6px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      padding-bottom: 1px;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .p10-single-card-tools.is-compact .p10-single-card-filter-options::-webkit-scrollbar {
+      display: none;
+    }
+
+    .p10-single-card-tools.is-compact .p10-single-card-filter {
+      min-height: 30px;
+      padding-inline: 9px;
+      font-size: 11px;
+      white-space: nowrap;
+    }
+
+    .p10-single-card-tools.is-compact .p10-single-card-filter b {
+      min-width: 18px;
+      padding: 3px 5px;
+      font-size: 10px;
+    }
+  }
+</style>
+
+<section id="p10-single-card-page-{{ section.id }}" class="p10-single-card-page" data-p10-single-card-page>
+  <div class="p10-single-card-page__inner">
+    <header class="p10-single-card-hero" data-p10-reveal>
+      <div class="p10-single-card-hero__poster" data-p10-hero-poster>
+        <picture>
+          <source media="(max-width: 749px)" srcset="{{ 'qy08-football-single-card-hero-mobile.png' | asset_url }}">
+          <img
+            src="{{ 'qy08-football-single-card-hero-desktop.png' | asset_url }}"
+            alt="KAYOU My Little Pony QY08 football season single card poster"
+            width="1880"
+            height="720"
+            loading="eager"
+            fetchpriority="high"
+          >
+        </picture>
+        <span class="p10-single-card-hero__glint" data-p10-hero-glint aria-hidden="true"></span>
+      </div>
+    </header>
+
+    <div class="p10-single-card-shop-head" data-p10-reveal>
+      <h1>{{ section.settings.heading | escape }}</h1>
+    </div>
+
+    {%- liquid
+      assign p10_products = section.settings.product_list
+      assign p10_source_collection = section.settings.source_collection
+      assign p10_products_limit = section.settings.products_limit | default: 50
+
+      if p10_source_collection == blank
+        assign p10_source_collection = collections['single']
+      endif
+
+      if section.settings.use_auto_collection and p10_source_collection != blank and p10_source_collection.products != blank
+        assign p10_products = p10_source_collection.products
+      endif
+
+      assign p10_has_products = false
+      if p10_products != blank
+        assign p10_has_products = true
+      endif
+
+      assign p10_count_all = 0
+      assign p10_count_single = 0
+      assign p10_count_moon = 0
+      assign p10_count_shadow = 0
+      assign p10_count_rainbow = 0
+      assign p10_count_fan_xin = 0
+      assign p10_count_in_stock = 0
+      assign p10_count_preorder = 0
+      assign p10_count_series_12 = 0
+      assign p10_count_moon_11 = 0
+      assign p10_count_moon_10 = 0
+      assign p10_count_series_9 = 0
+      assign p10_count_series_8 = 0
+      assign p10_count_series_7 = 0
+      assign p10_count_series_6 = 0
+      assign p10_count_series_5 = 0
+      assign p10_count_series_4 = 0
+      assign p10_count_series_3 = 0
+      assign p10_count_series_2 = 0
+      assign p10_count_series_1 = 0
+      assign p10_count_tier_2 = 0
+      assign p10_count_tier_3 = 0
+      assign p10_count_tier_4 = 0
+      assign p10_count_tier_5 = 0
+      assign p10_count_hidden_zr = 0
+      assign p10_count_zr = 0
+      assign p10_count_sc = 0
+      assign p10_count_rainbow_dash = 0
+      assign p10_count_fluttershy = 0
+      assign p10_count_pinkie_pie = 0
+      assign p10_count_twilight_sparkle = 0
+      assign p10_count_rarity = 0
+      assign p10_count_applejack = 0
+
+      for product in p10_products limit: p10_products_limit
+        assign p10_tags = product.tags | join: ' ' | downcase
+        assign p10_key = product.title | append: ' ' | append: product.handle | append: ' ' | append: product.vendor | append: ' ' | append: p10_tags | downcase
+        assign p10_title_key = product.title | downcase
+        assign p10_preorder_key = product.title | append: ' ' | append: p10_tags | downcase
+        assign p10_is_preorder = false
+        assign p10_is_single = false
+        if p10_preorder_key contains 'pre-order' or p10_preorder_key contains 'preorder'
+          assign p10_is_preorder = true
+        endif
+        if product.type == 'MLP Single Card' or product.tags contains 'SINGLE' or product.tags contains 'Single Card' or product.tags contains 'MLP Single Card' or p10_key contains 'single card'
+          assign p10_is_single = true
+        endif
+        unless p10_is_single
+          continue
+        endunless
+
+        assign p10_count_all = p10_count_all | plus: 1
+
+        assign p10_count_single = p10_count_single | plus: 1
+        if product.tags contains 'MLP Moon Edition' or product.tags contains 'Moon Edition'
+          assign p10_count_moon = p10_count_moon | plus: 1
+        endif
+        if product.tags contains 'MLP Shadow Edition' or product.tags contains 'Shadow Edition'
+          assign p10_count_shadow = p10_count_shadow | plus: 1
+        endif
+        if product.tags contains 'MLP Rainbow Edition' or product.tags contains 'Rainbow Edition'
+          assign p10_count_rainbow = p10_count_rainbow | plus: 1
+        endif
+        if product.tags contains 'MLP Fan Xin Edition' or product.tags contains 'Fan Xin Edition' or product.tags contains 'Fan Xin'
+          assign p10_count_fan_xin = p10_count_fan_xin | plus: 1
+        endif
+        if product.available and p10_is_preorder == false
+          assign p10_count_in_stock = p10_count_in_stock | plus: 1
+        endif
+        if p10_is_preorder
+          assign p10_count_preorder = p10_count_preorder | plus: 1
+        endif
+        if product.tags contains 'Series 12' or product.tags contains 'T4W12'
+          assign p10_count_series_12 = p10_count_series_12 | plus: 1
+        endif
+        if product.tags contains 'Series 11' or product.tags contains 'T4W11'
+          assign p10_count_moon_11 = p10_count_moon_11 | plus: 1
+        endif
+        if product.tags contains 'Series 10' or product.tags contains 'T4W10'
+          assign p10_count_moon_10 = p10_count_moon_10 | plus: 1
+        endif
+        if product.tags contains 'Series 9' or product.tags contains 'T4W9'
+          assign p10_count_series_9 = p10_count_series_9 | plus: 1
+        endif
+        if product.tags contains 'Series 8' or product.tags contains 'T4W8'
+          assign p10_count_series_8 = p10_count_series_8 | plus: 1
+        endif
+        if product.tags contains 'Series 7' or product.tags contains 'T4W7'
+          assign p10_count_series_7 = p10_count_series_7 | plus: 1
+        endif
+        if product.tags contains 'Series 6' or product.tags contains 'T4W6'
+          assign p10_count_series_6 = p10_count_series_6 | plus: 1
+        endif
+        if product.tags contains 'Series 5' or product.tags contains 'T4W5'
+          assign p10_count_series_5 = p10_count_series_5 | plus: 1
+        endif
+        if product.tags contains 'Series 4' or product.tags contains 'T4W4'
+          assign p10_count_series_4 = p10_count_series_4 | plus: 1
+        endif
+        if product.tags contains 'Series 3' or product.tags contains 'T4W3'
+          assign p10_count_series_3 = p10_count_series_3 | plus: 1
+        endif
+        if product.tags contains 'Series 2' or product.tags contains 'T4W2'
+          assign p10_count_series_2 = p10_count_series_2 | plus: 1
+        endif
+        if product.tags contains 'Series 1' or product.tags contains 'T4W1'
+          assign p10_count_series_1 = p10_count_series_1 | plus: 1
+        endif
+        if p10_key contains 'tier 2' or p10_key contains 't2w' or p10_key contains ' t2 '
+          assign p10_count_tier_2 = p10_count_tier_2 | plus: 1
+        endif
+        if p10_key contains 'tier 3' or p10_key contains 't3w' or p10_key contains ' t3 '
+          assign p10_count_tier_3 = p10_count_tier_3 | plus: 1
+        endif
+        if p10_key contains 'tier 4' or p10_key contains 't4w' or p10_key contains ' t4 '
+          assign p10_count_tier_4 = p10_count_tier_4 | plus: 1
+        endif
+        if p10_key contains 'tier 5' or p10_key contains 't5w' or p10_key contains ' t5 '
+          assign p10_count_tier_5 = p10_count_tier_5 | plus: 1
+        endif
+        if p10_key contains 'hidden diamond zr' or p10_key contains 'hidden zr' or p10_key contains 'dzr'
+          assign p10_count_hidden_zr = p10_count_hidden_zr | plus: 1
+        elsif product.tags contains 'ZR' or p10_key contains ' zr ' or p10_key contains '-zr-'
+          assign p10_count_zr = p10_count_zr | plus: 1
+        endif
+        if product.tags contains 'SC' or p10_key contains ' sc ' or p10_key contains '-sc-'
+          assign p10_count_sc = p10_count_sc | plus: 1
+        endif
+        if p10_title_key contains 'rainbow dash' or product.tags contains 'Rainbow Dash'
+          assign p10_count_rainbow_dash = p10_count_rainbow_dash | plus: 1
+        endif
+        if p10_title_key contains 'fluttershy' or product.tags contains 'Fluttershy'
+          assign p10_count_fluttershy = p10_count_fluttershy | plus: 1
+        endif
+        if p10_title_key contains 'pinkie pie' or product.tags contains 'Pinkie Pie'
+          assign p10_count_pinkie_pie = p10_count_pinkie_pie | plus: 1
+        endif
+        if p10_title_key contains 'twilight sparkle' or product.tags contains 'Twilight Sparkle' or product.tags contains 'Princess Twilight Sparkle'
+          assign p10_count_twilight_sparkle = p10_count_twilight_sparkle | plus: 1
+        endif
+        if p10_title_key contains 'rarity' or product.tags contains 'Rarity'
+          assign p10_count_rarity = p10_count_rarity | plus: 1
+        endif
+        if p10_title_key contains 'applejack' or product.tags contains 'Applejack'
+          assign p10_count_applejack = p10_count_applejack | plus: 1
+        endif
+      endfor
+    -%}
+
+    {% if p10_count_all > 0 %}
+      <div class="p10-single-card-tools" data-p10-single-card-tools data-p10-reveal>
+        <div class="p10-single-card-tools__head">
+          <div class="p10-single-card-path" aria-label="Single-card browse path">
+            <span>KAYOU</span>
+            <span>My Little Pony</span>
+            <span data-p10-path-edition>All editions</span>
+            <span data-p10-path-series>All series</span>
+            <span data-p10-path-rarity>All rarities</span>
+          </div>
+          <p class="p10-single-card-results" data-p10-result-count aria-live="polite">
+            {{ p10_count_all }} single cards
+          </p>
+        </div>
+
+        <div class="p10-single-card-tools__controls">
+          <div class="p10-single-card-search">
+            <label class="p10-single-card-sr" for="p10-single-card-search-{{ section.id }}">Search single cards</label>
+            <input
+              id="p10-single-card-search-{{ section.id }}"
+              type="search"
+              autocomplete="off"
+              placeholder="Search HY11, ZR, Rainbow Dash..."
+              data-p10-product-search
+            >
+          </div>
+
+          <div class="p10-single-card-sort">
+            <label class="p10-single-card-sr" for="p10-single-card-sort-{{ section.id }}">Sort single cards</label>
+            <select id="p10-single-card-sort-{{ section.id }}" data-p10-product-sort>
+              <option value="featured">Featured</option>
+              <option value="series-desc">Newest series first</option>
+              <option value="rarity-desc">Rarity: high to low</option>
+              <option value="price-asc">Price: low to high</option>
+              <option value="price-desc">Price: high to low</option>
+              <option value="title-asc">Title: A to Z</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="p10-single-card-filter-matrix">
+          <div class="p10-single-card-filter-row" role="group" aria-label="Edition line filters" data-p10-filter-group="edition">
+            <span class="p10-single-card-filter-label">Edition Line</span>
+            <div class="p10-single-card-filter-options">
+              <button class="p10-single-card-filter is-active" type="button" data-p10-filter="all" data-p10-filter-label="All editions" aria-pressed="true">
+                <span>All editions</span><b>{{ p10_count_all }}</b>
+              </button>
+              {% if p10_count_shadow > 0 %}
+                <button class="p10-single-card-filter" type="button" data-p10-filter="shadow" data-p10-filter-label="Shadow Edition" aria-pressed="false">
+                  <span>Shadow Edition</span><b>{{ p10_count_shadow }}</b>
+                </button>
+              {% endif %}
+              {% if p10_count_rainbow > 0 %}
+                <button class="p10-single-card-filter" type="button" data-p10-filter="rainbow" data-p10-filter-label="Rainbow Edition" aria-pressed="false">
+                  <span>Rainbow Edition</span><b>{{ p10_count_rainbow }}</b>
+                </button>
+              {% endif %}
+              {% if p10_count_moon > 0 %}
+                <button class="p10-single-card-filter" type="button" data-p10-filter="moon" data-p10-filter-label="Moon Edition" aria-pressed="false">
+                  <span>Moon Edition</span><b>{{ p10_count_moon }}</b>
+                </button>
+              {% endif %}
+              {% if p10_count_fan_xin > 0 %}
+                <button class="p10-single-card-filter" type="button" data-p10-filter="fan-xin" data-p10-filter-label="Fan Xin Edition" aria-pressed="false">
+                  <span>Fan Xin Edition</span><b>{{ p10_count_fan_xin }}</b>
+                </button>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="p10-single-card-filter-row" role="group" aria-label="Series filters" data-p10-filter-group="series">
+            <span class="p10-single-card-filter-label">Series</span>
+            <div class="p10-single-card-filter-options">
+              <button class="p10-single-card-filter is-active" type="button" data-p10-filter="all" data-p10-filter-label="All series" aria-pressed="true">
+                <span>All series</span><b>{{ p10_count_all }}</b>
+              </button>
+              {% if p10_count_series_12 > 0 %}
+                <button class="p10-single-card-filter" type="button" data-p10-filter="series-12" data-p10-filter-label="Series 12" aria-pressed="false"><span>Series 12</span><b>{{ p10_count_series_12 }}</b></button>
+              {% endif %}
+              {% if p10_count_moon_11 > 0 %}
+                <button class="p10-single-card-filter" type="button" data-p10-filter="series-11" data-p10-filter-label="Series 11" aria-pressed="false"><span>Series 11</span><b>{{ p10_count_moon_11 }}</b></button>
+              {% endif %}
+              {% if p10_count_moon_10 > 0 %}
+                <button class="p10-single-card-filter" type="button" data-p10-filter="series-10" data-p10-filter-label="Series 10" aria-pressed="false"><span>Series 10</span><b>{{ p10_count_moon_10 }}</b></button>
+              {% endif %}
+              {% if p10_count_series_9 > 0 %}
+                <button class="p10-single-card-filter" type="button" data-p10-filter="series-9" data-p10-filter-label="Series 9" aria-pressed="false"><span>Series 9</span><b>{{ p10_count_series_9 }}</b></button>
+              {% endif %}
+              {% if p10_count_series_8 > 0 %}
+                <button class="p10-single-card-filter" type="button" data-p10-filter="series-8" data-p10-filter-label="Series 8" aria-pressed="false"><span>Series 8</span><b>{{ p10_count_series_8 }}</b></button>
+              {% endif %}
+              {% if p10_count_series_7 > 0 %}
+                <button class="p10-single-card-filter" type="button" data-p10-filter="series-7" data-p10-filter-label="Series 7" aria-pressed="false"><span>Series 7</span><b>{{ p10_count_series_7 }}</b></button>
+              {% endif %}
+              {% if p10_count_series_6 > 0 %}
+                <button class="p10-single-card-filter" type="button" data-p10-filter="series-6" data-p10-filter-label="Series 6" aria-pressed="false"><span>Series 6</span><b>{{ p10_count_series_6 }}</b></button>
+              {% endif %}
+              {% if p10_count_series_5 > 0 %}
+                <button class="p10-single-card-filter" type="button" data-p10-filter="series-5" data-p10-filter-label="Series 5" aria-pressed="false"><span>Series 5</span><b>{{ p10_count_series_5 }}</b></button>
+              {% endif %}
+              {% if p10_count_series_4 > 0 %}
+                <button class="p10-single-card-filter" type="button" data-p10-filter="series-4" data-p10-filter-label="Series 4" aria-pressed="false"><span>Series 4</span><b>{{ p10_count_series_4 }}</b></button>
+              {% endif %}
+              {% if p10_count_series_3 > 0 %}
+                <button class="p10-single-card-filter" type="button" data-p10-filter="series-3" data-p10-filter-label="Series 3" aria-pressed="false"><span>Series 3</span><b>{{ p10_count_series_3 }}</b></button>
+              {% endif %}
+              {% if p10_count_series_2 > 0 %}
+                <button class="p10-single-card-filter" type="button" data-p10-filter="series-2" data-p10-filter-label="Series 2" aria-pressed="false"><span>Series 2</span><b>{{ p10_count_series_2 }}</b></button>
+              {% endif %}
+              {% if p10_count_series_1 > 0 %}
+                <button class="p10-single-card-filter" type="button" data-p10-filter="series-1" data-p10-filter-label="Series 1" aria-pressed="false"><span>Series 1</span><b>{{ p10_count_series_1 }}</b></button>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="p10-single-card-filter-row" role="group" aria-label="Rarity filters" data-p10-filter-group="rarity">
+            <span class="p10-single-card-filter-label">Rarity</span>
+            <div class="p10-single-card-filter-options">
+              <button class="p10-single-card-filter is-active" type="button" data-p10-filter="all" data-p10-filter-label="All rarities" aria-pressed="true">
+                <span>All rarities</span><b>{{ p10_count_all }}</b>
+              </button>
+              {% if p10_count_hidden_zr > 0 %}
+                <button class="p10-single-card-filter p10-single-card-filter--hidden-diamond" type="button" data-p10-filter="hidden-zr" data-p10-filter-label="Hidden Diamond ZR" aria-pressed="false">
+                  <span class="p10-single-card-filter__hidden-diamond">
+                    <i aria-hidden="true"></i>
+                    <span class="p10-single-card-sr">Hidden Diamond </span>
+                    <span>ZR</span>
+                  </span><b>{{ p10_count_hidden_zr }}</b>
+                </button>
+              {% endif %}
+              {% if p10_count_zr > 0 %}
+                <button class="p10-single-card-filter" type="button" data-p10-filter="zr" data-p10-filter-label="ZR" aria-pressed="false">
+                  <span>ZR</span><b>{{ p10_count_zr }}</b>
+                </button>
+              {% endif %}
+              {% if p10_count_sc > 0 %}
+                <button class="p10-single-card-filter" type="button" data-p10-filter="sc" data-p10-filter-label="SC" aria-pressed="false">
+                  <span>SC</span><b>{{ p10_count_sc }}</b>
+                </button>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+    <div id="p10-single-card-grid-{{ section.id }}" class="p10-single-card-grid" data-p10-product-grid data-p10-reveal>
+      {% if p10_count_all > 0 %}
+        {% for product in p10_products limit: p10_products_limit %}
+          {%- liquid
+            assign p10_tags = product.tags | join: ' ' | downcase
+            assign p10_key = product.title | append: ' ' | append: product.handle | append: ' ' | append: product.vendor | append: ' ' | append: p10_tags | downcase
+            assign p10_title_key = product.title | downcase
+            assign p10_detail_key = product.title | append: ' ' | append: p10_tags | downcase
+            assign p10_preorder_key = product.title | append: ' ' | append: p10_tags | downcase
+            assign p10_filter_tokens = 'all'
+            assign p10_format_label = 'Card product'
+            assign p10_edition_label = ''
+            assign p10_series_label = ''
+            assign p10_series_number = 0
+            assign p10_tier_label = ''
+            assign p10_rarity_label = ''
+            assign p10_rarity_rank = 0
+            assign p10_stock_label = 'Sold out'
+            assign p10_stock_class = 'is-sold-out'
+            assign p10_is_preorder = false
+            assign p10_is_single = false
+            if p10_preorder_key contains 'pre-order' or p10_preorder_key contains 'preorder'
+              assign p10_is_preorder = true
+            endif
+            if product.type == 'MLP Single Card' or product.tags contains 'SINGLE' or product.tags contains 'Single Card' or product.tags contains 'MLP Single Card' or p10_key contains 'single card'
+              assign p10_is_single = true
+            endif
+            unless p10_is_single
+              continue
+            endunless
+
+            assign p10_filter_tokens = p10_filter_tokens | append: ' single kayou mlp'
+            assign p10_format_label = 'Single card'
+            if product.tags contains 'MLP Moon Edition' or product.tags contains 'Moon Edition'
+              assign p10_filter_tokens = p10_filter_tokens | append: ' moon'
+              assign p10_edition_label = 'Moon Edition'
+            endif
+            if product.tags contains 'MLP Shadow Edition' or product.tags contains 'Shadow Edition'
+              assign p10_filter_tokens = p10_filter_tokens | append: ' shadow'
+              assign p10_edition_label = 'Shadow Edition'
+            endif
+            if product.tags contains 'MLP Rainbow Edition' or product.tags contains 'Rainbow Edition'
+              assign p10_filter_tokens = p10_filter_tokens | append: ' rainbow'
+              assign p10_edition_label = 'Rainbow Edition'
+            endif
+            if product.tags contains 'MLP Fan Xin Edition' or product.tags contains 'Fan Xin Edition' or product.tags contains 'Fan Xin'
+              assign p10_filter_tokens = p10_filter_tokens | append: ' fan-xin'
+              assign p10_edition_label = 'Fan Xin Edition'
+            endif
+            if p10_title_key contains 'rainbow dash' or product.tags contains 'Rainbow Dash'
+              assign p10_filter_tokens = p10_filter_tokens | append: ' rainbow-dash'
+            endif
+            if p10_title_key contains 'fluttershy' or product.tags contains 'Fluttershy'
+              assign p10_filter_tokens = p10_filter_tokens | append: ' fluttershy'
+            endif
+            if p10_title_key contains 'pinkie pie' or product.tags contains 'Pinkie Pie'
+              assign p10_filter_tokens = p10_filter_tokens | append: ' pinkie-pie'
+            endif
+            if p10_title_key contains 'twilight sparkle' or product.tags contains 'Twilight Sparkle' or product.tags contains 'Princess Twilight Sparkle'
+              assign p10_filter_tokens = p10_filter_tokens | append: ' twilight-sparkle'
+            endif
+            if p10_title_key contains 'rarity' or product.tags contains 'Rarity'
+              assign p10_filter_tokens = p10_filter_tokens | append: ' rarity'
+            endif
+            if p10_title_key contains 'applejack' or product.tags contains 'Applejack'
+              assign p10_filter_tokens = p10_filter_tokens | append: ' applejack'
+            endif
+            if product.available and p10_is_preorder == false
+              assign p10_filter_tokens = p10_filter_tokens | append: ' in-stock'
+              assign p10_stock_label = 'In stock'
+              assign p10_stock_class = 'is-in-stock'
+            endif
+            if p10_is_preorder
+              assign p10_filter_tokens = p10_filter_tokens | append: ' preorder'
+              assign p10_stock_label = 'Pre-order'
+              assign p10_stock_class = 'is-preorder'
+            endif
+
+            if product.tags contains 'Series 12' or product.tags contains 'T4W12'
+              assign p10_series_label = 'Series 12'
+            elsif product.tags contains 'Series 11' or product.tags contains 'T4W11'
+              assign p10_series_label = 'Series 11'
+            elsif product.tags contains 'Series 10' or product.tags contains 'T4W10'
+              assign p10_series_label = 'Series 10'
+            elsif product.tags contains 'Series 9' or product.tags contains 'T4W9'
+              assign p10_series_label = 'Series 9'
+            elsif product.tags contains 'Series 8' or product.tags contains 'T4W8'
+              assign p10_series_label = 'Series 8'
+            elsif product.tags contains 'Series 7' or product.tags contains 'T4W7'
+              assign p10_series_label = 'Series 7'
+            elsif product.tags contains 'Series 6' or product.tags contains 'T4W6'
+              assign p10_series_label = 'Series 6'
+            elsif product.tags contains 'Series 5' or product.tags contains 'T4W5'
+              assign p10_series_label = 'Series 5'
+            elsif product.tags contains 'Series 4' or product.tags contains 'T4W4'
+              assign p10_series_label = 'Series 4'
+            elsif product.tags contains 'Series 3' or product.tags contains 'T4W3'
+              assign p10_series_label = 'Series 3'
+            elsif product.tags contains 'Series 2' or product.tags contains 'T4W2'
+              assign p10_series_label = 'Series 2'
+            elsif product.tags contains 'Series 1' or product.tags contains 'T4W1'
+              assign p10_series_label = 'Series 1'
+            endif
+
+            if p10_series_label != blank
+              assign p10_series_tokenized = p10_series_label | handle
+              assign p10_series_number = p10_series_label | remove: 'Series ' | plus: 0
+              assign p10_filter_tokens = p10_filter_tokens | append: ' ' | append: p10_series_tokenized
+            endif
+
+            for p10_tier_number in (1..5)
+              assign p10_tier_spaced = 'tier ' | append: p10_tier_number
+              assign p10_tier_token = 't' | append: p10_tier_number | append: 'w'
+              assign p10_tier_short = ' t' | append: p10_tier_number | append: ' '
+              if p10_tier_label == blank
+                if p10_detail_key contains p10_tier_spaced or p10_detail_key contains p10_tier_token or p10_detail_key contains p10_tier_short
+                  assign p10_tier_label = 'Tier ' | append: p10_tier_number
+                endif
+              endif
+            endfor
+
+            if p10_tier_label != blank
+              assign p10_tier_tokenized = p10_tier_label | handle
+              assign p10_filter_tokens = p10_filter_tokens | append: ' ' | append: p10_tier_tokenized
+            endif
+
+            if p10_detail_key contains 'hidden diamond zr' or p10_detail_key contains 'hidden zr' or p10_detail_key contains 'dzr'
+              assign p10_rarity_label = 'Hidden Diamond ZR'
+              assign p10_rarity_rank = 30
+              assign p10_filter_tokens = p10_filter_tokens | append: ' hidden-zr'
+            elsif product.tags contains 'ZR' or p10_detail_key contains ' zr ' or p10_detail_key contains '-zr-'
+              assign p10_rarity_label = 'ZR'
+              assign p10_rarity_rank = 20
+              assign p10_filter_tokens = p10_filter_tokens | append: ' zr'
+            elsif product.tags contains 'SC' or p10_detail_key contains ' sc ' or p10_detail_key contains '-sc-'
+              assign p10_rarity_label = 'SC'
+              assign p10_rarity_rank = 10
+              assign p10_filter_tokens = p10_filter_tokens | append: ' sc'
+            endif
+          -%}
+          <article
+            class="p10-single-card-product"
+            data-p10-product-card
+            data-p10-filter-tokens="{{ p10_filter_tokens | strip | escape }}"
+            data-p10-search-text="{{ p10_key | escape }}"
+            data-p10-price="{{ product.price_min }}"
+            data-p10-series="{{ p10_series_number }}"
+            data-p10-rarity-rank="{{ p10_rarity_rank }}"
+            data-p10-title="{{ product.title | escape }}"
+          >
+            <a class="p10-single-card-product__link" href="{{ product.url }}" aria-label="View {{ product.title | escape }}">
+              <span class="p10-single-card-product__media">
+                {% if product.featured_image %}
+                  {% assign image_alt = product.featured_image.alt | default: product.title | escape %}
+                  {{ product.featured_image | image_url: width: 900 | image_tag:
+                    class: 'p10-single-card-product__image',
+                    loading: 'lazy',
+                    widths: '320, 480, 640, 800, 900',
+                    sizes: '(min-width: 1200px) 24vw, (min-width: 750px) 33vw, 48vw',
+                    alt: image_alt
+                  }}
+                {% else %}
+                  {{ 'product-1' | placeholder_svg_tag: 'p10-single-card-product__image placeholder-svg' }}
+                {% endif %}
+              </span>
+              <span class="p10-single-card-product__info">
+                <span class="p10-single-card-product__badges">
+                  <span class="p10-single-card-product__badge">{{ p10_edition_label | default: p10_format_label }}</span>
+                  {% if p10_rarity_label != blank %}
+                    <span class="p10-single-card-product__badge p10-single-card-product__badge--rarity">{{ p10_rarity_label }}</span>
+                  {% endif %}
+                  <span class="p10-single-card-product__badge p10-single-card-product__badge--stock {{ p10_stock_class }}">{{ p10_stock_label }}</span>
+                </span>
+                {% if product.vendor != blank %}
+                  <span class="p10-single-card-product__vendor">{{ product.vendor | escape }}</span>
+                {% endif %}
+                <span class="p10-single-card-product__title">{{ product.title | escape }}</span>
+                <span class="p10-single-card-product__meta">
+                  {% if p10_series_label != blank %}<span>{{ p10_series_label }}</span>{% endif %}
+                  {% if p10_tier_label != blank %}<span>{{ p10_tier_label }}</span>{% endif %}
+                  {% if p10_rarity_label != blank %}<span>{{ p10_rarity_label }}</span>{% endif %}
+                  <span>{{ p10_format_label }}</span>
+                </span>
+                <span class="p10-single-card-product__price">
+                  {% if product.price_varies %}From {% endif %}{{ product.price_min | money }}
+                </span>
+                <span class="p10-single-card-product__cta">View details</span>
+              </span>
+            </a>
+          </article>
+        {% endfor %}
+        <p class="p10-single-card-empty p10-single-card-empty--filtered" data-p10-empty-state hidden>No products match this filter.</p>
+      {% else %}
+        <p class="p10-single-card-empty">Add products tagged SINGLE, Single Card, or MLP Single Card to this source collection.</p>
+      {% endif %}
+    </div>
+
+    <div class="p10-single-card-seo" data-p10-reveal>
+      <div class="p10-single-card-seo__copy">
+        <h2>{{ section.settings.seo_heading | escape }}</h2>
+        {% if section.settings.subheading != blank %}
+          <div class="p10-single-card-seo__intro">{{ section.settings.subheading }}</div>
+        {% endif %}
+        {% if section.settings.seo_text != blank %}
+          <div>{{ section.settings.seo_text }}</div>
+        {% endif %}
+      </div>
+      <ul class="p10-single-card-seo__points" aria-label="Collector shopping details">
+        <li><span>Browse KAYOU > My Little Pony > edition line > series > rarity</span></li>
+        <li><span>Open exact product pages before checkout</span></li>
+        <li><span>Only tagged single-card listings are shown here</span></li>
+      </ul>
+    </div>
+  </div>
+
+  {% if p10_count_all > 0 %}
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "CollectionPage",
+            "@id": {{ canonical_url | append: '#webpage' | json }},
+            "name": {{ section.settings.heading | json }},
+            "description": {{ section.settings.seo_text | strip_html | strip_newlines | json }},
+            "url": {{ canonical_url | json }},
+            "mainEntity": {
+              "@type": "ItemList",
+              "itemListElement": [
+                {%- assign p10_schema_position = 0 -%}
+                {% for product in p10_products limit: p10_products_limit %}
+                  {%- liquid
+                    assign p10_schema_tags = product.tags | join: ' ' | downcase
+                    assign p10_schema_key = product.title | append: ' ' | append: product.handle | append: ' ' | append: product.vendor | append: ' ' | append: p10_schema_tags | downcase
+                    assign p10_schema_is_single = false
+                    if product.type == 'MLP Single Card' or product.tags contains 'SINGLE' or product.tags contains 'Single Card' or product.tags contains 'MLP Single Card' or p10_schema_key contains 'single card'
+                      assign p10_schema_is_single = true
+                    endif
+                  -%}
+                  {%- unless p10_schema_is_single -%}
+                    {%- continue -%}
+                  {%- endunless -%}
+                  {%- assign p10_schema_position = p10_schema_position | plus: 1 -%}
+                  {% if p10_schema_position > 1 %},{% endif %}
+                  {
+                    "@type": "ListItem",
+                    "position": {{ p10_schema_position }},
+                    "name": {{ product.title | json }},
+                    "url": {{ shop.url | append: product.url | json }}
+                  }
+                {% endfor %}
+              ]
+            }
+          },
+          {
+            "@type": "BreadcrumbList",
+            "@id": {{ canonical_url | append: '#breadcrumb' | json }},
+            "itemListElement": [
+              {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": {{ shop.url | json }}
+              },
+              {
+                "@type": "ListItem",
+                "position": 2,
+                "name": {{ section.settings.heading | json }},
+                "item": {{ canonical_url | json }}
+              }
+            ]
+          }
+        ]
+      }
+    </script>
+  {% endif %}
+
+  <script src="{{ 'gsap.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'single-card-showcase.js' | asset_url }}" defer="defer"></script>
+</section>
+
+{% schema %}
+{
+  "name": "Single card showcase",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "pakracards x MLPEKAYOU"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "KAYOU My Little Pony Single Cards"
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "<p>Use the product filters to compare KAYOU-branded My Little Pony cards by series, format, and availability before opening the exact listing.</p>"
+    },
+    {
+      "type": "text",
+      "id": "seo_heading",
+      "label": "SEO heading",
+      "default": "MLP single cards for focused collectors"
+    },
+    {
+      "type": "richtext",
+      "id": "seo_text",
+      "label": "SEO text",
+      "default": "<p>This page highlights KAYOU-branded My Little Pony card listings for collectors who want to choose by series, edition, format, and availability. Product pages carry exact photos, prices, and item notes so buyers can review the listing before checkout.</p>"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_auto_collection",
+      "label": "Auto load products from collection",
+      "default": true
+    },
+    {
+      "type": "collection",
+      "id": "source_collection",
+      "label": "Single-card source collection"
+    },
+    {
+      "type": "range",
+      "id": "products_limit",
+      "label": "Products to show",
+      "min": 12,
+      "max": 50,
+      "step": 1,
+      "default": 50
+    },
+    {
+      "type": "product_list",
+      "id": "product_list",
+      "label": "Fallback manual products",
+      "limit": 50
+    }
+  ],
+  "presets": [
+    {
+      "name": "Single card showcase"
+    }
+  ]
+}
+{% endschema %}

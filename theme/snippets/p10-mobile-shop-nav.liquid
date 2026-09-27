@@ -1,0 +1,190 @@
+{%- liquid
+  assign p10_menu = linklists['v6-shop-navigation'].links
+  assign p10_shop_by_ip_url = routes.collections_url | default: '/collections'
+  assign p10_shop_by_type_url = collections['group-shop-by-type'].url | default: '/collections/group-shop-by-type'
+  assign p10_featured_url = collections['group-featured'].url | default: '/collections/group-featured'
+  assign p10_sealed_url = collections['type-sealed-cards'].url | default: '/collections/type-sealed-cards'
+  assign p10_single_card_url = pages['kayou-mlp-card-catalog'].url | default: '/pages/kayou-mlp-card-catalog'
+  assign p10_goodies_url = collections['type-merchandise'].url | default: '/collections/type-merchandise'
+  assign p10_accessories_url = collections['type-card-accessories'].url | default: '/collections/type-card-accessories'
+  assign p10_new_url = collections['featured-new-arrivals'].url | default: '/collections/featured-new-arrivals'
+  assign p10_buyer_url = collections['buyer-favorites'].url | default: '/collections/buyer-favorites'
+  assign p10_trending_url = collections['featured-trending-now'].url | default: '/collections/featured-trending-now'
+  assign p10_guest_url = collections['featured-guest-picks'].url | default: '/collections/featured-guest-picks'
+  assign p10_track_url = '/apps/track123'
+  assign p10_blog_url = pages['blog'].url | default: '/pages/blog'
+  assign p10_about_url = blogs['ambers-ponycove'].url | default: '/blogs/ambers-ponycove'
+  assign p10_guides_url = blogs['guide'].url | default: '/blogs/guide'
+  assign p10_diy_url = blogs['diy'].url | default: '/blogs/diy'
+  assign p10_discord_url = '/pages/links'
+
+  for p10_link in p10_menu
+    assign p10_handle = p10_link.title | handle
+    case p10_handle
+      when 'track-order'
+        assign p10_track_url = p10_link.url
+      when 'blog'
+        assign p10_blog_url = p10_link.url
+    endcase
+  endfor
+
+  assign p10_database_url = pages['kayou-mlp-card-catalog'].url | default: '/pages/kayou-mlp-card-catalog'
+  assign p10_mlp_url = pages['my-little-pony'].url | default: '/pages/my-little-pony'
+  assign p10_transformers_url = collections['ip-transformers'].url | default: '/collections/ip-transformers'
+  assign p10_naruto_url = pages['naruto'].url | default: '/pages/naruto'
+  assign p10_inuyasha_url = collections['ip-inuyasha'].url | default: '/collections/ip-inuyasha'
+  assign p10_arknights_url = pages['arknights'].url | default: '/pages/arknights'
+  assign p10_harry_potter_url = pages['harry-potter'].url | default: '/pages/harry-potter'
+  assign p10_powerpuff_url = pages['the-powerpuff-girls'].url | default: '/pages/the-powerpuff-girls'
+  assign p10_persona_url = collections['ip-persona-5-royal'].url | default: '/collections/ip-persona-5-royal'
+  assign p10_miku_url = collections['ip-hatsune-miku'].url | default: '/collections/ip-hatsune-miku'
+  assign p10_disney_url = collections['ip-disney'].url | default: '/collections/ip-disney'
+-%}
+
+<nav
+  class="p10-mobile-shop-nav"
+  data-p10-mobile-shop-nav
+  data-p10-sealed-url="{{ p10_sealed_url | escape }}"
+  data-p10-single-card-url="{{ p10_single_card_url | escape }}"
+  data-p10-goodies-url="{{ p10_goodies_url | escape }}"
+  data-p10-database-url="{{ p10_database_url | escape }}"
+  data-p10-shop-by-ip-url="{{ p10_shop_by_ip_url | escape }}"
+  data-p10-shop-by-type-url="{{ p10_shop_by_type_url | escape }}"
+  data-p10-featured-url="{{ p10_featured_url | escape }}"
+  data-p10-accessories-url="{{ p10_accessories_url | escape }}"
+  data-p10-new-url="{{ p10_new_url | escape }}"
+  data-p10-buyer-url="{{ p10_buyer_url | escape }}"
+  data-p10-trending-url="{{ p10_trending_url | escape }}"
+  data-p10-guest-url="{{ p10_guest_url | escape }}"
+  data-p10-mlp-url="{{ p10_mlp_url | escape }}"
+  data-p10-transformers-url="{{ p10_transformers_url | escape }}"
+  data-p10-naruto-url="{{ p10_naruto_url | escape }}"
+  data-p10-inuyasha-url="{{ p10_inuyasha_url | escape }}"
+  data-p10-arknights-url="{{ p10_arknights_url | escape }}"
+  data-p10-harry-potter-url="{{ p10_harry_potter_url | escape }}"
+  data-p10-powerpuff-url="{{ p10_powerpuff_url | escape }}"
+  data-p10-persona-url="{{ p10_persona_url | escape }}"
+  data-p10-miku-url="{{ p10_miku_url | escape }}"
+  data-p10-disney-url="{{ p10_disney_url | escape }}"
+  aria-label="Mobile shopping navigation"
+>
+  <div class="p10-mobile-shop-nav__rail" aria-label="Quick product paths">
+    <form action="{{ routes.search_url }}" method="get" role="search" class="p10-mobile-shop-nav__search">
+  <input type="hidden" name="options[prefix]" value="last">
+  <input type="hidden" name="options[fields]" value="title,tag,product_type,variants.title,vendor">
+      <input type="hidden" name="type" value="product">
+
+      <label class="visually-hidden" for="P10MobileShopSearch">Search products</label>
+      <input id="P10MobileShopSearch" name="q" type="search" inputmode="search" autocomplete="off" placeholder="Search Moon 11, cards" aria-label="Search products" aria-controls="P10MobileQuickSuggestions">
+      <button type="submit" aria-label="Search products">
+        {% render 'icon-search' %}
+      </button>
+    </form>
+
+    <a class="p10-mobile-shop-nav__chip" href="{{ p10_shop_by_ip_url }}">IPs</a>
+    <a class="p10-mobile-shop-nav__chip p10-mobile-shop-nav__chip--accent" href="{{ p10_shop_by_type_url }}">Types</a>
+    <a class="p10-mobile-shop-nav__chip" href="{{ p10_featured_url }}">Featured</a>
+    <a class="p10-mobile-shop-nav__chip" href="{{ p10_blog_url }}">Blog</a>
+    <button class="p10-mobile-shop-nav__chip p10-mobile-shop-nav__chip--menu" type="button" data-p10-mobile-shop-open aria-controls="P10MobileShopDrawer" aria-expanded="false">
+      Menu
+    </button>
+  </div>
+
+  <div class="p10-mobile-shop-nav__quick-suggestions" id="P10MobileQuickSuggestions" data-p10-mobile-quick-suggestions hidden aria-live="polite">
+    <span class="p10-mobile-shop-nav__suggestions-title" data-p10-mobile-quick-suggestions-title>Suggested paths</span>
+    <div class="p10-mobile-shop-nav__suggestions-list" data-p10-mobile-quick-suggestions-list></div>
+  </div>
+
+  <div class="p10-mobile-shop-nav__overlay" data-p10-mobile-shop-close tabindex="-1" aria-hidden="true"></div>
+  <aside class="p10-mobile-shop-nav__drawer" id="P10MobileShopDrawer" aria-hidden="true" aria-label="Shop categories and search">
+    <div class="p10-mobile-shop-nav__handle" aria-hidden="true"></div>
+    <div class="p10-mobile-shop-nav__drawer-head">
+      <div>
+        <span class="p10-mobile-shop-nav__eyebrow">Shop Finder</span>
+        <strong>Find your product path</strong>
+      </div>
+      <button type="button" class="p10-mobile-shop-nav__close" data-p10-mobile-shop-close aria-label="Close menu">
+        {% render 'icon-close' %}
+      </button>
+    </div>
+
+    <form action="{{ routes.search_url }}" method="get" role="search" class="p10-mobile-shop-nav__drawer-search">
+  <input type="hidden" name="options[prefix]" value="last">
+  <input type="hidden" name="options[fields]" value="title,tag,product_type,variants.title,vendor">
+      <input type="hidden" name="type" value="product">
+
+      <label class="visually-hidden" for="P10MobileDrawerSearch">Search products</label>
+      <input id="P10MobileDrawerSearch" name="q" type="search" inputmode="search" autocomplete="off" placeholder="MLP, Naruto, Harry Potter, single cards" aria-controls="P10MobileDrawerSuggestions">
+      <button type="submit" aria-label="Search products">
+        {% render 'icon-search' %}
+      </button>
+    </form>
+
+    <div class="p10-mobile-shop-nav__suggestions" id="P10MobileDrawerSuggestions" data-p10-mobile-suggestions hidden aria-live="polite">
+      <span class="p10-mobile-shop-nav__suggestions-title" data-p10-mobile-suggestions-title>Suggested paths</span>
+      <div class="p10-mobile-shop-nav__suggestions-list" data-p10-mobile-suggestions-list></div>
+    </div>
+
+    <div class="p10-mobile-shop-nav__section">
+      <span class="p10-mobile-shop-nav__section-title">Shop navigation</span>
+      <div class="p10-mobile-shop-nav__grid">
+        <a href="{{ p10_shop_by_ip_url }}" class="p10-mobile-shop-nav__card">
+          <span>SHOP BY IP</span>
+          <small>10 active IP collections</small>
+        </a>
+        <a href="{{ p10_shop_by_type_url }}" class="p10-mobile-shop-nav__card">
+          <span>SHOP BY TYPE</span>
+          <small>Cards, merch, accessories</small>
+        </a>
+        <a href="{{ p10_featured_url }}" class="p10-mobile-shop-nav__card">
+          <span>FEATURED</span>
+          <small>Current store highlights</small>
+        </a>
+      </div>
+    </div>
+
+    <div class="p10-mobile-shop-nav__section">
+      <span class="p10-mobile-shop-nav__section-title">Shop by Type</span>
+      <div class="p10-mobile-shop-nav__grid">
+        <a href="{{ p10_sealed_url }}" class="p10-mobile-shop-nav__card"><span>Sealed Cards</span><small>Boxes and packs</small></a>
+        <a href="{{ p10_single_card_url }}" class="p10-mobile-shop-nav__card"><span>Single Cards</span><small>Individual card listings</small></a>
+        <a href="{{ p10_goodies_url }}" class="p10-mobile-shop-nav__card">
+          <span>Merchandise</span>
+          <small>Plush, charms, figures</small>
+        </a>
+        <a href="{{ p10_accessories_url }}" class="p10-mobile-shop-nav__card"><span>Card Accessories</span><small>Sleeves and supplies</small></a>
+      </div>
+    </div>
+
+    <div class="p10-mobile-shop-nav__section">
+      <span class="p10-mobile-shop-nav__section-title">Featured</span>
+      <div class="p10-mobile-shop-nav__grid">
+        <a href="{{ p10_new_url }}" class="p10-mobile-shop-nav__card">
+          <span>New Arrivals</span>
+          <small>Latest active listings</small>
+        </a>
+        <a href="{{ p10_buyer_url }}" class="p10-mobile-shop-nav__card"><span>Buyer Favorites</span><small>Popular collector picks</small></a>
+        <a href="{{ p10_trending_url }}" class="p10-mobile-shop-nav__card"><span>Trending Now</span><small>Current store interest</small></a>
+        <a href="{{ p10_guest_url }}" class="p10-mobile-shop-nav__card"><span>Guest Picks</span><small>Curated recommendations</small></a>
+      </div>
+    </div>
+
+    <div class="p10-mobile-shop-nav__section p10-mobile-shop-nav__section--ips">
+      <span class="p10-mobile-shop-nav__section-title">Shop by IP</span>
+      <div class="p10-mobile-shop-nav__ip-list" data-p10-mobile-ip-list aria-label="Shop by IP"></div>
+      <noscript>
+        <a class="p10-mobile-shop-nav__all-ips" href="{{ p10_shop_by_ip_url }}">View all IPs →</a>
+      </noscript>
+    </div>
+
+    <div class="p10-mobile-shop-nav__service" aria-label="Service links">
+      <a href="{{ p10_blog_url }}">Blog home</a>
+      <a href="{{ p10_guides_url }}">Collector guides</a>
+      <a href="{{ p10_diy_url }}">DIY &amp; Display</a>
+      <a href="{{ p10_database_url }}">Card database</a>
+      <a href="{{ p10_about_url }}">Behind the shop</a>
+      <a href="{{ p10_track_url }}">Track order</a>
+      <a href="{{ p10_discord_url }}">Discord</a>
+    </div>
+  </aside>
+</nav>

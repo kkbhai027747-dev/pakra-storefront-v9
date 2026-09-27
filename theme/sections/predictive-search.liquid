@@ -1,0 +1,133 @@
+{%- if predictive_search.performed -%}
+    {%- liquid
+        assign prisma_predictive_terms_normalized = predictive_search.terms | downcase | strip
+        assign prisma_predictive_target_url = ''
+        assign prisma_predictive_english_cards = false
+        if prisma_predictive_terms_normalized == 'english cards' or prisma_predictive_terms_normalized == 'english card'
+            assign prisma_predictive_english_cards = true
+            assign prisma_predictive_target_url = '/collections/english-card-boxes'
+        endif
+        assign prisma_predictive_chinese_cards = false
+        if prisma_predictive_terms_normalized == 'chinese cards' or prisma_predictive_terms_normalized == 'chinese card' or prisma_predictive_terms_normalized == 'cn cards' or prisma_predictive_terms_normalized == 'cn card'
+            assign prisma_predictive_chinese_cards = true
+            assign prisma_predictive_target_url = '/collections/cn-trading-card-boxes'
+        endif
+        assign prisma_predictive_tcg_cards = false
+        if prisma_predictive_terms_normalized == 'tcg' or prisma_predictive_terms_normalized == 'tcg cards' or prisma_predictive_terms_normalized == 'tcg card' or prisma_predictive_terms_normalized == 'trading card game'
+            assign prisma_predictive_tcg_cards = true
+            assign prisma_predictive_target_url = '/collections/tcg-card-boxes'
+        endif
+        assign prisma_predictive_ccg_cards = false
+        if prisma_predictive_terms_normalized == 'ccg' or prisma_predictive_terms_normalized == 'ccg cards' or prisma_predictive_terms_normalized == 'ccg card' or prisma_predictive_terms_normalized == 'collectible card game'
+            assign prisma_predictive_ccg_cards = true
+            assign prisma_predictive_target_url = '/collections/ccg-card-boxes'
+        endif
+    -%}
+    <div id="predictive-search-results" class="quickSearchResults quickSearchResultsBlock custom-scrollbar" >
+        <div class="container">
+            <h2 id="predictive-search-products" class="predictive-search__heading text-body caption-with-letter-spacing search-block-title text-left">
+                <span class="text">{{ 'general.search.search_result_title' | t }}</span>
+                <svg aria-hidden="true" focusable="false" role="presentation" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+                    <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+                </svg>
+            </h2> 
+            <div id="predictive-search-results-list" class="predictive-search__results-list list-unstyled" role="listbox" aria-labelledby="predictive-search-products">
+                {%- if predictive_search.resources.products.size > 0 -%} 
+                    <div class="products-grid column-{{ settings.search_product_per_row }} disable-srollbar text-left">
+                    {%- for product in predictive_search.resources.products -%}
+                        {%- liquid
+                            assign prisma_show_predictive_product = true
+                            assign prisma_predictive_text = product.title | append: ' ' | append: product.handle | downcase
+                            assign prisma_predictive_tags = product.tags | join: '|' | downcase
+                            if prisma_predictive_english_cards
+                                assign prisma_predictive_is_chinese = false
+                                if prisma_predictive_text contains 'chinese' or prisma_predictive_tags contains 'chinese edition' or prisma_predictive_tags contains 'chinese cards' or prisma_predictive_tags contains 'cn kayou'
+                                    assign prisma_predictive_is_chinese = true
+                                endif
+                                assign prisma_predictive_is_english = false
+                                if prisma_predictive_tags contains 'english cards' or prisma_predictive_tags contains 'english edition' or prisma_predictive_tags contains 'kayou english' or prisma_predictive_text contains ' english '
+                                    assign prisma_predictive_is_english = true
+                                endif
+                                unless prisma_predictive_is_english
+                                    assign prisma_show_predictive_product = false
+                                endunless
+                                if prisma_predictive_is_chinese
+                                    assign prisma_show_predictive_product = false
+                                endif
+                            endif
+                            if prisma_predictive_chinese_cards
+                                assign prisma_predictive_is_chinese = false
+                                if prisma_predictive_text contains 'chinese' or prisma_predictive_tags contains 'chinese edition' or prisma_predictive_tags contains 'chinese cards' or prisma_predictive_tags contains 'cn kayou'
+                                    assign prisma_predictive_is_chinese = true
+                                endif
+                                assign prisma_predictive_is_english = false
+                                if prisma_predictive_tags contains 'english cards' or prisma_predictive_tags contains 'english edition' or prisma_predictive_tags contains 'kayou english' or prisma_predictive_text contains ' english '
+                                    assign prisma_predictive_is_english = true
+                                endif
+                                unless prisma_predictive_is_chinese
+                                    assign prisma_show_predictive_product = false
+                                endunless
+                                if prisma_predictive_is_english
+                                    assign prisma_show_predictive_product = false
+                                endif
+                            endif
+                            if prisma_predictive_tcg_cards
+                                unless prisma_predictive_tags contains 'tcg cards' or prisma_predictive_tags contains 'trading card game' or prisma_predictive_text contains ' trading card game' or prisma_predictive_text contains ' tcg' or prisma_predictive_text contains 'tcg:'
+                                    assign prisma_show_predictive_product = false
+                                endunless
+                            endif
+                            if prisma_predictive_ccg_cards
+                                unless prisma_predictive_tags contains 'ccg cards'
+                                    assign prisma_show_predictive_product = false
+                                endunless
+                            endif
+                        -%}
+                        {%- if prisma_show_predictive_product -%}
+                        <div class="product{% if settings.banner_animation == 'effect_fade_up' %} scroll-trigger animate--slide-in{% endif %}"{% if settings.banner_animation == 'effect_fade_up' %} style="--animation-order: {{ forloop.index }};"{% endif %}>
+                            {% render 'product-grid-layout',
+                                product_card_product: product,
+                                portrait_aspect_ratio: '125',
+                                serial: forloop.index,
+                                sectionId: sectionId,
+                                media_size: image_ratio,
+                                hasCountdown: hasCountdown,
+                                loading: true
+                            %}
+                        </div>
+                        {%- endif -%}
+                    {%- endfor -%}
+                    </div>      
+                    <div id="predictive-search-option-search-keywords" class="predictive-search__list-item productViewAll" role="option">
+                        <a href="{% if prisma_predictive_target_url != blank %}{{ prisma_predictive_target_url }}{% else %}{{ routes.search_url }}?q={{ predictive_search.terms }}&type=product{% endif %}" class="predictive-search__item predictive-search__item--term link link--text h5 animate-arrow button button-view-all" tabindex="-1" data-qs-view-all-link>
+                            {%- if search.results_count == 0 -%}
+                                {{ 'templates.search.no_results' | t: terms: predictive_search.terms }}
+                            {%- else -%}
+                                {{ 'general.search.view_all' | t: count: search.results_count }}
+                            {%- endif -%}
+                        </a>
+                    </div>  
+                    <div class="predictive-search__loading-state" aria-hidden="true">
+                        <svg aria-hidden="true" focusable="false" role="presentation" class="spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+                            <circle class="path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle>
+                        </svg>
+                    </div>
+                {%- else -%}
+                    <div class="productEmpty text-center animate-arrow">
+                        <a class="icon-arrow search-more" href="{% if prisma_predictive_target_url != blank %}{{ prisma_predictive_target_url }}{% else %}{{ routes.search_url }}?q={{ predictive_search.terms }}&type=product{% endif %}" >
+                            <span class="text">{{ 'general.search.search_no_result' | t }} <strong>"{{ predictive_search.terms }}"</strong></span>
+                            {% render 'icon-link-arrow-right' %}
+                        </a>
+                        {% comment %} <span class="keyword"><strong>{{ predictive_search.terms }}</strong></span> {% endcomment %}
+                    </div>
+                {%- endif -%}
+            </div>  
+            <span class="hidden" data-predictive-search-live-region-count-value>
+                {%- if search.results_count == 0 -%}
+                    {{ 'templates.search.no_results' | t: terms: predictive_search.terms }}
+                {%- else -%}
+                    {{ 'general.search.view_all' | t: count: predictive_search.resources.products.size }}
+                {%- endif -%}
+            </span>
+        </div>
+    </div>
+{%- endif -%}

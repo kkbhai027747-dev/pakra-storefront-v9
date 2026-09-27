@@ -1,0 +1,81 @@
+{%- liquid
+  assign style_code = style_override | default: 'auto' | upcase
+  assign focal_position = 'center'
+-%}
+{%- if style_code == 'AUTO' -%}
+  {%- assign style_code = 'BLOG-01' -%}
+  {%- for article_tag in article.tags -%}
+    {%- assign normalized_tag = article_tag | downcase | strip -%}
+    {%- if normalized_tag contains 'display:blog-' -%}
+      {%- assign candidate_code = normalized_tag | remove: 'display:' | upcase -%}
+      {%- case candidate_code -%}
+        {%- when 'BLOG-01', 'BLOG-02', 'BLOG-03', 'BLOG-04', 'BLOG-05', 'BLOG-06', 'BLOG-07', 'BLOG-08' -%}
+          {%- assign style_code = candidate_code -%}
+          {%- break -%}
+      {%- endcase -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endif -%}
+{%- unless style_code == 'BLOG-01' or style_code == 'BLOG-02' or style_code == 'BLOG-03' or style_code == 'BLOG-04' or style_code == 'BLOG-05' or style_code == 'BLOG-06' or style_code == 'BLOG-07' or style_code == 'BLOG-08' -%}
+  {%- assign style_code = 'BLOG-01' -%}
+{%- endunless -%}
+
+{%- for article_tag in article.tags -%}
+  {%- assign normalized_tag = article_tag | downcase | strip -%}
+  {%- case normalized_tag -%}
+    {%- when 'focal:left' -%}
+      {%- assign focal_position = 'left' -%}
+      {%- break -%}
+    {%- when 'focal:right' -%}
+      {%- assign focal_position = 'right' -%}
+      {%- break -%}
+    {%- when 'focal:center' -%}
+      {%- assign focal_position = 'center' -%}
+      {%- break -%}
+  {%- endcase -%}
+{%- endfor -%}
+
+{%- liquid
+  assign style_slug = style_code | downcase
+  assign card_label = label | default: journal_label | default: 'Collector Journal'
+  assign card_excerpt = article.excerpt | strip_html | strip
+  assign stripped_content = article.content | strip_html | strip
+  if card_excerpt == blank
+    assign card_excerpt = stripped_content | truncatewords: 28
+  endif
+
+  assign article_word_count = stripped_content | split: ' ' | size
+  assign read_minutes = article_word_count | divided_by: 200.0 | ceil
+  if read_minutes < 1
+    assign read_minutes = 1
+  endif
+
+  assign featured_modifier = ''
+  if featured
+    assign featured_modifier = ' p10-blog-card--featured'
+  endif
+-%}
+
+<article class="p10-blog-card p10-blog-card--{{ style_slug }} p10-blog-card--focal-{{ focal_position }}{{ featured_modifier }}">
+  <a class="p10-blog-card__link" href="{{ article.url | escape }}">
+    <span class="p10-blog-card__media">
+      {%- render 'p10-blog-card-image',
+        article: article,
+        loading: loading,
+        fetchpriority: fetchpriority,
+        sizes: sizes
+      -%}
+    </span>
+    <div class="p10-blog-card__copy">
+      <span class="p10-blog-card__label">{{ card_label | escape }}</span>
+      <h3 class="p10-blog-card__title">{{ article.title | escape }}</h3>
+      {%- if card_excerpt != blank -%}
+        <span class="p10-blog-card__excerpt">{{ card_excerpt | escape }}</span>
+      {%- endif -%}
+      <span class="p10-blog-card__footer">
+        <span class="p10-blog-card__read-time">{{ read_minutes }} min read</span>
+        <span class="p10-blog-card__read">Read <span aria-hidden="true">&rarr;</span></span>
+      </span>
+    </div>
+  </a>
+</article>

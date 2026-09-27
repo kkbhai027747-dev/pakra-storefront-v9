@@ -1,0 +1,735 @@
+<!doctype html>
+{%- comment -%} codex_v5_render_epoch_20260717_product_cache_refresh {%- endcomment -%}
+{%- comment -%} codex_v5_render_epoch_20260717_keyword_hubs {%- endcomment -%}
+{%- liquid
+    if settings.list_iso_rtl != blank
+        assign locale_iso_code = request.locale.iso_code
+        assign arr_list_rtl = settings.list_iso_rtl | remove:' ' | split:',' 
+        if arr_list_rtl contains locale_iso_code
+            assign enable_iso_rtl = true
+        else
+            assign enable_iso_rtl = false
+        endif
+    endif
+-%}
+<html class="no-js" lang="{{ request.locale.iso_code }}"{% if settings.enable_layout_rtl and enable_iso_rtl %} dir="rtl"{% endif %}>
+    <head>
+        <meta charset="utf-8">
+    <script>
+      (() => {
+        let mode = '';
+        try {
+          const stored = window.localStorage.getItem('p10-color-mode');
+          if (stored === 'light' || stored === 'dark') mode = stored;
+        } catch (error) {
+          mode = '';
+        }
+        if (!mode) mode = window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.dataset.p10ColorMode = mode;
+        document.documentElement.style.colorScheme = mode;
+      })();
+    </script>
+    {{ 'custom.css' | asset_url | stylesheet_tag }}<style>
+@media (max-width: 749px) {
+  #shopify-section-template--20862649860284__16321237356a896dad { display: none !important; }
+}
+@media (min-width: 750px) {
+  #shopify-section-template--20862649860284__slide_show_TCdpeX { display: none !important; }
+}
+</style>
+
+	<!-- Added by AVADA SEO Suite -->
+	{% include 'avada-seo' %}
+	<!-- /Added by AVADA SEO Suite -->
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <meta name="theme-color" content="">
+        <link rel="canonical" href="{{ canonical_url }}" canonical-shop-url="{{ shop.url }}/">
+        {%- liquid
+            assign codex_track123_path = '/apps/track123'
+            assign codex_locale_root = routes.root_url | default: '/'
+            unless codex_locale_root == '/'
+                assign codex_track123_path = codex_locale_root | append: '/apps/track123'
+            endunless
+            assign codex_track123_path_with_slash = codex_track123_path | append: '/'
+            assign codex_is_track123_page = false
+            if request.path == codex_track123_path or request.path == codex_track123_path_with_slash
+                assign codex_is_track123_page = true
+            endif
+
+            assign codex_robots_content = ''
+            if request.page_type == 'cart' or codex_is_track123_page
+                assign codex_robots_content = 'noindex,follow'
+            elsif request.page_type == 'search'
+                assign codex_robots_content = 'noindex,follow'
+            elsif collection and current_tags
+                assign codex_robots_content = 'noindex,follow'
+            elsif collection and collection.handle == 'avada-best-sellers'
+                assign codex_robots_content = 'noindex,follow'
+            elsif page and page.handle == 'links'
+                assign codex_robots_content = 'noindex,follow'
+            elsif product and product.description contains 'Product testing phase'
+                assign codex_robots_content = 'noindex,follow'
+            elsif collection and collection.handle == 'cn-tcg-card-boxes' and collection.products_count == 0
+                assign codex_robots_content = 'noindex,follow'
+            endif
+        -%}
+        {%- if codex_robots_content != blank -%}
+            <meta name="robots" content="{{ codex_robots_content }}">
+        {%- endif -%}
+        {%- if settings.favicon != blank -%}
+            <link rel="shortcut icon" href="{{ settings.favicon | img_url: '32x32' }}" type="image/png">
+        {%- endif -%}
+        <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+        {%- if request.page_type == 'index' -%}
+            <link rel="preload" as="image" href="{{ 'p10-mlp-heimantou-collab-hero-mobile-768x960.png' | asset_url }}" media="(max-width: 760px)" fetchpriority="high">
+            <link rel="preload" as="image" href="{{ 'p10-mlp-heimantou-collab-hero-desktop-2048x768.png' | asset_url }}" media="(min-width: 761px)" fetchpriority="high">
+        {%- endif -%}
+        {%- liquid
+            assign seo_page_title = page_title
+            assign seo_page_description = page_description
+
+            if product
+                if product.metafields.global.title_tag != blank
+                    assign seo_page_title = product.metafields.global.title_tag
+                endif
+                if product.metafields.global.description_tag != blank
+                    assign seo_page_description = product.metafields.global.description_tag
+                endif
+            elsif collection
+                case collection.handle
+                    when 'cn-trading-card-boxes'
+                        assign seo_page_title = 'CN Trading Card Boxes | Sealed KAYOU IP Boxes'
+                        assign seo_page_description = 'Browse CN sealed trading card boxes by IP, edition line, and box format, including KAYOU My Little Pony, Naruto, Harry Potter, and more collector products.'
+                    when 'cn-mlp-card-boxes'
+                        assign seo_page_title = 'CN KAYOU My Little Pony Card Boxes'
+                        assign seo_page_description = 'Shop CN KAYOU My Little Pony sealed card boxes, display boxes, preorder boxes, and edition lines with exact product photos and collector-focused details.'
+                    when 'cn-moon-edition-card-boxes'
+                        assign seo_page_title = 'CN MLP Moon Edition Card Boxes'
+                        assign seo_page_description = 'Browse CN KAYOU My Little Pony Moon Edition sealed card boxes with current listings, exact photos, prices, and collector-friendly shipping details.'
+                    when 'cn-shadow-edition-card-boxes'
+                        assign seo_page_title = 'CN MLP Fun Moments Edition Card Boxes'
+                        assign seo_page_description = 'Browse CN KAYOU My Little Pony Fun Moments Edition sealed card boxes with current listings, exact photos, prices, and collector-friendly shipping details.'
+                    when 'cn-rainbow-edition-card-boxes'
+                        assign seo_page_title = 'CN MLP Rainbow Edition Card Boxes'
+                        assign seo_page_description = 'Browse CN KAYOU My Little Pony Rainbow Edition sealed card boxes with current listings, exact photos, prices, and collector-friendly shipping details.'
+                    when 'cn-fan-xin-edition-card-boxes'
+                        assign seo_page_title = 'CN MLP Star Edition Card Boxes'
+                        assign seo_page_description = 'Browse CN KAYOU My Little Pony Star Edition sealed card boxes with current listings, exact photos, prices, and collector-friendly shipping details.'
+                    when 'cn-display-card-boxes'
+                        assign seo_page_title = 'CN Display Card Boxes | Sealed Trading Card Boxes'
+                        assign seo_page_description = 'Shop CN display card boxes and sealed trading card box products by IP, edition line, availability, and preorder status at pakracards.'
+                    when 'cn-booster-card-boxes'
+                        assign seo_page_title = 'CN Booster Card Boxes | Sealed Trading Card Boxes'
+                        assign seo_page_description = 'Shop CN booster-style sealed card boxes and trading card box products by IP, edition line, availability, and preorder status at pakracards.'
+                    when 'cn-preorder-card-boxes'
+                        assign seo_page_title = 'CN Preorder Card Boxes | Sealed Trading Card Boxes'
+                        assign seo_page_description = 'Browse CN preorder card boxes and upcoming sealed trading card box products with product photos, prices, and collector notes from pakracards.'
+                endcase
+                if collection.metafields.global.title_tag != blank
+                    assign seo_page_title = collection.metafields.global.title_tag
+                endif
+                if collection.metafields.global.description_tag != blank
+                    assign seo_page_description = collection.metafields.global.description_tag
+                endif
+            elsif article
+                if article.metafields.codex_seo.title_tag != blank
+                    assign seo_page_title = article.metafields.codex_seo.title_tag
+                elsif article.metafields.global.title_tag != blank
+                    assign seo_page_title = article.metafields.global.title_tag
+                endif
+                if article.metafields.codex_seo.description_tag != blank
+                    assign seo_page_description = article.metafields.codex_seo.description_tag
+                elsif article.metafields.global.description_tag != blank
+                    assign seo_page_description = article.metafields.global.description_tag
+                endif
+            elsif page
+                if template.suffix == 'single-card'
+                    assign seo_page_title = 'KAYOU My Little Pony Single Cards | pakracards x MLPEKAYOU'
+                    assign seo_page_description = 'Shop KAYOU My Little Pony single cards and card products by series, format, and availability with exact photos, prices, and collector notes.'
+                elsif template.suffix == 'tcg-battle'
+                    assign seo_page_title = 'KAYOU MLP TCG Battle Cards | Starter Decks | pakracards'
+                    assign seo_page_description = 'Shop KAYOU My Little Pony TCG battle-card products, starter decks, character decks, and Friendship Voyage releases with exact product photos and buying notes.'
+                elsif template.suffix == 'shipping-delivery'
+                    assign seo_page_title = 'Shipping & Delivery Options | pakracards'
+                    assign seo_page_description = 'Compare pakracards shipping options, CNE Global Special, CNE Global Economy, and CNE Global Economy HS, with reference delivery times for collectible card orders.'
+                elsif page.handle == 'naruto'
+                    assign seo_page_title = 'KAYOU Naruto CCG Card Boxes | Chinese Edition'
+                    assign seo_page_description = 'Shop KAYOU Naruto CCG sealed card boxes for the Chinese Edition, including current Tier 2 and Tier 4 releases.'
+                else
+                    if page.metafields.global.title_tag != blank
+                        assign seo_page_title = page.metafields.global.title_tag
+                    endif
+                    if page.metafields.global.description_tag != blank
+                        assign seo_page_description = page.metafields.global.description_tag
+                    endif
+                endif
+            elsif blog
+                if blog.metafields.global.title_tag != blank
+                    assign seo_page_title = blog.metafields.global.title_tag
+                endif
+                if blog.metafields.global.description_tag != blank
+                    assign seo_page_description = blog.metafields.global.description_tag
+                endif
+            elsif request.page_type == 'list-collections'
+                assign seo_page_title = 'Shop CCG, TCG & Collectibles by IP | pakracards'
+                assign seo_page_description = 'Explore collectible card games (CCG), trading card games (TCG), merchandise, and collectibles by IP, including Pokémon, Disney, Marvel, DC, and more.'
+            elsif request.page_type == 'index'
+                if shop.metafields.global.title_tag != blank
+                    assign seo_page_title = shop.metafields.global.title_tag
+                endif
+                if shop.metafields.global.description_tag != blank
+                    assign seo_page_description = shop.metafields.global.description_tag
+                endif
+            endif
+
+        -%}
+        {%- capture codex_seo_page_title -%}
+            {%- if article -%}
+                {%- if canonical_url contains "/blogs/mlp-t2/test-1" -%}MLP T2-6 Card Guide | pakracards Collector Guide
+                {%- elsif canonical_url contains "/blogs/mlp-t2/test-2" -%}MLP T2-7 Card Guide | pakracards Collector Guide
+                {%- elsif canonical_url contains "/blogs/mlp-t2/test-3" -%}MLP T2-1 Card Guide | pakracards Collector Guide
+                {%- elsif canonical_url contains "/blogs/mlp-t2/t2-3" -%}MLP T2-3 Card Guide | pakracards Collector Guide
+                {%- elsif canonical_url contains "/blogs/mlp-t2/t2-4" -%}MLP T2-4 Card Guide | pakracards Collector Guide
+                {%- elsif canonical_url contains "/blogs/mlp-t2/t2-5" -%}MLP T2-5 Card Guide | pakracards Collector Guide
+                {%- elsif canonical_url contains "/blogs/mlp-3/t3-3" -%}MLP T3-3 Card Guide | pakracards Collector Guide
+                {%- elsif canonical_url contains "/blogs/mlp-3/t3-5" -%}MLP T3-5 Card Guide | pakracards Collector Guide
+                {%- elsif canonical_url contains "/blogs/mlp-3/t3-4" -%}MLP T3-4 Card Guide | pakracards Collector Guide
+                {%- elsif canonical_url contains "/blogs/mlp-t4/t4-7" -%}MLP T4-7 Card Guide | pakracards Collector Guide
+                {%- elsif canonical_url contains "/blogs/mlp-t4/t4-10" -%}MLP T4-10 Card Guide | pakracards Collector Guide
+                {%- elsif canonical_url contains "/blogs/mlp-t4/t4-9" -%}MLP T4-9 Card Guide | pakracards Collector Guide
+                {%- elsif canonical_url contains "/blogs/mlp-t4/t4-8" -%}MLP T4-8 Card Guide | pakracards Collector Guide
+                {%- elsif canonical_url contains "/blogs/mlp-t4/t4-6" -%}MLP T4-6 Card Guide | pakracards Collector Guide
+                {%- elsif canonical_url contains "/blogs/mlp-t4/t4-11" -%}MLP T4-11 Card Guide | pakracards Collector Guide
+                {%- elsif canonical_url contains "/blogs/mlp-t5/t5-1" -%}MLP T5-1 Card Guide | pakracards Collector Guide
+                {%- elsif canonical_url contains "/blogs/mlp-t5/t5-2" -%}MLP T5-2 Card Guide | pakracards Collector Guide
+                {%- elsif canonical_url contains "/blogs/guide/safe-shipping-mlp-kayou-cards" -%}Safe MLP Kayou Card Shipping Guide | pakracards
+                {%- elsif canonical_url contains "/blogs/diy/diy-custom-display-cases-mlp-tcg" -%}DIY MLP TCG Display Case Ideas | pakracards Guide
+                {%- elsif canonical_url contains "/blogs/ambers-ponycove/why-i-started-this-little-corner-a-journey-from-childhood-magic-to-real-world-connection-by-amber" -%}pakracards Story | MLP Collector Shop Journey Online
+                {%- elsif canonical_url contains "/blogs/ambers-ponycove/don-t-just-chase-the-hit-how-to-build-a-healthy-collecting-mindset" -%}Healthy TCG Collecting Mindset | pakracards Guide
+                {%- elsif canonical_url contains "/blogs/guide/voices-from-the-source-why-first-hand-inventory-matters-for-your-pull-rates" -%}First-Hand Inventory & Pull Rates | pakracards Guide
+                {%- else -%}{{ seo_page_title }}
+                {%- endif -%}
+            {%- else -%}{{ seo_page_title }}{%- endif -%}
+        {%- endcapture -%}
+        {%- assign codex_seo_page_title = codex_seo_page_title | strip -%}
+        {%- capture codex_seo_page_description -%}
+            {%- if article -%}
+                {%- if canonical_url contains "/blogs/mlp-t2/test-1" -%}Explore MLP T2-6 cards at pakracards, with collector-focused details, related products, and practical buying tips for TCG fans before you buy online.
+                {%- elsif canonical_url contains "/blogs/mlp-t2/test-2" -%}Explore MLP T2-7 cards at pakracards, with collector-focused details, related products, and practical buying tips for TCG fans before you buy online.
+                {%- elsif canonical_url contains "/blogs/mlp-t2/test-3" -%}Explore MLP T2-1 cards at pakracards, with collector-focused details, related products, and practical buying tips for TCG fans before you buy online.
+                {%- elsif canonical_url contains "/blogs/mlp-t2/t2-3" -%}Explore MLP T2-3 cards at pakracards, with collector-focused details, related products, and practical buying tips for TCG fans before you buy online.
+                {%- elsif canonical_url contains "/blogs/mlp-t2/t2-4" -%}Explore MLP T2-4 cards at pakracards, with collector-focused details, related products, and practical buying tips for TCG fans before you buy online.
+                {%- elsif canonical_url contains "/blogs/mlp-t2/t2-5" -%}Explore MLP T2-5 cards at pakracards, with collector-focused details, related products, and practical buying tips for TCG fans before you buy online.
+                {%- elsif canonical_url contains "/blogs/mlp-3/t3-3" -%}Explore MLP T3-3 cards at pakracards, with collector-focused details, related products, and practical buying tips for TCG fans before you buy online.
+                {%- elsif canonical_url contains "/blogs/mlp-3/t3-5" -%}Explore MLP T3-5 cards at pakracards, with collector-focused details, related products, and practical buying tips for TCG fans before you buy online.
+                {%- elsif canonical_url contains "/blogs/mlp-3/t3-4" -%}Explore MLP T3-4 cards at pakracards, with collector-focused details, related products, and practical buying tips for TCG fans before you buy online.
+                {%- elsif canonical_url contains "/blogs/mlp-t4/t4-7" -%}Explore MLP T4-7 cards at pakracards, with collector-focused details, related products, and practical buying tips for TCG fans before you buy online.
+                {%- elsif canonical_url contains "/blogs/mlp-t4/t4-10" -%}Explore MLP T4-10 cards at pakracards, with collector-focused details, related products, and practical buying tips for TCG fans before you buy online.
+                {%- elsif canonical_url contains "/blogs/mlp-t4/t4-9" -%}Explore MLP T4-9 cards at pakracards, with collector-focused details, related products, and practical buying tips for TCG fans before you buy online.
+                {%- elsif canonical_url contains "/blogs/mlp-t4/t4-8" -%}Explore MLP T4-8 cards at pakracards, with collector-focused details, related products, and practical buying tips for TCG fans before you buy online.
+                {%- elsif canonical_url contains "/blogs/mlp-t4/t4-6" -%}Explore MLP T4-6 cards at pakracards, with collector-focused details, related products, and practical buying tips for TCG fans before you buy online.
+                {%- elsif canonical_url contains "/blogs/mlp-t4/t4-11" -%}Explore MLP T4-11 cards at pakracards, with collector-focused details, related products, and practical buying tips for TCG fans before you buy online.
+                {%- elsif canonical_url contains "/blogs/mlp-t5/t5-1" -%}Explore MLP T5-1 cards at pakracards, with collector-focused details, related products, and practical buying tips for TCG fans before you buy online.
+                {%- elsif canonical_url contains "/blogs/mlp-t5/t5-2" -%}Explore MLP T5-2 cards at pakracards, with collector-focused details, related products, and practical buying tips for TCG fans before you buy online.
+                {%- elsif canonical_url contains "/blogs/guide/safe-shipping-mlp-kayou-cards" -%}Learn how pakracards packs and ships MLP Kayou cards safely, with collector-first handling, protection tips, and buying confidence online.
+                {%- elsif canonical_url contains "/blogs/diy/diy-custom-display-cases-mlp-tcg" -%}Build cleaner MLP TCG card displays with simple case ideas, collector storage tips, and product inspiration from pakracards before you buy.
+                {%- elsif canonical_url contains "/blogs/ambers-ponycove/why-i-started-this-little-corner-a-journey-from-childhood-magic-to-real-world-connection-by-amber" -%}Read the story behind pakracards, from childhood MLP collecting to building a collector-focused online card shop for fans worldwide. Shop online.
+                {%- elsif canonical_url contains "/blogs/ambers-ponycove/don-t-just-chase-the-hit-how-to-build-a-healthy-collecting-mindset" -%}Build a healthier TCG collecting mindset with practical tips for MLP card pulls, budgeting, chasing hits, and enjoying the hobby longer. Shop online.
+                {%- elsif canonical_url contains "/blogs/guide/voices-from-the-source-why-first-hand-inventory-matters-for-your-pull-rates" -%}See why first-hand inventory matters for MLP card pull rates, product trust, and collector confidence when buying from pakracards. Shop online.
+                {%- else -%}{{ seo_page_description }}
+                {%- endif -%}
+            {%- else -%}{{ seo_page_description }}{%- endif -%}
+        {%- endcapture -%}
+        {%- assign codex_seo_page_description = codex_seo_page_description | strip -%}
+        {%- liquid
+            assign legacy_brand_spaced = 'My Prisma' | append: ' TCG'
+            assign legacy_brand_spaced_upper = 'MY PRISMA' | append: ' TCG'
+            assign legacy_brand_compact = 'MyPrisma' | append: 'TCG'
+            assign legacy_brand_compact_upper = 'MYPRISMA' | append: 'TCG'
+            assign legacy_brand_short = 'Prisma' | append: ' TCG'
+            assign legacy_brand_short_upper = 'PRISMA' | append: ' TCG'
+            assign codex_seo_page_title = codex_seo_page_title | replace: legacy_brand_spaced, 'pakracards' | replace: legacy_brand_spaced_upper, 'pakracards' | replace: legacy_brand_compact, 'pakracards' | replace: legacy_brand_compact_upper, 'pakracards' | replace: legacy_brand_short, 'pakracards' | replace: legacy_brand_short_upper, 'pakracards'
+            unless page.handle == 'about-us'
+            assign codex_seo_page_description = codex_seo_page_description | replace: legacy_brand_spaced, 'pakracards' | replace: legacy_brand_spaced_upper, 'pakracards' | replace: legacy_brand_compact, 'pakracards' | replace: legacy_brand_compact_upper, 'pakracards' | replace: legacy_brand_short, 'pakracards' | replace: legacy_brand_short_upper, 'pakracards'
+            endunless
+            assign codex_seo_page_title_downcase = codex_seo_page_title | downcase
+        -%}
+        <title>{{ codex_seo_page_title | escape }} {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%} {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%} {%- unless codex_seo_page_title_downcase contains 'pakracards' %} &ndash; pakracards{% endunless -%}</title>
+
+        {%- if codex_seo_page_description != blank -%}
+            <meta name="description" content="{{ codex_seo_page_description | escape }}">
+        {%- endif -%}
+        {% render 'meta-tags', codex_seo_page_title: codex_seo_page_title, codex_seo_page_description: codex_seo_page_description %}
+        {%- if template.suffix == 'single-card' -%}
+            <meta property="og:image" content="{{ 'single-card-moon11-hero-desktop.jpg' | asset_url }}">
+            <meta property="og:image:secure_url" content="{{ 'single-card-moon11-hero-desktop.jpg' | asset_url }}">
+            <meta property="og:image:width" content="1920">
+            <meta property="og:image:height" content="720">
+            <meta name="twitter:image" content="{{ 'single-card-moon11-hero-desktop.jpg' | asset_url }}">
+        {%- elsif template.suffix == 'tcg-battle' -%}
+            <meta property="og:image" content="{{ 'tcg-battle-hero-motion.jpg' | asset_url }}">
+            <meta property="og:image:secure_url" content="{{ 'tcg-battle-hero-motion.jpg' | asset_url }}">
+            <meta property="og:image:width" content="900">
+            <meta property="og:image:height" content="900">
+            <meta name="twitter:image" content="{{ 'tcg-battle-hero-motion.jpg' | asset_url }}">
+        {%- endif -%}
+        {%- capture prisma_content_for_header -%}{{ content_for_header }}{%- endcapture -%}
+        {{ prisma_content_for_header
+            | replace: 'this is just a warning', ''
+            | replace: 'Vendor: Vendor / Example product title', ''
+            | replace: 'Vendor / Example product title', ''
+            | replace: 'Vendor: Vendor', ''
+            | replace: 'Example product title', ''
+        }}
+        {% render 'variable' %}
+        {% render 'global-style' %}
+        {{ 'p10-single-card-hover-gallery.css' | asset_url | stylesheet_tag }}
+        {{ 'p10-product-grid-controls.css' | asset_url | stylesheet_tag }}
+        {{ 'p10-dark-mode.css' | asset_url | stylesheet_tag }}
+        {% render 'global-script' %}
+
+        <script>document.documentElement.className = document.documentElement.className.replace('no-js', 'js');</script>
+
+        {%- liquid
+            if settings.layout_body == 'full'
+                assign layout_body = 'body-full-width'
+            elsif settings.layout_body == 'boxed'
+                assign layout_body = 'body-boxed'
+            elsif settings.layout_body == 'custom_width'
+                assign layout_body = 'body-custom-width'
+            endif
+        
+            if settings.style_dots == '02'
+                assign style_dots = 'style-dots-2'
+            endif
+        
+            if settings.style_arrows == '02'
+                assign style_arrows = 'style-arrows-2'
+            elsif settings.style_arrows == '05'
+                assign style_arrows = 'style-arrows-5'
+            endif
+        
+            if settings.product_card_layout == '02'
+                assign product_card_layout = 'product-card-layout-02'
+            elsif settings.product_card_layout == '03'
+                assign product_card_layout = 'product-card-layout-03'
+            elsif settings.product_card_layout == '04'
+                assign product_card_layout = 'product-card-layout-04'
+            elsif settings.product_card_layout == '05'
+                assign product_card_layout = 'product-card-layout-05'
+            elsif settings.product_card_layout == '06'
+                assign product_card_layout = 'product-card-layout-06'
+            elsif settings.product_card_layout == '07'
+                assign product_card_layout = 'product-card-layout-07'
+            elsif settings.product_card_layout == '08'
+                assign product_card_layout = 'product-card-layout-08'
+            else
+                assign product_card_layout = 'product-card-layout-01'
+            endif
+        
+            if settings.quick_shop_type == '2'
+                assign quick_shop_type = 'quick_shop_option_2'
+            elsif  settings.quick_shop_type == '3'
+                assign quick_shop_type = 'quick_shop_option_3'
+            endif
+        
+            if settings.style_text_size_varriant == '02'
+                assign style_text_size_varriant = 'size_varriant_style_2'
+            endif
+        -%}
+    {{ 'collection-list-custom.css' | asset_url | stylesheet_tag }}
+    {{ 'p10-v3-performance.css' | asset_url | stylesheet_tag }}<!-- PRISMA_SINGLE_CARD_ROUTE_GUARD_START -->
+<script>
+(function () {
+  var canonical = '/pages/kayou-mlp-card-catalog';
+  var path = window.location.pathname.replace(/\/+$/, '');
+  var search = window.location.search || '';
+  if (path === '/pages/kayou-mlp-single-card-finder' || path === '/collections/single') {
+    window.location.replace(canonical);
+    return;
+  }
+  if (path === canonical && /(?:\?|&)view=single-cards-v\d+/i.test(search)) {
+    window.history.replaceState(null, '', canonical);
+  }
+})();
+</script>
+<!-- PRISMA_SINGLE_CARD_ROUTE_GUARD_END -->
+</head>
+
+    <body class="template-{{ request.page_type }} {{layout_body}} {{style_dots}} {{style_text_size_varriant}} {{style_arrows}} {{product_card_layout}} {% if settings.enable_button_disable_arrows %} enable_button_disable_arrows{% endif %}{% if settings.display_text_color_title %} enable_text_color_title{% if settings.style_text_color_varriant == '02' %} style_2_text_color_varriant{% endif %}{% endif %}{% if settings.hide_compare_homepage %} hide_compare_homepage{% endif %} {{ quick_shop_type }}{% if settings.show_image_loading %} show_image_loading{% endif %}{% if settings.show_effect_close %} show_effect_close{% endif %}{% if settings.enable_layout_rtl and enable_iso_rtl %} layout_rtl{% endif %}{% if request.design_mode %} shopify-design-mode{% endif %}{% if settings.animations_hover_elements != 'none' %} animate--hover-{{ settings.animations_hover_elements }}{% endif %}{% if settings.enable_following_cursor and settings.following_cursor_style == 'default' %} cursor-fixed__show{% endif %}{% unless settings.enable_currencies %} disable_currencies{% endunless %}{% if settings.enable_button_1_border_outside %} btn_1_br_outside{% endif %}{% if settings.enable_button_2_border_outside %} btn_2_br_outside{% endif %}{% if settings.enable_button_3_border_outside %} btn_3_br_outside{% endif %}{% if settings.show_price_percent %} show_price_percent{% endif %}{% if settings.show_wishlist_full_icon %} icon_wishlist_full{% endif %}">
+        <div class="body-content-wrapper">
+            <a class="skip-to-content-link button visually-hidden" href="#MainContent">{{ "accessibility.skip_to_text" | t }}</a>
+            {% render 'preload-screen' %}
+            {% sections 'header-group' %}
+            {% render 'wrapper-header' %}
+            
+            {%- if settings.layout_body == 'boxed' -%}
+                <div class="wrapper-hasbanner-adv">
+            {%- endif -%}
+                {% render 'halo-banner-adv-left' %}
+                {% render 'halo-banner-adv-right' %}
+                <main id="MainContent" class="wrapper-body content-for-layout focus-none" role="main" tabindex="-1">
+                    {{ content_for_layout }}
+                </main>
+            {%- if settings.layout_body == 'boxed' -%}        
+                </div>
+            {%- endif -%}
+            
+            <div class="wrapper-footer">{% sections 'footer-group' %}</div>
+
+            {% section 'halo-toolbar-mobile' %}
+
+            <ul hidden><li id="a11y-refresh-page-message">{{ 'accessibility.refresh_page' | t }}</li></ul>
+            
+            <script src="{{ 'p10-single-card-hover-gallery.js' | asset_url }}" defer="defer"></script>
+            <script src="{{ 'p10-dark-mode.js' | asset_url }}" defer="defer"></script>
+            {% render 'global-script-2' %}
+        </div>
+        {% render 'halo-popup' %}
+
+        {%- if settings.use_custom_js -%}
+            {{ 'custom.js' | asset_url | script_tag }}
+        {%- endif -%}
+        
+        <div class="background-overlay">
+            {%- if settings.show_effect_close -%}
+            <div class="background-cursor-wrapper">
+                <div class="background-cursor-wrapper_outer">
+                    <div class="background-cursor-wrapper_inner"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="20" height="20"><g class="nc-icon-wrapper" fill="#ffffff" transform="translate(0.5, 0.5)"><line fill="none" stroke-width="6" x1="46" y1="2" x2="2" y2="46"/> <line fill="none" stroke-width="6" x1="46" y1="46" x2="2" y2="2"/></g></svg></div>
+                </div>
+            </div>
+            {%- endif -%}
+        </div>
+        
+        {% render 'halo-sidebar' %}
+
+        {%- if settings.enable_following_cursor -%}
+          {% render 'cursor-fixed', style_cursor: settings.following_cursor_style %}
+        {%- endif -%}
+        <script>
+/*
+document.addEventListener('DOMContentLoaded', function() {
+  // 1. 找到评论插件所在的容器
+  var reviewWidget = document.querySelector('.jdgm-widget');
+  
+  if (reviewWidget) {
+    // 2. 先把评论区设为透明，避免它抢占首屏资源
+    reviewWidget.style.opacity = '0';
+    
+    // 3. 设置观察员：当用户滚动到距离评论区还有 300 像素时触发
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          // 4. 用户滑到了，显示评论
+          reviewWidget.style.opacity = '1';
+          reviewWidget.style.transition = 'opacity 0.5s ease-in';
+          // 停止观察，节省性能
+          observer.unobserve(reviewWidget);
+        }
+      });
+    }, { rootMargin: '300px' });
+
+    observer.observe(reviewWidget);
+  }
+});
+*/
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var reviewWidget = document.querySelector('.jdgm-widget');
+
+  if (!reviewWidget) return;
+
+  reviewWidget.style.opacity = '0';
+
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+
+      reviewWidget.style.opacity = '1';
+      reviewWidget.style.transition = 'opacity 0.5s ease-in';
+      observer.unobserve(reviewWidget);
+    });
+  }, { rootMargin: '300px' });
+
+  observer.observe(reviewWidget);
+});
+</script>
+    <!-- Prisma AI Support Widget -->
+<!-- p10-shell-performance: idle support widget v2 -->
+<script>
+  (() => {
+    const prismaSupportWidgetSrc = 'https://prisma-ai-support.sreylekcheat.workers.dev/widget.js';
+    let loaded = false;
+    let idleId = null;
+    let delayId = null;
+    const events = ['keydown'];
+
+    const cleanup = () => {
+      events.forEach((eventName) => window.removeEventListener(eventName, loadWidget, true));
+      if (idleId && window.cancelIdleCallback) window.cancelIdleCallback(idleId);
+      if (delayId) window.clearTimeout(delayId);
+    };
+
+    function loadWidget() {
+      if (loaded) return;
+      loaded = true;
+      cleanup();
+      const script = document.createElement('script');
+      script.src = prismaSupportWidgetSrc;
+      script.async = true;
+      document.head.appendChild(script);
+    }
+
+    const scheduleWidget = () => {
+      window.setTimeout(loadWidget, 12000);
+      delayId = window.setTimeout(() => {
+        delayId = null;
+        if ('requestIdleCallback' in window) {
+          idleId = window.requestIdleCallback(loadWidget, { timeout: 2200 });
+        } else {
+          loadWidget();
+        }
+      }, 8500);
+    };
+
+    events.forEach((eventName) => window.addEventListener(eventName, loadWidget, { once: true, passive: true, capture: true }));
+
+    if (document.readyState === 'complete') {
+      scheduleWidget();
+    } else {
+      window.addEventListener('load', scheduleWidget, { once: true });
+    }
+  })();
+</script>
+
+
+
+<!-- codex-growth-conversion-start -->
+<style>
+  .prisma-growth-card {
+    border: 1px solid #d8e3df;
+    background: #f7fbfa;
+    color: #17312b;
+    padding: 14px;
+    margin: 14px 0;
+    border-radius: 6px;
+    font-size: 14px;
+    line-height: 1.45;
+  }
+  .prisma-growth-card__title {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 700;
+    font-size: 15px;
+  }
+  .prisma-growth-card ul {
+    margin: 0;
+    padding-left: 18px;
+  }
+  .prisma-growth-card li + li {
+    margin-top: 4px;
+  }
+  .prisma-growth-shipping {
+    border: 1px solid #e4e0d4;
+    background: #fffaf0;
+    color: #2f2a20;
+    padding: 12px;
+    margin: 12px 0;
+    border-radius: 6px;
+    font-size: 14px;
+  }
+  .prisma-growth-shipping__bar {
+    height: 8px;
+    background: #ebe5d6;
+    border-radius: 999px;
+    overflow: hidden;
+    margin-top: 8px;
+  }
+  .prisma-growth-shipping__fill {
+    height: 100%;
+    background: #1f7a5a;
+    border-radius: inherit;
+    transition: width 180ms ease;
+  }
+  .prisma-growth-link-note {
+    display: block;
+    margin-top: 8px;
+    color: #4d4d4d;
+    font-size: 13px;
+    line-height: 1.4;
+  }
+</style>
+<script>
+  (function () {
+    var moon11Path = '/products/pre-order-mlp-moon-edition-chinese-series-11-t4w11';
+    var freeShippingCents = 6000;
+
+    function formatMoney(cents) {
+      return 'US$' + (Math.max(0, cents) / 100).toFixed(2);
+    }
+
+    function trackedMoon11Url() {
+      var params = new URLSearchParams(window.location.search || '');
+      var cleaned = new URLSearchParams();
+      params.forEach(function (value, key) {
+        var normalizedKey = String(key || '').trim().replace(/^\+/, '');
+        if (normalizedKey && !/^(view|cache_check)$/i.test(normalizedKey)) cleaned.set(normalizedKey, value);
+      });
+      var query = cleaned.toString();
+      return moon11Path + (query ? '?' + query : '');
+    }
+
+    function patchLinksPage() {
+      if (window.location.pathname.replace(/\/$/, '') !== '/pages/links') return;
+      var links = Array.prototype.slice.call(document.querySelectorAll('a[href]'));
+      var primary = links.find(function (link) {
+        return /enter the pony cove/i.test(link.textContent || '');
+      }) || links.find(function (link) {
+        try {
+          var url = new URL(link.href, window.location.origin);
+          return url.hostname === window.location.hostname && (url.pathname === '/' || url.pathname === '');
+        } catch (error) {
+          return false;
+        }
+      });
+      if (!primary || primary.dataset.codexGrowthTarget === 'moon11') return;
+      primary.href = trackedMoon11Url();
+      primary.textContent = 'Shop Moon 11 Sealed Box';
+      primary.dataset.codexGrowthTarget = 'moon11';
+      if (!primary.nextElementSibling || !primary.nextElementSibling.classList.contains('prisma-growth-link-note')) {
+        var note = document.createElement('span');
+        note.className = 'prisma-growth-link-note';
+        note.textContent = 'KAYOU MLP Moon Edition 11. See the product page and shipping policy for current availability and delivery details.';
+        primary.insertAdjacentElement('afterend', note);
+      }
+    }
+
+    function patchMoon11Product() {
+      if (window.location.pathname.replace(/\/$/, '') !== moon11Path) return;
+      if (document.querySelector('[data-codex-growth-card="moon11"]')) return;
+      var card = document.createElement('div');
+      card.className = 'prisma-growth-card';
+      card.dataset.codexGrowthCard = 'moon11';
+      card.innerHTML = [
+        '<span class="prisma-growth-card__title">Moon Edition 11 order information</span>',
+        '<ul>',
+        '<li>Choose the sealed-box shipping option when available.</li>',
+        '<li>Dispatch and transit estimates depend on the shipping method. Please check our shipping policy.</li>',
+        '<li>Eligible China-origin orders: US$10 below US$60; free shipping at US$60 or more. Check destination terms at checkout.</li>',
+        '<li>Authentic Kayou MLP cards with collector-safe packaging.</li>',
+        '</ul>'
+      ].join('');
+      var form = document.querySelector('form[action*="/cart/add"]');
+      if (form && form.parentNode) {
+        form.parentNode.insertBefore(card, form);
+      } else {
+        var title = document.querySelector('h1');
+        if (title) title.insertAdjacentElement('afterend', card);
+      }
+    }
+
+    function mountShippingProgress(cart) {
+      var subtotal = cart && typeof cart.items_subtotal_price === 'number'
+        ? cart.items_subtotal_price
+        : cart && typeof cart.total_price === 'number' ? cart.total_price : null;
+      var usdEstimate = cart && cart.currency === 'USD' && Number.isFinite(subtotal) && subtotal >= 0;
+      var remaining = usdEstimate ? Math.max(0, freeShippingCents - subtotal) : 0;
+      var percent = usdEstimate ? Math.max(0, Math.min(100, Math.round((subtotal / freeShippingCents) * 100))) : 0;
+      var text = 'Shipping rates and free-shipping eligibility are confirmed in your selected currency at checkout.';
+      if (usdEstimate) {
+        text = remaining > 0
+          ? 'Eligible China-origin orders: ' + formatMoney(remaining) + ' to the US$60 free-shipping threshold.'
+          : 'Eligible China-origin orders meet the US$60 threshold; confirm shipping at checkout.';
+      }
+      var html = '<strong>' + text + '</strong><div class="prisma-growth-shipping__bar"' + (usdEstimate ? '' : ' style="visibility:hidden"') + '><div class="prisma-growth-shipping__fill" style="width:' + percent + '%"></div></div>';
+      var selectors = [
+        'form[action="/cart"]',
+        'form[action*="/cart"]',
+        '.cart__footer',
+        '.cart-footer',
+        '.cart-sidebar',
+        '.cart-drawer',
+        '#CartDrawer',
+        '.previewCart'
+      ];
+      selectors.forEach(function (selector) {
+        Array.prototype.slice.call(document.querySelectorAll(selector)).forEach(function (mount) {
+          if (!mount) return;
+          var box = mount.querySelector(':scope > .prisma-growth-shipping');
+          if (!box) {
+            box = document.createElement('div');
+            box.className = 'prisma-growth-shipping';
+            mount.insertBefore(box, mount.firstChild);
+          }
+          box.innerHTML = html;
+        });
+      });
+    }
+
+    function patchShippingProgress() {
+      if (!/\/cart\/?$/.test(window.location.pathname) && !document.querySelector('.cart-sidebar, .cart-drawer, #CartDrawer, .previewCart')) return;
+      fetch('/cart.js', { credentials: 'same-origin' })
+        .then(function (response) { return response.ok ? response.json() : null; })
+        .then(function (cart) { if (cart) mountShippingProgress(cart); })
+        .catch(function () {});
+    }
+
+    function runGrowthPatches() {
+      patchLinksPage();
+      patchMoon11Product();
+      patchShippingProgress();
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', runGrowthPatches);
+    } else {
+      runGrowthPatches();
+    }
+    document.addEventListener('cart:updated', patchShippingProgress);
+    document.addEventListener('ajaxCart:updated', patchShippingProgress);
+    setTimeout(runGrowthPatches, 600);
+    setTimeout(runGrowthPatches, 1800);
+  })();
+</script>
+<!-- codex-growth-conversion-end -->
+{% render 'prisma-stock-guard' %}
+<script data-prisma-search-route-guard>
+  (function () {
+    if (window.location.pathname.replace(/\/$/, '') !== '/search') return;
+    var params = new URLSearchParams(window.location.search || '');
+    var query = String(params.get('q') || '').trim().toLowerCase();
+    var routes = {
+      'english cards': '/collections/english-card-boxes',
+      'english card': '/collections/english-card-boxes',
+      'chinese cards': '/collections/cn-trading-card-boxes',
+      'chinese card': '/collections/cn-trading-card-boxes',
+      'cn cards': '/collections/cn-trading-card-boxes',
+      'cn card': '/collections/cn-trading-card-boxes',
+      'tcg': '/collections/tcg-card-boxes',
+      'tcg cards': '/collections/tcg-card-boxes',
+      'tcg card': '/collections/tcg-card-boxes',
+      'trading card game': '/collections/tcg-card-boxes',
+      'ccg': '/collections/ccg-card-boxes',
+      'ccg cards': '/collections/ccg-card-boxes',
+      'ccg card': '/collections/ccg-card-boxes',
+      'collectible card game': '/collections/ccg-card-boxes'
+    };
+    if (routes[query]) window.location.replace(routes[query]);
+  })();
+</script>
+{%- comment -%} P10 cache refresh for mobile predictive shop finder. {%- endcomment -%}
+  {%- comment -%} mlp collection restore cache revision 20260717 {%- endcomment -%}
+  <!-- mlp collection restore cache revision 20260717 -->
+
+<!-- prisma-photo-search:start -->
+{% comment %}
+  Photo search is intentionally paused on V6 until the desktop and mobile
+  experience is ready. Keep the snippet available for a controlled relaunch.
+  {% render 'prisma-photo-search' %}
+{% endcomment %}
+<!-- prisma-photo-search:end -->
+</body>
+</html>
+{% comment %} v4-single-card-pr-cache-refresh-20260713-v1 {% endcomment %}

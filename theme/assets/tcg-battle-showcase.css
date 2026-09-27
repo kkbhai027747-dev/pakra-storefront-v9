@@ -1,0 +1,935 @@
+:root {
+  --p10-tcg-ink: #151617;
+  --p10-tcg-muted: #676e78;
+  --p10-tcg-line: #dcd8ce;
+  --p10-tcg-paper: #fbfaf6;
+  --p10-tcg-panel: #ffffff;
+  --p10-tcg-mint: #2de6a3;
+  --p10-tcg-mint-soft: #dffcf0;
+  --p10-tcg-coral: #ff6b5f;
+  --p10-tcg-gold: #d3a63d;
+  --p10-tcg-shadow: 0 18px 50px rgba(22, 22, 22, 0.1);
+  --p10-tcg-sticky-top: 0px;
+}
+
+html.p10-tcg-intro-lock,
+body.p10-tcg-intro-lock {
+  overflow: hidden;
+}
+
+.p10-tcg-battle {
+  position: relative;
+  overflow: clip;
+  color: var(--p10-tcg-ink);
+  background:
+    radial-gradient(circle at 12% 12%, rgba(45, 230, 163, 0.12), transparent 25rem),
+    radial-gradient(circle at 88% 6%, rgba(255, 107, 95, 0.11), transparent 22rem),
+    linear-gradient(180deg, #fffdfa 0%, #f3f0ea 48%, #fbfaf7 100%);
+  font-family: var(--font-body-family);
+}
+
+.p10-tcg-battle * {
+  box-sizing: border-box;
+}
+
+.p10-tcg-battle__hero,
+.p10-tcg-battle__toolbar,
+.p10-tcg-battle__grid,
+.p10-tcg-battle__empty,
+.p10-tcg-battle__seo {
+  width: min(1180px, calc(100% - 32px));
+  margin-inline: auto;
+}
+
+.p10-tcg-battle__hero {
+  display: grid;
+  grid-template-columns: minmax(0, 0.93fr) minmax(360px, 1fr);
+  gap: clamp(28px, 5vw, 72px);
+  align-items: center;
+  min-height: clamp(560px, 70vh, 760px);
+  padding: clamp(58px, 8vw, 96px) 0 clamp(34px, 5vw, 72px);
+}
+
+.p10-tcg-battle__eyebrow {
+  margin: 0 0 11px;
+  color: #a17420;
+  font-size: 12px;
+  line-height: 1;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.p10-tcg-battle h1,
+.p10-tcg-battle h2,
+.p10-tcg-battle h3,
+.p10-tcg-battle p {
+  letter-spacing: 0;
+}
+
+.p10-tcg-battle [data-p10-tcg-reveal],
+.p10-tcg-product {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 520ms ease, transform 520ms ease;
+}
+
+.p10-tcg-battle [data-p10-tcg-reveal].is-visible,
+.p10-tcg-product.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.p10-tcg-battle h1 {
+  max-width: 760px;
+  margin: 0;
+  color: var(--p10-tcg-ink);
+  font-size: clamp(42px, 5.6vw, 76px);
+  line-height: 0.96;
+  font-weight: 950;
+}
+
+.p10-tcg-battle__lede {
+  max-width: 650px;
+  margin: 22px 0 0;
+  color: #4e5963;
+  font-size: clamp(16px, 1.45vw, 20px);
+  line-height: 1.55;
+  font-weight: 700;
+}
+
+.p10-tcg-battle__lede p,
+.p10-tcg-battle__seo p {
+  margin: 0;
+}
+
+.p10-tcg-battle__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.p10-tcg-battle__button {
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--p10-tcg-ink);
+  border-radius: 6px;
+  padding: 0 20px;
+  color: var(--p10-tcg-ink);
+  font-size: 14px;
+  font-weight: 950;
+  text-decoration: none;
+  transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease, color 180ms ease;
+}
+
+.p10-tcg-battle__button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(21, 22, 23, 0.12);
+}
+
+.p10-tcg-battle__button--primary {
+  background: var(--p10-tcg-ink);
+  color: #fff;
+}
+
+.p10-tcg-battle__button--secondary {
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.p10-tcg-battle__stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  max-width: 680px;
+  margin: 32px 0 0;
+}
+
+.p10-tcg-battle__stats div {
+  border: 1px solid rgba(21, 22, 23, 0.12);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.68);
+  padding: 15px 14px;
+}
+
+.p10-tcg-battle__stats dt {
+  color: #7a828a;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.p10-tcg-battle__stats dd {
+  margin: 6px 0 0;
+  color: var(--p10-tcg-ink);
+  font-size: 17px;
+  font-weight: 950;
+}
+
+.p10-tcg-battle__arena {
+  position: relative;
+  min-height: min(68vw, 600px);
+  border-radius: 14px;
+  background:
+    linear-gradient(90deg, rgba(21, 22, 23, 0.06) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(21, 22, 23, 0.06) 1px, transparent 1px),
+    linear-gradient(135deg, #f7f2e8, #ffffff 54%, #edf8f1);
+  background-size: 44px 44px, 44px 44px, auto;
+  box-shadow: var(--p10-tcg-shadow);
+  isolation: isolate;
+}
+
+.p10-tcg-battle__arena::before,
+.p10-tcg-battle__arena::after {
+  content: "";
+  position: absolute;
+  inset: 42px;
+  border: 1px solid rgba(21, 22, 23, 0.12);
+  border-radius: 12px;
+  pointer-events: none;
+}
+
+.p10-tcg-battle__arena::after {
+  inset: auto 42px 42px;
+  height: 1px;
+  border: 0;
+  background: linear-gradient(90deg, transparent, rgba(21, 22, 23, 0.24), transparent);
+}
+
+.p10-tcg-battle__arena-card {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid rgba(21, 22, 23, 0.1);
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 20px 54px rgba(21, 22, 23, 0.12);
+}
+
+.p10-tcg-battle__arena-card--large {
+  inset: 9% 11% 18% 18%;
+  transform: rotate(-2deg);
+}
+
+.p10-tcg-battle__arena-card img,
+.p10-tcg-battle__arena-stack img,
+.p10-tcg-battle__seo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.p10-tcg-battle__arena-stack {
+  position: absolute;
+  right: 5%;
+  bottom: 8%;
+  width: min(42%, 260px);
+  overflow: hidden;
+  border: 1px solid rgba(21, 22, 23, 0.12);
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 18px 42px rgba(21, 22, 23, 0.14);
+}
+
+.p10-tcg-battle__arena-stack img {
+  aspect-ratio: 1 / 1;
+  padding: 14px;
+}
+
+.p10-tcg-battle__arena-stack span,
+.p10-tcg-battle__arena-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 31px;
+  border-radius: 999px;
+  background: var(--p10-tcg-ink);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.p10-tcg-battle__arena-stack span {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  padding: 0 11px;
+}
+
+.p10-tcg-battle__arena-chip {
+  position: absolute;
+  top: 28px;
+  right: 28px;
+  padding: 0 13px;
+  background: var(--p10-tcg-coral);
+  color: #fff;
+}
+
+.p10-tcg-battle__toolbar {
+  position: sticky;
+  top: var(--p10-tcg-sticky-top);
+  z-index: 8;
+  border: 1px solid rgba(21, 22, 23, 0.12);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 14px 38px rgba(21, 22, 23, 0.08);
+  backdrop-filter: blur(14px);
+  margin-top: 22px;
+  padding: 18px;
+}
+
+.p10-tcg-battle__toolbar-head,
+.p10-tcg-battle__search-row {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.p10-tcg-battle__toolbar h2 {
+  margin: 0;
+  font-size: clamp(24px, 3vw, 34px);
+  line-height: 1;
+  font-weight: 950;
+}
+
+.p10-tcg-battle__toolbar-head strong {
+  flex: 0 0 auto;
+  border: 1px solid rgba(21, 22, 23, 0.12);
+  border-radius: 999px;
+  padding: 8px 12px;
+  background: #f5f3ed;
+  color: #3b3f44;
+  font-size: 13px;
+  font-weight: 950;
+}
+
+.p10-tcg-battle__search-row {
+  margin-top: 14px;
+}
+
+.p10-tcg-battle__search,
+.p10-tcg-battle__sort {
+  display: block;
+}
+
+.p10-tcg-battle__search {
+  flex: 1 1 auto;
+}
+
+.p10-tcg-battle__sort {
+  flex: 0 0 240px;
+}
+
+.p10-tcg-battle__search input,
+.p10-tcg-battle__sort select {
+  width: 100%;
+  min-height: 46px;
+  border: 1px solid #cfc9bc;
+  border-radius: 7px;
+  background: #fffdfa;
+  color: var(--p10-tcg-ink);
+  font-size: 14px;
+  font-weight: 750;
+}
+
+.p10-tcg-battle__search input {
+  padding: 0 14px;
+}
+
+.p10-tcg-battle__sort select {
+  appearance: auto;
+  padding: 0 12px;
+}
+
+.p10-tcg-battle__filter-bank {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(21, 22, 23, 0.1);
+}
+
+.p10-tcg-battle__filter-row {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 8px;
+  align-items: center;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  padding-bottom: 1px;
+}
+
+.p10-tcg-battle__filter-row > span {
+  flex: 0 0 92px;
+  color: #5c646d;
+  font-size: 12px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.p10-tcg-battle__filter-row button {
+  display: inline-flex;
+  flex: 0 0 auto;
+  min-height: 38px;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #cfc9bc;
+  border-radius: 7px;
+  background: #fffdfa;
+  color: #25272a;
+  padding: 0 13px;
+  font-size: 13px;
+  font-weight: 950;
+  cursor: pointer;
+  transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
+}
+
+.p10-tcg-battle__filter-row button:hover {
+  border-color: var(--p10-tcg-ink);
+  transform: translateY(-1px);
+}
+
+.p10-tcg-battle__filter-row button.is-active {
+  border-color: var(--p10-tcg-ink);
+  background: var(--p10-tcg-ink);
+  color: #fff;
+}
+
+.p10-tcg-battle__filter-row b {
+  display: inline-flex;
+  min-width: 22px;
+  height: 22px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: #ebe7dd;
+  color: #343940;
+  font-size: 11px;
+  font-weight: 950;
+}
+
+.p10-tcg-battle__filter-row button.is-active b {
+  background: var(--p10-tcg-mint);
+  color: var(--p10-tcg-ink);
+}
+
+.p10-tcg-battle__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  padding: 28px 0 60px;
+}
+
+.p10-tcg-product {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  overflow: hidden;
+  border: 1px solid rgba(21, 22, 23, 0.12);
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 16px 36px rgba(21, 22, 23, 0.08);
+  min-width: 0;
+}
+
+.p10-tcg-product[hidden] {
+  display: none !important;
+}
+
+.p10-tcg-product__media {
+  display: grid;
+  place-items: center;
+  min-height: 300px;
+  margin: 12px;
+  border-radius: 10px;
+  background:
+    linear-gradient(90deg, rgba(21, 22, 23, 0.04) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(21, 22, 23, 0.04) 1px, transparent 1px),
+    #f7f5f0;
+  background-size: 28px 28px, 28px 28px, auto;
+}
+
+.p10-tcg-product__media img {
+  display: block;
+  width: min(86%, 280px);
+  height: auto;
+  max-height: 280px;
+  object-fit: contain;
+  transition: transform 220ms ease;
+}
+
+.p10-tcg-product:hover .p10-tcg-product__media img {
+  transform: translateY(-4px) scale(1.02);
+}
+
+.p10-tcg-product__body {
+  display: flex;
+  flex-direction: column;
+  padding: 4px 18px 18px;
+}
+
+.p10-tcg-product__badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.p10-tcg-product__badges span {
+  display: inline-flex;
+  min-height: 25px;
+  align-items: center;
+  border: 1px solid #d8d0be;
+  border-radius: 999px;
+  background: #fbf6e8;
+  color: #6c4a07;
+  padding: 0 9px;
+  font-size: 10px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.p10-tcg-product__badges span:first-child {
+  background: var(--p10-tcg-mint-soft);
+  color: #0f6a4c;
+  border-color: #9fe8ca;
+}
+
+.p10-tcg-product__vendor {
+  margin: 0 0 8px;
+  color: #b78b35;
+  font-size: 12px;
+  font-weight: 950;
+  text-transform: uppercase;
+}
+
+.p10-tcg-product h3 {
+  margin: 0;
+  font-size: 21px;
+  line-height: 1.12;
+  font-weight: 950;
+}
+
+.p10-tcg-product h3 a {
+  color: var(--p10-tcg-ink);
+  text-decoration: none;
+}
+
+.p10-tcg-product__meta {
+  margin: 10px 0 0;
+  color: #626a72;
+  font-size: 13px;
+  line-height: 1.35;
+  font-weight: 800;
+}
+
+.p10-tcg-product__price {
+  margin: 16px 0 16px;
+  color: var(--p10-tcg-ink);
+  font-size: 22px;
+  font-weight: 950;
+}
+
+.p10-tcg-product__button {
+  display: inline-flex;
+  min-height: 42px;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-start;
+  border-radius: 7px;
+  background: var(--p10-tcg-ink);
+  color: #fff;
+  padding: 0 15px;
+  font-size: 13px;
+  font-weight: 950;
+  text-decoration: none;
+}
+
+.p10-tcg-battle__empty {
+  margin-top: -34px;
+  padding: 34px 0 70px;
+  text-align: center;
+}
+
+.p10-tcg-battle__empty h2 {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 950;
+}
+
+.p10-tcg-battle__empty p {
+  margin: 8px 0 0;
+  color: var(--p10-tcg-muted);
+  font-weight: 750;
+}
+
+.p10-tcg-battle__seo {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 28px;
+  align-items: center;
+  margin-bottom: 72px;
+  border: 1px solid rgba(21, 22, 23, 0.12);
+  border-radius: 14px;
+  background: #fff;
+  padding: clamp(22px, 3vw, 34px);
+  box-shadow: var(--p10-tcg-shadow);
+}
+
+.p10-tcg-battle__seo h2 {
+  margin: 0 0 12px;
+  font-size: clamp(26px, 3.1vw, 42px);
+  line-height: 1.02;
+  font-weight: 950;
+}
+
+.p10-tcg-battle__seo p {
+  color: #58606a;
+  font-size: 15px;
+  line-height: 1.55;
+  font-weight: 750;
+}
+
+.p10-tcg-battle__seo img {
+  aspect-ratio: 1 / 1;
+  border-radius: 12px;
+  background: #f7f5f0;
+}
+
+.p10-tcg-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483000;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: #fdfdfc;
+  color: #171717;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.p10-tcg-intro.is-active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.p10-tcg-intro.is-finished {
+  opacity: 0;
+  transition: opacity 420ms ease;
+}
+
+.p10-tcg-intro__grid {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(21, 22, 23, 0.035) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(21, 22, 23, 0.035) 1px, transparent 1px);
+  background-size: 54px 54px;
+  mask-image: radial-gradient(circle at center, black, transparent 72%);
+}
+
+.p10-tcg-intro__stage {
+  position: relative;
+  z-index: 1;
+  width: min(94vw, 980px);
+  text-align: center;
+}
+
+.p10-tcg-intro__kicker,
+.p10-tcg-intro__subtitle {
+  margin: 0;
+  color: rgba(21, 22, 23, 0.62);
+  font-size: clamp(12px, 1.4vw, 18px);
+  font-weight: 700;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+}
+
+.p10-tcg-intro__word {
+  display: flex;
+  justify-content: center;
+  gap: clamp(12px, 3vw, 38px);
+  margin: clamp(32px, 6vw, 58px) 0 28px;
+  color: #111;
+  font-family: var(--font-heading-family);
+  font-size: clamp(38px, 8vw, 92px);
+  line-height: 1;
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+.p10-tcg-intro__letter {
+  display: inline-block;
+  opacity: 0;
+  filter: blur(12px);
+  transform: translateX(22px);
+  animation: p10TcgLetterFocus 900ms cubic-bezier(0.2, 0.85, 0.2, 1) forwards;
+  animation-delay: calc(var(--i) * 86ms);
+}
+
+.p10-tcg-intro__letter.is-space {
+  width: clamp(8px, 1.8vw, 24px);
+}
+
+.p10-tcg-intro__subtitle {
+  font-size: clamp(13px, 1.9vw, 24px);
+}
+
+.p10-tcg-intro__meter {
+  width: min(340px, 70vw);
+  height: 2px;
+  margin: clamp(46px, 8vw, 84px) auto 0;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(21, 22, 23, 0.12);
+}
+
+.p10-tcg-intro__meter span {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--p10-tcg-coral), var(--p10-tcg-mint));
+  transform-origin: left;
+  transform: scaleX(0);
+  animation: p10TcgMeter 2.8s ease forwards 220ms;
+}
+
+@keyframes p10TcgLetterFocus {
+  0% {
+    opacity: 0;
+    filter: blur(14px);
+    transform: translateX(26px);
+  }
+  60% {
+    opacity: 1;
+    filter: blur(1px);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateX(0);
+  }
+}
+
+@keyframes p10TcgMeter {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .p10-tcg-intro,
+  .p10-tcg-intro *,
+  .p10-tcg-battle *,
+  .p10-tcg-battle *::before,
+  .p10-tcg-battle *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+@media (max-width: 1024px) {
+  .p10-tcg-battle__hero {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .p10-tcg-battle__arena {
+    min-height: 560px;
+  }
+
+  .p10-tcg-battle__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 749px) {
+  .p10-tcg-battle__hero,
+  .p10-tcg-battle__toolbar,
+  .p10-tcg-battle__grid,
+  .p10-tcg-battle__empty,
+  .p10-tcg-battle__seo {
+    width: min(100% - 16px, 640px);
+  }
+
+  .p10-tcg-battle__hero {
+    gap: 22px;
+    padding-top: 34px;
+  }
+
+  .p10-tcg-battle h1 {
+    font-size: clamp(36px, 12vw, 54px);
+  }
+
+  .p10-tcg-battle__actions,
+  .p10-tcg-battle__stats,
+  .p10-tcg-battle__toolbar-head,
+  .p10-tcg-battle__search-row {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .p10-tcg-battle__button,
+  .p10-tcg-battle__sort {
+    width: 100%;
+  }
+
+  .p10-tcg-battle__arena {
+    min-height: 430px;
+    border-radius: 12px;
+  }
+
+  .p10-tcg-battle__arena::before {
+    inset: 20px;
+  }
+
+  .p10-tcg-battle__arena-card--large {
+    inset: 8% 5% 28% 5%;
+  }
+
+  .p10-tcg-battle__arena-stack {
+    width: 47%;
+    right: 4%;
+  }
+
+  .p10-tcg-battle__toolbar {
+    border-radius: 0;
+    border-left: 0;
+    border-right: 0;
+    width: 100%;
+    padding: 6px 4px 7px;
+    max-height: 46vh;
+    overflow-y: auto;
+  }
+
+  .p10-tcg-battle__toolbar-head {
+    display: none;
+  }
+
+  .p10-tcg-battle__toolbar h2,
+  .p10-tcg-battle__toolbar .p10-tcg-battle__eyebrow {
+    display: none;
+  }
+
+  .p10-tcg-battle__search-row {
+    gap: 6px;
+    grid-template-columns: minmax(0, 1fr) 112px;
+    margin-top: 0;
+  }
+
+  .p10-tcg-battle__search input,
+  .p10-tcg-battle__sort select {
+    min-height: 36px;
+    font-size: 13px;
+  }
+
+  .p10-tcg-battle__filter-bank {
+    gap: 5px;
+    margin-top: 6px;
+    padding-top: 6px;
+  }
+
+  .p10-tcg-battle__filter-row {
+    gap: 5px;
+  }
+
+  .p10-tcg-battle__filter-row > span {
+    flex-basis: 58px;
+    font-size: 10px;
+  }
+
+  .p10-tcg-battle__filter-row button {
+    min-height: 30px;
+    padding: 0 8px;
+    font-size: 11px;
+  }
+
+  .p10-tcg-battle__filter-row b {
+    min-width: 19px;
+    height: 19px;
+    font-size: 10px;
+  }
+
+  .p10-tcg-battle__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    padding-top: 14px;
+  }
+
+  .p10-tcg-product {
+    border-radius: 10px;
+  }
+
+  .p10-tcg-product__media {
+    min-height: 174px;
+    margin: 9px;
+  }
+
+  .p10-tcg-product__media img {
+    width: min(88%, 160px);
+    max-height: 160px;
+  }
+
+  .p10-tcg-product__body {
+    padding: 0 12px 14px;
+  }
+
+  .p10-tcg-product__badges {
+    gap: 5px;
+  }
+
+  .p10-tcg-product__badges span {
+    min-height: 22px;
+    font-size: 9px;
+  }
+
+  .p10-tcg-product h3 {
+    font-size: 15px;
+    line-height: 1.16;
+  }
+
+  .p10-tcg-product__meta {
+    font-size: 11px;
+  }
+
+  .p10-tcg-product__price {
+    margin: 10px 0;
+    font-size: 17px;
+  }
+
+  .p10-tcg-product__button {
+    width: 100%;
+    min-height: 38px;
+  }
+
+  .p10-tcg-battle__seo {
+    grid-template-columns: 1fr;
+    margin-bottom: 42px;
+  }
+
+  .p10-tcg-battle__seo img {
+    max-height: 250px;
+  }
+
+  .p10-tcg-intro__word {
+    gap: clamp(8px, 2.4vw, 18px);
+    font-size: clamp(34px, 11vw, 58px);
+  }
+}
+
+@media (max-width: 420px) {
+  .p10-tcg-battle__grid {
+    gap: 8px;
+  }
+
+  .p10-tcg-battle__filter-row > span {
+    flex-basis: 54px;
+  }
+}

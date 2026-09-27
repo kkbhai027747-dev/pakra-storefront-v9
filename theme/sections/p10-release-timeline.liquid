@@ -1,0 +1,1407 @@
+{% liquid
+  assign release_year = section.settings.release_year | default: '2026'
+  assign current_year = 'now' | date: '%Y'
+  assign current_month = 'now' | date: '%m'
+  assign active_month_key = current_year | append: current_month
+  assign timeline_blocks = section.blocks | where: 'type', 'timeline_product'
+  assign showcase_blocks = section.blocks | where: 'type', 'ip_showcase'
+  assign homepage_faq = blank
+  if request.page_type == 'index' and pages['faq'].content != blank
+    assign homepage_faq = pages['faq']
+  endif
+%}
+
+<section class="p10-release-timeline{% if showcase_blocks.size > 0 %} p10-release-timeline--has-mobile-showcase{% endif %}{% if homepage_faq != blank %} p10-release-timeline--faq-replaced{% endif %}" data-p10-release-timeline data-release-year="{{ release_year | escape }}">
+  {% if showcase_blocks.size > 0 %}
+    <div class="p10-ip-showcase" data-p10-ip-showcase aria-label="IP showcase">
+      <div class="p10-ip-showcase__heading">
+        <p><span>Star: Edition 3</span><strong>New Arrivals</strong></p>
+      </div>
+      <div class="p10-ip-showcase__stage">
+        <div class="p10-ip-showcase__selector" role="tablist" aria-label="Featured IP collections">
+          {% for block in showcase_blocks limit: 3 %}
+            {% liquid
+              assign ip_collection = collections[block.settings.collection]
+              assign ip_products = ip_collection.products | slice: 0, 4
+              assign ip_image = ip_collection.image
+              if ip_image == blank and ip_products.size > 0
+                assign ip_image = ip_products.first.featured_image
+              endif
+              assign ip_title = block.settings.title | default: ip_collection.title
+            %}
+            <button
+              type="button"
+              class="p10-ip-showcase__tab{% if block.settings.collection == blank %} p10-ip-showcase__tab--shell{% endif %}{% if forloop.first %} is-active{% endif %}"
+              data-ip-showcase-select="{{ forloop.index0 }}"
+              role="tab"
+              aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+              aria-controls="p10-ip-showcase-panel-{{ section.id }}-{{ forloop.index0 }}"
+              {{ block.shopify_attributes }}
+            >
+              {% if block.settings.collection == 'ip-my-little-pony' %}
+                <img class="p10-ip-showcase__tab-art" src="{{ 'p10-mlp-star-edition-3-poster.jpg' | asset_url }}" width="375" height="490" loading="eager" alt="{{ ip_title | escape }}">
+              {% elsif ip_image != blank %}
+                {{ ip_image | image_url: width: 120 | image_tag: loading: 'lazy', widths: '80, 120', sizes: '68px', alt: ip_title }}
+              {% endif %}
+              <span>{{ ip_title | default: 'Choose IP' | escape }}</span>
+            </button>
+          {% endfor %}
+        </div>
+
+        <div class="p10-ip-showcase__panels">
+          {% for block in showcase_blocks limit: 3 %}
+            {% liquid
+              assign ip_collection = collections[block.settings.collection]
+              assign ip_products = ip_collection.products | slice: 0, 4
+              assign ip_image = ip_collection.image
+              if ip_image == blank and ip_products.size > 0
+                assign ip_image = ip_products.first.featured_image
+              endif
+              assign ip_title = block.settings.title | default: ip_collection.title
+              assign ip_label = block.settings.label | default: 'COLLECTOR WORLD'
+              assign ip_link = ip_collection.url | default: block.settings.fallback_link
+            %}
+            <article
+              id="p10-ip-showcase-panel-{{ section.id }}-{{ forloop.index0 }}"
+              class="p10-ip-showcase__panel{% if block.settings.collection == blank %} p10-ip-showcase__panel--shell{% endif %}{% if block.settings.collection == 'ip-my-little-pony' %} p10-ip-showcase__panel--mlp{% endif %}{% if forloop.first %} is-active{% endif %}"
+              data-ip-showcase-panel="{{ forloop.index0 }}"
+              role="tabpanel"
+              aria-hidden="{% if forloop.first %}false{% else %}true{% endif %}"
+            >
+              {% if block.settings.collection == 'ip-my-little-pony' %}
+                <div class="p10-ip-showcase__mlp-hero">
+                  <img class="p10-ip-showcase__backdrop p10-ip-showcase__backdrop--mlp" src="{{ 'p10-mlp-star-edition-3-fluttershy-feature.png' | asset_url }}" width="317" height="341" loading="eager" alt="Official My Little Pony Fluttershy card artwork">
+                </div>
+                {% assign mlp_star_assets = 'p10-mlp-star-edition-3-pure-twilight.png|p10-mlp-star-edition-3-pure-celestia.png|p10-mlp-star-edition-3-pure-nightmare-moon.png|p10-mlp-star-edition-3-pure-cadance.png' | split: '|' %}
+                <div class="p10-ip-showcase__tiles p10-ip-showcase__tiles--mlp" aria-label="Star: Edition 3 card artwork">
+                  {% for card_asset in mlp_star_assets %}
+                    <div class="p10-ip-showcase__tile p10-ip-showcase__tile--mlp" style="--p10-ip-tile-index: {{ forloop.index0 }}">
+                      <img src="{{ card_asset | asset_url }}" width="420" height="590" loading="lazy" alt="Official My Little Pony Star: Edition 3 card artwork">
+                    </div>
+                  {% endfor %}
+                </div>
+              {% else %}
+                {% if ip_image != blank %}
+                  {{ ip_image | image_url: width: 960 | image_tag: class: 'p10-ip-showcase__backdrop', loading: 'lazy', widths: '480, 720, 960', sizes: '66vw', alt: '' }}
+                {% endif %}
+                <div class="p10-ip-showcase__wash"></div>
+                <div class="p10-ip-showcase__copy">
+                  <p>{{ ip_label | escape }}</p>
+                  <h2>{{ ip_title | default: 'Featured IP' | escape }}</h2>
+                  {% if ip_link != blank %}
+                    <a href="{{ ip_link }}">Explore collection <span aria-hidden="true">→</span></a>
+                  {% endif %}
+                </div>
+                <div class="p10-ip-showcase__tiles" aria-label="Featured products">
+                  {% for product in ip_products limit: 4 %}
+                    <a href="{{ product.url }}" class="p10-ip-showcase__tile" style="--p10-ip-tile-index: {{ forloop.index0 }}">
+                      {% if product.featured_image != blank %}
+                        {{ product.featured_image | image_url: width: 360 | image_tag: loading: 'lazy', widths: '180, 260, 360', sizes: '28vw', alt: product.title }}
+                      {% endif %}
+                    </a>
+                  {% endfor %}
+                </div>
+              {% endif %}
+            </article>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+
+  <div class="p10-release-timeline__desktop">
+  <div class="p10-release-timeline__shell">
+    <header class="p10-release-timeline__intro">
+      <div>
+        <p class="p10-release-timeline__eyebrow">{{ section.settings.eyebrow | default: 'KAYOU · MY LITTLE PONY' | escape }}</p>
+        <h2>{{ section.settings.heading | default: '2026 Release Timeline' | escape }}</h2>
+      </div>
+      <p>{{ section.settings.text | default: 'Track official release months for KAYOU My Little Pony CCG, TCG, and collector goods in one clean timeline.' | escape }}</p>
+    </header>
+
+    <div class="p10-release-timeline__tools" aria-label="Release filters">
+      <div class="p10-release-timeline__filters" role="tablist" aria-label="Product type">
+        <button type="button" class="is-active" data-release-filter="all" aria-selected="true">All</button>
+        <button type="button" data-release-filter="ccg" aria-selected="false">CCG</button>
+        <button type="button" data-release-filter="tcg" aria-selected="false">TCG</button>
+        <button type="button" data-release-filter="merch" aria-selected="false">Merch</button>
+      </div>
+      <div class="p10-release-timeline__legend" aria-label="Date confidence">
+        <span><i class="p10-release-timeline__dot p10-release-timeline__dot--confirmed"></i>Confirmed</span>
+        <span><i class="p10-release-timeline__dot p10-release-timeline__dot--expected"></i>Expected</span>
+        <span><i class="p10-release-timeline__dot p10-release-timeline__dot--research"></i>Unconfirmed</span>
+      </div>
+    </div>
+
+    {% if timeline_blocks.size > 0 %}
+      <div class="p10-release-timeline__stage">
+        <button type="button" class="p10-release-timeline__nav p10-release-timeline__nav--prev" data-release-nav="prev" aria-label="Scroll timeline left">
+          <span aria-hidden="true">‹</span>
+        </button>
+        <div class="p10-release-timeline__viewport" data-release-viewport tabindex="0" aria-label="{{ release_year | escape }} KAYOU My Little Pony release timeline">
+          <ol class="p10-release-timeline__track" data-release-track aria-live="polite">
+            {% for block in timeline_blocks %}
+              {% liquid
+                assign product = all_products[block.settings.product]
+                assign release_month = block.settings.release_month | default: '00'
+                assign month_key = release_year | append: release_month
+                assign sort_key = month_key
+                if release_month == '00'
+                  assign sort_key = release_year | append: '00'
+                endif
+                assign category = block.settings.category | default: 'ccg'
+                assign confidence = block.settings.confidence | default: 'expected'
+                assign confidence_label = confidence | capitalize
+                if confidence == 'research'
+                  assign confidence_label = 'Unconfirmed'
+                endif
+                assign date_label = release_year | append: '.' | append: release_month
+                if release_month == '00'
+                  assign date_label = 'Date TBC'
+                endif
+                assign time_label = 'Coming soon'
+                if release_month == '00'
+                  assign time_label = 'Unconfirmed'
+                elsif month_key < active_month_key
+                  assign time_label = 'Released'
+                elsif month_key == active_month_key
+                  assign time_label = 'This month'
+                endif
+                assign product_title = block.settings.fallback_title
+                assign product_url = block.settings.fallback_link
+                if product != blank
+                  assign product_title = product.title
+                  assign product_url = product.url
+                endif
+                assign product_alt = product_title
+                if product.featured_image != blank and product.featured_image.alt != blank
+                  assign product_alt = product.featured_image.alt
+                endif
+              %}
+              {% if product != blank or request.design_mode %}
+                <li
+                  class="p10-release-timeline__item"
+                  data-release-item
+                  data-release-category="{{ category | escape }}"
+                  data-release-sort="{{ sort_key | escape }}"
+                  data-release-confidence="{{ confidence | escape }}"
+                  {{ block.shopify_attributes }}
+                >
+                  <div class="p10-release-timeline__node">
+                    <time datetime="{% if release_month != '00' %}{{ release_year | escape }}-{{ release_month | escape }}{% else %}{{ release_year | escape }}{% endif %}">{{ date_label | escape }}</time>
+                    <span>{{ time_label | escape }}</span>
+                  </div>
+
+                  <article class="p10-release-timeline__card">
+                    <a class="p10-release-timeline__media" href="{{ product_url | default: '#' }}">
+                      {% if product.featured_image != blank %}
+                        {{
+                          product.featured_image
+                          | image_url: width: 760
+                          | image_tag:
+                            loading: 'lazy',
+                            widths: '260, 380, 520, 760',
+                            sizes: '(min-width: 1100px) 300px, 78vw',
+                            alt: product_alt
+                        }}
+                      {% else %}
+                        {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                      {% endif %}
+                    </a>
+
+                    <div class="p10-release-timeline__body">
+                      <div class="p10-release-timeline__tags">
+                        <span class="p10-release-timeline__chip">{{ category | upcase }}</span>
+                        <span class="p10-release-timeline__chip p10-release-timeline__chip--{{ confidence }}">{{ confidence_label | escape }}</span>
+                      </div>
+                      <h3>
+                        <a href="{{ product_url | default: '#' }}">
+                          {% if product_title != blank %}
+                            {{ product_title | escape }}
+                          {% else %}
+                            Select a product for this release
+                          {% endif %}
+                        </a>
+                      </h3>
+                      <div class="p10-release-timeline__meta">
+                        <span>
+                          {% if product != blank %}
+                            {% if product.price_varies %}From {% endif %}{{ product.price_min | money }}
+                          {% else %}
+                            Product pending
+                          {% endif %}
+                        </span>
+                        <small>
+                          {% if product != blank %}
+                            {% if product.available %}In stock{% else %}Sold out{% endif %}
+                          {% else %}
+                            Theme editor
+                          {% endif %}
+                        </small>
+                      </div>
+                      <a class="p10-release-timeline__cta" href="{{ product_url | default: '#' }}">
+                        <span>{% if product != blank %}View product{% else %}Set product{% endif %}</span>
+                        <span aria-hidden="true">→</span>
+                      </a>
+                    </div>
+                  </article>
+                </li>
+              {% endif %}
+            {% endfor %}
+          </ol>
+          <p class="p10-release-timeline__filter-empty" data-release-filter-empty hidden>No releases in this lane yet. Add products in the theme editor as the {{ release_year | escape }} calendar fills in.</p>
+        </div>
+        <button type="button" class="p10-release-timeline__nav p10-release-timeline__nav--next" data-release-nav="next" aria-label="Scroll timeline right">
+          <span aria-hidden="true">›</span>
+        </button>
+      </div>
+      <p class="p10-release-timeline__note">{{ section.settings.note | default: 'Release months are maintained manually from official KAYOU/product-source references. 2026.XX means the product is included but the exact month still needs confirmation.' | escape }}</p>
+    {% else %}
+      <div class="p10-release-timeline__empty">
+        <p>Add release blocks in the theme editor to build the {{ release_year | escape }} timeline.</p>
+      </div>
+    {% endif %}
+  </div>
+  </div>
+</section>
+
+{% if homepage_faq != blank %}
+  {% render 'p10-faq', mode: 'home', faq_page: homepage_faq, section_id: section.id %}
+{% endif %}
+
+{% stylesheet %}
+  .p10-release-timeline {
+    --release-ink: #17181c;
+    --release-muted: #68707c;
+    --release-line: #dde3eb;
+    --release-paper: #fffdfb;
+    --release-soft: #f6f8fb;
+    --release-blue: #78addf;
+    --release-pink: #ef8fb2;
+    --release-pink-deep: #d94c72;
+    --release-gold: #d9bd6c;
+    padding: 0 0 26px;
+    background:
+      linear-gradient(180deg, rgba(255, 246, 250, 0.78), rgba(255, 255, 255, 0) 32%),
+      var(--release-paper);
+    color: var(--release-ink);
+  }
+
+  .p10-release-timeline *,
+  .p10-release-timeline *::before,
+  .p10-release-timeline *::after {
+    box-sizing: border-box;
+  }
+
+  .p10-release-timeline__shell {
+    width: min(1320px, calc(100% - 32px));
+    margin: 0 auto;
+  }
+
+  .p10-release-timeline__intro {
+    display: grid;
+    grid-template-columns: minmax(0, 0.92fr) minmax(260px, 0.55fr);
+    align-items: end;
+    gap: 20px;
+    padding: 18px 0 10px;
+    border-top: 1px solid var(--release-line);
+  }
+
+  .p10-release-timeline__eyebrow {
+    margin: 0 0 4px;
+    color: var(--release-pink-deep);
+    font-size: 9px;
+    font-weight: 900;
+    line-height: 1.2;
+    letter-spacing: 0;
+    text-transform: uppercase;
+  }
+
+  .p10-release-timeline__intro h2 {
+    max-width: 760px;
+    margin: 0;
+    font-size: clamp(22px, 2vw, 28px);
+    font-weight: 950;
+    line-height: 0.98;
+    letter-spacing: 0;
+  }
+
+  .p10-release-timeline__intro > p {
+    margin: 0;
+    color: var(--release-muted);
+    font-size: 12px;
+    line-height: 1.4;
+  }
+
+  .p10-release-timeline__tools {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 6px 0 8px;
+    border-top: 1px solid var(--release-line);
+  }
+
+  .p10-release-timeline__filters,
+  .p10-release-timeline__legend {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .p10-release-timeline__filters button {
+    min-height: 26px;
+    padding: 0 10px;
+    border: 1px solid var(--release-line);
+    border-radius: 999px;
+    background: #fff;
+    color: var(--release-ink);
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 160ms ease, border-color 160ms ease, transform 160ms ease;
+  }
+
+  .p10-release-timeline__filters button:hover {
+    border-color: color-mix(in srgb, var(--release-pink) 55%, var(--release-line));
+    transform: translateY(-1px);
+  }
+
+  .p10-release-timeline__filters button:focus-visible,
+  .p10-release-timeline__nav:focus-visible,
+  .p10-release-timeline__cta:focus-visible,
+  .p10-release-timeline__media:focus-visible,
+  .p10-release-timeline__card h3 a:focus-visible,
+  .p10-release-timeline__viewport:focus-visible {
+    outline: 3px solid #2e7fdb;
+    outline-offset: 3px;
+  }
+
+  .p10-release-timeline__filters button.is-active {
+    border-color: var(--release-ink);
+    background: var(--release-ink);
+    color: #fff;
+  }
+
+  .p10-release-timeline__legend {
+    color: var(--release-muted);
+    font-size: 9px;
+    font-weight: 850;
+    text-transform: uppercase;
+  }
+
+  .p10-release-timeline__legend span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .p10-release-timeline__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--release-blue);
+  }
+
+  .p10-release-timeline__dot--expected {
+    background: var(--release-pink);
+  }
+
+  .p10-release-timeline__dot--research {
+    background: var(--release-gold);
+  }
+
+  .p10-release-timeline__stage {
+    position: relative;
+  }
+
+  .p10-release-timeline__stage::before,
+  .p10-release-timeline__stage::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    z-index: 2;
+    width: 54px;
+    pointer-events: none;
+  }
+
+  .p10-release-timeline__stage::before {
+    left: 0;
+    background: linear-gradient(90deg, var(--release-paper), rgba(255, 253, 251, 0));
+  }
+
+  .p10-release-timeline__stage::after {
+    right: 0;
+    background: linear-gradient(270deg, var(--release-paper), rgba(255, 253, 251, 0));
+  }
+
+  .p10-release-timeline__viewport {
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-padding: 0 8px;
+    scrollbar-width: thin;
+  }
+
+  .p10-release-timeline__track {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 182px;
+    gap: 14px;
+    width: max-content;
+    min-width: 0;
+    margin: 0 auto;
+    padding: 2px 4px 6px;
+    list-style: none;
+  }
+
+  .p10-release-timeline__item {
+    position: relative;
+    display: grid;
+    grid-template-rows: 44px minmax(0, 1fr);
+    scroll-snap-align: start;
+  }
+
+  .p10-release-timeline__item[hidden] {
+    display: none;
+  }
+
+  .p10-release-timeline__item::before {
+    content: "";
+    position: absolute;
+    top: 22px;
+    right: -18px;
+    left: 10px;
+    height: 1px;
+    background: var(--release-line);
+  }
+
+  .p10-release-timeline__node {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    align-content: start;
+    gap: 4px;
+    padding-left: 0;
+  }
+
+  .p10-release-timeline__node::before {
+    content: "";
+    width: 12px;
+    height: 12px;
+    margin: 16px 0 0;
+    border: 3px solid #fff;
+    border-radius: 50%;
+    background: var(--release-blue);
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--release-blue) 70%, var(--release-line));
+  }
+
+  .p10-release-timeline__item[data-release-confidence="expected"] .p10-release-timeline__node::before {
+    background: var(--release-pink);
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--release-pink) 70%, var(--release-line));
+  }
+
+  .p10-release-timeline__node time {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 10px;
+    font-weight: 950;
+    line-height: 1;
+  }
+
+  .p10-release-timeline__node span {
+    position: absolute;
+    top: 28px;
+    left: 0;
+    color: var(--release-muted);
+    font-size: 7px;
+    font-weight: 900;
+    text-transform: uppercase;
+  }
+
+  .p10-release-timeline__card {
+    display: grid;
+    grid-template-rows: 150px minmax(122px, auto);
+    min-height: 100%;
+    overflow: hidden;
+    border: 1px solid var(--release-line);
+    border-radius: 8px;
+    background: #fff;
+    box-shadow: 0 12px 30px rgba(30, 31, 37, 0.05);
+    transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+  }
+
+  .p10-release-timeline__card:hover {
+    border-color: color-mix(in srgb, var(--release-pink) 42%, var(--release-line));
+    box-shadow: 0 18px 42px rgba(30, 31, 37, 0.09);
+    transform: translateY(-2px);
+  }
+
+  .p10-release-timeline__media {
+    display: grid;
+    place-items: center;
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+    padding: 9px;
+    border-bottom: 1px solid var(--release-line);
+    background:
+      radial-gradient(circle at 22% 18%, rgba(239, 143, 178, 0.13), transparent 32%),
+      linear-gradient(180deg, #fff, var(--release-soft));
+  }
+
+  .p10-release-timeline__media img,
+  .p10-release-timeline__media svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+
+  .p10-release-timeline__body {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-rows: 17px minmax(30px, auto) 22px 26px;
+    gap: 4px;
+    min-width: 0;
+    padding: 7px;
+    background: #fff;
+  }
+
+  .p10-release-timeline__tags,
+  .p10-release-timeline__meta,
+  .p10-release-timeline__cta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .p10-release-timeline__chip {
+    display: inline-flex;
+    align-items: center;
+    min-height: 15px;
+    padding: 0 5px;
+    border-radius: 999px;
+    background: rgba(120, 173, 223, 0.14);
+    color: color-mix(in srgb, var(--release-blue) 72%, var(--release-ink));
+    font-size: 7px;
+    font-weight: 950;
+    text-transform: uppercase;
+  }
+
+  .p10-release-timeline__chip--expected {
+    background: rgba(239, 143, 178, 0.16);
+    color: var(--release-pink-deep);
+  }
+
+  .p10-release-timeline__chip--research {
+    background: rgba(217, 189, 108, 0.18);
+    color: #856917;
+  }
+
+  .p10-release-timeline__body h3 {
+    margin: 0;
+    font-size: 11px;
+    font-weight: 900;
+    line-height: 1.3;
+    letter-spacing: 0;
+  }
+
+  .p10-release-timeline__body h3 a {
+    display: -webkit-box;
+    overflow: hidden;
+    color: var(--release-ink);
+    text-decoration: none;
+    overflow-wrap: anywhere;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .p10-release-timeline__meta {
+    align-items: end;
+    border-top: 1px solid var(--release-line);
+    padding-top: 5px;
+  }
+
+  .p10-release-timeline__meta span {
+    font-size: 11px;
+    font-weight: 950;
+  }
+
+  .p10-release-timeline__meta small {
+    color: var(--release-muted);
+    font-size: 7px;
+    font-weight: 900;
+    text-align: right;
+    text-transform: uppercase;
+  }
+
+  .p10-release-timeline__cta {
+    min-height: 26px;
+    padding: 0 7px;
+    border: 1px solid var(--release-line);
+    border-radius: 6px;
+    background: #fff;
+    color: var(--release-ink);
+    font-size: 8px;
+    font-weight: 950;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: background 160ms ease, border-color 160ms ease;
+  }
+
+  .p10-release-timeline__cta:hover {
+    border-color: var(--release-ink);
+    background: var(--release-ink);
+    color: #fff;
+  }
+
+  .p10-release-timeline__nav {
+    position: absolute;
+    top: 150px;
+    z-index: 4;
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border: 1px solid var(--release-line);
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.94);
+    color: var(--release-ink);
+    cursor: pointer;
+    box-shadow: 0 12px 26px rgba(30, 31, 37, 0.08);
+  }
+
+  .p10-release-timeline__nav span {
+    display: block;
+    margin-top: -2px;
+    font-size: 23px;
+    line-height: 1;
+  }
+
+  .p10-release-timeline__nav--prev {
+    left: -10px;
+  }
+
+  .p10-release-timeline__nav--next {
+    right: -10px;
+  }
+
+  .p10-release-timeline__note,
+  .p10-release-timeline__filter-empty,
+  .p10-release-timeline__empty p {
+    margin: 10px 0 0;
+    color: var(--release-muted);
+    font-size: 9px;
+    font-weight: 700;
+    line-height: 1.4;
+  }
+
+  .p10-release-timeline__filter-empty {
+    border: 1px dashed var(--release-line);
+    border-radius: 8px;
+    padding: 18px;
+    background: #fff;
+  }
+
+  .p10-release-timeline__empty {
+    border: 1px dashed var(--release-line);
+    border-radius: 8px;
+    padding: 28px;
+    background: #fff;
+  }
+
+  .p10-release-timeline__empty p {
+    margin: 0;
+  }
+
+  .p10-ip-showcase {
+    display: none;
+  }
+
+  @media (max-width: 989px) {
+    .p10-release-timeline__intro {
+      display: block;
+    }
+
+    .p10-release-timeline__eyebrow,
+    .p10-release-timeline__intro > p,
+    .p10-release-timeline__legend {
+      display: none;
+    }
+
+    .p10-release-timeline__tools {
+      align-items: center;
+      flex-direction: row;
+    }
+  }
+
+  @media (max-width: 749px) {
+    .p10-release-timeline--has-mobile-showcase {
+      padding: 10px 0 16px;
+    }
+
+    .p10-ip-showcase {
+      display: block;
+      width: min(100% - 16px, 520px);
+      margin: 0 auto;
+    }
+
+    .p10-ip-showcase__heading {
+      margin-left: 96px;
+      padding: 0 0 9px;
+      border-bottom: 1px solid var(--release-line);
+    }
+
+    .p10-ip-showcase__heading p {
+      display: grid;
+      gap: 1px;
+      margin: 0;
+      color: #382f43;
+      font-family: var(--font-body-family);
+      line-height: 1;
+    }
+
+    .p10-ip-showcase__heading span {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.075em;
+      text-transform: uppercase;
+    }
+
+    .p10-ip-showcase__heading strong {
+      font-size: 18px;
+      font-weight: 650;
+      letter-spacing: -0.045em;
+    }
+
+    .p10-ip-showcase__stage {
+      display: grid;
+      grid-template-columns: 88px minmax(0, 1fr);
+      gap: 8px;
+      min-height: 438px;
+      padding-top: 10px;
+    }
+
+    .p10-ip-showcase__selector {
+      display: grid;
+      grid-auto-rows: 1fr;
+      gap: 7px;
+    }
+
+    .p10-ip-showcase__tab {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: 34px minmax(0, 1fr);
+      align-items: start;
+      justify-items: start;
+      gap: 4px;
+      min-width: 0;
+      padding: 6px;
+      color: #443b45;
+      background: #fffdf9;
+      border: 1px solid #eee4d9;
+      border-radius: 7px;
+      box-shadow: none;
+      font: inherit;
+      text-align: left;
+      transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease, transform 180ms ease;
+    }
+
+    .p10-ip-showcase__tab.is-active {
+      color: #3b3041;
+      background: #f6e4c5;
+      border-color: #c99b57;
+      transform: translateX(2px);
+    }
+
+    .p10-ip-showcase__tab--shell {
+      grid-template-rows: 1fr;
+      align-items: center;
+    }
+
+    .p10-ip-showcase__tab:focus-visible {
+      outline: 2px solid var(--release-pink-deep);
+      outline-offset: 2px;
+    }
+
+    .p10-ip-showcase__tab img {
+      display: block;
+      width: 30px;
+      height: 34px;
+      border-radius: 4px;
+      object-fit: cover;
+    }
+
+    .p10-ip-showcase__tab-art {
+      object-position: center 41%;
+      transform: none;
+    }
+
+    .p10-ip-showcase__tab span {
+      display: -webkit-box;
+      overflow: hidden;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      font-size: 9px;
+      font-weight: 800;
+      line-height: 1.1;
+    }
+
+    .p10-ip-showcase__panels {
+      position: relative;
+      min-width: 0;
+      min-height: 438px;
+      overflow: hidden;
+      border-radius: 8px;
+      background: #f5efe9;
+      box-shadow: inset 0 0 0 1px rgba(92, 67, 48, 0.1);
+      isolation: isolate;
+    }
+
+    .p10-ip-showcase__panel {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      align-content: space-between;
+      overflow: hidden;
+      padding: 15px;
+      color: #ffffff;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateX(18px) scale(0.985);
+      transition: opacity 260ms ease, transform 340ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+
+    .p10-ip-showcase__panel.is-active {
+      z-index: 2;
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(0) scale(1);
+    }
+
+    .p10-ip-showcase__panel.is-leaving {
+      z-index: 1;
+      opacity: 0;
+      transform: translateX(-16px) scale(1.02);
+    }
+
+    .p10-ip-showcase__panel--shell {
+      color: #3b3340;
+      background: #eee7df;
+      box-shadow: inset 0 0 0 1px rgba(92, 67, 48, 0.12);
+      isolation: isolate;
+    }
+
+    .p10-ip-showcase__panel--shell .p10-ip-showcase__wash {
+      display: none;
+    }
+
+    .p10-ip-showcase__panel--shell .p10-ip-showcase__copy h2 {
+      text-shadow: none;
+    }
+
+    .p10-ip-showcase__backdrop,
+    .p10-ip-showcase__wash {
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+    }
+
+    .p10-ip-showcase__backdrop {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      filter: saturate(1.05);
+      transform: scale(1.035);
+    }
+
+    .p10-ip-showcase__backdrop--mlp {
+      object-position: center 43%;
+      transform: none;
+    }
+
+    .p10-ip-showcase__panel--mlp {
+      display: grid;
+      grid-template-rows: 180px minmax(0, 1fr);
+      align-content: stretch;
+      padding: 0;
+      background: #e1d0bc;
+    }
+
+    .p10-ip-showcase__mlp-hero {
+      position: relative;
+      z-index: 0;
+      overflow: hidden;
+      min-height: 0;
+      background: #e1d0bc;
+      isolation: isolate;
+    }
+
+    .p10-ip-showcase__mlp-hero .p10-ip-showcase__backdrop {
+      position: absolute;
+      z-index: 0;
+      object-fit: cover;
+      object-position: center;
+      transform: none;
+    }
+
+    .p10-ip-showcase__wash {
+      z-index: -1;
+      background: rgba(20, 25, 36, 0.38);
+    }
+
+    .p10-ip-showcase__copy {
+      display: grid;
+      justify-items: start;
+      gap: 4px;
+      max-width: 76%;
+    }
+
+    .p10-ip-showcase__copy p,
+    .p10-ip-showcase__copy h2 {
+      margin: 0;
+      color: inherit;
+    }
+
+    .p10-ip-showcase__copy p {
+      font-size: 9px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .p10-ip-showcase__copy h2 {
+      font-size: 25px;
+      font-weight: 900;
+      letter-spacing: -0.06em;
+      line-height: 0.92;
+      text-shadow: 0 2px 14px rgba(0, 0, 0, 0.24);
+    }
+
+    .p10-ip-showcase__copy a {
+      color: inherit;
+      font-size: 10px;
+      font-weight: 900;
+      text-decoration: none;
+    }
+
+    .p10-ip-showcase__copy a span {
+      display: inline-block;
+      margin-left: 3px;
+      transition: transform 160ms ease;
+    }
+
+    .p10-ip-showcase__copy a:focus-visible {
+      outline: 2px solid #ffffff;
+      outline-offset: 3px;
+    }
+
+    .p10-ip-showcase__tiles {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-self: end;
+      gap: 8px;
+      padding-left: clamp(22px, 9vw, 42px);
+    }
+
+    .p10-ip-showcase__tile {
+      display: block;
+      overflow: hidden;
+      min-height: 80px;
+      border: 1px solid rgba(255, 255, 255, 0.58);
+      border-radius: 7px;
+      background: rgba(255, 255, 255, 0.18);
+      box-shadow: 0 12px 26px rgba(8, 12, 18, 0.22);
+      transform: rotate(calc((var(--p10-ip-tile-index) - 1.5) * 1.8deg));
+    }
+
+    .p10-ip-showcase__tile img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      min-height: 80px;
+      object-fit: cover;
+    }
+
+    .p10-ip-showcase__tiles--mlp {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-rows: repeat(2, minmax(0, 1fr));
+      align-self: stretch;
+      min-height: 0;
+      gap: 8px 10px;
+      padding: 12px 14px 14px;
+      background: #e1d0bc;
+    }
+
+    .p10-ip-showcase__tile--mlp {
+      min-height: 0;
+      overflow: visible;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+      transform: none;
+    }
+
+    .p10-ip-showcase__tile--mlp img {
+      min-height: 0;
+      object-fit: contain;
+      object-position: center;
+      filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.28));
+      transform: none;
+    }
+
+    .p10-ip-showcase__panel.is-entering .p10-ip-showcase__tile--mlp {
+      animation-name: p10-ip-showcase-card-in;
+    }
+
+    .p10-ip-showcase__panel.is-entering .p10-ip-showcase__copy {
+      animation: p10-ip-showcase-copy-in 420ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    }
+
+    .p10-ip-showcase__panel.is-entering .p10-ip-showcase__tile {
+      animation: p10-ip-showcase-tile-in 460ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+      animation-delay: calc(70ms + var(--p10-ip-tile-index) * 65ms);
+    }
+
+    @keyframes p10-ip-showcase-copy-in {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes p10-ip-showcase-tile-in {
+      from { opacity: 0; transform: translate3d(22px, 18px, 0) scale(0.92); }
+      to { opacity: 1; transform: rotate(calc((var(--p10-ip-tile-index) - 1.5) * 1.8deg)) translate3d(0, 0, 0) scale(1); }
+    }
+
+    @keyframes p10-ip-showcase-card-in {
+      from { opacity: 0; transform: translate3d(18px, 14px, 0) scale(0.94); }
+      to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+    }
+
+    .p10-release-timeline {
+      padding-bottom: 12px;
+    }
+
+    .p10-release-timeline__shell {
+      width: min(100% - 8px, 1320px);
+    }
+
+    .p10-release-timeline__intro {
+      padding: 10px 0 6px;
+    }
+
+    .p10-release-timeline__intro h2 {
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .p10-release-timeline__tools {
+      gap: 6px;
+      overflow-x: auto;
+      padding: 5px 0 6px;
+      scrollbar-width: none;
+    }
+
+    .p10-release-timeline__tools::-webkit-scrollbar {
+      display: none;
+    }
+
+    .p10-release-timeline__filters {
+      flex-wrap: nowrap;
+      gap: 6px;
+    }
+
+    .p10-release-timeline__filters button {
+      min-height: 26px;
+      padding: 0 9px;
+      font-size: 8px;
+    }
+
+    .p10-release-timeline__track {
+      grid-auto-columns: 162px;
+      gap: 18px;
+      padding-top: 2px;
+      padding-right: 0;
+      padding-bottom: 4px;
+      padding-left: 0;
+    }
+
+    .p10-release-timeline__item {
+      grid-template-rows: 42px minmax(0, 1fr);
+    }
+
+    .p10-release-timeline__item::before {
+      top: 21px;
+    }
+
+    .p10-release-timeline__node::before {
+      margin-top: 15px;
+    }
+
+    .p10-release-timeline__node span {
+      top: 27px;
+    }
+
+    .p10-release-timeline__card {
+      grid-template-rows: 146px minmax(126px, auto);
+    }
+
+    .p10-release-timeline__body {
+      grid-template-rows: 17px minmax(30px, auto) 22px 26px;
+    }
+
+    .p10-release-timeline__note {
+      display: none;
+    }
+
+    .p10-release-timeline__nav,
+    .p10-release-timeline__stage::before,
+    .p10-release-timeline__stage::after {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .p10-release-timeline *,
+    .p10-release-timeline *::before,
+    .p10-release-timeline *::after {
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+    }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  (() => {
+    const initTimeline = (root) => {
+      if (!root || root.dataset.releaseTimelineReady === 'true') return;
+      root.dataset.releaseTimelineReady = 'true';
+
+      const track = root.querySelector('[data-release-track]');
+      const viewport = root.querySelector('[data-release-viewport]');
+      const buttons = Array.from(root.querySelectorAll('[data-release-filter]'));
+      const items = Array.from(root.querySelectorAll('[data-release-item]'));
+      const empty = root.querySelector('[data-release-filter-empty]');
+      if (!track || !viewport || !items.length) return;
+
+      items
+        .sort((a, b) => Number(b.dataset.releaseSort || 0) - Number(a.dataset.releaseSort || 0))
+        .forEach((item) => track.appendChild(item));
+
+      const applyFilter = (filter) => {
+        let visible = 0;
+        items.forEach((item) => {
+          const show = filter === 'all' || item.dataset.releaseCategory === filter;
+          item.hidden = !show;
+          if (show) visible += 1;
+        });
+        buttons.forEach((button) => {
+          const active = button.dataset.releaseFilter === filter;
+          button.classList.toggle('is-active', active);
+          button.setAttribute('aria-selected', String(active));
+        });
+        track.dataset.visibleCount = String(visible);
+        if (empty) empty.hidden = visible !== 0;
+        viewport.scrollTo({ left: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+      };
+
+      buttons.forEach((button) => {
+        button.addEventListener('click', () => applyFilter(button.dataset.releaseFilter || 'all'));
+      });
+
+      root.querySelectorAll('[data-release-nav]').forEach((button) => {
+        button.addEventListener('click', () => {
+          const direction = button.dataset.releaseNav === 'prev' ? -1 : 1;
+          viewport.scrollBy({
+            left: direction * Math.max(280, viewport.clientWidth * 0.75),
+            behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+          });
+        });
+      });
+    };
+
+    const initIpShowcase = (root) => {
+      const showcase = root?.querySelector('[data-p10-ip-showcase]');
+      if (!showcase || showcase.dataset.ipShowcaseReady === 'true') return;
+      showcase.dataset.ipShowcaseReady = 'true';
+
+      const buttons = Array.from(showcase.querySelectorAll('[data-ip-showcase-select]'));
+      const panels = Array.from(showcase.querySelectorAll('[data-ip-showcase-panel]'));
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      let switching = false;
+
+      const applyState = (nextIndex, animate) => {
+        const nextPanel = panels.find((panel) => panel.dataset.ipShowcasePanel === nextIndex);
+        const currentPanel = panels.find((panel) => panel.classList.contains('is-active'));
+        if (!nextPanel || nextPanel === currentPanel || switching) return;
+
+        buttons.forEach((button) => {
+          const active = button.dataset.ipShowcaseSelect === nextIndex;
+          button.classList.toggle('is-active', active);
+          button.setAttribute('aria-selected', String(active));
+        });
+
+        if (!animate) {
+          panels.forEach((panel) => {
+            const active = panel === nextPanel;
+            panel.classList.toggle('is-active', active);
+            panel.classList.remove('is-entering', 'is-leaving');
+            panel.setAttribute('aria-hidden', String(!active));
+          });
+          return;
+        }
+
+        switching = true;
+        currentPanel?.classList.add('is-leaving');
+        currentPanel?.setAttribute('aria-hidden', 'true');
+        nextPanel.classList.add('is-active', 'is-entering');
+        nextPanel.setAttribute('aria-hidden', 'false');
+
+        window.setTimeout(() => {
+          currentPanel?.classList.remove('is-active', 'is-leaving');
+          nextPanel.classList.remove('is-entering');
+          switching = false;
+        }, 380);
+      };
+
+      buttons.forEach((button) => {
+        button.addEventListener('click', () => {
+          applyState(button.dataset.ipShowcaseSelect, !reduceMotion.matches);
+        });
+      });
+    };
+
+    const init = () => {
+      document.querySelectorAll('[data-p10-release-timeline]').forEach((root) => {
+        initTimeline(root);
+        initIpShowcase(root);
+      });
+    };
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init, { once: true });
+    } else {
+      init();
+    }
+
+    document.addEventListener('shopify:section:load', (event) => {
+      const root = event.target?.querySelector?.('[data-p10-release-timeline]');
+      initTimeline(root);
+      initIpShowcase(root);
+    });
+  })();
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "P10 release timeline",
+  "tag": "section",
+  "class": "section-p10-release-timeline",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "KAYOU · MY LITTLE PONY" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "2026 Release Timeline" },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "Track official release months for KAYOU My Little Pony CCG, TCG, and collector goods in one clean timeline." },
+    { "type": "text", "id": "release_year", "label": "Release year", "default": "2026" },
+    { "type": "textarea", "id": "note", "label": "Timeline note", "default": "Release months are maintained manually from official KAYOU/product-source references. 2026.XX means the product is included but the exact month still needs confirmation." }
+  ],
+  "max_blocks": 24,
+  "blocks": [
+    {
+      "type": "timeline_product",
+      "name": "Release product",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Product" },
+        {
+          "type": "select",
+          "id": "release_month",
+          "label": "Release month",
+          "default": "00",
+          "options": [
+            { "value": "00", "label": "2026.XX - needs confirmation" },
+            { "value": "01", "label": "January" },
+            { "value": "02", "label": "February" },
+            { "value": "03", "label": "March" },
+            { "value": "04", "label": "April" },
+            { "value": "05", "label": "May" },
+            { "value": "06", "label": "June" },
+            { "value": "07", "label": "July" },
+            { "value": "08", "label": "August" },
+            { "value": "09", "label": "September" },
+            { "value": "10", "label": "October" },
+            { "value": "11", "label": "November" },
+            { "value": "12", "label": "December" }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "category",
+          "label": "Product type",
+          "default": "ccg",
+          "options": [
+            { "value": "ccg", "label": "CCG" },
+            { "value": "tcg", "label": "TCG" },
+            { "value": "merch", "label": "Merch" }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "confidence",
+          "label": "Date confidence",
+          "default": "expected",
+          "options": [
+            { "value": "confirmed", "label": "Confirmed" },
+            { "value": "expected", "label": "Expected" },
+            { "value": "research", "label": "Needs research" }
+          ]
+        },
+        { "type": "text", "id": "fallback_title", "label": "Editor fallback title" },
+        { "type": "url", "id": "fallback_link", "label": "Editor fallback link" }
+      ]
+    },
+    {
+      "type": "ip_showcase",
+      "name": "Mobile IP showcase",
+      "limit": 3,
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "IP collection" },
+        { "type": "text", "id": "title", "label": "Display title" },
+        { "type": "text", "id": "label", "label": "Eyebrow", "default": "COLLECTOR WORLD" },
+        { "type": "url", "id": "fallback_link", "label": "Fallback link" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "P10 release timeline",
+      "blocks": [
+        { "type": "timeline_product" },
+        { "type": "timeline_product" },
+        { "type": "timeline_product" },
+        { "type": "timeline_product" },
+        { "type": "timeline_product" },
+        { "type": "timeline_product" },
+        { "type": "timeline_product" },
+        { "type": "timeline_product" },
+        { "type": "timeline_product" },
+        { "type": "timeline_product" },
+        { "type": "timeline_product" },
+        { "type": "timeline_product" }
+      ]
+    }
+  ]
+}
+{% endschema %}

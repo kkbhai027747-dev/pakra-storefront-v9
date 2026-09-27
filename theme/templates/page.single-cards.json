@@ -1,0 +1,551 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+    "sections": {
+        "main": {
+            "type": "p10-single-card-lounge",
+            "blocks": {
+                "group_qy07_cr_1": {
+                    "type": "card_group",
+                    "settings": {
+                        "title": "Fun Moments Edition Chinese Series 7 (T2W7) Hidden CR",
+                        "short_label": "QY07-CR",
+                        "edition": "Fun Moments",
+                        "edition_key": "fun-moments",
+                        "series": "Fun Moments",
+                        "series_key": "fun-moments",
+                        "wave": "T2W7",
+                        "wave_key": "t2w7",
+                        "rarity": "Hidden CR",
+                        "rarity_key": "cr",
+                        "code_group": "QY07-CR",
+                        "meta": "Series 7 (T2W7) - Hidden CR group with 12 exact card-number variants.",
+                        "variant_count": 12,
+                        "link": "/products/kayou-mlp-fun-moments-edition-chinese-series-7-t2w7-qy07-cr-single-cards",
+                        "image_url": "https://cdn.shopify.com/s/files/1/0746/1014/7516/files/QY07-CR-001LS-twilight-sparkle.png?v=1780169688",
+                        "image_alt": "Fun Moments Edition Chinese Series 7 (T2W7) Hidden CR representative card image"
+                    }
+                },
+                "group_qy07_qcr_2": {
+                    "type": "card_group",
+                    "settings": {
+                        "title": "Fun Moments Edition Chinese Series 7 (T2W7) QCR Hidden CR",
+                        "short_label": "QY07-QCR",
+                        "edition": "Fun Moments",
+                        "edition_key": "fun-moments",
+                        "series": "Fun Moments",
+                        "series_key": "fun-moments",
+                        "wave": "T2W7",
+                        "wave_key": "t2w7",
+                        "rarity": "QCR Hidden CR",
+                        "rarity_key": "qcr",
+                        "code_group": "QY07-QCR",
+                        "meta": "Series 7 (T2W7) - QCR Hidden CR group with 11 exact card-number variants.",
+                        "variant_count": 11,
+                        "link": "/products/kayou-mlp-fun-moments-edition-chinese-series-7-t2w7-qy07-qcr-single-cards",
+                        "image_url": "https://cdn.shopify.com/s/files/1/0746/1014/7516/files/QY07-QCR-002LS-pinkie-pie.png?v=1780169664",
+                        "image_alt": "Fun Moments Edition Chinese Series 7 (T2W7) QCR Hidden CR representative card image"
+                    }
+                },
+                "group_hy11_dzr_3": {
+                    "type": "card_group",
+                    "settings": {
+                        "title": "Moon Edition Chinese Series 11 (T4W11) Hidden Diamond ZR",
+                        "short_label": "HY11-DZR",
+                        "edition": "Moon Edition",
+                        "edition_key": "moon",
+                        "series": "Moon",
+                        "series_key": "moon",
+                        "wave": "T4W11",
+                        "wave_key": "t4w11",
+                        "rarity": "Hidden Diamond ZR",
+                        "rarity_key": "dzr",
+                        "code_group": "HY11-DZR",
+                        "meta": "Series 11 (T4W11) - Hidden Diamond ZR group with 1 exact card-number variant.",
+                        "variant_count": 1,
+                        "link": "/products/kayou-mlp-moon-edition-chinese-series-11-t4w11-hy11-dzr-single-cards",
+                        "image_url": "https://cdn.shopify.com/s/files/1/0746/1014/7516/files/HY11-ZR-002L5-hidden-zr-princess-celestia.png?v=1780171274",
+                        "image_alt": "Moon Edition Chinese Series 11 (T4W11) Hidden Diamond ZR representative card image"
+                    }
+                },
+                "group_hy11_sc_4": {
+                    "type": "card_group",
+                    "settings": {
+                        "title": "Moon Edition Chinese Series 11 (T4W11) SC",
+                        "short_label": "HY11-SC",
+                        "edition": "Moon Edition",
+                        "edition_key": "moon",
+                        "series": "Moon",
+                        "series_key": "moon",
+                        "wave": "T4W11",
+                        "wave_key": "t4w11",
+                        "rarity": "SC",
+                        "rarity_key": "sc",
+                        "code_group": "HY11-SC",
+                        "meta": "Series 11 (T4W11) - SC group with 7 exact card-number variants.",
+                        "variant_count": 7,
+                        "link": "/products/kayou-mlp-moon-edition-chinese-series-11-t4w11-hy11-sc-single-cards",
+                        "image_url": "https://cdn.shopify.com/s/files/1/0746/1014/7516/files/HY11-SC-001LS-princess-twilight-sparkle.png?v=1780170851",
+                        "image_alt": "Moon Edition Chinese Series 11 (T4W11) SC representative card image"
+                    }
+                },
+                "group_hy11_zr_5": {
+                    "type": "card_group",
+                    "settings": {
+                        "title": "Moon Edition Chinese Series 11 (T4W11) ZR",
+                        "short_label": "HY11-ZR",
+                        "edition": "Moon Edition",
+                        "edition_key": "moon",
+                        "series": "Moon",
+                        "series_key": "moon",
+                        "wave": "T4W11",
+                        "wave_key": "t4w11",
+                        "rarity": "ZR",
+                        "rarity_key": "zr",
+                        "code_group": "HY11-ZR",
+                        "meta": "Series 11 (T4W11) - ZR group with 1 exact card-number variant.",
+                        "variant_count": 1,
+                        "link": "/products/kayou-mlp-moon-edition-chinese-series-11-t4w11-hy11-zr-single-cards",
+                        "image_url": "https://cdn.shopify.com/s/files/1/0746/1014/7516/files/HY11-ZR-001LS-mane-six-spectrum-of-magic.png?v=1780170849",
+                        "image_alt": "Moon Edition Chinese Series 11 (T4W11) ZR representative card image"
+                    }
+                },
+                "group_hy10_dzr_6": {
+                    "type": "card_group",
+                    "settings": {
+                        "title": "Moon Edition Chinese Series 10 (T4W10) Hidden Diamond ZR",
+                        "short_label": "HY10-DZR",
+                        "edition": "Moon Edition",
+                        "edition_key": "moon",
+                        "series": "Moon",
+                        "series_key": "moon",
+                        "wave": "T4W10",
+                        "wave_key": "t4w10",
+                        "rarity": "Hidden Diamond ZR",
+                        "rarity_key": "dzr",
+                        "code_group": "HY10-DZR",
+                        "meta": "Series 10 (T4W10) - Hidden Diamond ZR group with 1 exact card-number variant.",
+                        "variant_count": 1,
+                        "link": "/products/kayou-mlp-moon-edition-chinese-series-10-t4w10-hy10-dzr-single-cards",
+                        "image_url": "https://cdn.shopify.com/s/files/1/0746/1014/7516/files/HY10-ZR-002L5-hidden-zr-twilight-sparkle-and-spike.png?v=1780171271",
+                        "image_alt": "Moon Edition Chinese Series 10 (T4W10) Hidden Diamond ZR representative card image"
+                    }
+                },
+                "group_hy10_sc_7": {
+                    "type": "card_group",
+                    "settings": {
+                        "title": "Moon Edition Chinese Series 10 (T4W10) SC",
+                        "short_label": "HY10-SC",
+                        "edition": "Moon Edition",
+                        "edition_key": "moon",
+                        "series": "Moon",
+                        "series_key": "moon",
+                        "wave": "T4W10",
+                        "wave_key": "t4w10",
+                        "rarity": "SC",
+                        "rarity_key": "sc",
+                        "code_group": "HY10-SC",
+                        "meta": "Series 10 (T4W10) - SC group with 7 exact card-number variants.",
+                        "variant_count": 7,
+                        "link": "/products/kayou-mlp-moon-edition-chinese-series-10-t4w10-hy10-sc-single-cards",
+                        "image_url": "https://cdn.shopify.com/s/files/1/0746/1014/7516/files/HY10-SC-001LS-twilight-sparkle.png?v=1780170819",
+                        "image_alt": "Moon Edition Chinese Series 10 (T4W10) SC representative card image"
+                    }
+                },
+                "group_hy10_zr_8": {
+                    "type": "card_group",
+                    "settings": {
+                        "title": "Moon Edition Chinese Series 10 (T4W10) ZR",
+                        "short_label": "HY10-ZR",
+                        "edition": "Moon Edition",
+                        "edition_key": "moon",
+                        "series": "Moon",
+                        "series_key": "moon",
+                        "wave": "T4W10",
+                        "wave_key": "t4w10",
+                        "rarity": "ZR",
+                        "rarity_key": "zr",
+                        "code_group": "HY10-ZR",
+                        "meta": "Series 10 (T4W10) - ZR group with 7 exact card-number variants.",
+                        "variant_count": 7,
+                        "link": "/products/kayou-mlp-moon-edition-chinese-series-10-t4w10-hy10-zr-single-cards",
+                        "image_url": "https://cdn.shopify.com/s/files/1/0746/1014/7516/files/HY10-ZR-001LS-starlight-glimmer.png?v=1780170834",
+                        "image_alt": "Moon Edition Chinese Series 10 (T4W10) ZR representative card image"
+                    }
+                },
+                "group_hy09_sc_9": {
+                    "type": "card_group",
+                    "settings": {
+                        "title": "Moon Edition Chinese Series 9 (T4W9) SC",
+                        "short_label": "HY09-SC",
+                        "edition": "Moon Edition",
+                        "edition_key": "moon",
+                        "series": "Moon",
+                        "series_key": "moon",
+                        "wave": "T4W9",
+                        "wave_key": "t4w9",
+                        "rarity": "SC",
+                        "rarity_key": "sc",
+                        "code_group": "HY09-SC",
+                        "meta": "Series 9 (T4W9) - SC group with 7 exact card-number variants.",
+                        "variant_count": 7,
+                        "link": "/products/kayou-mlp-moon-edition-chinese-series-9-t4w9-single-cards",
+                        "image_url": "https://cdn.shopify.com/s/files/1/0746/1014/7516/files/HY09-SC-001LS-mane-six-autumn-gathering.png?v=1780170805",
+                        "image_alt": "Moon Edition Chinese Series 9 (T4W9) SC representative card image"
+                    }
+                },
+                "group_hy08_sc_10": {
+                    "type": "card_group",
+                    "settings": {
+                        "title": "Moon Edition Chinese Series 8 (T4W8) SC",
+                        "short_label": "HY08-SC",
+                        "edition": "Moon Edition",
+                        "edition_key": "moon",
+                        "series": "Moon",
+                        "series_key": "moon",
+                        "wave": "T4W8",
+                        "wave_key": "t4w8",
+                        "rarity": "SC",
+                        "rarity_key": "sc",
+                        "code_group": "HY08-SC",
+                        "meta": "Series 8 (T4W8) - SC group with 7 exact card-number variants.",
+                        "variant_count": 7,
+                        "link": "/products/kayou-mlp-moon-edition-chinese-series-8-t4w8-hy08-sc-single-cards",
+                        "image_url": "https://cdn.shopify.com/s/files/1/0746/1014/7516/files/HY08-SC-001LS-pinkie-pie.png?v=1780170774",
+                        "image_alt": "Moon Edition Chinese Series 8 (T4W8) SC representative card image"
+                    }
+                },
+                "group_hy08_zr_11": {
+                    "type": "card_group",
+                    "settings": {
+                        "title": "Moon Edition Chinese Series 8 (T4W8) ZR",
+                        "short_label": "HY08-ZR",
+                        "edition": "Moon Edition",
+                        "edition_key": "moon",
+                        "series": "Moon",
+                        "series_key": "moon",
+                        "wave": "T4W8",
+                        "wave_key": "t4w8",
+                        "rarity": "ZR",
+                        "rarity_key": "zr",
+                        "code_group": "HY08-ZR",
+                        "meta": "Series 8 (T4W8) - ZR group with 7 exact card-number variants.",
+                        "variant_count": 7,
+                        "link": "/products/kayou-mlp-moon-edition-chinese-series-8-t4w8-hy08-zr-single-cards",
+                        "image_url": "https://cdn.shopify.com/s/files/1/0746/1014/7516/files/HY08-ZR-001LS-twilight-sparkle.png?v=1780170790",
+                        "image_alt": "Moon Edition Chinese Series 8 (T4W8) ZR representative card image"
+                    }
+                },
+                "group_hy07_sc_12": {
+                    "type": "card_group",
+                    "settings": {
+                        "title": "Moon Edition Chinese Series 7 (T4W7) SC",
+                        "short_label": "HY07-SC",
+                        "edition": "Moon Edition",
+                        "edition_key": "moon",
+                        "series": "Moon",
+                        "series_key": "moon",
+                        "wave": "T4W7",
+                        "wave_key": "t4w7",
+                        "rarity": "SC",
+                        "rarity_key": "sc",
+                        "code_group": "HY07-SC",
+                        "meta": "Series 7 (T4W7) - SC group with 6 exact card-number variants.",
+                        "variant_count": 6,
+                        "link": "/products/kayou-mlp-moon-edition-chinese-series-7-t4w7-single-cards",
+                        "image_url": "https://cdn.shopify.com/s/files/1/0746/1014/7516/files/HY07-SC-001LS-twilight-sparkle.png?v=1780170761",
+                        "image_alt": "Moon Edition Chinese Series 7 (T4W7) SC representative card image"
+                    }
+                },
+                "group_hy06_sc_13": {
+                    "type": "card_group",
+                    "settings": {
+                        "title": "Moon Edition Chinese Series 6 (T4W6) SC",
+                        "short_label": "HY06-SC",
+                        "edition": "Moon Edition",
+                        "edition_key": "moon",
+                        "series": "Moon",
+                        "series_key": "moon",
+                        "wave": "T4W6",
+                        "wave_key": "t4w6",
+                        "rarity": "SC",
+                        "rarity_key": "sc",
+                        "code_group": "HY06-SC",
+                        "meta": "Series 6 (T4W6) - SC group with 6 exact card-number variants.",
+                        "variant_count": 6,
+                        "link": "/products/kayou-mlp-moon-edition-chinese-series-6-t4w6-single-cards",
+                        "image_url": "https://cdn.shopify.com/s/files/1/0746/1014/7516/files/HY06-SC-001LS-pinkie-pie.png?v=1780170747",
+                        "image_alt": "Moon Edition Chinese Series 6 (T4W6) SC representative card image"
+                    }
+                },
+                "group_yh_sc_14": {
+                    "type": "card_group",
+                    "settings": {
+                        "title": "Moon Edition Chinese Series 5 (T4W5) SC",
+                        "short_label": "YH-SC",
+                        "edition": "Moon Edition",
+                        "edition_key": "moon",
+                        "series": "Moon",
+                        "series_key": "moon",
+                        "wave": "T4W5",
+                        "wave_key": "t4w5",
+                        "rarity": "SC",
+                        "rarity_key": "sc",
+                        "code_group": "YH-SC",
+                        "meta": "Series 5 (T4W5) - SC group with 5 exact card-number variants.",
+                        "variant_count": 5,
+                        "link": "/products/kayou-mlp-moon-edition-chinese-series-5-t4w5-single-cards",
+                        "image_url": "https://cdn.shopify.com/s/files/1/0746/1014/7516/files/YH-SC-020-maud-pie-and-pinkie-pie.png?v=1780172959",
+                        "image_alt": "Moon Edition Chinese Series 5 (T4W5) SC representative card image"
+                    }
+                },
+                "group_yh_sc_15": {
+                    "type": "card_group",
+                    "settings": {
+                        "title": "Moon Edition Chinese Series 4 (T4W4) SC",
+                        "short_label": "YH-SC",
+                        "edition": "Moon Edition",
+                        "edition_key": "moon",
+                        "series": "Moon",
+                        "series_key": "moon",
+                        "wave": "T4W4",
+                        "wave_key": "t4w4",
+                        "rarity": "SC",
+                        "rarity_key": "sc",
+                        "code_group": "YH-SC",
+                        "meta": "Series 4 (T4W4) - SC group with 5 exact card-number variants.",
+                        "variant_count": 5,
+                        "link": "/products/kayou-mlp-moon-edition-chinese-series-4-t4w4-single-cards",
+                        "image_url": "https://cdn.shopify.com/s/files/1/0746/1014/7516/files/YH-SC-014-princess-luna.png?v=1780167499",
+                        "image_alt": "Moon Edition Chinese Series 4 (T4W4) SC representative card image"
+                    }
+                },
+                "group_yh_sc_16": {
+                    "type": "card_group",
+                    "settings": {
+                        "title": "Moon Edition Chinese Series 3 (T4W3) SC",
+                        "short_label": "YH-SC",
+                        "edition": "Moon Edition",
+                        "edition_key": "moon",
+                        "series": "Moon",
+                        "series_key": "moon",
+                        "wave": "T4W3",
+                        "wave_key": "t4w3",
+                        "rarity": "SC",
+                        "rarity_key": "sc",
+                        "code_group": "YH-SC",
+                        "meta": "Series 3 (T4W3) - SC group with 5 exact card-number variants.",
+                        "variant_count": 5,
+                        "link": "/products/kayou-mlp-moon-edition-chinese-series-3-t4w3-single-cards",
+                        "image_url": "https://cdn.shopify.com/s/files/1/0746/1014/7516/files/YH-SC-008-pinkie-pie-and-rainbow-dash.png?v=1780167489",
+                        "image_alt": "Moon Edition Chinese Series 3 (T4W3) SC representative card image"
+                    }
+                },
+                "group_yh_sc_17": {
+                    "type": "card_group",
+                    "settings": {
+                        "title": "Moon Edition Chinese Series 2 (T4W2) SC",
+                        "short_label": "YH-SC",
+                        "edition": "Moon Edition",
+                        "edition_key": "moon",
+                        "series": "Moon",
+                        "series_key": "moon",
+                        "wave": "T4W2",
+                        "wave_key": "t4w2",
+                        "rarity": "SC",
+                        "rarity_key": "sc",
+                        "code_group": "YH-SC",
+                        "meta": "Series 2 (T4W2) - SC group with 5 exact card-number variants.",
+                        "variant_count": 5,
+                        "link": "/products/kayou-mlp-moon-edition-chinese-series-2-t4w2-yh-sc-single-cards",
+                        "image_url": "https://cdn.shopify.com/s/files/1/0746/1014/7516/files/YH-SC-002-pinkie-pie.png?v=1780167466",
+                        "image_alt": "Moon Edition Chinese Series 2 (T4W2) SC representative card image"
+                    }
+                },
+                "group_yh_sgr_18": {
+                    "type": "card_group",
+                    "settings": {
+                        "title": "Moon Edition Chinese Series 2 (T4W2) SGR",
+                        "short_label": "YH-SGR",
+                        "edition": "Moon Edition",
+                        "edition_key": "moon",
+                        "series": "Moon",
+                        "series_key": "moon",
+                        "wave": "T4W2",
+                        "wave_key": "t4w2",
+                        "rarity": "SGR",
+                        "rarity_key": "sgr",
+                        "code_group": "YH-SGR",
+                        "meta": "Series 2 (T4W2) - SGR group with 6 exact card-number variants.",
+                        "variant_count": 6,
+                        "link": "/products/kayou-mlp-moon-edition-chinese-series-2-t4w2-yh-sgr-single-cards",
+                        "image_url": "https://cdn.shopify.com/s/files/1/0746/1014/7516/files/YH-SGR-008-princess-twilight-sparkle.png?v=1780167476",
+                        "image_alt": "Moon Edition Chinese Series 2 (T4W2) SGR representative card image"
+                    }
+                },
+                "group_yh_lsr_19": {
+                    "type": "card_group",
+                    "settings": {
+                        "title": "Moon Edition Chinese Series 1 (T4W1) LSR",
+                        "short_label": "YH-LSR",
+                        "edition": "Moon Edition",
+                        "edition_key": "moon",
+                        "series": "Moon",
+                        "series_key": "moon",
+                        "wave": "T4W1",
+                        "wave_key": "t4w1",
+                        "rarity": "LSR",
+                        "rarity_key": "lsr",
+                        "code_group": "YH-LSR",
+                        "meta": "Series 1 (T4W1) - LSR group with 15 exact card-number variants.",
+                        "variant_count": 15,
+                        "link": "/products/kayou-mlp-moon-edition-chinese-series-1-t4w1-yh-lsr-single-cards",
+                        "image_url": "https://cdn.shopify.com/s/files/1/0746/1014/7516/files/YH-LSR-001-pinkie-pie.png?v=1780167435",
+                        "image_alt": "Moon Edition Chinese Series 1 (T4W1) LSR representative card image"
+                    }
+                },
+                "group_yh_sgr_20": {
+                    "type": "card_group",
+                    "settings": {
+                        "title": "Moon Edition Chinese Series 1 (T4W1) SGR",
+                        "short_label": "YH-SGR",
+                        "edition": "Moon Edition",
+                        "edition_key": "moon",
+                        "series": "Moon",
+                        "series_key": "moon",
+                        "wave": "T4W1",
+                        "wave_key": "t4w1",
+                        "rarity": "SGR",
+                        "rarity_key": "sgr",
+                        "code_group": "YH-SGR",
+                        "meta": "Series 1 (T4W1) - SGR group with 5 exact card-number variants.",
+                        "variant_count": 5,
+                        "link": "/products/kayou-mlp-moon-edition-chinese-series-1-t4w1-yh-sgr-single-cards",
+                        "image_url": "https://cdn.shopify.com/s/files/1/0746/1014/7516/files/YH-SGR-002-rainbow-dash.png?v=1780167425",
+                        "image_alt": "Moon Edition Chinese Series 1 (T4W1) SGR representative card image"
+                    }
+                },
+                "group_fx02_oar_21": {
+                    "type": "card_group",
+                    "settings": {
+                        "title": "Star Edition Chinese Series 2 (T5W2) Hidden *AR",
+                        "short_label": "FX02-OAR",
+                        "edition": "Star Edition",
+                        "edition_key": "star",
+                        "series": "Star",
+                        "series_key": "star",
+                        "wave": "T5W2",
+                        "wave_key": "t5w2",
+                        "rarity": "Hidden *AR",
+                        "rarity_key": "star-ar",
+                        "code_group": "FX02-OAR",
+                        "meta": "Series 2 (T5W2) - Hidden *AR group with 9 exact card-number variants.",
+                        "variant_count": 9,
+                        "link": "/products/kayou-mlp-star-edition-chinese-series-2-t5w2-fx02-hidden-diamond-ar-single-cards",
+                        "image_url": "https://cdn.shopify.com/s/files/1/0746/1014/7516/files/FX02-OAR-001LS-princess-twilight-sparkle.png?v=1781874236",
+                        "image_alt": "Star Edition Chinese Series 2 (T5W2) Hidden *AR representative card image"
+                    }
+                },
+                "group_fx01_oar_22": {
+                    "type": "card_group",
+                    "settings": {
+                        "title": "Star Edition Chinese Series 1 (T5W1) Hidden *AR",
+                        "short_label": "FX01-OAR",
+                        "edition": "Star Edition",
+                        "edition_key": "star",
+                        "series": "Star",
+                        "series_key": "star",
+                        "wave": "T5W1",
+                        "wave_key": "t5w1",
+                        "rarity": "Hidden *AR",
+                        "rarity_key": "star-ar",
+                        "code_group": "FX01-OAR",
+                        "meta": "Series 1 (T5W1) - Hidden *AR group with 9 exact card-number variants.",
+                        "variant_count": 9,
+                        "link": "/products/kayou-mlp-star-edition-chinese-series-1-t5w1-hidden-ar-single-cards",
+                        "image_url": "https://cdn.shopify.com/s/files/1/0746/1014/7516/files/FX01-OAR-001LS-applejack.png?v=1781874142",
+                        "image_alt": "Star Edition Chinese Series 1 (T5W1) Hidden *AR representative card image"
+                    }
+                },
+                "group_fl02_sp_23": {
+                    "type": "card_group",
+                    "settings": {
+                        "title": "Spring Festival Series 2 (FL02) SP",
+                        "short_label": "FL02-SP",
+                        "edition": "Spring Festival",
+                        "edition_key": "spring-festival",
+                        "series": "Spring Festival",
+                        "series_key": "spring-festival",
+                        "wave": "FL02",
+                        "wave_key": "fl02",
+                        "rarity": "SP",
+                        "rarity_key": "sp",
+                        "code_group": "FL02-SP",
+                        "meta": "Series 2 (FL02) - SP group with 7 exact card-number variants.",
+                        "variant_count": 7,
+                        "link": "/products/mlp-spring-festival-series-2-fl02-single-cards",
+                        "image_url": "https://cdn.shopify.com/s/files/1/0746/1014/7516/files/FL02-SP-001L5-pinkie-pie-twilight-sparkle-and-rarity.png?v=1780172124",
+                        "image_alt": "Spring Festival Series 2 (FL02) SP representative card image"
+                    }
+                }
+            },
+            "block_order": [
+                "group_qy07_cr_1",
+                "group_qy07_qcr_2",
+                "group_hy11_dzr_3",
+                "group_hy11_sc_4",
+                "group_hy11_zr_5",
+                "group_hy10_dzr_6",
+                "group_hy10_sc_7",
+                "group_hy10_zr_8",
+                "group_hy09_sc_9",
+                "group_hy08_sc_10",
+                "group_hy08_zr_11",
+                "group_hy07_sc_12",
+                "group_hy06_sc_13",
+                "group_yh_sc_14",
+                "group_yh_sc_15",
+                "group_yh_sc_16",
+                "group_yh_sc_17",
+                "group_yh_sgr_18",
+                "group_yh_lsr_19",
+                "group_yh_sgr_20",
+                "group_fx02_oar_21",
+                "group_fx01_oar_22",
+                "group_fl02_sp_23"
+            ],
+            "settings": {
+                "eyebrow": "Single card gallery",
+                "heading": "KAYOU MLP Single Cards",
+                "subheading": "<p>Choose exact single cards by series, wave, rarity, and card number. Each group opens into a focused card page with matching card images.</p>",
+                "primary_cta_label": "Browse single cards",
+                "secondary_cta_label": "Shop all cards",
+                "secondary_cta_link": "/collections/cn-trading-card-boxes",
+                "showcase_label": "Featured single card groups",
+                "anchor_id": "single-card-gallery-page",
+                "motion_kicker": "Card number index",
+                "motion_heading": "Single Cards",
+                "motion_text": "151 variants sorted by series, wave, rarity, and card number.",
+                "stats_label": "Single card catalog highlights",
+                "variant_stat_label": "cards organized",
+                "group_stat_label": "card groups",
+                "promise_stat": "Exact",
+                "promise_label": "card-number selection",
+                "gallery_eyebrow": "Collector paths",
+                "gallery_heading": "Browse by series, wave, and rarity",
+                "card_cta_label": "View cards",
+                "source_collection": "singles-gallery"
+            }
+        }
+    },
+    "order": [
+        "main"
+    ]
+}

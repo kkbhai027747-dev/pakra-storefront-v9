@@ -1,0 +1,116 @@
+{%- liquid
+  assign p10_tags = product.tags | join: ' ' | downcase
+  assign p10_key = product.title | append: ' ' | append: product.handle | append: ' ' | append: p10_tags | downcase
+  assign p10_detail_key = product.title | append: ' ' | append: p10_tags | downcase
+  assign p10_preorder_key = product.title | append: ' ' | append: p10_tags | downcase
+  assign p10_edition = ''
+  assign p10_format = 'Collectible'
+  assign p10_series = ''
+  assign p10_tier = ''
+  assign p10_stock = 'Sold out'
+  assign p10_stock_class = 'is-sold-out'
+  assign p10_is_preorder = false
+  assign p10_is_single = false
+  assign p10_is_sealed = false
+
+  if p10_preorder_key contains 'pre-order' or p10_preorder_key contains 'preorder'
+    assign p10_is_preorder = true
+  endif
+
+  if p10_key contains 'single' or p10_key contains 'card brick' or p10_key contains 'city exclusive'
+    assign p10_is_single = true
+  endif
+
+  if p10_key contains 'sealed' or p10_key contains 'booster' or p10_key contains 'box' or p10_key contains 'pack' or p10_key contains 'blind'
+    assign p10_is_sealed = true
+  endif
+
+  if p10_detail_key contains 'moon'
+    assign p10_edition = 'Moon'
+  elsif p10_detail_key contains 'fun moments' or p10_detail_key contains 'fun moment'
+    assign p10_edition = 'Fun Moments'
+  elsif p10_detail_key contains 'rainbow'
+    assign p10_edition = 'Rainbow'
+  elsif p10_detail_key contains 'star edition' or p10_detail_key contains 'star series' or p10_detail_key contains 't5w'
+    assign p10_edition = 'Star'
+  elsif p10_key contains 'shadow'
+    assign p10_edition = 'Fun Moments'
+  elsif p10_key contains 'fan xin' or p10_key contains 'fan-xin'
+    assign p10_edition = 'Star'
+  elsif p10_key contains 'naruto' or p10_key contains 'ninja'
+    assign p10_edition = 'Naruto'
+  elsif p10_key contains 'harry potter'
+    assign p10_edition = 'Harry Potter'
+  elsif p10_key contains 'plush' or p10_key contains 'charm' or p10_key contains 'pouch' or p10_key contains 'squishy'
+    assign p10_edition = 'Plush'
+  endif
+
+  if p10_is_single
+    assign p10_format = 'Single card'
+  elsif p10_key contains 'plush' or p10_key contains 'charm' or p10_key contains 'pouch' or p10_key contains 'squishy'
+    assign p10_format = 'Merch'
+  elsif p10_is_sealed or p10_key contains 'edition chinese series'
+    assign p10_format = 'Sealed'
+  endif
+
+  if product.available and p10_is_preorder == false
+    assign p10_stock = 'In stock'
+    assign p10_stock_class = 'is-in-stock'
+  endif
+
+  if p10_is_preorder
+    assign p10_stock = 'Pre-order'
+    assign p10_stock_class = 'is-preorder'
+  endif
+
+  if p10_detail_key contains 'series 12' or p10_detail_key contains 'series12' or p10_detail_key contains 'w12'
+    assign p10_series = 'Series 12'
+  elsif p10_detail_key contains 'series 11' or p10_detail_key contains 'series11' or p10_detail_key contains 'w11'
+    assign p10_series = 'Series 11'
+  elsif p10_detail_key contains 'series 10' or p10_detail_key contains 'series10' or p10_detail_key contains 'w10'
+    assign p10_series = 'Series 10'
+  elsif p10_detail_key contains 'series 9' or p10_detail_key contains 'series9' or p10_detail_key contains 'w9'
+    assign p10_series = 'Series 9'
+  elsif p10_detail_key contains 'series 8' or p10_detail_key contains 'series8' or p10_detail_key contains 'w8'
+    assign p10_series = 'Series 8'
+  elsif p10_detail_key contains 'series 7' or p10_detail_key contains 'series7' or p10_detail_key contains 'w7'
+    assign p10_series = 'Series 7'
+  elsif p10_detail_key contains 'series 6' or p10_detail_key contains 'series6' or p10_detail_key contains 'w6'
+    assign p10_series = 'Series 6'
+  elsif p10_detail_key contains 'series 5' or p10_detail_key contains 'series5' or p10_detail_key contains 'w5'
+    assign p10_series = 'Series 5'
+  elsif p10_detail_key contains 'series 4' or p10_detail_key contains 'series4' or p10_detail_key contains 'w4'
+    assign p10_series = 'Series 4'
+  elsif p10_detail_key contains 'series 3' or p10_detail_key contains 'series3' or p10_detail_key contains 'w3'
+    assign p10_series = 'Series 3'
+  elsif p10_detail_key contains 'series 2' or p10_detail_key contains 'series2' or p10_detail_key contains 'w2'
+    assign p10_series = 'Series 2'
+  elsif p10_detail_key contains 'series 1' or p10_detail_key contains 'series1' or p10_detail_key contains 'w1'
+    assign p10_series = 'Series 1'
+  endif
+
+  for p10_tier_number in (1..5)
+    assign p10_tier_spaced = 'tier ' | append: p10_tier_number
+    assign p10_tier_token = 't' | append: p10_tier_number | append: 'w'
+    if p10_tier == blank
+      if p10_detail_key contains p10_tier_spaced or p10_detail_key contains p10_tier_token
+        assign p10_tier = 'Tier ' | append: p10_tier_number
+      endif
+    endif
+  endfor
+-%}
+
+<div class="p10-card-tags" aria-label="Product buying details">
+  {%- if p10_edition != blank -%}
+    <span class="p10-card-tag">{{ p10_edition }}</span>
+  {%- endif -%}
+  <span class="p10-card-tag">{{ p10_format }}</span>
+  <span class="p10-card-tag p10-card-tag--stock {{ p10_stock_class }}">{{ p10_stock }}</span>
+</div>
+
+{%- if p10_series != blank or p10_tier != blank -%}
+  <div class="p10-card-meta">
+    {%- if p10_series != blank -%}<span>{{ p10_series }}</span>{%- endif -%}
+    {%- if p10_tier != blank -%}<span>{{ p10_tier }}</span>{%- endif -%}
+  </div>
+{%- endif -%}

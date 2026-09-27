@@ -1,0 +1,73 @@
+{%- liquid
+    assign request_only = false
+    if product.price_min == 1 and product.price_max == 1
+        assign request_only = true
+    endif
+    assign request_variant = current_variant | default: product.selected_or_first_available_variant
+    assign request_form_id = 'RequestOnlyForm-' | append: product.id
+    assign request_name_id = request_form_id | append: '-name'
+    assign request_email_id = request_form_id | append: '-email'
+-%}
+
+{%- if request_only -%}
+    {%- form "contact", return_to: "back", id: request_form_id, class: "request-only-form__form" -%}
+        <details class="request-only-form"{% if form.posted_successfully? or form.errors %} open{% endif %}>
+            <summary class="button button--primary request-only-form__trigger">
+                Request This Item
+            </summary>
+            <div class="request-only-form__panel">
+                {%- if form.posted_successfully? -%}
+                    <div class="request-only-form__message request-only-form__message--success" role="status">
+                        Your request has been received. We will contact you by email.
+                    </div>
+                {%- else -%}
+                    {%- if form.errors -%}
+                        <div class="request-only-form__message request-only-form__message--error" role="alert">
+                            {{ form.errors | default_errors }}
+                        </div>
+                    {%- endif -%}
+
+                    <input type="hidden" name="contact[Product title]" value="{{ product.title | escape }}">
+                    <input type="hidden" name="contact[Product URL]" value="{{ shop.url | append: product.url | escape }}">
+                    <input type="hidden" name="contact[Product ID]" value="{{ product.id }}">
+                    <input type="hidden" name="contact[Variant ID]" value="{{ request_variant.id }}">
+                    <input type="hidden" name="contact[Request type]" value="request_only">
+
+                    <div class="request-only-form__field">
+                        <label class="request-only-form__label" for="{{ request_name_id }}">Name</label>
+                        <input
+                            class="form-input form-input-placeholder request-only-form__input"
+                            type="text"
+                            id="{{ request_name_id }}"
+                            name="contact[name]"
+                            autocomplete="name"
+                            value="{% if form.name %}{{ form.name | escape }}{% elsif customer %}{{ customer.name | escape }}{% endif %}"
+                            required
+                        >
+                    </div>
+
+                    <div class="request-only-form__field">
+                        <label class="request-only-form__label" for="{{ request_email_id }}">Email</label>
+                        <input
+                            class="form-input form-input-placeholder request-only-form__input"
+                            type="email"
+                            id="{{ request_email_id }}"
+                            name="contact[email]"
+                            autocomplete="email"
+                            autocorrect="off"
+                            autocapitalize="off"
+                            value="{% if form.email %}{{ form.email | escape }}{% elsif customer %}{{ customer.email | escape }}{% endif %}"
+                            required
+                        >
+                    </div>
+
+                    <div class="request-only-form__actions">
+                        <button type="submit" class="button button--primary request-only-form__submit">
+                            Submit Request
+                        </button>
+                    </div>
+                {%- endif -%}
+            </div>
+        </details>
+    {%- endform -%}
+{%- endif -%}

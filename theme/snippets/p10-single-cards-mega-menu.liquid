@@ -1,0 +1,53 @@
+{%- liquid
+  assign p10_catalog = pages['kayou-mlp-card-catalog']
+  assign p10_single_collection = collections['type-single-cards']
+  assign p10_single_url = p10_catalog.url | default: '/pages/kayou-mlp-card-catalog'
+-%}
+
+<li class="menu-lv-item menu-lv-1 has-megamenu dropdown block_layout--full p10-modern-mega p10-single-mega">
+  <a class="menu-lv-1__action header__menu-item list-menu__item link focus-inset menu_mobile_link link-effect" href="{{ p10_single_url }}" aria-haspopup="true">
+    <span class="text{% if link.current or link.child_active %} header__active-menu-item{% endif %} p-relative">{{ link.title | escape }}</span>
+    <span class="icon-dropdown" aria-hidden="true">{% render 'icon-caret-right' %}</span>
+  </a>
+
+  <div class="menu-dropdown custom-scrollbar p10-modern-mega__dropdown p-absolute top-auto left-0 w-100 zi-10 o-x-hidden o-y-auto text-left opacity-0">
+    <div class="container-full">
+      <div class="p10-modern-mega__shell p10-single-mega__shell">
+        <div class="p10-modern-mega__intro">
+          <span class="p10-modern-mega__eyebrow">Collector catalog</span>
+          <strong>Single Cards</strong>
+          <p>Find exact cards by series, rarity, and card number, then continue to the matching listings.</p>
+          <a class="p10-modern-mega__view-all" href="{{ p10_single_url }}">Open single-card catalog <span aria-hidden="true">→</span></a>
+        </div>
+
+        <div class="p10-single-mega__links">
+          {%- if p10_catalog != blank -%}
+            <a class="p10-single-mega__link" href="{{ p10_catalog.url }}">
+              <span class="p10-single-mega__icon" aria-hidden="true">01</span>
+              <span><strong>{{ p10_catalog.title }}</strong><small>Open the MLP card finder</small></span>
+              <span class="p10-single-mega__arrow" aria-hidden="true">→</span>
+            </a>
+          {%- endif -%}
+          {%- if p10_single_collection != blank -%}
+            <a class="p10-single-mega__link" href="{{ p10_single_collection.url }}">
+              <span class="p10-single-mega__icon" aria-hidden="true">02</span>
+               <span><strong>{{ p10_single_collection.title }}</strong><small>View the unified single-card collection</small></span>
+              <span class="p10-single-mega__arrow" aria-hidden="true">→</span>
+            </a>
+          {%- endif -%}
+        </div>
+
+        {%- if p10_single_collection != blank -%}
+          <a class="p10-single-mega__featured" href="{{ p10_single_collection.url }}">
+            <span class="p10-single-mega__featured-media">
+              {%- if p10_single_collection.image != blank -%}
+                {{ p10_single_collection.image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '360, 520, 720, 900', sizes: '(min-width: 1025px) 320px, 90vw', class: 'p10-single-mega__featured-image', alt: p10_single_collection.title }}
+              {%- endif -%}
+            </span>
+            <span class="p10-single-mega__featured-copy"><small>Featured collection</small><strong>{{ p10_single_collection.title }}</strong><span>Shop now →</span></span>
+          </a>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</li>

@@ -1,0 +1,306 @@
+{{ 'p10-merch-paths.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign p10_merch_collection = section.settings.featured_collection
+  assign p10_merch_limit = section.settings.product_limit | default: 4
+-%}
+
+<section class="p10-merch-paths" id="p10-merch-paths-{{ section.id }}" data-p10-merch-paths>
+  <div class="p10-merch-paths__inner">
+    <header class="p10-merch-paths__header" data-p10-merch-reveal>
+      <div class="p10-merch-paths__copy">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="p10-merch-paths__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h2>{{ section.settings.heading | escape }}</h2>
+        {%- endif -%}
+        {%- if section.settings.text != blank -%}
+          <p class="p10-merch-paths__text">{{ section.settings.text | escape }}</p>
+        {%- endif -%}
+      </div>
+
+      {%- if section.settings.button_label != blank and section.settings.button_link != blank -%}
+        <div class="p10-merch-paths__actions">
+          <a class="p10-merch-paths__button" href="{{ section.settings.button_link }}">
+            {{ section.settings.button_label | escape }}
+          </a>
+        </div>
+      {%- endif -%}
+    </header>
+
+    {%- if section.blocks.size > 0 -%}
+      <div class="p10-merch-paths__layout" data-p10-merch-reveal>
+        {%- for block in section.blocks limit: 1 -%}
+          {%- assign feature_asset = block.settings.image_asset | default: section.settings.visual_asset_1 | strip -%}
+          {%- assign feature_kicker = block.settings.kicker | default: 'Featured route' -%}
+          <a class="p10-merch-feature" href="{{ block.settings.link }}" {{ block.shopify_attributes }}>
+            <span class="p10-merch-feature__media">
+              {%- if feature_asset != blank -%}
+                <img
+                  src="{{ feature_asset | asset_url }}"
+                  alt="{{ block.settings.image_alt | default: block.settings.title | escape }}"
+                  width="760"
+                  height="560"
+                  loading="lazy"
+                >
+              {%- endif -%}
+            </span>
+            <span class="p10-merch-feature__content">
+              <span class="p10-merch-feature__label">Best place to start</span>
+              <span class="p10-merch-feature__kicker">{{ feature_kicker | escape }}</span>
+              <strong>{{ block.settings.title | escape }}</strong>
+              {%- if block.settings.description != blank -%}
+                <span class="p10-merch-feature__text">{{ block.settings.description | escape }}</span>
+              {%- endif -%}
+              <span class="p10-merch-feature__cta">
+                Shop {{ feature_kicker | escape }}
+              </span>
+            </span>
+          </a>
+        {%- endfor -%}
+
+        <div class="p10-merch-directory">
+          <div class="p10-merch-directory__head">
+            <span>Shop by product type</span>
+            <small>Pick a focused route instead of browsing everything.</small>
+          </div>
+
+          <nav class="p10-merch-routes" aria-label="MLP plush and merch shopping paths">
+            {%- for block in section.blocks -%}
+              {%- unless forloop.first -%}
+                {%- assign route_asset = block.settings.image_asset | strip -%}
+                {%- assign route_key = block.settings.kicker | default: block.settings.title | handle -%}
+                <a class="p10-merch-route p10-merch-route--{{ route_key }}" href="{{ block.settings.link }}" {{ block.shopify_attributes }}>
+                  <span class="p10-merch-route__media">
+                    {%- if route_asset != blank -%}
+                      <img
+                        src="{{ route_asset | asset_url }}"
+                        alt="{{ block.settings.image_alt | default: block.settings.title | escape }}"
+                        width="260"
+                        height="260"
+                        loading="lazy"
+                      >
+                    {%- endif -%}
+                  </span>
+                  <span class="p10-merch-route__body">
+                    {%- if block.settings.kicker != blank -%}
+                      <span class="p10-merch-route__kicker">{{ block.settings.kicker | escape }}</span>
+                    {%- endif -%}
+                    <strong>{{ block.settings.title | escape }}</strong>
+                    {%- if block.settings.description != blank -%}
+                      <span class="p10-merch-route__text">{{ block.settings.description | escape }}</span>
+                    {%- endif -%}
+                    <span class="p10-merch-route__action">Shop route</span>
+                  </span>
+                </a>
+              {%- endunless -%}
+            {%- endfor -%}
+          </nav>
+        </div>
+      </div>
+    {%- endif -%}
+
+    {%- if p10_merch_collection != blank and p10_merch_collection.products.size > 0 -%}
+      <div class="p10-merch-products" data-p10-merch-reveal>
+        <div class="p10-merch-products__head">
+          <div>
+            {%- if section.settings.products_heading != blank -%}
+              <h3>{{ section.settings.products_heading | escape }}</h3>
+            {%- endif -%}
+            <p>Fresh picks from the active plush and merch catalog.</p>
+          </div>
+          {%- if section.settings.products_link_label != blank -%}
+            <a href="{{ p10_merch_collection.url }}">{{ section.settings.products_link_label | escape }}</a>
+          {%- endif -%}
+        </div>
+        <div class="p10-merch-products__grid">
+          {%- for product in p10_merch_collection.products limit: p10_merch_limit -%}
+            <article class="p10-merch-product" data-p10-merch-product>
+              <a href="{{ product.url }}" aria-label="View {{ product.title | escape }}">
+                <span class="p10-merch-product__media">
+                  {%- if product.featured_image -%}
+                    {%- assign p10_merch_image_alt = product.featured_image.alt | default: product.title | escape -%}
+                    {{ product.featured_image | image_url: width: 620 | image_tag:
+                      loading: 'lazy',
+                      widths: '220, 360, 520, 620',
+                      sizes: '(min-width: 990px) 20vw, 48vw',
+                      alt: p10_merch_image_alt
+                    }}
+                  {%- else -%}
+                    {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                  {%- endif -%}
+                </span>
+                <span class="p10-merch-product__info">
+                  {%- if product.vendor != blank -%}
+                    <span class="p10-merch-product__vendor">{{ product.vendor | escape }}</span>
+                  {%- endif -%}
+                  <strong>{{ product.title | escape }}</strong>
+                  {% render 'p10-product-buying-tags', product: product %}
+                  <span class="p10-merch-product__price">
+                    {%- if product.price_varies -%}From {%- endif -%}{{ product.price_min | money }}
+                  </span>
+                  <span class="p10-merch-product__cta">View product</span>
+                </span>
+              </a>
+            </article>
+          {%- endfor -%}
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+
+  <script src="{{ 'gsap.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'p10-merch-paths.js' | asset_url }}" defer="defer"></script>
+</section>
+
+{% schema %}
+{
+  "name": "P10 merch paths",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "MLP merch directory"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Shop plush, charms, and collectible goods"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text",
+      "default": "Start with a focused route: plush blind boxes, soft collectibles, bag charms, display goods, jewelry-style accessories, and the separate KAYOU card-box path."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Shop all plush and merch"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "text",
+      "id": "visual_label",
+      "label": "Visual label",
+      "default": "Featured MLP plush and collectible product images"
+    },
+    {
+      "type": "text",
+      "id": "visual_asset_1",
+      "label": "Visual asset 1",
+      "default": "p10-merch-route-reesee-box.webp"
+    },
+    {
+      "type": "text",
+      "id": "visual_alt_1",
+      "label": "Visual alt 1",
+      "default": "Reesee MLP plush blind box display"
+    },
+    {
+      "type": "text",
+      "id": "visual_asset_2",
+      "label": "Visual asset 2",
+      "default": "p10-merch-route-plush.webp"
+    },
+    {
+      "type": "text",
+      "id": "visual_alt_2",
+      "label": "Visual alt 2",
+      "default": "MLP Reesee plush product photo"
+    },
+    {
+      "type": "text",
+      "id": "visual_asset_3",
+      "label": "Visual asset 3",
+      "default": "p10-merch-route-bag-charm.webp"
+    },
+    {
+      "type": "text",
+      "id": "visual_alt_3",
+      "label": "Visual alt 3",
+      "default": "MLP plush bag charm assortment"
+    },
+    {
+      "type": "collection",
+      "id": "featured_collection",
+      "label": "Featured collection"
+    },
+    {
+      "type": "text",
+      "id": "products_heading",
+      "label": "Products heading",
+      "default": "Latest plush and merch picks"
+    },
+    {
+      "type": "text",
+      "id": "products_link_label",
+      "label": "Products link label",
+      "default": "View all"
+    },
+    {
+      "type": "range",
+      "id": "product_limit",
+      "label": "Products to show",
+      "min": 4,
+      "max": 8,
+      "step": 1,
+      "default": 4
+    }
+  ],
+  "blocks": [
+    {
+      "type": "path",
+      "name": "Shopping path",
+      "settings": [
+        {
+          "type": "text",
+          "id": "image_asset",
+          "label": "Theme asset filename"
+        },
+        {
+          "type": "text",
+          "id": "image_alt",
+          "label": "Image alt text"
+        },
+        {
+          "type": "text",
+          "id": "kicker",
+          "label": "Kicker",
+          "default": "Product path"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Path title"
+        },
+        {
+          "type": "text",
+          "id": "description",
+          "label": "Description",
+          "default": "Open matching products"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "P10 merch paths"
+    }
+  ]
+}
+{% endschema %}

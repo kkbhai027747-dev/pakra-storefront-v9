@@ -1,0 +1,26 @@
+{%- liquid
+  assign p10_card_label = label | default: 'Recommended'
+  assign p10_card_image_alt = product.featured_image.alt | default: product.title | escape
+-%}
+
+{%- if product != blank -%}
+  <a class="p10-smart-product" href="{{ product.url }}" data-p10-smart-product-card aria-label="View {{ product.title | escape }}">
+    <span class="p10-smart-product__media">
+      {%- if product.featured_image -%}
+        {{ product.featured_image | image_url: width: 360 | image_tag:
+          loading: 'lazy',
+          widths: '120, 180, 240, 360',
+          sizes: '(min-width: 990px) 92px, 26vw',
+          alt: p10_card_image_alt
+        }}
+      {%- else -%}
+        {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+      {%- endif -%}
+    </span>
+    <span class="p10-smart-product__body">
+      <small>{{ p10_card_label | escape }}</small>
+      <strong>{{ product.title | escape }}</strong>
+      <span class="p10-smart-product__price">{% if product.price_varies %}From {% endif %}{{ product.price_min | money }}</span>
+    </span>
+  </a>
+{%- endif -%}

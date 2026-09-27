@@ -1,0 +1,136 @@
+{%- liquid
+  assign p10_tags = product.tags | join: '|' | downcase
+  assign p10_game_data = 'mlp-tcg'
+  assign p10_type_data = ''
+  assign p10_type_label = 'TCG Product'
+  assign p10_line_data = ''
+  assign p10_line_label = 'Battle Card Line'
+  assign p10_role_data = ''
+  assign p10_role_label = ''
+  assign p10_role_sep = ''
+
+  if p10_tags contains 'starter deck'
+    assign p10_type_data = p10_type_data | append: ' starter-deck'
+    assign p10_type_label = 'Starter Deck'
+  endif
+  if p10_tags contains 'character deck'
+    assign p10_type_data = p10_type_data | append: ' character-deck'
+    if p10_type_label == 'TCG Product'
+      assign p10_type_label = 'Character Deck'
+    endif
+  endif
+  if p10_tags contains 'sealed product' or product.type contains 'Trading Card Boxes'
+    assign p10_type_data = p10_type_data | append: ' sealed-tcg'
+  endif
+  if p10_tags contains 'friendship voyage' or p10_tags contains 'friendship sailing'
+    assign p10_line_data = p10_line_data | append: ' friendship-voyage'
+    assign p10_line_label = 'Friendship Voyage'
+  endif
+  if p10_tags contains 'twilight sparkle' or p10_tags contains 'zi yue'
+    assign p10_role_data = p10_role_data | append: ' twilight-sparkle'
+    assign p10_role_label = p10_role_label | append: p10_role_sep | append: 'Twilight Sparkle'
+    assign p10_role_sep = ', '
+  endif
+  if p10_tags contains 'rainbow dash' or p10_tags contains 'yun bao'
+    assign p10_role_data = p10_role_data | append: ' rainbow-dash'
+    assign p10_role_label = p10_role_label | append: p10_role_sep | append: 'Rainbow Dash'
+    assign p10_role_sep = ', '
+  endif
+  if p10_tags contains 'applejack' or p10_tags contains 'pingguo'
+    assign p10_role_data = p10_role_data | append: ' applejack'
+    assign p10_role_label = p10_role_label | append: p10_role_sep | append: 'Applejack'
+    assign p10_role_sep = ', '
+  endif
+  if p10_tags contains 'pinkie pie' or p10_tags contains 'bi qi'
+    assign p10_role_data = p10_role_data | append: ' pinkie-pie'
+    assign p10_role_label = p10_role_label | append: p10_role_sep | append: 'Pinkie Pie'
+    assign p10_role_sep = ', '
+  endif
+  if p10_tags contains 'fluttershy' or p10_tags contains 'rou rou'
+    assign p10_role_data = p10_role_data | append: ' fluttershy'
+    assign p10_role_label = p10_role_label | append: p10_role_sep | append: 'Fluttershy'
+    assign p10_role_sep = ', '
+  endif
+  if p10_tags contains 'rarity' or p10_tags contains 'zhen qi'
+    assign p10_role_data = p10_role_data | append: ' rarity'
+    assign p10_role_label = p10_role_label | append: p10_role_sep | append: 'Rarity'
+    assign p10_role_sep = ', '
+  endif
+
+  if p10_line_data == blank
+    assign p10_line_data = 'future-line'
+  endif
+  if p10_line_label == 'Battle Card Line'
+    assign p10_line_label = 'Future TCG Line'
+  endif
+  if p10_type_data == blank
+    assign p10_type_data = 'sealed-tcg'
+  endif
+  if p10_role_data == blank
+    assign p10_role_data = 'team-deck'
+    assign p10_role_label = 'Team Deck'
+  endif
+
+  assign p10_availability_data = 'preview'
+  assign p10_availability_label = 'Preview'
+  if product.available
+    assign p10_availability_data = 'in-stock'
+    assign p10_availability_label = 'In Stock'
+  endif
+
+  assign p10_search_text = product.title | append: ' ' | append: product.vendor | append: ' ' | append: product.type | append: ' ' | append: product.tags | downcase | escape
+-%}
+
+<article
+  class="p10-tcg-product"
+  data-p10-tcg-product
+  data-game="{{ p10_game_data | strip }}"
+  data-type="{{ p10_type_data | strip }}"
+  data-line="{{ p10_line_data | strip }}"
+  data-role="{{ p10_role_data | strip }}"
+  data-availability="{{ p10_availability_data }}"
+  data-title="{{ product.title | escape }}"
+  data-price="{{ product.price | default: 0 }}"
+  data-search="{{ p10_search_text }}"
+>
+  <a class="p10-tcg-product__media" href="{{ product.url }}" data-p10-tcg-product-link aria-label="View {{ product.title | escape }}">
+    {%- if product.featured_image -%}
+      <img
+        src="{{ product.featured_image | image_url: width: 720 }}"
+        alt="{{ product.featured_image.alt | default: product.title | escape }}"
+        loading="lazy"
+        width="{{ product.featured_image.width }}"
+        height="{{ product.featured_image.height }}"
+      >
+    {%- else -%}
+      <img
+        src="{{ 'tcg-battle-gift-box.jpg' | asset_url }}"
+        alt="{{ product.title | escape }}"
+        loading="lazy"
+        width="900"
+        height="900"
+      >
+    {%- endif -%}
+  </a>
+
+  <div class="p10-tcg-product__body">
+    <div class="p10-tcg-product__badges" aria-label="Product tags">
+      <span>{{ p10_type_label }}</span>
+      <span>{{ p10_line_label }}</span>
+      <span>{{ p10_availability_label }}</span>
+    </div>
+    <p class="p10-tcg-product__vendor">{{ product.vendor | escape }}</p>
+    <h3>
+      <a href="{{ product.url }}" data-p10-tcg-product-link>{{ product.title | escape }}</a>
+    </h3>
+    <p class="p10-tcg-product__meta">{{ p10_role_label | escape }}</p>
+    <p class="p10-tcg-product__price">
+      {%- if product.price_varies -%}
+        From {{ product.price_min | money }}
+      {%- else -%}
+        {{ product.price | money }}
+      {%- endif -%}
+    </p>
+    <a class="p10-tcg-product__button" href="{{ product.url }}" data-p10-tcg-product-link>View deck details</a>
+  </div>
+</article>

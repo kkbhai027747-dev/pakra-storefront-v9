@@ -1,0 +1,159 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "p10_ip_storefront_marvel_merch": {
+      "type": "p10-ip-storefront",
+      "blocks": {
+        "merch_all": {
+          "type": "lane_source",
+          "settings": {
+            "lane": "merch",
+            "collection": "type-merchandise",
+            "allowed_product_types": "",
+            "additional_product_handles": ""
+          }
+        },
+        "merch_accessories": {
+          "type": "lane_source",
+          "settings": {
+            "lane": "merch",
+            "collection": "type-card-accessories",
+            "allowed_product_types": "",
+            "additional_product_handles": ""
+          }
+        },
+        "intent_plush": {
+          "type": "intent",
+          "settings": {
+            "lane": "merch",
+            "label": "Plush & character goods",
+            "filter_kind": "product_type",
+            "collection": "",
+            "product_types": "Plush / Plush Charm, Plush Toys, Collectible Toys, Fidget Toys",
+            "product_handles": "",
+            "classification_level": "product_format",
+            "link": ""
+          }
+        },
+        "intent_figures": {
+          "type": "intent",
+          "settings": {
+            "lane": "merch",
+            "label": "Figures & blind boxes",
+            "filter_kind": "product_type",
+            "collection": "",
+            "product_types": "Blind Box Figure, Building Block Blind Box",
+            "product_handles": "",
+            "classification_level": "product_format",
+            "link": ""
+          }
+        },
+        "intent_display": {
+          "type": "intent",
+          "settings": {
+            "lane": "merch",
+            "label": "Acrylic displays & tickets",
+            "filter_kind": "product_type",
+            "collection": "",
+            "product_types": "Acrylic Stand / Display, Collectible Ticket",
+            "product_handles": "",
+            "classification_level": "product_format",
+            "link": ""
+          }
+        },
+        "intent_accessories": {
+          "type": "intent",
+          "settings": {
+            "lane": "merch",
+            "label": "Bags, charms & accessories",
+            "filter_kind": "product_type",
+            "collection": "",
+            "product_types": "Card Playmat, Keychain / Charm, Hanging Charms, Jewelry & Accessories, Ita Bag, Hair Accessories, Jewelry, Badge / Pin, Tote Bag",
+            "product_handles": "",
+            "classification_level": "product_format",
+            "link": ""
+          }
+        },
+        "intent_binders": {
+          "type": "intent",
+          "settings": {
+            "lane": "merch",
+            "label": "Binders & albums",
+            "filter_kind": "product_type",
+            "collection": "",
+            "product_types": "Card Binder / Album",
+            "product_handles": "",
+            "classification_level": "product_format",
+            "link": ""
+          }
+        },
+        "intent_special": {
+          "type": "intent",
+          "settings": {
+            "lane": "merch",
+            "label": "Special releases",
+            "filter_kind": "product_type",
+            "collection": "",
+            "product_types": "Collectible Sticker Box, Collector Bundles, K-PRIZE Lottery Draw",
+            "product_handles": "",
+            "classification_level": "product_format",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "merch_all",
+        "merch_accessories",
+        "intent_plush",
+        "intent_figures",
+        "intent_display",
+        "intent_accessories",
+        "intent_binders",
+        "intent_special"
+      ],
+      "settings": {
+        "ip_key": "marvel",
+        "skin": "marvel",
+        "eyebrow": "MARVEL MERCH & COLLECTIBLES",
+        "heading": "Marvel",
+        "subheading": "Browse Marvel merchandise, character collectibles, and card accessories.",
+        "source_collection": "ip-marvel",
+        "universal_publisher": "",
+        "universal_product_type": "Merch & Collectibles",
+        "universal_market": "",
+        "universal_source_collection": "",
+        "show_intro_header": true,
+        "show_search": true,
+        "lane_order": "merch,sealed",
+        "enable_sealed": false,
+        "sealed_label": "Sealed card products",
+        "sealed_copy": "",
+        "sealed_link": "",
+        "enable_merch": true,
+        "merch_label": "Merch & Collectibles",
+        "merch_copy": "Explore Marvel plush, figures, character goods, binders, and accessories.",
+        "merch_link": "",
+        "initial_products_desktop": 12,
+        "initial_products_mobile": 8,
+        "load_more_step": 12,
+        "excluded_collection_handles": "single,singles-gallery,type-single-cards",
+        "single_card_catalog_link": "",
+        "show_content": false,
+        "show_page_content": true,
+        "keep_empty_intents": true,
+        "empty_state_link": ""
+      }
+    }
+  },
+  "order": [
+    "p10_ip_storefront_marvel_merch"
+  ]
+}

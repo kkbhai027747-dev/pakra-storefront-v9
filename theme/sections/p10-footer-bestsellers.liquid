@@ -1,0 +1,218 @@
+{{ 'p10-footer-bestsellers.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign p10_fav_collection = section.settings.source_collection
+  assign p10_fav_limit = section.settings.product_limit | default: 28
+  assign p10_fav_scan_limit = section.settings.scan_limit | default: 50
+  assign p10_fav_count = 0
+
+  if p10_fav_collection != blank and p10_fav_collection.products.size > 0
+    for product in p10_fav_collection.products limit: p10_fav_scan_limit
+      assign p10_fav_signature = product.title | append: ' ' | append: product.handle | append: ' ' | append: product.type | append: ' ' | append: product.tags | downcase
+      assign p10_fav_blocked = false
+      if product.available == false
+        assign p10_fav_blocked = true
+      endif
+      if product.type == 'MLP Private Custom Bundle'
+        assign p10_fav_blocked = true
+      endif
+      if p10_fav_signature contains 'private' or p10_fav_signature contains 'client hold' or p10_fav_signature contains 'unlisted'
+        assign p10_fav_blocked = true
+      endif
+      if p10_fav_signature contains 'card brick' or p10_fav_signature contains 'custom single cards bundle' or p10_fav_signature contains 'thailand exclusive'
+        assign p10_fav_blocked = true
+      endif
+      if p10_fav_signature contains 'bonus' or p10_fav_signature contains 'free gift' or p10_fav_signature contains 'welfare'
+        assign p10_fav_blocked = true
+      endif
+      if p10_fav_signature contains 'card sleeve' or p10_fav_signature contains 'magnetic card holder' or p10_fav_signature contains 'armor kit'
+        assign p10_fav_blocked = true
+      endif
+      unless p10_fav_blocked
+        assign p10_fav_count = p10_fav_count | plus: 1
+      endunless
+    endfor
+  endif
+-%}
+
+{%- if p10_fav_count > 0 -%}
+  <section
+    id="p10-footer-bestsellers-{{ section.id }}"
+    class="p10-footer-bestsellers"
+    data-p10-footer-bestsellers
+    data-interval="{{ section.settings.rotation_interval | default: 15 | times: 1000 }}"
+  >
+    <div class="p10-footer-bestsellers__inner">
+      <header class="p10-footer-bestsellers__head">
+        <div>
+          {%- if section.settings.eyebrow != blank -%}
+            <p class="p10-footer-bestsellers__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+          {%- endif -%}
+          {%- if section.settings.heading != blank -%}
+            <h2>{{ section.settings.heading | escape }}</h2>
+          {%- endif -%}
+          {%- if section.settings.text != blank -%}
+            <p class="p10-footer-bestsellers__text">{{ section.settings.text | escape }}</p>
+          {%- endif -%}
+        </div>
+
+        {%- if section.settings.button_label != blank and p10_fav_collection.url != blank -%}
+          <a class="p10-footer-bestsellers__link" href="{{ p10_fav_collection.url }}">
+            {{ section.settings.button_label | escape }}
+          </a>
+        {%- endif -%}
+      </header>
+
+      <div class="p10-footer-bestsellers__viewport">
+        <div class="p10-footer-bestsellers__grid" data-p10-footer-bestsellers-grid>
+          {%- assign p10_fav_index = 0 -%}
+          {%- for product in p10_fav_collection.products limit: p10_fav_scan_limit -%}
+            {%- liquid
+              assign p10_fav_signature = product.title | append: ' ' | append: product.handle | append: ' ' | append: product.type | append: ' ' | append: product.tags | downcase
+              assign p10_fav_blocked = false
+              if product.available == false
+                assign p10_fav_blocked = true
+              endif
+              if product.type == 'MLP Private Custom Bundle'
+                assign p10_fav_blocked = true
+              endif
+              if p10_fav_signature contains 'private' or p10_fav_signature contains 'client hold' or p10_fav_signature contains 'unlisted'
+                assign p10_fav_blocked = true
+              endif
+              if p10_fav_signature contains 'card brick' or p10_fav_signature contains 'custom single cards bundle' or p10_fav_signature contains 'thailand exclusive'
+                assign p10_fav_blocked = true
+              endif
+              if p10_fav_signature contains 'bonus' or p10_fav_signature contains 'free gift' or p10_fav_signature contains 'welfare'
+                assign p10_fav_blocked = true
+              endif
+              if p10_fav_signature contains 'card sleeve' or p10_fav_signature contains 'magnetic card holder' or p10_fav_signature contains 'armor kit'
+                assign p10_fav_blocked = true
+              endif
+            -%}
+
+            {%- if p10_fav_blocked == false and p10_fav_index < p10_fav_limit -%}
+              <article
+                class="p10-footer-bestsellers__card"
+                data-p10-footer-bestseller-item
+                data-index="{{ p10_fav_index }}"
+                {% if p10_fav_index >= 7 %}hidden{% endif %}
+              >
+                <a class="p10-footer-bestsellers__media" href="{{ product.url }}" aria-label="View {{ product.title | escape }}">
+                  {%- if product.featured_image -%}
+                    {%- assign p10_fav_image_alt = product.featured_image.alt | default: product.title | escape -%}
+                    {{ product.featured_image | image_url: width: 480 | image_tag:
+                      loading: 'lazy',
+                      widths: '180, 260, 360, 480',
+                      sizes: '(min-width: 1200px) 210px, (min-width: 750px) 28vw, 48vw',
+                      alt: p10_fav_image_alt
+                    }}
+                  {%- else -%}
+                    {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                  {%- endif -%}
+                </a>
+                <div class="p10-footer-bestsellers__body">
+                  {%- if product.vendor != blank -%}
+                    <p class="p10-footer-bestsellers__vendor">{{ product.vendor | escape }}</p>
+                  {%- endif -%}
+                  <h3>
+                    <a href="{{ product.url }}">{{ product.title | escape }}</a>
+                  </h3>
+                  <div class="p10-footer-bestsellers__chips" aria-label="Product details">
+                    {%- if product.type != blank -%}
+                      <span>{{ product.type | escape }}</span>
+                    {%- endif -%}
+                    <span>In stock</span>
+                  </div>
+                  <div class="p10-footer-bestsellers__meta">
+                    <strong>{% if product.price_varies %}From {% endif %}{{ product.price_min | money }}</strong>
+                    <a href="{{ product.url }}">View product</a>
+                  </div>
+                </div>
+              </article>
+              {%- assign p10_fav_index = p10_fav_index | plus: 1 -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+
+      {%- if p10_fav_count > 7 -%}
+        <div class="p10-footer-bestsellers__controls" aria-label="New arrivals controls">
+          <button type="button" data-p10-footer-bestseller-prev aria-label="Previous new arrivals">&larr;</button>
+          <div class="p10-footer-bestsellers__dots" data-p10-footer-bestseller-dots aria-hidden="true"></div>
+          <button type="button" data-p10-footer-bestseller-next aria-label="Next new arrivals">&rarr;</button>
+        </div>
+      {%- endif -%}
+    </div>
+
+    <script src="{{ 'p10-footer-bestsellers.js' | asset_url }}" defer="defer"></script>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "P10 7-day new arrivals",
+  "settings": [
+    {
+      "type": "collection",
+      "id": "source_collection",
+      "label": "Source collection"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Just listed"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "New Arrivals"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text",
+      "default": "Fresh public, in-stock products listed in the last 7 days."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "View all"
+    },
+    {
+      "type": "range",
+      "id": "product_limit",
+      "label": "Products to show",
+      "min": 7,
+      "max": 28,
+      "step": 7,
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "scan_limit",
+      "label": "Products to scan",
+      "min": 14,
+      "max": 50,
+      "step": 6,
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "rotation_interval",
+      "label": "Rotation interval seconds",
+      "min": 5,
+      "max": 30,
+      "step": 1,
+      "default": 15
+    }
+  ],
+  "presets": [
+    {
+      "name": "P10 7-day new arrivals"
+    }
+  ]
+}
+{% endschema %}

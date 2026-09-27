@@ -1,0 +1,523 @@
+{% doc %}
+  @prompt
+    Redesign the main Blog index page to look like a modern Collector's Wiki. Change the layout from a standard vertical list to a multi-column image grid using high-priority Custom CSS:- 2-column grid on mobile (max-width: 767px)- 3-column grid on desktopKeep all blog post Featured Images in a wide collector-guide crop with:- aspect-ratio: 16/9- object-fit: cover- border-radius: 8pxCenter the blog post titles below the images. Hide the author name, date, and summary/excerpt text to keep the UI clean like an app.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-wiki-blog-grid-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    padding: {{ block.settings.section_padding }}px 0;
+  }
+
+  .ai-wiki-blog-grid-container-{{ ai_gen_id }} {
+    max-width: {{ block.settings.max_width }}px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .ai-wiki-blog-grid-header-{{ ai_gen_id }} {
+    text-align: center;
+    margin-bottom: {{ block.settings.header_spacing }}px;
+  }
+
+  .ai-wiki-blog-grid-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.title_size }}px;
+    font-weight: {{ block.settings.title_weight }};
+    color: {{ block.settings.title_color }};
+    margin: 0 0 12px;
+    text-transform: {{ block.settings.title_transform }};
+  }
+
+  .ai-wiki-blog-grid-subtitle-{{ ai_gen_id }} {
+    font-size: {{ block.settings.subtitle_size }}px;
+    color: {{ block.settings.subtitle_color }};
+    margin: 0;
+  }
+
+  .ai-wiki-blog-grid-posts-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: {{ block.settings.grid_gap }}px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media screen and (min-width: 768px) {
+    .ai-wiki-blog-grid-posts-{{ ai_gen_id }} {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .ai-wiki-blog-grid-post-{{ ai_gen_id }} {
+    position: relative;
+    display: block;
+  }
+
+  .ai-wiki-blog-grid-link-{{ ai_gen_id }} {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.3s ease;
+  }
+
+  .ai-wiki-blog-grid-link-{{ ai_gen_id }}:hover {
+    transform: translateY(-4px);
+  }
+
+  .ai-wiki-blog-grid-image-wrapper-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: 8px;
+    background-color: {{ block.settings.image_bg_color }};
+    margin-bottom: {{ block.settings.title_spacing }}px;
+  }
+
+  .ai-wiki-blog-grid-image-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .ai-wiki-blog-grid-placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ai-wiki-blog-grid-placeholder-{{ ai_gen_id }} svg {
+    width: 60%;
+    height: 60%;
+    opacity: 0.3;
+  }
+
+  .ai-wiki-blog-grid-post-title-{{ ai_gen_id }} {
+    font-size: {{ block.settings.post_title_size }}px;
+    font-weight: {{ block.settings.post_title_weight }};
+    color: {{ block.settings.post_title_color }};
+    text-align: center;
+    margin: 0;
+    line-height: 1.4;
+    text-transform: {{ block.settings.post_title_transform }};
+  }
+
+  .ai-wiki-blog-grid-link-{{ ai_gen_id }}:hover .ai-wiki-blog-grid-post-title-{{ ai_gen_id }} {
+    color: {{ block.settings.post_title_hover_color }};
+  }
+
+  .ai-wiki-blog-grid-empty-{{ ai_gen_id }} {
+    text-align: center;
+    padding: 60px 20px;
+    color: {{ block.settings.subtitle_color }};
+    font-size: 16px;
+  }
+{% endstyle %}
+
+<wiki-blog-grid-{{ ai_gen_id }} class="ai-wiki-blog-grid-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-wiki-blog-grid-container-{{ ai_gen_id }}">
+    {% if block.settings.show_header %}
+      <div class="ai-wiki-blog-grid-header-{{ ai_gen_id }}">
+        {% if block.settings.section_title != blank %}
+          <h2 class="ai-wiki-blog-grid-title-{{ ai_gen_id }}">{{ block.settings.section_title }}</h2>
+        {% endif %}
+        {% if block.settings.section_subtitle != blank %}
+          <p class="ai-wiki-blog-grid-subtitle-{{ ai_gen_id }}">{{ block.settings.section_subtitle }}</p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% if block.settings.blog != blank %}
+      {% assign selected_blog = block.settings.blog %}
+      {% if selected_blog.articles_count > 0 %}
+        <ul class="ai-wiki-blog-grid-posts-{{ ai_gen_id }}">
+          {% for article in selected_blog.articles limit: block.settings.posts_limit %}
+            <li class="ai-wiki-blog-grid-post-{{ ai_gen_id }}">
+              <a href="{{ article.url }}" class="ai-wiki-blog-grid-link-{{ ai_gen_id }}">
+                <div class="ai-wiki-blog-grid-image-wrapper-{{ ai_gen_id }}">
+                  {% if article.image %}
+                    <img
+                      src="{{ article.image | image_url: width: 600 }}"
+                      alt="{{ article.image.alt | escape }}"
+                      class="ai-wiki-blog-grid-image-{{ ai_gen_id }}"
+                      loading="lazy"
+                      width="600"
+                      height="338"
+                    >
+                  {% else %}
+                    <div class="ai-wiki-blog-grid-placeholder-{{ ai_gen_id }}">
+                      {{ 'image' | placeholder_svg_tag }}
+                    </div>
+                  {% endif %}
+                </div>
+                <h3 class="ai-wiki-blog-grid-post-title-{{ ai_gen_id }}">{{ article.title }}</h3>
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <div class="ai-wiki-blog-grid-empty-{{ ai_gen_id }}">
+          No articles found in this blog.
+        </div>
+      {% endif %}
+    {% else %}
+      <div class="ai-wiki-blog-grid-empty-{{ ai_gen_id }}">
+        Select a blog to display articles.
+      </div>
+    {% endif %}
+  </div>
+</wiki-blog-grid-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class WikiBlogGrid{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        this.sortPostsBySeriesRank();
+        this.initializeGrid();
+      }
+
+      extractSeriesRank(title) {
+        const normalized = String(title || '').replace(/[‐‑‒–—−]/g, '-');
+        const tierMatch = normalized.match(/\bT\s*[2345]\s*-\s*(\d{1,2})\b/i);
+        if (tierMatch) return Number(tierMatch[1]);
+
+        const namedMatch = normalized.match(/\b(?:Moon|Fun Moments|Rainbow|Star)\s+Series\s+(\d{1,2})\b/i);
+        if (namedMatch) return Number(namedMatch[1]);
+
+        const giftBoxMatch = normalized.match(/\bNew Year Gift Box\s+(\d{1,2})\b/i);
+        if (giftBoxMatch) return Number(giftBoxMatch[1]);
+
+        const cuteChibaMatch = normalized.match(/\bCute Chiba Party\s+Gen\s+(\d{1,2})\b/i);
+        if (cuteChibaMatch) return Number(cuteChibaMatch[1]);
+
+        const tcgMatch = normalized.match(/\bTCG\s+(\d{1,2})\b/i);
+        if (tcgMatch) return Number(tcgMatch[1]);
+
+        const prCardsRank = (() => {
+          if (/\bCCG\s+PR Cards\b/i.test(normalized)) return 3;
+          if (/\bTCG\s+PR Cards\b/i.test(normalized)) return 2;
+          if (/\bOther Collab\s+PR Cards\b/i.test(normalized)) return 1;
+          return null;
+        })();
+        if (prCardsRank !== null) return prCardsRank;
+
+        const bookOfMagicMatch = normalized.match(/\bBook of Magic\s+Series\s+(\d{1,2})\b/i);
+        return bookOfMagicMatch ? Number(bookOfMagicMatch[1]) : null;
+      }
+
+      sortPostsBySeriesRank() {
+        const list = this.querySelector('.ai-wiki-blog-grid-posts-{{ ai_gen_id }}');
+        if (!list) return;
+
+        const items = Array.from(list.children).filter(item =>
+          item.classList.contains('ai-wiki-blog-grid-post-{{ ai_gen_id }}')
+        );
+        const ranked = items.map((item, index) => {
+          const title = item.querySelector('.ai-wiki-blog-grid-post-title-{{ ai_gen_id }}')?.textContent || '';
+          return { item, index, rank: this.extractSeriesRank(title) };
+        });
+
+        if (!ranked.some(entry => entry.rank !== null)) return;
+
+        ranked.sort((a, b) => {
+          if (a.rank === null && b.rank === null) return a.index - b.index;
+          if (a.rank === null) return 1;
+          if (b.rank === null) return -1;
+          if (b.rank !== a.rank) return b.rank - a.rank;
+          return a.index - b.index;
+        });
+
+        ranked.forEach(entry => list.appendChild(entry.item));
+      }
+
+      initializeGrid() {
+        const links = this.querySelectorAll('.ai-wiki-blog-grid-link-{{ ai_gen_id }}');
+        
+        links.forEach(link => {
+          link.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-4px)';
+          });
+          
+          link.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+          });
+        });
+      }
+    }
+
+    customElements.define('wiki-blog-grid-{{ ai_gen_id }}', WikiBlogGrid{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Wiki blog grid",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Blog source"
+    },
+    {
+      "type": "blog",
+      "id": "blog",
+      "label": "Blog"
+    },
+    {
+      "type": "range",
+      "id": "posts_limit",
+      "label": "Number of posts",
+      "min": 3,
+      "max": 24,
+      "step": 3,
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Section header"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_header",
+      "label": "Show header",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Title",
+      "default": "Knowledge Base"
+    },
+    {
+      "type": "text",
+      "id": "section_subtitle",
+      "label": "Subtitle",
+      "default": "Explore our collection guides"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title size",
+      "min": 16,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "select",
+      "id": "title_weight",
+      "label": "Title weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi-bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "select",
+      "id": "title_transform",
+      "label": "Title transform",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "uppercase",
+          "label": "Uppercase"
+        },
+        {
+          "value": "capitalize",
+          "label": "Capitalize"
+        }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size",
+      "label": "Subtitle size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "header_spacing",
+      "label": "Header spacing",
+      "min": 20,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Grid layout"
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "label": "Grid gap",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "label": "Max width",
+      "min": 800,
+      "max": 1600,
+      "step": 50,
+      "unit": "px",
+      "default": 1200
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "label": "Section padding",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Post card style"
+    },
+    {
+      "type": "range",
+      "id": "post_title_size",
+      "label": "Post title size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "select",
+      "id": "post_title_weight",
+      "label": "Post title weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi-bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "500"
+    },
+    {
+      "type": "select",
+      "id": "post_title_transform",
+      "label": "Post title transform",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "uppercase",
+          "label": "Uppercase"
+        },
+        {
+          "value": "capitalize",
+          "label": "Capitalize"
+        }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "range",
+      "id": "title_spacing",
+      "label": "Title spacing",
+      "min": 8,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Section title",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "post_title_color",
+      "label": "Post title",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "post_title_hover_color",
+      "label": "Post title hover",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "image_bg_color",
+      "label": "Image background",
+      "default": "#f5f5f5"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Wiki blog grid"
+    }
+  ]
+}
+{% endschema %}

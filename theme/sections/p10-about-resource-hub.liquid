@@ -1,0 +1,196 @@
+{{ 'p10-editorial.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign about_url = section.settings.about_link | default: '/blogs/ambers-ponycove'
+  assign guides_url = section.settings.guides_link | default: '/pages/blog'
+  assign stories_url = section.settings.stories_link | default: blogs['ambers-ponycove'].url | default: '/blogs/ambers-ponycove'
+  assign database_url = section.settings.database_link | default: blogs['tcg-database'].url | default: '/blogs/tcg-database'
+  assign shop_url = section.settings.shop_link | default: collections['ip-my-little-pony'].url | default: '/collections/ip-my-little-pony'
+-%}
+
+<section class="p10-about-resource-hub" aria-label="About pakracards and collector resources" {{ section.shopify_attributes }}>
+  <div class="p10-about-resource-hub__inner">
+    <article class="p10-about-resource-hub__poster p10-about-resource-hub__poster--magazine">
+      <div class="p10-about-resource-hub__story">
+        <p class="p10-editorial-eyebrow">{{ section.settings.eyebrow | default: 'About pakracards' | escape }}</p>
+        <h1 class="p10-about-resource-hub__title">{{ section.settings.heading | default: "Amber's PonyCove" | escape }}</h1>
+        <p class="p10-about-resource-hub__text">
+          {{ section.settings.description | default: 'Meet the collector behind the store, then keep reading the guides, collecting notes, and MLP card database before choosing your next card box.' | escape }}
+        </p>
+        <div class="p10-about-resource-hub__actions">
+          <a href="{{ about_url }}" class="p10-about-resource-hub__button">Read About Us</a>
+          <a href="{{ guides_url }}" class="p10-about-resource-hub__button p10-about-resource-hub__button--secondary">Browse guides</a>
+        </div>
+      </div>
+
+      <div class="p10-about-resource-hub__covers" aria-label="Featured collector stories">
+        <div class="p10-about-resource-hub__covers-head">
+          <span>Featured story</span>
+          <span>About pakracards</span>
+        </div>
+        <div class="p10-about-resource-hub__cover-grid">
+          {%- for block in section.blocks limit: 1 -%}
+            {%- assign feature_link = block.settings.link_url | default: about_url -%}
+            {%- assign feature_cover_url = block.settings.cover_image_url | strip -%}
+            <a
+              href="{{ feature_link }}"
+              class="p10-about-resource-hub__cover p10-about-resource-hub__cover--lead"
+              {{ block.shopify_attributes }}
+            >
+              {%- if block.settings.cover_image != blank -%}
+                <img
+                  src="{{ block.settings.cover_image | image_url: width: 900 }}"
+                  srcset="{{ block.settings.cover_image | image_url: width: 360 }} 360w, {{ block.settings.cover_image | image_url: width: 640 }} 640w, {{ block.settings.cover_image | image_url: width: 900 }} 900w"
+                  sizes="(min-width: 990px) 42vw, 86vw"
+                  loading="eager"
+                  fetchpriority="high"
+                  alt="{{ block.settings.title_text | escape }}"
+                  width="900"
+                  height="506">
+              {%- elsif feature_cover_url != blank -%}
+                <img
+                  src="{{ feature_cover_url | escape }}"
+                  loading="eager"
+                  fetchpriority="high"
+                  alt="{{ block.settings.title_text | escape }}"
+                  width="900"
+                  height="506">
+              {%- else -%}
+                {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+              {%- endif -%}
+              <span class="p10-about-resource-hub__cover-caption">
+                <span class="p10-about-resource-hub__cover-kicker">{{ block.settings.kicker | default: 'Collector read' | escape }}</span>
+                <span class="p10-about-resource-hub__cover-title">{{ block.settings.title_text | default: 'Collector story' | escape }}</span>
+              </span>
+            </a>
+          {%- endfor -%}
+        </div>
+      </div>
+
+      <nav class="p10-about-resource-hub__toc" aria-label="Collector resource paths">
+        <a href="{{ about_url }}" class="p10-about-resource-hub__toc-link">
+          <span>01</span>
+          <strong>About</strong>
+          <em>Shop story</em>
+        </a>
+        <a href="{{ guides_url }}" class="p10-about-resource-hub__toc-link">
+          <span>02</span>
+          <strong>Guides</strong>
+          <em>Buying tips</em>
+        </a>
+        <a href="{{ stories_url }}" class="p10-about-resource-hub__toc-link">
+          <span>03</span>
+          <strong>PonyCove</strong>
+          <em>Personal notes</em>
+        </a>
+        <a href="{{ database_url }}" class="p10-about-resource-hub__toc-link">
+          <span>04</span>
+          <strong>Database</strong>
+          <em>Card reference</em>
+        </a>
+      </nav>
+    </article>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "P10 About Resource Hub",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "About pakracards"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Meet the collector behind pakracards"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "A warm first stop for the shop story, collector promise, PonyCove notes, buying guides, and card reference resources."
+    },
+    {
+      "type": "url",
+      "id": "about_link",
+      "label": "About link"
+    },
+    {
+      "type": "url",
+      "id": "guides_link",
+      "label": "Guides link"
+    },
+    {
+      "type": "url",
+      "id": "stories_link",
+      "label": "Stories link"
+    },
+    {
+      "type": "url",
+      "id": "database_link",
+      "label": "Database link"
+    },
+    {
+      "type": "url",
+      "id": "shop_link",
+      "label": "Shop link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature_article",
+      "name": "Featured article cover",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "cover_image",
+          "label": "Cover image"
+        },
+        {
+          "type": "text",
+          "id": "cover_image_url",
+          "label": "External cover image URL"
+        },
+        {
+          "type": "text",
+          "id": "kicker",
+          "label": "Small label",
+          "default": "Collector read"
+        },
+        {
+          "type": "text",
+          "id": "title_text",
+          "label": "Article title",
+          "default": "Collector story"
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "P10 About Resource Hub",
+      "blocks": [
+        {
+          "type": "feature_article"
+        },
+        {
+          "type": "feature_article"
+        },
+        {
+          "type": "feature_article"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

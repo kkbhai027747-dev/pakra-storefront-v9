@@ -1,0 +1,97 @@
+# Shopify storefront. Public product, collection, page, blog, policy, cart, and localized HTML is crawlable.
+# V2 SEO/GEO draft: allow AI search crawlers to access public buyer guides, product pages, and collection pages.
+
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /cart/
+Disallow: /*/cart/
+Disallow: /checkout
+Disallow: /*/checkout
+Disallow: /checkouts/
+Disallow: /*/checkouts/
+Disallow: /orders
+Disallow: /*/orders
+Allow: /account/login
+Allow: /*/account/login
+Disallow: /account
+Disallow: /*/account
+Disallow: /services
+Disallow: /sf_*
+Disallow: /cart.js
+Disallow: /*/cart.js
+Disallow: /recommendations/products
+Disallow: /*/recommendations/products
+Disallow: /collections/*sort_by*
+Disallow: /*/collections/*sort_by*
+Disallow: /collections/*+*
+Disallow: /collections/*%2B*
+Disallow: /collections/*%2b*
+Disallow: /*/collections/*+*
+Disallow: /*/collections/*%2B*
+Disallow: /*/collections/*%2b*
+Disallow: /collections/*filter*&*filter*
+Disallow: /*/collections/*filter*&*filter*
+Disallow: /*?*oseid=*
+Disallow: /*?*preview_theme_id=*
+Disallow: /*?*preview_script_id=*
+
+User-agent: GPTBot
+Allow: /
+Disallow: /cart/
+Disallow: /checkout
+Disallow: /checkouts/
+Disallow: /account
+Disallow: /admin
+
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /cart/
+Disallow: /checkout
+Disallow: /checkouts/
+Disallow: /account
+Disallow: /admin
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /cart/
+Disallow: /checkout
+Disallow: /checkouts/
+Disallow: /account
+Disallow: /admin
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /cart/
+Disallow: /checkout
+Disallow: /checkouts/
+Disallow: /account
+Disallow: /admin
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /cart/
+Disallow: /checkout
+Disallow: /checkouts/
+Disallow: /account
+Disallow: /admin
+
+User-agent: adsbot-google
+Allow: /products/
+Allow: /*/products/
+Allow: /collections/
+Allow: /*/collections/
+Allow: /pages/
+Allow: /*/pages/
+Allow: /blogs/
+Allow: /*/blogs/
+Disallow: /checkout
+Disallow: /*/checkout
+Disallow: /checkouts/
+Disallow: /*/checkouts/
+Disallow: /orders
+Disallow: /*/orders
+Disallow: /services
+Disallow: /sf_*
+
+Sitemap: https://pakracards.com/sitemap.xml

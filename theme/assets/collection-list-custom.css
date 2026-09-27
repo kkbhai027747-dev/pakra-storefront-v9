@@ -1,0 +1,74 @@
+/* Collection List - Homepage & mlp-hub only */
+
+/* ============ Desktop (4 columns) ============ */
+@media (min-width: 768px) {
+  .template-index .collection-list,
+  .template-collection-mlp-hub .collection-list {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 20px !important;
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  .template-index .collection-list__item:hover,
+  .template-collection-mlp-hub .collection-list__item:hover {
+    transform: translateY(-5px);
+    transition: transform 0.3s ease;
+  }
+}
+
+/* ============ Mobile (2 columns) ============ */
+@media (max-width: 767px) {
+  .template-index .collection-list,
+  .template-collection-mlp-hub .collection-list {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 15px !important;
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+    list-style: none !important;
+    margin: 0 !important;
+  }
+}
+
+/* ============ card__media wrapper ============ */
+.template-index .collection-list .card__media,
+.template-collection-mlp-hub .collection-list .card__media {
+  border-radius: 16px !important;
+  overflow: hidden !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06) !important;
+  background-color: #ffffff !important;
+}
+
+/* ============ Kill padding-bottom on <a> tag, force square ============ */
+.template-index .collection-list .card__media .image,
+.template-collection-mlp-hub .collection-list .card__media .image {
+  display: block !important;
+  position: relative !important;
+  width: 100% !important;
+  height: 0 !important;
+  padding-bottom: 100% !important; /* force 1:1 via padding trick */
+  overflow: hidden !important;
+}
+
+/* ============ img absolutely fills the square ============ */
+.template-index .collection-list .card__media .image img,
+.template-collection-mlp-hub .collection-list .card__media .image img {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+}
+
+/* ============ Typography ============ */
+.template-index .collection-list .card__heading,
+.template-collection-mlp-hub .collection-list .card__heading {
+  text-align: center !important;
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  margin-top: 12px !important;
+}

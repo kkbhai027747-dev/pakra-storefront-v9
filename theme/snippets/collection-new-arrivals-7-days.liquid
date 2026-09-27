@@ -1,0 +1,132 @@
+{% doc %}
+Renders the dynamic seven-day new arrivals collection experience.
+
+@param {collection} collection - The collection used for the page URL and metadata.
+@param {section} section - The parent collection section.
+{% enddoc %}
+
+{%- liquid
+  assign container = section.settings.container
+  assign padding_full_width = section.settings.padding_full_width
+  assign padding_top = section.settings.mg_top_desktop | append: 'px'
+  assign padding_bottom = section.settings.mg_bottom_desktop | append: 'px'
+  assign padding_top_tablet = section.settings.mg_top_tablet | append: 'px'
+  assign padding_bottom_tablet = section.settings.mg_bottom_tablet | append: 'px'
+  assign padding_top_mobile = section.settings.mg_top_mobile | append: 'px'
+  assign padding_bottom_mobile = section.settings.mg_bottom_mobile | append: 'px'
+  assign layout = section.settings.layout | default: '4'
+  assign count_template = 'sections.collection_template.product_count' | t: count: '__COUNT__', total: '__COUNT__'
+-%}
+
+<section
+  id="NewArrivals-{{ section.id }}"
+  class="new-arrivals-page"
+  data-new-arrivals-section
+  data-feed-url="{{ routes.collections_url }}/all?view=new-arrivals-feed&amp;sort_by=created-descending"
+  data-count-template="{{ count_template | escape }}"
+  data-empty-message="{{ 'sections.collection_template.empty' | t | escape }}"
+  data-error-message="{{ 'accessibility.error' | t | escape }}"
+  style="--new-arrivals-padding-top: {{ padding_top }}; --new-arrivals-padding-bottom: {{ padding_bottom }}; --new-arrivals-padding-top-tablet: {{ padding_top_tablet }}; --new-arrivals-padding-bottom-tablet: {{ padding_bottom_tablet }}; --new-arrivals-padding-top-mobile: {{ padding_top_mobile }}; --new-arrivals-padding-bottom-mobile: {{ padding_bottom_mobile }}; --new-arrivals-full-width-padding: {{ padding_full_width }}px"
+>
+  <div class="{% if container == '1170' %}container-1170{% elsif container == '1770' %}container-1770{% elsif container == 'fullwidth' %}container-full{% else %}container{% endif %}">
+    <header class="new-arrivals-page__header">
+      <p class="new-arrivals-page__eyebrow">{{ 'general.navigation.new_label' | t }}</p>
+      <h1 class="new-arrivals-page__title">{{ collection.title | escape }}</h1>
+    </header>
+
+    <p class="collection-product-count new-arrivals-page__status" role="status" aria-live="polite" data-new-arrivals-status>{{ 'accessibility.loading' | t }}</p>
+    <ul class="productListing productGrid column-{{ layout }} list-{{ layout }} list-unstyled" id="main-collection-product-grid" data-id="{{ section.id }}" data-new-arrivals-grid hidden></ul>
+
+    <noscript>
+      <p class="new-arrivals-page__message">{{ 'accessibility.error' | t }}</p>
+    </noscript>
+  </div>
+</section>
+
+<style>
+  #NewArrivals-{{ section.id }} {padding-top: var(--new-arrivals-padding-top);padding-bottom: var(--new-arrivals-padding-bottom)}
+  #NewArrivals-{{ section.id }} .new-arrivals-page__header {max-width: 760px;margin-bottom: 24px}
+  #NewArrivals-{{ section.id }} .new-arrivals-page__eyebrow {margin: 0 0 8px;font-size: 12px;font-weight: 700;letter-spacing: .08em;text-transform: uppercase}
+  #NewArrivals-{{ section.id }} .new-arrivals-page__title {margin: 0;font-size: clamp(30px, 6vw, 54px);line-height: 1.05}
+  #NewArrivals-{{ section.id }} .new-arrivals-page__status {margin: 0 0 20px;padding: 12px 14px;border: 1px solid var(--form-input-border);border-radius: 4px}
+  #NewArrivals-{{ section.id }} [data-new-arrivals-grid][hidden] {display: none}
+  #NewArrivals-{{ section.id }} .new-arrivals-page__message {padding: 24px 0;text-align: center}
+  @media (max-width: 1024px) {
+    #NewArrivals-{{ section.id }} {padding-top: var(--new-arrivals-padding-top-tablet);padding-bottom: var(--new-arrivals-padding-bottom-tablet)}
+  }
+  @media (max-width: 550px) {
+    #NewArrivals-{{ section.id }} {padding-top: var(--new-arrivals-padding-top-mobile);padding-bottom: var(--new-arrivals-padding-bottom-mobile)}
+    #NewArrivals-{{ section.id }} .new-arrivals-page__header {margin-bottom: 18px}
+  }
+  @media (min-width: 1025px) {
+    #NewArrivals-{{ section.id }} > .container-full {padding-right: var(--new-arrivals-full-width-padding);padding-left: var(--new-arrivals-full-width-padding)}
+  }
+</style>
+
+<script>
+  (() => {
+    const root = document.getElementById('NewArrivals-{{ section.id }}');
+    if (!root || root.dataset.loaded === 'true') return;
+    root.dataset.loaded = 'true';
+
+    const grid = root.querySelector('[data-new-arrivals-grid]');
+    const status = root.querySelector('[data-new-arrivals-status]');
+    const parser = new DOMParser();
+
+    const finish = (count) => {
+      const reveal = () => {
+        grid.hidden = count === 0;
+        status.textContent = count === 0
+          ? root.dataset.emptyMessage
+          : root.dataset.countTemplate.replaceAll('__COUNT__', String(count));
+        window.sharedFunctions?.setLocalStorageProductForWishlist?.();
+      };
+
+      if (count > 0 && document.startViewTransition) {
+        document.startViewTransition(reveal);
+      } else {
+        reveal();
+      }
+    };
+
+    const load = async () => {
+      let nextUrl = root.dataset.feedUrl;
+      let count = 0;
+      const visited = new Set();
+
+      try {
+        while (nextUrl) {
+          const url = new URL(nextUrl, new URL(root.dataset.feedUrl, window.location.origin));
+          if (url.origin !== window.location.origin) throw new Error('feed origin');
+          url.searchParams.set('view', 'new-arrivals-feed');
+          url.searchParams.set('sort_by', 'created-descending');
+          const previewTheme = new URLSearchParams(window.location.search).get('preview_theme_id');
+          if (previewTheme) url.searchParams.set('preview_theme_id', previewTheme);
+          if (visited.has(url.href)) throw new Error('repeated feed page');
+          visited.add(url.href);
+
+          const response = await fetch(url.href, { credentials: 'same-origin', signal: AbortSignal.timeout(30000) });
+          if (!response.ok) throw new Error(String(response.status));
+
+          const page = parser.parseFromString(await response.text(), 'text/html');
+          const feed = page.querySelector('[data-new-arrivals-feed]');
+          if (!feed) throw new Error('feed');
+
+          const items = feed.querySelector('[data-new-arrivals-items]');
+          if (!items) throw new Error('feed items');
+          const products = Array.from(items.children);
+          products.forEach((product) => grid.append(product));
+          count += products.length;
+          nextUrl = feed.dataset.expired === 'true' ? '' : feed.dataset.nextUrl;
+        }
+
+        finish(count);
+      } catch (error) {
+        grid.hidden = true;
+        status.textContent = root.dataset.errorMessage;
+      }
+    };
+
+    load();
+  })();
+</script>

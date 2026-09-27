@@ -1,0 +1,96 @@
+{%- layout none -%}
+
+{%- liquid
+    assign prisma_search_terms_normalized = search.terms | downcase | strip
+    assign prisma_search_target_url = ''
+    assign prisma_english_cards_search = false
+    if prisma_search_terms_normalized == 'english cards' or prisma_search_terms_normalized == 'english card'
+        assign prisma_english_cards_search = true
+        assign prisma_search_target_url = '/collections/english-card-boxes'
+    endif
+    assign prisma_chinese_cards_search = false
+    if prisma_search_terms_normalized == 'chinese cards' or prisma_search_terms_normalized == 'chinese card' or prisma_search_terms_normalized == 'cn cards' or prisma_search_terms_normalized == 'cn card'
+        assign prisma_chinese_cards_search = true
+        assign prisma_search_target_url = '/collections/cn-trading-card-boxes'
+    endif
+    assign prisma_tcg_cards_search = false
+    if prisma_search_terms_normalized == 'tcg' or prisma_search_terms_normalized == 'tcg cards' or prisma_search_terms_normalized == 'tcg card' or prisma_search_terms_normalized == 'trading card game'
+        assign prisma_tcg_cards_search = true
+        assign prisma_search_target_url = '/collections/tcg-card-boxes'
+    endif
+    assign prisma_ccg_cards_search = false
+    if prisma_search_terms_normalized == 'ccg' or prisma_search_terms_normalized == 'ccg cards' or prisma_search_terms_normalized == 'ccg card' or prisma_search_terms_normalized == 'collectible card game'
+        assign prisma_ccg_cards_search = true
+        assign prisma_search_target_url = '/collections/ccg-card-boxes'
+    endif
+-%}
+
+{%- capture results -%}
+    {%- assign prisma_first_result = true -%}
+    {%- for result in search.results -%}
+        {%- liquid
+            assign prisma_show_search_product = true
+            if result.object_type == 'product'
+                assign prisma_result_text = result.title | append: ' ' | append: result.handle | downcase
+                assign prisma_result_tags = result.tags | join: '|' | downcase
+            endif
+            if prisma_english_cards_search and result.object_type == 'product'
+                assign prisma_result_is_chinese = false
+                if prisma_result_text contains 'chinese' or prisma_result_tags contains 'chinese edition' or prisma_result_tags contains 'chinese cards' or prisma_result_tags contains 'cn kayou'
+                    assign prisma_result_is_chinese = true
+                endif
+                assign prisma_result_is_english = false
+                if prisma_result_tags contains 'english cards' or prisma_result_tags contains 'english edition' or prisma_result_tags contains 'kayou english' or prisma_result_text contains ' english '
+                    assign prisma_result_is_english = true
+                endif
+                unless prisma_result_is_english
+                    assign prisma_show_search_product = false
+                endunless
+                if prisma_result_is_chinese
+                    assign prisma_show_search_product = false
+                endif
+            endif
+            if prisma_chinese_cards_search and result.object_type == 'product'
+                assign prisma_result_is_chinese = false
+                if prisma_result_text contains 'chinese' or prisma_result_tags contains 'chinese edition' or prisma_result_tags contains 'chinese cards' or prisma_result_tags contains 'cn kayou'
+                    assign prisma_result_is_chinese = true
+                endif
+                assign prisma_result_is_english = false
+                if prisma_result_tags contains 'english cards' or prisma_result_tags contains 'english edition' or prisma_result_tags contains 'kayou english' or prisma_result_text contains ' english '
+                    assign prisma_result_is_english = true
+                endif
+                unless prisma_result_is_chinese
+                    assign prisma_show_search_product = false
+                endunless
+                if prisma_result_is_english
+                    assign prisma_show_search_product = false
+                endif
+            endif
+            if prisma_tcg_cards_search and result.object_type == 'product'
+                unless prisma_result_tags contains 'tcg cards' or prisma_result_tags contains 'trading card game' or prisma_result_text contains ' trading card game' or prisma_result_text contains ' tcg' or prisma_result_text contains 'tcg:'
+                    assign prisma_show_search_product = false
+                endunless
+            endif
+            if prisma_ccg_cards_search and result.object_type == 'product'
+                unless prisma_result_tags contains 'ccg cards'
+                    assign prisma_show_search_product = false
+                endunless
+            endif
+        -%}
+        {%- if prisma_show_search_product -%}
+        {%- unless prisma_first_result -%},{%- endunless -%}
+        {
+            "handle": "{{ result.handle }}"
+        }
+        {%- assign prisma_first_result = false -%}
+        {%- endif -%}
+    {%- endfor -%}
+{%- endcapture -%}
+
+{
+    "results": [{{ results }}],
+    "results_count": {{ 'general.search.view_all' | t : count : search.results_count | json }},
+    "results_label": {% if search.results_count == 0 %}{{ 'general.search.no_results' | t | json }}{% else %}{{ 'general.search.view_results'| t | json }}{% endif %},
+    "title_heading": {{ 'general.search.heading_results' | t | json }},
+    "url": "{% if prisma_search_target_url != blank %}{{ prisma_search_target_url }}{% else %}{{ routes.search_url }}?q={{ search.terms }}{% endif %}"
+}

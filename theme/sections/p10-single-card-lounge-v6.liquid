@@ -1,0 +1,643 @@
+{% render 'p10-single-card-mobile-menu-guard' %}
+{{ 'p10-single-card-catalog.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'p10-single-card-catalog-20260719-v6.js' | asset_url }}" defer></script>
+
+{%- liquid
+  assign section_id = 'p10-single-card-catalog-' | append: section.id
+  assign anchor_id = section.settings.anchor_id | default: 'single-card-gallery'
+  assign single_shop_collection = section.settings.source_collection
+  assign catalog_collection_url = blank
+  if single_shop_collection != blank
+    assign catalog_collection_url = single_shop_collection.url | append: '/products.json?limit=250'
+  endif
+  assign directory_url = '/pages/kayou-mlp-card-catalog'
+  assign is_box_landing = section.settings.box_landing
+  assign single_shop_url = single_shop_collection.url | default: '/collections/single'
+-%}
+
+<section
+  id="{{ section_id }}"
+  class="p10-single-card-catalog"
+  data-single-card-catalog
+  data-box-browser
+  data-catalog-directory-url="{{ directory_url }}"
+  data-ip-browser
+  data-box-data-url="{{ 'p10-single-card-boxes.json' | asset_url }}"
+  data-catalog-data-url="{{ 'p10-single-card-catalog-20260715-v6.json' | asset_url }}"
+  data-catalog-collection-url="{{ catalog_collection_url }}"
+  data-catalog-source-handle="{{ single_shop_collection.handle }}"
+  data-catalog-source-count="{{ single_shop_collection.products_count }}"
+  data-all-cards-url="{{ single_shop_url }}"
+  aria-busy="true"
+>
+  <span id="{{ anchor_id }}" class="p10-single-card-catalog__anchor" aria-hidden="true"></span>
+
+  {%- if is_box_landing and page.content != blank -%}
+    {{ page.content }}
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@graph":[{"@type":"CollectionPage","@id":{{ canonical_url | append: '#collection' | json }},"url":{{ canonical_url | json }},"name":{{ page.title | json }},"description":{{ page.metafields.global.description_tag.value | default: page_description | json }}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Single cards","item":{{ shop.url | append: directory_url | json }}},{"@type":"ListItem","position":2,"name":"My Little Pony","item":{{ shop.url | append: directory_url | append: '?ip=mlp' | json }}},{"@type":"ListItem","position":3,"name":{{ page.title | json }},"item":{{ canonical_url | json }}}]}]}
+    </script>
+  {%- else -%}
+  <header class="p10-box-header">
+    <nav class="p10-box-breadcrumb" aria-label="Breadcrumb">
+      <a href="{{ directory_url }}" data-ip-back>Single cards</a>
+      <a href="{{ directory_url }}?ip=mlp" data-box-back hidden>My Little Pony</a>
+      <span data-box-breadcrumb hidden></span>
+    </nav>
+    <div class="p10-box-header__content">
+      <div class="p10-box-header__image" data-box-image hidden></div>
+      <div>
+        <p class="p10-box-eyebrow" data-box-eyebrow>CARD GALLERY</p>
+        <h1 data-box-title tabindex="-1">Single cards</h1>
+        <p class="p10-box-description" data-box-description>Choose an IP to explore its boxes and single cards.</p>
+        <dl class="p10-box-facts" data-box-facts hidden></dl>
+        <p class="p10-box-meta" data-box-meta></p>
+      </div>
+    </div>
+  </header>
+  {%- endif -%}
+
+  <div class="p10-ip-home" data-ip-home>
+    <section class="p10-ip-section" aria-labelledby="ip-heading-{{ section.id }}">
+      <h2 id="ip-heading-{{ section.id }}">Browse by IP</h2>
+      <div class="p10-ip-grid" data-ip-directory></div>
+    </section>
+  <section class="p10-character-entry" data-character-entry aria-labelledby="character-entry-heading-{{ section.id }}">
+    <div>
+      <p class="p10-box-eyebrow">A favorite in every set</p>
+      <h2 id="character-entry-heading-{{ section.id }}">Find your favorite character</h2>
+      <p>Choose a region or group, then explore your favorite character’s single cards.</p>
+    </div>
+    <div class="p10-character-entry__actions">
+      <button type="button" class="p10-character-entry__primary" data-all-cards>Find cards by character <span aria-hidden="true">→</span></button>
+      <div class="p10-character-entry__quicklinks" aria-label="Character shortcuts">
+        <button type="button" data-character-link="rarity">Rarity</button>
+        <button type="button" data-character-link="maud-pie">Maud Pie</button>
+      </div>
+    </div>
+  </section>
+
+    <section class="p10-ip-section" aria-labelledby="recommendations-heading-{{ section.id }}">
+      <h2 id="recommendations-heading-{{ section.id }}">Recommended cards</h2>
+      <div class="p10-ip-recommendations" data-ip-recommendations></div>
+      <p class="p10-ip-empty" data-ip-recommendations-empty hidden>Choose an IP above to explore the available cards.</p>
+    </section>
+  </div>
+
+  <div data-box-detail hidden>
+    <div class="p10-box-detail-nav">
+      <a class="p10-box-back" href="{{ directory_url }}" data-box-back><span aria-hidden="true">←</span> All boxes &amp; sets</a>
+    </div>
+
+    <div class="p10-single-card-catalog__mobile-filter-bar" data-mobile-filter-bar>
+      <div>
+        <span data-filter-summary>All rarities</span>
+        <strong><span data-mobile-result-count>0</span> <span data-count-label>cards</span></strong>
+      </div>
+      <button type="button" data-mobile-filter-trigger aria-haspopup="dialog" aria-expanded="false">
+        <span aria-hidden="true">☷</span><span data-filter-open-label>Filter BOXes</span>
+      </button>
+    </div>
+    <div class="p10-single-card-catalog__mobile-active" data-mobile-active-filters aria-live="polite"></div>
+
+    <div class="p10-single-card-catalog__browser">
+      <aside class="p10-single-card-catalog__desktop-filters" data-desktop-filters aria-labelledby="collection-index-heading-{{ section.id }}">
+        <div class="p10-single-card-catalog__filter-heading">
+          <div>
+            <span data-filter-context>Within this set</span>
+            <h2 id="collection-index-heading-{{ section.id }}" data-filter-title>Browse BOXes</h2>
+          </div>
+          <strong><span data-result-count>0</span> <span data-count-label>cards</span></strong>
+        </div>
+        <div class="p10-single-card-catalog__refine" data-desktop-refine>
+          <details class="p10-single-card-catalog__facet p10-single-card-catalog__refine-section" data-desktop-facet="character" open>
+            <summary>
+              <span>Character</span>
+              <span class="p10-single-card-catalog__refine-status" data-desktop-facet-summary="character">Any character</span>
+              <span class="p10-single-card-catalog__refine-toggle" aria-hidden="true"></span>
+            </summary>
+            <div class="p10-world-picker">
+              <div class="p10-map-switch" role="group" aria-label="Character discovery view">
+  <button type="button" data-character-map-toggle="desktop" data-map-view="list" aria-pressed="true"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 5h2m3 0h9M3 10h2m3 0h9M3 15h2m3 0h9"/></svg>List</button>
+  <button type="button" data-character-map-toggle="desktop" data-map-view="map" aria-pressed="false" aria-expanded="false" aria-controls="character-map-desktop-{{ section.id }}"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m2 4 5-2 6 2 5-2v14l-5 2-6-2-5 2ZM7 2v14M13 4v14"/></svg>Map</button>
+</div>
+              <label for="character-group-desktop-{{ section.id }}"><span>1</span> World / group</label>
+              <select id="character-group-desktop-{{ section.id }}" data-character-group="desktop" aria-describedby="character-picker-status-desktop-{{ section.id }}"><option value="browse">Choose a group…</option></select>
+              <div class="p10-world-shortcuts" data-character-group-shortcuts="desktop" aria-label="Popular groups">
+                <button type="button" data-character-group-link="mane-six" aria-pressed="false">Mane 6</button>
+                <button type="button" data-character-group-link="apple-family" aria-pressed="false">Apple family</button>
+                <button type="button" data-character-group-link="ponyville" aria-pressed="false">Ponyville</button>
+              </div>
+              <p id="character-picker-status-desktop-{{ section.id }}" data-character-picker-status="desktop" aria-live="polite">Choose a group above, or search any character name.</p>
+            </div>
+            <label class="p10-character-search" for="character-search-desktop-{{ section.id }}">
+              <span class="p10-world-step"><span>2</span> Character</span>
+              <span class="p10-visually-hidden">Search character names across all groups</span>
+              <input id="character-search-desktop-{{ section.id }}" type="text" role="searchbox" inputmode="search" data-character-search="desktop" placeholder="Any character name" autocomplete="off">
+            </label>
+            <div class="p10-single-card-catalog__refine-options p10-character-options" data-desktop-options="character"></div>
+            <p class="p10-character-options__empty" data-character-options-empty="desktop" hidden>No matching characters. Try another name.</p>
+            <p class="p10-character-coverage" data-character-coverage-note>Character details are still being added. Some cards may not appear in character results.</p>
+          </details>
+          <details class="p10-single-card-catalog__facet p10-single-card-catalog__refine-section" data-desktop-facet="rarity" open>
+            <summary>
+              <span>Card rarity</span>
+              <span class="p10-single-card-catalog__refine-status" data-desktop-facet-summary="rarity">Any rarity</span>
+              <span class="p10-single-card-catalog__refine-toggle" aria-hidden="true"></span>
+            </summary>
+            <div class="p10-single-card-catalog__refine-options" data-desktop-options="rarity"></div>
+          </details>
+        </div>
+        <div class="p10-single-card-catalog__filter-footer">
+          <div class="p10-single-card-catalog__desktop-active" data-active-filters aria-live="polite"></div>
+          <button type="button" data-filter-clear>Clear filters</button>
+        </div>
+      </aside>
+
+      <div class="p10-single-card-catalog__main">
+<dialog id="character-map-desktop-{{ section.id }}" class="p10-character-map" data-character-map="desktop" aria-labelledby="character-map-title-desktop-{{ section.id }}" hidden>
+  <header class="p10-character-map__header"><div><p>Browse by region</p><h3 id="character-map-title-desktop-{{ section.id }}">Find your character</h3></div><button type="button" class="p10-character-map__close" data-character-map-toggle="desktop" data-map-view="list" aria-label="Close map">&times;</button></header>
+  <div class="p10-character-map__scroll" data-map-scroll><div class="p10-character-map__stage">
+    <svg class="p10-character-map__art" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 560" fill="none" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="map-desktop-{{ section.id }}-paper" x2="1" y2="1"><stop stop-color="#faf9fd"/><stop offset="1" stop-color="#eeebf6"/></linearGradient>
+    <linearGradient id="map-desktop-{{ section.id }}-sea" x2="0" y2="1"><stop stop-color="#e1eef0"/><stop offset="1" stop-color="#cfe4e9"/></linearGradient>
+    <linearGradient id="map-desktop-{{ section.id }}-land" x2="1" y2="1"><stop stop-color="#e8efe9"/><stop offset=".6" stop-color="#edf1eb"/><stop offset="1" stop-color="#dfeae4"/></linearGradient>
+    <linearGradient id="map-desktop-{{ section.id }}-ice" x2=".4" y2="1"><stop stop-color="#fffaff"/><stop offset="1" stop-color="#c8dce9"/></linearGradient>
+    <linearGradient id="map-desktop-{{ section.id }}-crystal" x2=".7" y2="1"><stop stop-color="#e8e1ff"/><stop offset=".55" stop-color="#aaa3d4"/><stop offset="1" stop-color="#817ead"/></linearGradient>
+    <radialGradient id="map-desktop-{{ section.id }}-glow"><stop stop-color="#fcfbff" stop-opacity=".92"/><stop offset="1" stop-color="#fcfbff" stop-opacity="0"/></radialGradient>
+    <symbol id="map-desktop-{{ section.id }}-mountain" viewBox="0 0 92 84">
+      <path d="M3 77 37 7Q41-1 47 7L90 77Q70 84 46 79 24 85 3 77Z" fill="#bbb0cb"/>
+      <path d="m42 5 8 39 14 18 25 15-42 2 5-14-10-20-12 8-8-8Z" fill="#a79abb"/>
+      <path d="m22 44 15-37q5-8 10 0l20 34-14-8-9 10-10-13Z" fill="#faf7fa"/>
+      <path d="m43 7 8 27-7 9-6-11Z" fill="#ded8e8"/>
+    </symbol>
+    <symbol id="map-desktop-{{ section.id }}-pine" viewBox="0 0 32 55">
+      <path d="M15 41v12" stroke="#8d8979" stroke-width="3" stroke-linecap="round"/>
+      <path d="m16 1 10 17h-5l9 15h-7l9 13H1l10-13H4l9-15H7Z" fill="#6f9b89"/>
+      <path d="M16 1v45H1l10-13H4l9-15H7Z" fill="#85aa91"/>
+    </symbol>
+    <symbol id="map-desktop-{{ section.id }}-tree" viewBox="0 0 38 49">
+      <path d="M19 27v19m0-13-8-6m8 11 7-7" stroke="#ac9571" stroke-width="3" stroke-linecap="round"/>
+      <path d="M6 33C-3 25 3 18 7 17-1 3 17-4 23 4c14-5 19 11 11 17 9 14-13 23-18 13-3 2-7 2-10-1Z" fill="#a1bd84"/>
+      <path d="M9 8c5-5 12-3 14 1" stroke="#c8d99b" stroke-width="4" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="map-desktop-{{ section.id }}-apple-tree" viewBox="0 0 38 49">
+      <use href="#map-desktop-{{ section.id }}-tree" width="38" height="49"/><g fill="#d88e79"><circle cx="9" cy="22" r="2.4"/><circle cx="26" cy="14" r="2.4"/><circle cx="24" cy="30" r="2.4"/></g>
+    </symbol>
+    <symbol id="map-desktop-{{ section.id }}-cloud" viewBox="0 0 110 54">
+      <path d="M17 47C-6 41 0 19 19 22 16 1 44-8 55 12 69 0 89 8 86 24c26-7 33 23 6 25Z" fill="#fcfbfa" stroke="#ddd5e7" stroke-width="1.4"/>
+      <path d="M13 35c7 7 19 7 24 2m33-6c7 8 15 6 18 3" stroke="#e6dfed" stroke-width="2" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="map-desktop-{{ section.id }}-house" viewBox="0 0 45 49">
+      <path d="M7 21h31v25H7Z" fill="#fff4d5" stroke="#c9b496" stroke-width="1.3"/><path d="m2 22 20-20 22 20Z" fill="#b586a2" stroke="#957389" stroke-width="1.3"/>
+      <path d="M20 31h9v15h-9Z" fill="#b79891"/><path d="M12 28h6v7h-6Zm19 0h4v7h-4Z" fill="#b7d5d8"/><path d="m6 20 17-15 16 15" stroke="#d7b0c2" stroke-width="2"/>
+    </symbol>
+    <symbol id="map-desktop-{{ section.id }}-spark" viewBox="0 0 16 16"><path d="m8 0 1.7 6.3L16 8l-6.3 1.7L8 16 6.3 9.7 0 8l6.3-1.7Z" fill="#d6ba7f"/></symbol>
+  </defs>
+  <rect width="1000" height="560" rx="24" fill="url(#map-desktop-{{ section.id }}-paper)"/>
+  <path d="M0 361c63-25 65-82 104-103 75-39 111 21 172-13 40-22 72-64 131-43 63 22 66 49 144 59 108 14 128-2 190 39 69 45 78 81 155 75 45-4 68-11 104 14v171H0Z" fill="url(#map-desktop-{{ section.id }}-sea)"/>
+  <path d="M-8 341c56-35 60-64 98-89 34-23 87 5 121-22 33-27 54-80 98-77 59 5 87-40 140-39 81 1 98-75 191-76 105-1 152 59 205 104 76 65 93 101 119 158 13 30 27 57 44 77v137c-63 9-74-34-122-36-68-4-102 52-167 35-71-19-88-4-151 14-72 21-109-17-163-14-51 3-104-23-148-11-62 17-123 33-168 21-49-12-64-64-105-42Z" fill="url(#map-desktop-{{ section.id }}-land)" stroke="#c9d8c1" stroke-width="2"/>
+  <path d="M5 351c69-43 62-59 100-78m-83 62c33-15 30-21 48-42M294 536c55-11 61-18 93-15m28 13c44 9 58 8 83 6m306-4c27 0 40-14 60-15m74-11c20 12 31 12 48 15" stroke="#eaf5f4" stroke-width="3" stroke-linecap="round"/>
+  <path d="M315 211c66-53 122-48 178-87 62-43 157-31 214 14l12 29c-65 0-96 28-157 18-91-14-172 82-247 26Z" fill="#dcded4" opacity=".8"/>
+  <path d="M455 111c62-76 94-94 172-83 67 9 115 53 139 96-54-23-71 7-118-4-56-13-91 18-141 12Z" fill="url(#map-desktop-{{ section.id }}-ice)"/>
+  <path d="M440 102c23-13 47-13 56-2m134-57c38 4 67 14 91 33M681 128c18-3 34-3 47 2" stroke="#f8fbfb" stroke-width="3" stroke-linecap="round"/>
+  <g opacity=".76"><use href="#map-desktop-{{ section.id }}-mountain" x="351" y="90" width="87" height="82"/><use href="#map-desktop-{{ section.id }}-mountain" x="416" y="61" width="96" height="89"/><use href="#map-desktop-{{ section.id }}-mountain" x="714" y="80" width="76" height="72"/><use href="#map-desktop-{{ section.id }}-mountain" x="748" y="105" width="91" height="85"/></g>
+  <g><use href="#map-desktop-{{ section.id }}-mountain" x="458" y="40" width="88" height="83"/><use href="#map-desktop-{{ section.id }}-mountain" x="502" y="52" width="73" height="70"/><use href="#map-desktop-{{ section.id }}-mountain" x="645" y="50" width="92" height="85"/></g>
+  <path d="M601 123c-35 53-100 71-142 111-34 33-18 76-61 109-24 18-28 49-11 79 17 31 15 67 4 96" stroke="#bed5d5" stroke-width="15" stroke-linecap="round"/>
+  <path d="M601 123c-35 53-100 71-142 111-34 33-18 76-61 109-24 18-28 49-11 79 17 31 15 67 4 96" stroke="#e2f0e9" stroke-width="8" stroke-linecap="round"/>
+  <path d="M817 180C750 185 693 206 629 244S561 315 505 335C466 349 467 405 552 432M505 335C391 313 294 324 165 348M626 243C601 195 597 159 599 108M508 338C594 330 678 361 735 448" stroke="#c9bfd6" stroke-width="8" stroke-linecap="round"/>
+  <path d="M817 180C750 185 693 206 629 244S561 315 505 335C466 349 467 405 552 432M505 335C391 313 294 324 165 348M626 243C601 195 597 159 599 108M508 338C594 330 678 361 735 448" stroke="#f8f5fc" stroke-width="5" stroke-linecap="round" stroke-dasharray="3 9"/>
+  <path d="M417 333q-15 12-20 27" stroke="#9c8c83" stroke-width="15"/><path d="M419 334q-15 12-20 27" stroke="#ecdcc7" stroke-width="10"/><path d="m408 338 9 7m-15 0 9 7m-15 0 9 7" stroke="#b29d8c" stroke-width="2"/>
+  <path d="M457 281c26-12 53-10 75 6m13-29c29-6 54-4 73 7M282 298c40-15 82-9 103 1m310 71c51-22 111-10 133 9M701 207c26-7 58-6 76 1" stroke="#d3dfbd" stroke-width="2" stroke-linecap="round"/>
+  <g opacity=".8"><use href="#map-desktop-{{ section.id }}-pine" x="305" y="195" width="28" height="47"/><use href="#map-desktop-{{ section.id }}-pine" x="329" y="207" width="24" height="43"/><use href="#map-desktop-{{ section.id }}-pine" x="793" y="211" width="23" height="40"/><use href="#map-desktop-{{ section.id }}-pine" x="816" y="225" width="28" height="48"/><use href="#map-desktop-{{ section.id }}-tree" x="741" y="308" width="28" height="38"/><use href="#map-desktop-{{ section.id }}-tree" x="763" y="325" width="24" height="33"/></g>
+  <g transform="translate(552 37)">
+    <ellipse cx="48" cy="60" rx="70" ry="34" fill="url(#map-desktop-{{ section.id }}-glow)"/>
+    <path d="m13 54 18-17 19 12 21-13 19 18-19 17H33Z" fill="#d2d8e4"/><path d="m23 57 12-13 18 10 16-9 13 12-15 10H38Z" fill="#edf2f4"/>
+    <path d="m36 51 5-36 11-15 12 16 4 35-16 14Z" fill="url(#map-desktop-{{ section.id }}-crystal)" stroke="#9b98be" stroke-width="1.2"/><path d="M52 2v61L41 15Z" fill="#ebe7ff" opacity=".8"/>
+    <path d="m24 50 2-18 8-10 9 13-2 21Zm41 5 2-21 8-12 9 10 1 19Z" fill="#c4bde2" stroke="#a99bc8" stroke-width="1.2"/><path d="m48 37 5-5 5 5v13H48Z" fill="#fcf6db"/>
+    <use href="#map-desktop-{{ section.id }}-spark" x="20" y="9" width="10" height="10"/><use href="#map-desktop-{{ section.id }}-spark" x="80" y="14" width="9" height="9"/>
+  </g>
+  <g transform="translate(567 155)">
+    <use href="#map-desktop-{{ section.id }}-mountain" x="13" y="0" width="105" height="100"/>
+    <path d="M10 69h65l15 12-21 12H25Z" fill="#a696b5"/><path d="M23 38h42v38H23Z" fill="#fff5e0" stroke="#a498b3" stroke-width="1.3"/>
+    <path d="M17 31h15v42H17Zm38-9h15v51H55Z" fill="#f9f1e5" stroke="#a498b3" stroke-width="1.3"/><path d="m14 32 11-22 10 22Zm38-9L63 1l10 22Z" fill="#9278b1"/>
+    <path d="M38 13h13v60H38Z" fill="#fff8e9" stroke="#a498b3" stroke-width="1.3"/><path d="m34 14 11-22 10 22Z" fill="#b695cf"/>
+    <path d="M45-8v-10m18 19v-11" stroke="#bc9b61" stroke-width="1.5"/><path d="m45-18 10 3-10 3m18-16 9 3-9 3" fill="#dfb777"/>
+    <path d="M41 52q4-8 8 0v18h-8Zm-20-9h5v8h-5Zm40-9h5v8h-5Z" fill="#a5bacd"/><path d="M29 75h50" stroke="#d9c3a3" stroke-width="3"/>
+  </g>
+  <g transform="translate(197 117)">
+    <path d="M21 60q37-73 76 0" stroke="#edcac6" stroke-width="8"/><path d="M30 60q28-56 58 0" stroke="#e6d7ac" stroke-width="6"/><path d="M37 60q22-42 44 0" stroke="#bddad5" stroke-width="5"/>
+    <use href="#map-desktop-{{ section.id }}-cloud" x="0" y="43" width="129" height="63"/>
+    <path d="M40 41h39v8H40Zm6 8h6v28h-6Zm20 0h6v28h-6ZM37 78h46v6H37Z" fill="#eee7f1" stroke="#b5a8c7" stroke-width="1.2"/><path d="m36 41 24-13 24 13Z" fill="#d2c4df"/><path d="M57 54h7v23h-7Z" fill="#c0accf"/>
+  </g>
+  <g transform="translate(451 278)">
+    <ellipse cx="57" cy="50" rx="65" ry="17" fill="#dbe3c8"/>
+    <use href="#map-desktop-{{ section.id }}-house" x="0" y="19" width="40" height="43"/><use href="#map-desktop-{{ section.id }}-house" x="73" y="16" width="36" height="40"/>
+    <path d="M39 28h31v33H39Z" fill="#fff2cf" stroke="#b7a58e" stroke-width="1.3"/><path d="m34 29 20-25 21 25Z" fill="#ac809c"/><path d="M50 0h9v10h-9Z" fill="#f7e6c6"/><path d="m48 0 6-10 7 10Z" fill="#b994b2"/>
+    <circle cx="54" cy="36" r="6" fill="#fdf6e7" stroke="#c9ac8c"/><path d="M54 32v4l3 2" stroke="#927fa3" stroke-width="1.3"/><path d="M50 50h9v11h-9Z" fill="#b09587"/>
+    <use href="#map-desktop-{{ section.id }}-tree" x="101" y="24" width="28" height="36"/>
+  </g>
+  <g transform="translate(113 291)">
+    <path d="m-18 48 18-6 17 5-7 10h-22Zm73 0 12-8 17 5 8 12H60Z" fill="#b9b8ac"/><path d="m-11 42 5-13 13-5 10 17-7 12Z" fill="#c7c5ba"/>
+    <path d="M23 28h36v31H23Z" fill="#e5dbc8" stroke="#b6aa93"/><path d="m19 29 22-22 22 22Z" fill="#aca3a5"/><path d="M30 38h8v9h-8Zm16 7h9v14h-9Z" fill="#a99d96"/>
+    <path d="m71 36 6-16 11 2 7 16-12 10Z" fill="#b4b5aa"/><path d="m-4 68 13-5 13 5m42 1 16-5 14 6" stroke="#bec6ae" stroke-width="2" stroke-linecap="round"/>
+  </g>
+  <g transform="translate(501 375)">
+    <path d="m-12 83 110-8m-110 15 110-8m-109 15 109-8" stroke="#becb9b" stroke-width="3"/>
+    <use href="#map-desktop-{{ section.id }}-apple-tree" x="-25" y="15" width="31" height="42"/><use href="#map-desktop-{{ section.id }}-apple-tree" x="1" y="24" width="29" height="39"/><use href="#map-desktop-{{ section.id }}-apple-tree" x="77" y="18" width="33" height="44"/>
+    <path d="M32 31h39v40H32Z" fill="#d7907e" stroke="#ba796d" stroke-width="1.3"/><path d="m26 32 12-24h28l11 24Z" fill="#bb7680"/><path d="M38 8h28l-4 6H35Z" fill="#d79ba0"/>
+    <path d="M42 49h21v22H42Z" fill="#faf0d2"/><path d="m43 50 19 20m0-20L43 70" stroke="#c3997f" stroke-width="2"/><path d="M48 24h10v10H48Z" fill="#f8e5c4"/>
+    <path d="M20 73h65m-60-7v15m52-15v15" stroke="#f9f0d5" stroke-width="3" stroke-linecap="round"/>
+  </g>
+  <g transform="translate(657 380)">
+    <path d="M-16 88c-14-49 32-72 75-68 47-20 91 12 109 63-61 31-115 28-184 5Z" fill="#bacfc0"/>
+    <use href="#map-desktop-{{ section.id }}-pine" x="-11" y="19" width="36" height="62"/><use href="#map-desktop-{{ section.id }}-pine" x="14" y="0" width="43" height="76"/><use href="#map-desktop-{{ section.id }}-pine" x="48" y="14" width="35" height="61"/><use href="#map-desktop-{{ section.id }}-pine" x="80" y="1" width="45" height="77"/><use href="#map-desktop-{{ section.id }}-pine" x="119" y="22" width="37" height="63"/>
+    <path d="M61 53c17 7 11 31 30 45" stroke="#e7debd" stroke-width="5" stroke-linecap="round"/><use href="#map-desktop-{{ section.id }}-pine" x="24" y="42" width="30" height="52"/><use href="#map-desktop-{{ section.id }}-pine" x="90" y="40" width="34" height="58"/>
+    <path d="M52 69h13V50H52Zm-2-21h17l-3-9H54Z" fill="#a4aaa0"/><path d="M57 56h4v7h-4Z" fill="#777f79"/>
+  </g>
+  <g transform="translate(776 132)">
+    <path d="M-12 46q45-22 99 2" stroke="#d9ceb5" stroke-width="5" stroke-linecap="round"/><use href="#map-desktop-{{ section.id }}-house" x="0" y="0" width="28" height="33"/><use href="#map-desktop-{{ section.id }}-house" x="27" y="8" width="28" height="33"/><use href="#map-desktop-{{ section.id }}-house" x="57" y="1" width="27" height="32"/>
+    <path d="m26 56 8 2m17-3 9 1m-49-8 9 1" stroke="#c4bc9f" stroke-width="2" stroke-linecap="round"/>
+  </g>
+  <g transform="translate(833 294)">
+    <path d="M-7 52h89l12 12H-14Z" fill="#d2d4ca"/><path d="M-11 69h102" stroke="#a6c4c9" stroke-width="3" stroke-linecap="round"/>
+    <path d="M3 13h19v40H3Zm24-8h24v48H27Zm31 20h20v28H58Z" fill="#e6e0d1" stroke="#b2a9a1" stroke-width="1.2"/><path d="M31 0h16v5H31Zm5-13h6V0h-6Z" fill="#b3a0bd"/>
+    <path d="M7 19h4v5H7Zm8 0h4v5h-4ZM7 30h4v5H7Zm8 0h4v5h-4ZM32 12h5v6h-5Zm10 0h5v6h-5ZM32 25h5v6h-5Zm10 0h5v6h-5ZM63 31h4v6h-4Zm7 0h4v6h-4Z" fill="#b1c7ce"/>
+    <path d="M32 41h14v12H32Z" fill="#b9a0af"/><path d="m61 53 10 10m0-10 10 10" stroke="#f4eddd" stroke-width="2"/>
+  </g>
+  <g fill="#b7c69c"><ellipse cx="228" cy="401" rx="3" ry="1.5"/><ellipse cx="240" cy="404" rx="2" ry="1.5"/><ellipse cx="285" cy="367" rx="3" ry="1.5"/><ellipse cx="568" cy="405" rx="3" ry="1.5"/><ellipse cx="577" cy="400" rx="2" ry="1.5"/><ellipse cx="878" cy="300" rx="3" ry="1.5"/><ellipse cx="890" cy="303" rx="2" ry="1.5"/></g>
+  <g opacity=".67"><use href="#map-desktop-{{ section.id }}-cloud" x="36" y="95" width="79" height="38"/><use href="#map-desktop-{{ section.id }}-cloud" x="883" y="65" width="75" height="36"/><use href="#map-desktop-{{ section.id }}-cloud" x="849" y="417" width="61" height="30"/></g>
+  <g transform="translate(907 463)" stroke="#baa888" stroke-width="1.3">
+    <circle r="27"/><circle r="22" stroke-dasharray="1 5"/><path d="M0-38V38M-38 0h76" opacity=".45"/><path d="m0-31 8 23L31 0 8 8 0 31-8-23-23-8 23-8Z" fill="#fcf4df"/>
+    <path d="m0-31 8 23L0 0Zm31 31L8 8 0 0ZM0 31-8 8 0 0ZM-31 0l23-8 8 8Z" fill="#b6a0bf" stroke="none"/><circle r="3" fill="#c3aa79" stroke="none"/>
+  </g>
+  <path d="M24 39V24h15m922 0h15v15M24 521v15h15m922 0h15v-15" stroke="#d6cde1" stroke-width="1.5" stroke-linecap="round"/>
+  <rect x="13" y="13" width="974" height="534" rx="15" stroke="#dad2e5" stroke-opacity=".65"/>
+</svg>
+
+    <div data-map-pins></div>
+  </div></div>
+  <p class="p10-character-map__hint">Equestria region guide · Scroll to explore</p>
+  <div class="p10-character-map__footer"><div class="p10-character-map__next"><p class="p10-character-map__selection" data-map-selection aria-live="polite">Pick a place, then choose a character.</p><button type="button" data-map-choose-character>Choose character →</button></div><p class="p10-character-map__instruction">Choose a region or group, then pick a character from the list.</p><p class="p10-character-map__groups-label" data-map-group-heading>Groups & stories across Equestria</p><div class="p10-character-map__groups" data-map-group-list></div></div>
+</dialog>
+        <div class="p10-box-directory" data-box-directory aria-label="Single-card boxes" hidden></div>
+        <section id="catalog-results-{{ section.id }}" class="p10-catalog-results" data-catalog-results aria-labelledby="catalog-heading-{{ section.id }}">
+          <header class="p10-catalog-results__heading">
+            <div><p data-results-eyebrow>Card catalog</p><h2 id="catalog-heading-{{ section.id }}" data-results-title>Single cards</h2></div>
+            <strong><span data-catalog-result-count>0</span> <span data-count-label>cards</span></strong>
+          </header>
+          <button type="button" class="p10-character-boxes" data-character-boxes hidden>← Browse BOXes</button>
+          <p class="p10-filter-result-message" data-filter-result-message role="status" aria-live="polite"></p>
+          <div class="p10-catalog-grid" data-catalog-grid></div>
+          <div class="p10-catalog-results__empty" data-catalog-empty hidden>
+            <p>No cards match these filters.</p>
+            <button type="button" data-filter-clear>Clear filters</button>
+            <a class="p10-box-back" href="{{ directory_url }}?ip=mlp" data-all-cards>Find other BOXes</a>
+          </div>
+          <button type="button" class="p10-catalog-results__more" data-load-more hidden>Load more cards</button>
+        </section>
+      </div>
+    </div>
+  <div class="p10-catalog-drawer" data-mobile-filter-drawer hidden>
+    <button type="button" class="p10-catalog-drawer__backdrop" data-mobile-filter-cancel aria-label="Close filters"></button>
+    <div class="p10-catalog-drawer__panel" role="dialog" aria-modal="true" aria-labelledby="p10-filter-title-{{ section.id }}">
+      <header>
+        <div>
+          <span>Card finder</span>
+          <h2 id="p10-filter-title-{{ section.id }}" data-filter-dialog-title>Filter BOXes</h2>
+        </div>
+        <button type="button" data-mobile-filter-cancel aria-label="Close filters">&times;</button>
+      </header>
+      <div class="p10-catalog-drawer__body">
+        <fieldset data-drawer-facet="character">
+          <legend>Character</legend>
+          <div class="p10-world-picker">
+            <div class="p10-map-switch" role="group" aria-label="Character discovery view">
+  <button type="button" data-character-map-toggle="drawer" data-map-view="list" aria-pressed="true"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 5h2m3 0h9M3 10h2m3 0h9M3 15h2m3 0h9"/></svg>List</button>
+  <button type="button" data-character-map-toggle="drawer" data-map-view="map" aria-pressed="false" aria-expanded="false" aria-controls="character-map-drawer-{{ section.id }}"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m2 4 5-2 6 2 5-2v14l-5 2-6-2-5 2ZM7 2v14M13 4v14"/></svg>Map</button>
+</div>
+              <label for="character-group-drawer-{{ section.id }}"><span>1</span> World / group</label>
+            <select id="character-group-drawer-{{ section.id }}" data-character-group="drawer" aria-describedby="character-picker-status-drawer-{{ section.id }}"><option value="browse">Choose a group…</option></select>
+            <div class="p10-world-shortcuts" data-character-group-shortcuts="drawer" aria-label="Popular groups">
+              <button type="button" data-character-group-link="mane-six" aria-pressed="false">Mane 6</button>
+              <button type="button" data-character-group-link="apple-family" aria-pressed="false">Apple family</button>
+              <button type="button" data-character-group-link="ponyville" aria-pressed="false">Ponyville</button>
+            </div>
+            <p id="character-picker-status-drawer-{{ section.id }}" data-character-picker-status="drawer" aria-live="polite">Choose a group above, or search any character name.</p>
+          </div>
+          <section id="character-map-drawer-{{ section.id }}" class="p10-character-map" data-character-map="drawer" aria-labelledby="character-map-title-drawer-{{ section.id }}" hidden>
+  <header class="p10-character-map__header"><div><p>Browse by region</p><h3 id="character-map-title-drawer-{{ section.id }}">Find your character</h3></div><button type="button" class="p10-character-map__close" data-character-map-toggle="drawer" data-map-view="list" aria-label="Close map">&times;</button></header>
+  <div class="p10-character-map__scroll" data-map-scroll><div class="p10-character-map__stage">
+    <svg class="p10-character-map__art" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 560" fill="none" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="map-drawer-{{ section.id }}-paper" x2="1" y2="1"><stop stop-color="#faf9fd"/><stop offset="1" stop-color="#eeebf6"/></linearGradient>
+    <linearGradient id="map-drawer-{{ section.id }}-sea" x2="0" y2="1"><stop stop-color="#e1eef0"/><stop offset="1" stop-color="#cfe4e9"/></linearGradient>
+    <linearGradient id="map-drawer-{{ section.id }}-land" x2="1" y2="1"><stop stop-color="#e8efe9"/><stop offset=".6" stop-color="#edf1eb"/><stop offset="1" stop-color="#dfeae4"/></linearGradient>
+    <linearGradient id="map-drawer-{{ section.id }}-ice" x2=".4" y2="1"><stop stop-color="#fffaff"/><stop offset="1" stop-color="#c8dce9"/></linearGradient>
+    <linearGradient id="map-drawer-{{ section.id }}-crystal" x2=".7" y2="1"><stop stop-color="#e8e1ff"/><stop offset=".55" stop-color="#aaa3d4"/><stop offset="1" stop-color="#817ead"/></linearGradient>
+    <radialGradient id="map-drawer-{{ section.id }}-glow"><stop stop-color="#fcfbff" stop-opacity=".92"/><stop offset="1" stop-color="#fcfbff" stop-opacity="0"/></radialGradient>
+    <symbol id="map-drawer-{{ section.id }}-mountain" viewBox="0 0 92 84">
+      <path d="M3 77 37 7Q41-1 47 7L90 77Q70 84 46 79 24 85 3 77Z" fill="#bbb0cb"/>
+      <path d="m42 5 8 39 14 18 25 15-42 2 5-14-10-20-12 8-8-8Z" fill="#a79abb"/>
+      <path d="m22 44 15-37q5-8 10 0l20 34-14-8-9 10-10-13Z" fill="#faf7fa"/>
+      <path d="m43 7 8 27-7 9-6-11Z" fill="#ded8e8"/>
+    </symbol>
+    <symbol id="map-drawer-{{ section.id }}-pine" viewBox="0 0 32 55">
+      <path d="M15 41v12" stroke="#8d8979" stroke-width="3" stroke-linecap="round"/>
+      <path d="m16 1 10 17h-5l9 15h-7l9 13H1l10-13H4l9-15H7Z" fill="#6f9b89"/>
+      <path d="M16 1v45H1l10-13H4l9-15H7Z" fill="#85aa91"/>
+    </symbol>
+    <symbol id="map-drawer-{{ section.id }}-tree" viewBox="0 0 38 49">
+      <path d="M19 27v19m0-13-8-6m8 11 7-7" stroke="#ac9571" stroke-width="3" stroke-linecap="round"/>
+      <path d="M6 33C-3 25 3 18 7 17-1 3 17-4 23 4c14-5 19 11 11 17 9 14-13 23-18 13-3 2-7 2-10-1Z" fill="#a1bd84"/>
+      <path d="M9 8c5-5 12-3 14 1" stroke="#c8d99b" stroke-width="4" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="map-drawer-{{ section.id }}-apple-tree" viewBox="0 0 38 49">
+      <use href="#map-drawer-{{ section.id }}-tree" width="38" height="49"/><g fill="#d88e79"><circle cx="9" cy="22" r="2.4"/><circle cx="26" cy="14" r="2.4"/><circle cx="24" cy="30" r="2.4"/></g>
+    </symbol>
+    <symbol id="map-drawer-{{ section.id }}-cloud" viewBox="0 0 110 54">
+      <path d="M17 47C-6 41 0 19 19 22 16 1 44-8 55 12 69 0 89 8 86 24c26-7 33 23 6 25Z" fill="#fcfbfa" stroke="#ddd5e7" stroke-width="1.4"/>
+      <path d="M13 35c7 7 19 7 24 2m33-6c7 8 15 6 18 3" stroke="#e6dfed" stroke-width="2" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="map-drawer-{{ section.id }}-house" viewBox="0 0 45 49">
+      <path d="M7 21h31v25H7Z" fill="#fff4d5" stroke="#c9b496" stroke-width="1.3"/><path d="m2 22 20-20 22 20Z" fill="#b586a2" stroke="#957389" stroke-width="1.3"/>
+      <path d="M20 31h9v15h-9Z" fill="#b79891"/><path d="M12 28h6v7h-6Zm19 0h4v7h-4Z" fill="#b7d5d8"/><path d="m6 20 17-15 16 15" stroke="#d7b0c2" stroke-width="2"/>
+    </symbol>
+    <symbol id="map-drawer-{{ section.id }}-spark" viewBox="0 0 16 16"><path d="m8 0 1.7 6.3L16 8l-6.3 1.7L8 16 6.3 9.7 0 8l6.3-1.7Z" fill="#d6ba7f"/></symbol>
+  </defs>
+  <rect width="1000" height="560" rx="24" fill="url(#map-drawer-{{ section.id }}-paper)"/>
+  <path d="M0 361c63-25 65-82 104-103 75-39 111 21 172-13 40-22 72-64 131-43 63 22 66 49 144 59 108 14 128-2 190 39 69 45 78 81 155 75 45-4 68-11 104 14v171H0Z" fill="url(#map-drawer-{{ section.id }}-sea)"/>
+  <path d="M-8 341c56-35 60-64 98-89 34-23 87 5 121-22 33-27 54-80 98-77 59 5 87-40 140-39 81 1 98-75 191-76 105-1 152 59 205 104 76 65 93 101 119 158 13 30 27 57 44 77v137c-63 9-74-34-122-36-68-4-102 52-167 35-71-19-88-4-151 14-72 21-109-17-163-14-51 3-104-23-148-11-62 17-123 33-168 21-49-12-64-64-105-42Z" fill="url(#map-drawer-{{ section.id }}-land)" stroke="#c9d8c1" stroke-width="2"/>
+  <path d="M5 351c69-43 62-59 100-78m-83 62c33-15 30-21 48-42M294 536c55-11 61-18 93-15m28 13c44 9 58 8 83 6m306-4c27 0 40-14 60-15m74-11c20 12 31 12 48 15" stroke="#eaf5f4" stroke-width="3" stroke-linecap="round"/>
+  <path d="M315 211c66-53 122-48 178-87 62-43 157-31 214 14l12 29c-65 0-96 28-157 18-91-14-172 82-247 26Z" fill="#dcded4" opacity=".8"/>
+  <path d="M455 111c62-76 94-94 172-83 67 9 115 53 139 96-54-23-71 7-118-4-56-13-91 18-141 12Z" fill="url(#map-drawer-{{ section.id }}-ice)"/>
+  <path d="M440 102c23-13 47-13 56-2m134-57c38 4 67 14 91 33M681 128c18-3 34-3 47 2" stroke="#f8fbfb" stroke-width="3" stroke-linecap="round"/>
+  <g opacity=".76"><use href="#map-drawer-{{ section.id }}-mountain" x="351" y="90" width="87" height="82"/><use href="#map-drawer-{{ section.id }}-mountain" x="416" y="61" width="96" height="89"/><use href="#map-drawer-{{ section.id }}-mountain" x="714" y="80" width="76" height="72"/><use href="#map-drawer-{{ section.id }}-mountain" x="748" y="105" width="91" height="85"/></g>
+  <g><use href="#map-drawer-{{ section.id }}-mountain" x="458" y="40" width="88" height="83"/><use href="#map-drawer-{{ section.id }}-mountain" x="502" y="52" width="73" height="70"/><use href="#map-drawer-{{ section.id }}-mountain" x="645" y="50" width="92" height="85"/></g>
+  <path d="M601 123c-35 53-100 71-142 111-34 33-18 76-61 109-24 18-28 49-11 79 17 31 15 67 4 96" stroke="#bed5d5" stroke-width="15" stroke-linecap="round"/>
+  <path d="M601 123c-35 53-100 71-142 111-34 33-18 76-61 109-24 18-28 49-11 79 17 31 15 67 4 96" stroke="#e2f0e9" stroke-width="8" stroke-linecap="round"/>
+  <path d="M817 180C750 185 693 206 629 244S561 315 505 335C466 349 467 405 552 432M505 335C391 313 294 324 165 348M626 243C601 195 597 159 599 108M508 338C594 330 678 361 735 448" stroke="#c9bfd6" stroke-width="8" stroke-linecap="round"/>
+  <path d="M817 180C750 185 693 206 629 244S561 315 505 335C466 349 467 405 552 432M505 335C391 313 294 324 165 348M626 243C601 195 597 159 599 108M508 338C594 330 678 361 735 448" stroke="#f8f5fc" stroke-width="5" stroke-linecap="round" stroke-dasharray="3 9"/>
+  <path d="M417 333q-15 12-20 27" stroke="#9c8c83" stroke-width="15"/><path d="M419 334q-15 12-20 27" stroke="#ecdcc7" stroke-width="10"/><path d="m408 338 9 7m-15 0 9 7m-15 0 9 7" stroke="#b29d8c" stroke-width="2"/>
+  <path d="M457 281c26-12 53-10 75 6m13-29c29-6 54-4 73 7M282 298c40-15 82-9 103 1m310 71c51-22 111-10 133 9M701 207c26-7 58-6 76 1" stroke="#d3dfbd" stroke-width="2" stroke-linecap="round"/>
+  <g opacity=".8"><use href="#map-drawer-{{ section.id }}-pine" x="305" y="195" width="28" height="47"/><use href="#map-drawer-{{ section.id }}-pine" x="329" y="207" width="24" height="43"/><use href="#map-drawer-{{ section.id }}-pine" x="793" y="211" width="23" height="40"/><use href="#map-drawer-{{ section.id }}-pine" x="816" y="225" width="28" height="48"/><use href="#map-drawer-{{ section.id }}-tree" x="741" y="308" width="28" height="38"/><use href="#map-drawer-{{ section.id }}-tree" x="763" y="325" width="24" height="33"/></g>
+  <g transform="translate(552 37)">
+    <ellipse cx="48" cy="60" rx="70" ry="34" fill="url(#map-drawer-{{ section.id }}-glow)"/>
+    <path d="m13 54 18-17 19 12 21-13 19 18-19 17H33Z" fill="#d2d8e4"/><path d="m23 57 12-13 18 10 16-9 13 12-15 10H38Z" fill="#edf2f4"/>
+    <path d="m36 51 5-36 11-15 12 16 4 35-16 14Z" fill="url(#map-drawer-{{ section.id }}-crystal)" stroke="#9b98be" stroke-width="1.2"/><path d="M52 2v61L41 15Z" fill="#ebe7ff" opacity=".8"/>
+    <path d="m24 50 2-18 8-10 9 13-2 21Zm41 5 2-21 8-12 9 10 1 19Z" fill="#c4bde2" stroke="#a99bc8" stroke-width="1.2"/><path d="m48 37 5-5 5 5v13H48Z" fill="#fcf6db"/>
+    <use href="#map-drawer-{{ section.id }}-spark" x="20" y="9" width="10" height="10"/><use href="#map-drawer-{{ section.id }}-spark" x="80" y="14" width="9" height="9"/>
+  </g>
+  <g transform="translate(567 155)">
+    <use href="#map-drawer-{{ section.id }}-mountain" x="13" y="0" width="105" height="100"/>
+    <path d="M10 69h65l15 12-21 12H25Z" fill="#a696b5"/><path d="M23 38h42v38H23Z" fill="#fff5e0" stroke="#a498b3" stroke-width="1.3"/>
+    <path d="M17 31h15v42H17Zm38-9h15v51H55Z" fill="#f9f1e5" stroke="#a498b3" stroke-width="1.3"/><path d="m14 32 11-22 10 22Zm38-9L63 1l10 22Z" fill="#9278b1"/>
+    <path d="M38 13h13v60H38Z" fill="#fff8e9" stroke="#a498b3" stroke-width="1.3"/><path d="m34 14 11-22 10 22Z" fill="#b695cf"/>
+    <path d="M45-8v-10m18 19v-11" stroke="#bc9b61" stroke-width="1.5"/><path d="m45-18 10 3-10 3m18-16 9 3-9 3" fill="#dfb777"/>
+    <path d="M41 52q4-8 8 0v18h-8Zm-20-9h5v8h-5Zm40-9h5v8h-5Z" fill="#a5bacd"/><path d="M29 75h50" stroke="#d9c3a3" stroke-width="3"/>
+  </g>
+  <g transform="translate(197 117)">
+    <path d="M21 60q37-73 76 0" stroke="#edcac6" stroke-width="8"/><path d="M30 60q28-56 58 0" stroke="#e6d7ac" stroke-width="6"/><path d="M37 60q22-42 44 0" stroke="#bddad5" stroke-width="5"/>
+    <use href="#map-drawer-{{ section.id }}-cloud" x="0" y="43" width="129" height="63"/>
+    <path d="M40 41h39v8H40Zm6 8h6v28h-6Zm20 0h6v28h-6ZM37 78h46v6H37Z" fill="#eee7f1" stroke="#b5a8c7" stroke-width="1.2"/><path d="m36 41 24-13 24 13Z" fill="#d2c4df"/><path d="M57 54h7v23h-7Z" fill="#c0accf"/>
+  </g>
+  <g transform="translate(451 278)">
+    <ellipse cx="57" cy="50" rx="65" ry="17" fill="#dbe3c8"/>
+    <use href="#map-drawer-{{ section.id }}-house" x="0" y="19" width="40" height="43"/><use href="#map-drawer-{{ section.id }}-house" x="73" y="16" width="36" height="40"/>
+    <path d="M39 28h31v33H39Z" fill="#fff2cf" stroke="#b7a58e" stroke-width="1.3"/><path d="m34 29 20-25 21 25Z" fill="#ac809c"/><path d="M50 0h9v10h-9Z" fill="#f7e6c6"/><path d="m48 0 6-10 7 10Z" fill="#b994b2"/>
+    <circle cx="54" cy="36" r="6" fill="#fdf6e7" stroke="#c9ac8c"/><path d="M54 32v4l3 2" stroke="#927fa3" stroke-width="1.3"/><path d="M50 50h9v11h-9Z" fill="#b09587"/>
+    <use href="#map-drawer-{{ section.id }}-tree" x="101" y="24" width="28" height="36"/>
+  </g>
+  <g transform="translate(113 291)">
+    <path d="m-18 48 18-6 17 5-7 10h-22Zm73 0 12-8 17 5 8 12H60Z" fill="#b9b8ac"/><path d="m-11 42 5-13 13-5 10 17-7 12Z" fill="#c7c5ba"/>
+    <path d="M23 28h36v31H23Z" fill="#e5dbc8" stroke="#b6aa93"/><path d="m19 29 22-22 22 22Z" fill="#aca3a5"/><path d="M30 38h8v9h-8Zm16 7h9v14h-9Z" fill="#a99d96"/>
+    <path d="m71 36 6-16 11 2 7 16-12 10Z" fill="#b4b5aa"/><path d="m-4 68 13-5 13 5m42 1 16-5 14 6" stroke="#bec6ae" stroke-width="2" stroke-linecap="round"/>
+  </g>
+  <g transform="translate(501 375)">
+    <path d="m-12 83 110-8m-110 15 110-8m-109 15 109-8" stroke="#becb9b" stroke-width="3"/>
+    <use href="#map-drawer-{{ section.id }}-apple-tree" x="-25" y="15" width="31" height="42"/><use href="#map-drawer-{{ section.id }}-apple-tree" x="1" y="24" width="29" height="39"/><use href="#map-drawer-{{ section.id }}-apple-tree" x="77" y="18" width="33" height="44"/>
+    <path d="M32 31h39v40H32Z" fill="#d7907e" stroke="#ba796d" stroke-width="1.3"/><path d="m26 32 12-24h28l11 24Z" fill="#bb7680"/><path d="M38 8h28l-4 6H35Z" fill="#d79ba0"/>
+    <path d="M42 49h21v22H42Z" fill="#faf0d2"/><path d="m43 50 19 20m0-20L43 70" stroke="#c3997f" stroke-width="2"/><path d="M48 24h10v10H48Z" fill="#f8e5c4"/>
+    <path d="M20 73h65m-60-7v15m52-15v15" stroke="#f9f0d5" stroke-width="3" stroke-linecap="round"/>
+  </g>
+  <g transform="translate(657 380)">
+    <path d="M-16 88c-14-49 32-72 75-68 47-20 91 12 109 63-61 31-115 28-184 5Z" fill="#bacfc0"/>
+    <use href="#map-drawer-{{ section.id }}-pine" x="-11" y="19" width="36" height="62"/><use href="#map-drawer-{{ section.id }}-pine" x="14" y="0" width="43" height="76"/><use href="#map-drawer-{{ section.id }}-pine" x="48" y="14" width="35" height="61"/><use href="#map-drawer-{{ section.id }}-pine" x="80" y="1" width="45" height="77"/><use href="#map-drawer-{{ section.id }}-pine" x="119" y="22" width="37" height="63"/>
+    <path d="M61 53c17 7 11 31 30 45" stroke="#e7debd" stroke-width="5" stroke-linecap="round"/><use href="#map-drawer-{{ section.id }}-pine" x="24" y="42" width="30" height="52"/><use href="#map-drawer-{{ section.id }}-pine" x="90" y="40" width="34" height="58"/>
+    <path d="M52 69h13V50H52Zm-2-21h17l-3-9H54Z" fill="#a4aaa0"/><path d="M57 56h4v7h-4Z" fill="#777f79"/>
+  </g>
+  <g transform="translate(776 132)">
+    <path d="M-12 46q45-22 99 2" stroke="#d9ceb5" stroke-width="5" stroke-linecap="round"/><use href="#map-drawer-{{ section.id }}-house" x="0" y="0" width="28" height="33"/><use href="#map-drawer-{{ section.id }}-house" x="27" y="8" width="28" height="33"/><use href="#map-drawer-{{ section.id }}-house" x="57" y="1" width="27" height="32"/>
+    <path d="m26 56 8 2m17-3 9 1m-49-8 9 1" stroke="#c4bc9f" stroke-width="2" stroke-linecap="round"/>
+  </g>
+  <g transform="translate(833 294)">
+    <path d="M-7 52h89l12 12H-14Z" fill="#d2d4ca"/><path d="M-11 69h102" stroke="#a6c4c9" stroke-width="3" stroke-linecap="round"/>
+    <path d="M3 13h19v40H3Zm24-8h24v48H27Zm31 20h20v28H58Z" fill="#e6e0d1" stroke="#b2a9a1" stroke-width="1.2"/><path d="M31 0h16v5H31Zm5-13h6V0h-6Z" fill="#b3a0bd"/>
+    <path d="M7 19h4v5H7Zm8 0h4v5h-4ZM7 30h4v5H7Zm8 0h4v5h-4ZM32 12h5v6h-5Zm10 0h5v6h-5ZM32 25h5v6h-5Zm10 0h5v6h-5ZM63 31h4v6h-4Zm7 0h4v6h-4Z" fill="#b1c7ce"/>
+    <path d="M32 41h14v12H32Z" fill="#b9a0af"/><path d="m61 53 10 10m0-10 10 10" stroke="#f4eddd" stroke-width="2"/>
+  </g>
+  <g fill="#b7c69c"><ellipse cx="228" cy="401" rx="3" ry="1.5"/><ellipse cx="240" cy="404" rx="2" ry="1.5"/><ellipse cx="285" cy="367" rx="3" ry="1.5"/><ellipse cx="568" cy="405" rx="3" ry="1.5"/><ellipse cx="577" cy="400" rx="2" ry="1.5"/><ellipse cx="878" cy="300" rx="3" ry="1.5"/><ellipse cx="890" cy="303" rx="2" ry="1.5"/></g>
+  <g opacity=".67"><use href="#map-drawer-{{ section.id }}-cloud" x="36" y="95" width="79" height="38"/><use href="#map-drawer-{{ section.id }}-cloud" x="883" y="65" width="75" height="36"/><use href="#map-drawer-{{ section.id }}-cloud" x="849" y="417" width="61" height="30"/></g>
+  <g transform="translate(907 463)" stroke="#baa888" stroke-width="1.3">
+    <circle r="27"/><circle r="22" stroke-dasharray="1 5"/><path d="M0-38V38M-38 0h76" opacity=".45"/><path d="m0-31 8 23L31 0 8 8 0 31-8-23-23-8 23-8Z" fill="#fcf4df"/>
+    <path d="m0-31 8 23L0 0Zm31 31L8 8 0 0ZM0 31-8 8 0 0ZM-31 0l23-8 8 8Z" fill="#b6a0bf" stroke="none"/><circle r="3" fill="#c3aa79" stroke="none"/>
+  </g>
+  <path d="M24 39V24h15m922 0h15v15M24 521v15h15m922 0h15v-15" stroke="#d6cde1" stroke-width="1.5" stroke-linecap="round"/>
+  <rect x="13" y="13" width="974" height="534" rx="15" stroke="#dad2e5" stroke-opacity=".65"/>
+</svg>
+
+    <div data-map-pins></div>
+  </div></div>
+  <p class="p10-character-map__hint">Equestria region guide · Scroll to explore</p>
+  <div class="p10-character-map__footer"><div class="p10-character-map__next"><p class="p10-character-map__selection" data-map-selection aria-live="polite">Pick a place, then choose a character.</p><button type="button" data-map-choose-character>Choose character →</button></div><p class="p10-character-map__instruction">Choose a region or group, then pick a character from the list.</p><p class="p10-character-map__groups-label" data-map-group-heading>Groups & stories across Equestria</p><div class="p10-character-map__groups" data-map-group-list></div></div>
+</section>
+          <label class="p10-character-search" for="character-search-drawer-{{ section.id }}">
+            <span class="p10-world-step"><span>2</span> Character</span>
+            <span class="p10-visually-hidden">Search character names across all groups</span>
+            <input id="character-search-drawer-{{ section.id }}" type="text" role="searchbox" inputmode="search" data-character-search="drawer" placeholder="Any character name" autocomplete="off">
+          </label>
+          <div class="p10-character-options" data-drawer-options="character"></div>
+          <p class="p10-character-options__empty" data-character-options-empty="drawer" hidden>No matching characters. Try another name.</p>
+          <p class="p10-character-coverage" data-character-coverage-note>Character details are still being added. Some cards may not appear in character results.</p>
+        </fieldset>
+        <fieldset data-drawer-facet="rarity" hidden>
+          <legend>Card rarity</legend>
+          <div data-drawer-options="rarity"></div>
+        </fieldset>
+      </div>
+      <footer>
+        <button type="button" data-mobile-filter-clear>Clear filters</button>
+        <button type="button" data-mobile-filter-apply>Show <span data-draft-result-count>0</span> <span data-draft-count-label>cards</span></button>
+      </footer>
+    </div>
+  </div>
+
+
+  </div>
+
+  <p class="p10-single-card-catalog__status" data-catalog-status role="status" aria-live="polite">Loading IPs and recommended cards...</p>
+  {% render 'p10-box-page-index' %}
+  <noscript><p class="p10-single-card-catalog__noscript">JavaScript is required to choose an IP, browse boxes and filter cards. <a href="{{ single_shop_url }}">Browse the single-card collection</a>.</p></noscript>
+</section>
+
+{% schema %}
+{
+  "name": "P10 Single Card Lounge",
+  "settings": [
+    { "type": "checkbox", "id": "box_landing", "label": "Use the BOX page introduction", "default": false },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Hero eyebrow",
+      "default": "Single card gallery"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Hero heading",
+      "default": "KAYOU MLP Single Cards"
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Hero text",
+      "default": "<p>pakracards is moving this page toward a focused KAYOU MLP single-card shop: browse by series and rarity first, then use wave only when you need the exact release path.</p>"
+    },
+    {
+      "type": "collection",
+      "id": "source_collection",
+      "label": "Live single-card collection",
+      "info": "Required. This collection controls catalog membership; the static catalog only enriches display fields."
+    },
+    {
+      "type": "text",
+      "id": "primary_cta_label",
+      "label": "Primary CTA label",
+      "default": "Browse single cards"
+    },
+    {
+      "type": "text",
+      "id": "secondary_cta_label",
+      "label": "Secondary CTA label",
+      "default": "Shop all single cards"
+    },
+    {
+      "type": "url",
+      "id": "secondary_cta_link",
+      "label": "Secondary CTA link"
+    },
+    {
+      "type": "text",
+      "id": "showcase_label",
+      "label": "Showcase accessibility label",
+      "default": "Featured single card groups"
+    },
+    {
+      "type": "text",
+      "id": "anchor_id",
+      "label": "Stable anchor ID",
+      "default": "single-card-gallery"
+    },
+    {
+      "type": "text",
+      "id": "motion_kicker",
+      "label": "Motion kicker",
+      "default": "Card number index"
+    },
+    {
+      "type": "text",
+      "id": "motion_heading",
+      "label": "Motion heading",
+      "default": "Single Cards"
+    },
+    {
+      "type": "text",
+      "id": "motion_text",
+      "label": "Motion text",
+      "default": "Browse cards by series, rarity, wave, and printed code."
+    },
+    {
+      "type": "text",
+      "id": "stats_label",
+      "label": "Stats accessibility label",
+      "default": "Single card catalog highlights"
+    },
+    {
+      "type": "text",
+      "id": "variant_stat_label",
+      "label": "Variant stat label",
+      "default": "cards organized"
+    },
+    {
+      "type": "text",
+      "id": "group_stat_label",
+      "label": "Group stat label",
+      "default": "focused card groups"
+    },
+    {
+      "type": "text",
+      "id": "promise_stat",
+      "label": "Promise stat",
+      "default": "Exact"
+    },
+    {
+      "type": "text",
+      "id": "promise_label",
+      "label": "Promise label",
+      "default": "card-number selection"
+    },
+    {
+      "type": "text",
+      "id": "gallery_eyebrow",
+      "label": "Gallery eyebrow",
+      "default": "Collector paths"
+    },
+    {
+      "type": "text",
+      "id": "gallery_heading",
+      "label": "Gallery heading",
+      "default": "Browse by series, wave, and rarity"
+    },
+    {
+      "type": "text",
+      "id": "card_cta_label",
+      "label": "Card CTA label",
+      "default": "View cards"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "card_group",
+      "name": "Card group",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "text", "id": "short_label", "label": "Showcase short label" },
+        { "type": "text", "id": "edition", "label": "Edition label" },
+        { "type": "text", "id": "edition_key", "label": "Edition filter key" },
+        { "type": "text", "id": "series", "label": "Series label" },
+        { "type": "text", "id": "series_key", "label": "Series filter key" },
+        { "type": "text", "id": "wave", "label": "Wave label" },
+        { "type": "text", "id": "wave_key", "label": "Wave filter key" },
+        { "type": "text", "id": "rarity", "label": "Rarity label" },
+        { "type": "text", "id": "rarity_key", "label": "Rarity filter key" },
+        { "type": "text", "id": "code_group", "label": "Code group" },
+        { "type": "text", "id": "meta", "label": "Meta text" },
+        { "type": "number", "id": "variant_count", "label": "Variant count", "default": 0 },
+        {
+          "type": "text",
+          "id": "price_text",
+          "label": "Lowest price text",
+          "info": "Fallback only. Live products use the product minimum price automatically."
+        },
+        { "type": "url", "id": "link", "label": "Product link" },
+        { "type": "text", "id": "image_url", "label": "Image URL" },
+        { "type": "text", "id": "image_alt", "label": "Image alt" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "P10 Single Card Lounge" }
+  ]
+}
+{% endschema %}

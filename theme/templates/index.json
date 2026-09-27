@@ -1,0 +1,575 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "p10_home_discovery": {
+      "type": "p10-home-discovery",
+      "blocks": {
+        "hero_pokemon_30th": {
+          "type": "hero_slide",
+          "settings": {
+            "desktop_image_asset": "p10-pokemon-30th-hero-desktop.webp",
+            "mobile_image_asset": "p10-pokemon-30th-hero-mobile.webp",
+            "image_alt": "PAKRA Pokemon TCG 30th Anniversary, Simplified Chinese booster pack and Espeon ex and Umbreon ex collectors display box",
+            "eyebrow": "POKEMON TCG · SIMPLIFIED CHINESE",
+            "heading": "Pokemon 30th Anniversary",
+            "text": "30 years of memories. A new adventure awaits.",
+            "primary_label": "Explore Simplified Chinese Pokemon TCG",
+            "primary_link": "/collections/pokemon-tcg-cn",
+            "secondary_label": "",
+            "secondary_link": "",
+            "hint": "Explore the 30th anniversary celebration"
+          }
+        },
+        "hero_heimantou": {
+          "type": "hero_slide",
+          "settings": {
+            "desktop_image_asset": "p10-mlp-heimantou-collab-hero-desktop-2048x768.png",
+            "mobile_image_asset": "p10-mlp-heimantou-collab-hero-mobile-768x960.png",
+            "image_alt": "pakracards and Heimantou MLP collector bundle collaboration",
+            "eyebrow": "pakracards × HEIMANTOU",
+            "heading": "Community Collab Drop",
+            "text": "Two curated MLP collector bundles.",
+            "primary_label": "Explore Flower Sea",
+            "primary_link": "/products/my-prisma-tcg-heimantou-mlp-flower-sea-party-ultimate-collector-bundle",
+            "secondary_label": "Explore Ultimate",
+            "secondary_link": "/products/my-prisma-tcg-heimantou-mlp-ultimate-collector-bundle",
+            "hint": "Explore the collaboration bundles"
+          }
+        },
+        "hero_mistmane_tcg": {
+          "type": "hero_slide",
+          "settings": {
+            "desktop_image_asset": "p10-mistmane-tcg-collector-hero-desktop-2048x768-v3.png",
+            "mobile_image_asset": "p10-mistmane-tcg-collector-hero-mobile-768x960.png",
+            "image_alt": "KAYOU My Little Pony Mistmane limited collector box and featured cards",
+            "eyebrow": "KAYOU MY LITTLE PONY",
+            "heading": "Mistmane Collector Box",
+            "text": "A limited TCG collector box with featured card displays.",
+            "primary_label": "Shop the collector box",
+            "primary_link": "shopify://products/kayou-mlp-qi-ji-zonghua-gift-box",
+            "secondary_label": "Explore My Little Pony",
+            "secondary_link": "/collections/ip-my-little-pony",
+            "hint": "Explore the collector box"
+          }
+        },
+        "hero_moon12": {
+          "type": "hero_slide",
+          "settings": {
+            "desktop_image_asset": "p10-moon12-midsummer-night-hero-desktop-2048x768.png",
+            "mobile_image_asset": "p10-moon12-midsummer-night-hero-mobile-768x960-v02.png",
+            "image_alt": "KAYOU My Little Pony Moon Edition Chinese Series 12 midsummer forest banner with Fluttershy cards and display box",
+            "eyebrow": "KAYOU MY LITTLE PONY",
+            "heading": "Moon Edition Series 12",
+            "text": "Step into a new midsummer night collection with the Moon 12 sealed display and its latest collector card designs.",
+            "primary_label": "Shop Moon Edition Series 12",
+            "primary_link": "shopify://products/kayou-mlp-moon-edition-chinese-series-12-t4w12-display-box",
+            "secondary_label": "Explore My Little Pony",
+            "secondary_link": "/collections/ip-my-little-pony",
+            "hint": "Explore Moon 12"
+          }
+        },
+        "hero_qy08": {
+          "type": "hero_slide",
+          "settings": {
+            "desktop_image_asset": "qy08-football-home-hero-desktop-v3.webp",
+            "mobile_image_asset": "qy08-football-home-hero-mobile-v3.webp",
+            "image_alt": "KAYOU My Little Pony Friendship Cup football season card release",
+            "eyebrow": "KAYOU MY LITTLE PONY",
+            "heading": "Friendship Cup 2026",
+            "text": "Bring the football season home with sealed KAYOU card releases and collector favorites.",
+            "primary_label": "Shop Fun Moments Edition Series 8",
+            "primary_link": "shopify://products/kayou-mlp-fun-moments-edition-t2-8-card-box",
+            "secondary_label": "Explore My Little Pony",
+            "secondary_link": "/collections/ip-my-little-pony",
+            "hint": "Explore the football release"
+          }
+        },
+        "ip_mlp": {
+          "type": "ip_route",
+          "settings": {
+            "label": "KAYOU · MY LITTLE PONY · PRE-ORDER",
+            "title": "My Little Pony",
+            "series_title": "Fun Moments: Edition 9",
+            "text": "Pre-order the upcoming Fun Moments: Edition 9 from KAYOU, featuring My Little Pony. Choose a sealed Card Box or a future Live Break on the product page.\n\nNot ready for immediate dispatch. Release, shipping and live-break dates are to be confirmed.\n\nFeatured CR and Hidden CR cards are shown from the Series 9 collector's guide. Specific pulls are not guaranteed.",
+            "product": "",
+            "link": "shopify://products/kayou-my-little-pony-fun-moments-edition-9-preorder",
+            "box_image": "",
+            "box_image_alt": "",
+            "shop_label": "Pre-order Now",
+            "feature_image": "shopify://shop_images/kayou-mlp-fun9-white-main-20260926.png",
+            "feature_image_alt": "KAYOU My Little Pony Fun Moments Edition 9 sealed display box.",
+            "feature_crop": "",
+            "accent_color": "#ef8fb2",
+            "feature_link": "shopify://products/kayou-my-little-pony-fun-moments-edition-9-preorder",
+            "feature_is_card": false,
+            "feature_clip": "39.25% 18.58%, 87.08% 33.42%, 85.17% 48.75%, 60% 81.08%, 10.42% 58.83%, 9.42% 44.5%",
+            "card_image_1": "shopify://shop_images/p10-mlp-t2-9-20260922-guide-05.png",
+            "card_crop_1": "678 273 238 321 1920 1080",
+            "card_link_1": "/blogs/mlp-t2/mlp-t2-9-fun-moments-series-9-collectors-guide",
+            "card_label_1": "View Twilight Sparkle CR QY09-CR-001 in the Fun Moments Series 9 guide",
+            "card_image_2": "shopify://shop_images/p10-mlp-t2-9-20260922-guide-05.png",
+            "card_crop_2": "1402 273 232 322 1920 1080",
+            "card_link_2": "/blogs/mlp-t2/mlp-t2-9-fun-moments-series-9-collectors-guide",
+            "card_label_2": "View Rainbow Dash CR QY09-CR-003 in the Fun Moments Series 9 guide",
+            "card_image_3": "shopify://shop_images/p10-mlp-t2-9-20260922-guide-03.png",
+            "card_crop_3": "1263 678 232 321 1920 1080",
+            "card_link_3": "/blogs/mlp-t2/mlp-t2-9-fun-moments-series-9-collectors-guide",
+            "card_label_3": "View Fluttershy Hidden CR QY09-◇CR-005 in the Fun Moments Series 9 guide",
+            "card_image_4": "shopify://shop_images/p10-mlp-t2-9-20260922-guide-04.png",
+            "card_crop_4": "1263 678 232 321 1920 1080",
+            "card_link_4": "/blogs/mlp-t2/mlp-t2-9-fun-moments-series-9-collectors-guide",
+            "card_label_4": "View Starlight Glimmer Hidden CR QY09-◇CR-011 in the Fun Moments Series 9 guide"
+          }
+        },
+        "ip_pokemon": {
+          "type": "ip_route",
+          "settings": {
+            "label": "POKÉMON · CN · SIMPLIFIED CHINESE",
+            "title": "Pokémon",
+            "series_title": "30th Anniversary",
+            "text": "Explore the Simplified Chinese 30th Celebration with Mew ex and Mewtwo ex FUR, anniversary classics, and the Espeon ex & Umbreon ex gift box.\n\nCard artwork previews possible pulls; specific booster cards are not guaranteed.",
+            "product": "pokemon-tcg-30th-celebration-espeon-umbreon-collection-display-box-simplified-chinese",
+            "link": "shopify://products/pokemon-tcg-30th-celebration-espeon-umbreon-collection-display-box-simplified-chinese",
+            "shop_link": "shopify://products/pokemon-tcg-30th-celebration-booster-box-simplified-chinese",
+            "shop_label": "Shop the Booster Box",
+            "feature_image": "",
+            "feature_image_asset": "p10-pokemon-30th-cn-mew-ex.png",
+            "feature_image_alt": "Mew ex FUR from Pokémon TCG 30th Celebration - Simplified Chinese",
+            "feature_is_card": true,
+            "card_image_asset_1": "p10-pokemon-30th-cn-mewtwo-ex.png",
+            "card_link_1": "shopify://products/pokemon-tcg-30th-celebration-booster-box-simplified-chinese",
+            "card_label_1": "Explore Mewtwo ex FUR in the 30th Celebration Booster Box",
+            "card_image_asset_2": "p10-pokemon-30th-cn-charizard.png",
+            "card_link_2": "shopify://products/pokemon-tcg-30th-celebration-booster-box-simplified-chinese",
+            "card_label_2": "Explore the anniversary Charizard card in the 30th Celebration Booster Box",
+            "card_image_asset_3": "p10-pokemon-30th-cn-pikachu-zekrom-gx.png",
+            "card_link_3": "shopify://products/pokemon-tcg-30th-celebration-booster-box-simplified-chinese",
+            "card_label_3": "Explore Pikachu and Zekrom GX in the 30th Celebration Booster Box",
+            "box_image": "shopify://shop_images/pokemon-tcg-30th-celebration-espeon-umbreon-simplified-chinese.png",
+            "box_image_alt": "Pokémon TCG 30th Celebration Espeon ex & Umbreon ex Collection Display Box - Simplified Chinese",
+            "accent_color": "#1b4e97",
+            "feature_link": "shopify://products/pokemon-tcg-30th-celebration-booster-box-simplified-chinese"
+          }
+        },
+        "ip_card_fun": {
+          "type": "ip_route",
+          "settings": {
+            "label": "CARD.FUN · DISNEY",
+            "title": "Disney",
+            "series_title": "The Lion King · 30 Years",
+            "text": "Celebrate The Lion King's 30th anniversary with a collectible card box and character card packs.",
+            "product": "the-lion-king-30th-anniversary-collectible-card-box",
+            "link": "shopify://products/the-lion-king-30th-anniversary-collectible-card-box",
+            "box_image": "shopify://shop_images/lion-king-30th-anniversary-collectible-card-box.png",
+            "box_image_alt": "The Lion King 30th anniversary collectible card box and packs",
+            "shop_label": "Shop Now",
+            "accent_color": "#c56f7d",
+            "feature_image_asset": "p10-lion-king-30th-sec-card-preview.webp",
+            "feature_crop": "445 422 302 422 1215 1599",
+            "feature_image_alt": "Simba and Nala SEC card",
+            "card_image_asset_1": "p10-lion-king-30th-sec-card-preview.webp",
+            "card_crop_1": "758 422 302 422 1215 1599",
+            "card_label_1": "Explore Nala and Simba SEC card in The Lion King · 30 Years",
+            "card_image_asset_2": "p10-lion-king-30th-sec-card-preview.webp",
+            "card_crop_2": "132 906 303 421 1215 1599",
+            "card_label_2": "Explore Hakuna Matata SEC card in The Lion King · 30 Years",
+            "card_image_asset_3": "p10-lion-king-30th-sec-card-preview.webp",
+            "card_crop_3": "445 906 302 421 1215 1599",
+            "card_label_3": "Explore Scar SEC card in The Lion King · 30 Years"
+          }
+        },
+        "ip_naruto": {
+          "type": "ip_route",
+          "settings": {
+            "label": "KAYOU · NARUTO",
+            "title": "Naruto",
+            "series_title": "Tier 4 · Wave 7",
+            "text": "Explore the Array Chapter collection with a sealed booster box from the official Chinese edition.",
+            "product": "anime-ninja-collection-tier-4-wave-7-array-chapter-booster-box-official-chinese-edition",
+            "link": "shopify://products/anime-ninja-collection-tier-4-wave-7-array-chapter-booster-box-official-chinese-edition",
+            "feature_image_alt": "Hinata Hyuga NRZ07-SP-001 — Tier 4 · Wave 7",
+            "box_image": "shopify://shop_images/141637c77fd9119a585d2db5c0eb7b2c.png",
+            "box_image_alt": "Naruto Tier 4 Wave 7 Array Chapter booster box",
+            "shop_label": "View release",
+            "accent_color": "#d99139",
+            "card_label_1": "Neji Hyuga NRZ07-SP-002 — Tier 4 · Wave 7",
+            "card_label_2": "Rock Lee NRZ07-SP-004 — Tier 4 · Wave 7",
+            "card_label_3": "Might Guy NRZ07-SE-003 — Tier 4 · Wave 7",
+            "feature_image_asset": "p10-naruto-t4w7-sp-001-hd.webp",
+            "feature_is_card": true,
+            "card_image_asset_1": "p10-naruto-t4w7-sp-002-hd.webp",
+            "card_image_asset_2": "p10-naruto-t4w7-sp-004-hd.webp",
+            "card_image_asset_3": "p10-naruto-t4w7-se-003-hd.webp"
+          }
+        },
+        "ip_harry_potter": {
+          "type": "ip_route",
+          "settings": {
+            "label": "HARRY POTTER",
+            "title": "Harry Potter",
+            "series_title": "Eternal Edition 5",
+            "text": "Discover the wizarding world through Eternal Edition Series 5 collectible cards.",
+            "product": "harry-potter-eternal-edition-series-5",
+            "feature_image_alt": "Remus John Lupin HP-J05-SP01 — Eternal Edition 5",
+            "box_image": "shopify://shop_images/6783fe5b43928763e10cf8e82111cea6_b15ece7e-c761-4817-ae18-bf1f7661c03e.png",
+            "link": "shopify://products/harry-potter-eternal-edition-series-5",
+            "shop_label": "Shop Now",
+            "accent_color": "#b99b56",
+            "card_label_1": "Lucius Malfoy HP-J05-SP02 — Eternal Edition 5",
+            "card_label_2": "Harry Potter HP-J05-BP01 — Eternal Edition 5",
+            "card_label_3": "Fleur Delacour HP-J05-BP03 — Eternal Edition 5",
+            "feature_image_asset": "p10-harry-potter-hp-j05-sp01-hd.webp",
+            "feature_is_card": true,
+            "card_image_asset_1": "p10-harry-potter-hp-j05-sp02-hd.webp",
+            "card_image_asset_2": "p10-harry-potter-hp-j05-bp01-hd.webp",
+            "card_image_asset_3": "p10-harry-potter-hp-j05-bp03-hd.webp"
+          }
+        },
+        "ip_powerpuff": {
+          "type": "ip_route",
+          "settings": {
+            "label": "THE POWERPUFF GIRLS",
+            "title": "Powerpuff Girls",
+            "series_title": "Candy Pack",
+            "text": "Meet Blossom, Bubbles and Buttercup in the Candy Pack collectible card series.",
+            "product": "the-powerpuff-girls-candy-pack",
+            "feature_image_alt": "Buttercup PPGB01-UR-003 — Candy Pack",
+            "box_image": "shopify://shop_images/1_4c2b1b5d-aaf7-404c-a5aa-e13e13b941ce.png",
+            "link": "shopify://products/the-powerpuff-girls-candy-pack",
+            "shop_label": "Shop Now",
+            "accent_color": "#dd81b5",
+            "card_label_1": "Blossom PPGB01-OR-001 — Candy Pack",
+            "card_label_2": "Bubbles PPGB01-AR-002 — Candy Pack",
+            "card_label_3": "Blossom PPGB01-SSR-001 — Candy Pack",
+            "feature_image_asset": "p10-powerpuff-candy-pack-ppgb01-ur-003.webp",
+            "feature_is_card": true,
+            "feature_crop": "26 30 614 862 660 978",
+            "card_image_asset_1": "p10-powerpuff-candy-pack-ppgb01-or-001.webp",
+            "card_crop_1": "24 26 615 863 662 988",
+            "card_image_asset_2": "p10-powerpuff-candy-pack-ppgb01-ar-002.webp",
+            "card_crop_2": "28 18 615 863 676 976",
+            "card_image_asset_3": "p10-powerpuff-candy-pack-ppgb01-ssr-001.webp",
+            "card_crop_3": "28 28 615 863 670 982"
+          }
+        },
+        "ip_inuyasha": {
+          "type": "ip_route",
+          "settings": {
+            "label": "INUYASHA",
+            "title": "Inuyasha",
+            "series_title": "Harmonious Cloud 1",
+            "text": "Follow the Journey of the Shikon Jewel with the Harmonious Cloud Series 1 booster box.",
+            "product": "inuyasha-ccg-journey-of-the-shikon-jewel-booster-box-harmonious-cloud-series-1",
+            "feature_image": "shopify://shop_images/ScreenShot_2026-05-18_133930_378_f5a432a8-560b-4cda-bf73-3e1226a928ad.png",
+            "feature_image_alt": "Inuyasha featured card",
+            "box_image": "shopify://shop_images/1_d1c36c40-d91a-40aa-91a1-93043e9adc99.png",
+            "link": "shopify://products/inuyasha-ccg-journey-of-the-shikon-jewel-booster-box-harmonious-cloud-series-1",
+            "shop_label": "Shop Now",
+            "accent_color": "#be656d",
+            "feature_crop": "469 32 158 220 975 718",
+            "card_image_1": "shopify://shop_images/ScreenShot_2026-05-18_133930_378_f5a432a8-560b-4cda-bf73-3e1226a928ad.png",
+            "card_crop_1": "625 32 159 220 975 718",
+            "card_label_1": "Explore Harmonious Cloud featured card 2 in Harmonious Cloud 1",
+            "card_image_2": "shopify://shop_images/ScreenShot_2026-05-18_133930_378_f5a432a8-560b-4cda-bf73-3e1226a928ad.png",
+            "card_crop_2": "781 32 159 220 975 718",
+            "card_label_2": "Explore Sesshomaru featured card in Harmonious Cloud 1",
+            "card_image_3": "shopify://shop_images/ScreenShot_2026-05-18_133930_378_f5a432a8-560b-4cda-bf73-3e1226a928ad.png",
+            "card_crop_3": "469 255 159 221 975 718",
+            "card_label_3": "Explore Kikyo featured card in Harmonious Cloud 1"
+          }
+        },
+        "ip_arknights": {
+          "type": "ip_route",
+          "settings": {
+            "label": "KAYOU · ARKNIGHTS",
+            "title": "Arknights",
+            "series_title": "Luminescent Serenade",
+            "text": "Explore the Luminescent Serenade Series 1 collection with its sealed KAYOU card box.",
+            "product": "kayou-arknights-luminescent-serenade-collectible-cards-series-1-sealed-box",
+            "feature_image": "shopify://shop_images/06-arknights-luminescent-serenade-se-card-preview.jpg",
+            "feature_image_alt": "Amiya SE card",
+            "box_image": "shopify://shop_images/01-arknights-luminescent-serenade-white-box.jpg",
+            "link": "shopify://products/kayou-arknights-luminescent-serenade-collectible-cards-series-1-sealed-box",
+            "shop_label": "Shop Now",
+            "accent_color": "#688cac",
+            "feature_crop": "158 413 534 748 1440 1440",
+            "card_image_1": "shopify://shop_images/06-arknights-luminescent-serenade-se-card-preview.jpg",
+            "card_crop_1": "745 413 533 748 1440 1440",
+            "card_label_1": "Explore Lumen SE card in Luminescent Serenade",
+            "card_image_2": "shopify://shop_images/04-arknights-luminescent-serenade-ar-card-preview.jpg",
+            "card_crop_2": "181 428 506 718 1440 1440",
+            "card_label_2": "Explore Amiya AR card in Luminescent Serenade",
+            "card_image_3": "shopify://shop_images/04-arknights-luminescent-serenade-ar-card-preview.jpg",
+            "card_crop_3": "761 428 504 718 1440 1440",
+            "card_label_3": "Explore Lumen AR card in Luminescent Serenade"
+          }
+        }
+      },
+      "block_order": [
+        "hero_pokemon_30th",
+        "hero_heimantou",
+        "hero_mistmane_tcg",
+        "hero_moon12",
+        "hero_qy08",
+        "ip_mlp",
+        "ip_pokemon",
+        "ip_card_fun",
+        "ip_naruto",
+        "ip_harry_potter",
+        "ip_powerpuff",
+        "ip_inuyasha",
+        "ip_arknights"
+      ],
+      "settings": {
+        "hero_asset": "p10-mlp-heimantou-collab-hero-desktop-2048x768.png",
+        "hero_asset_mobile": "p10-mlp-heimantou-collab-hero-mobile-768x960.png",
+        "hero_alt": "pakracards and Heimantou MLP collector bundle collaboration",
+        "hero_left_link": "/products/my-prisma-tcg-heimantou-mlp-flower-sea-party-ultimate-collector-bundle",
+        "hero_left_label": "Explore the Flower Sea Party collector bundle",
+        "hero_right_link": "/products/my-prisma-tcg-heimantou-mlp-ultimate-collector-bundle",
+        "hero_right_label": "Explore the Ultimate Collector's Bundle",
+        "eyebrow": "pakracards",
+        "heading": "Collect by universe. Browse by form.",
+        "text": "Find cards and character goods through clear IP and product paths.",
+        "primary_link": "/collections/featured-new-arrivals",
+        "primary_label": "Shop new arrivals",
+        "secondary_link": "/collections/type-merchandise",
+        "secondary_label": "Browse merchandise",
+        "hero_autoplay": true,
+        "rotation_interval": 7,
+        "directory_heading": "What are you shopping for?",
+        "directory_text": "Choose an IP to explore its featured series.",
+        "ip_all_link": "/collections"
+      }
+    },
+    "p10_home_articles": {
+      "type": "p10-home-articles",
+      "blocks": {
+        "moon12_story": {
+          "type": "article",
+          "settings": {
+            "article": "ambers-ponycove/moon-12-midsummer-night-story-kayou-events",
+            "label": "Moon Edition Series 12"
+          }
+        },
+        "mistmane_review": {
+          "type": "article",
+          "settings": {
+            "article": "ambers-ponycove/mistmane-qiji-zonghua-kayou-mlp-tcg-gift-box-review",
+            "label": "Mistmane Gift Box"
+          }
+        },
+        "booster_box_guide": {
+          "type": "article",
+          "settings": {
+            "article": "guide/best-mlp-kayou-booster-box-buyers-guide",
+            "label": "Booster Box Guide"
+          }
+        }
+      },
+      "block_order": [
+        "moon12_story",
+        "mistmane_review",
+        "booster_box_guide"
+      ],
+      "settings": {
+        "eyebrow": "THE COLLECTOR JOURNAL",
+        "heading": "Product Stories & Guides",
+        "journal_label": "Explore the journal",
+        "journal_link": "shopify://pages/blog"
+      }
+    },
+    "p10_release_timeline": {
+      "type": "p10-release-timeline",
+      "blocks": {
+        "moon12": {
+          "type": "timeline_product",
+          "settings": {
+            "product": "kayou-mlp-moon-edition-chinese-series-12-t4w12-display-box",
+            "release_month": "08",
+            "category": "ccg",
+            "confidence": "research",
+            "fallback_title": "Moon Edition Series 12",
+            "fallback_link": "/products/kayou-mlp-moon-edition-chinese-series-12-t4w12-display-box"
+          }
+        },
+        "moon11": {
+          "type": "timeline_product",
+          "settings": {
+            "product": "pre-order-mlp-moon-edition-chinese-series-11-t4w11",
+            "release_month": "04",
+            "category": "ccg",
+            "confidence": "research",
+            "fallback_title": "Moon Edition Series 11",
+            "fallback_link": "/products/pre-order-mlp-moon-edition-chinese-series-11-t4w11"
+          }
+        },
+        "friendship_cup": {
+          "type": "timeline_product",
+          "settings": {
+            "product": "kayou-mlp-fun-moments-edition-t2-8-card-box",
+            "release_month": "06",
+            "category": "ccg",
+            "confidence": "research",
+            "fallback_title": "Friendship Cup 2026",
+            "fallback_link": "/collections/ip-my-little-pony"
+          }
+        },
+        "release_slot_04": {
+          "type": "timeline_product",
+          "settings": {
+            "product": "kayou-mlp-qi-ji-zonghua-gift-box",
+            "release_month": "07",
+            "category": "tcg",
+            "confidence": "research",
+            "fallback_title": "Release slot 04",
+            "fallback_link": "/collections/ip-my-little-pony"
+          }
+        },
+        "release_slot_05": {
+          "type": "timeline_product",
+          "disabled": true,
+          "settings": {
+            "product": "kayou-my-little-pony-trading-card-discord-display-box",
+            "release_month": "07",
+            "category": "tcg",
+            "confidence": "research",
+            "fallback_title": "Release slot 05",
+            "fallback_link": "/collections/ip-my-little-pony"
+          }
+        },
+        "release_slot_06": {
+          "type": "timeline_product",
+          "settings": {
+            "product": "mlp-shadow-edition-chinese-series-7-t2w7",
+            "release_month": "03",
+            "category": "ccg",
+            "confidence": "research",
+            "fallback_title": "Release slot 06",
+            "fallback_link": "/collections/ip-my-little-pony"
+          }
+        },
+        "release_slot_07": {
+          "type": "timeline_product",
+          "disabled": true,
+          "settings": {
+            "product": "",
+            "release_month": "00",
+            "category": "tcg",
+            "confidence": "research",
+            "fallback_title": "Release slot 07",
+            "fallback_link": "/collections/ip-my-little-pony"
+          }
+        },
+        "release_slot_08": {
+          "type": "timeline_product",
+          "disabled": true,
+          "settings": {
+            "product": "",
+            "release_month": "00",
+            "category": "tcg",
+            "confidence": "research",
+            "fallback_title": "Release slot 08",
+            "fallback_link": "/collections/ip-my-little-pony"
+          }
+        },
+        "release_slot_09": {
+          "type": "timeline_product",
+          "disabled": true,
+          "settings": {
+            "product": "",
+            "release_month": "00",
+            "category": "tcg",
+            "confidence": "research",
+            "fallback_title": "Release slot 09",
+            "fallback_link": "/collections/ip-my-little-pony"
+          }
+        },
+        "release_slot_10": {
+          "type": "timeline_product",
+          "disabled": true,
+          "settings": {
+            "product": "",
+            "release_month": "00",
+            "category": "merch",
+            "confidence": "research",
+            "fallback_title": "Release slot 10",
+            "fallback_link": "/collections/type-merchandise"
+          }
+        },
+        "release_slot_11": {
+          "type": "timeline_product",
+          "disabled": true,
+          "settings": {
+            "product": "",
+            "release_month": "00",
+            "category": "merch",
+            "confidence": "research",
+            "fallback_title": "Release slot 11",
+            "fallback_link": "/collections/type-merchandise"
+          }
+        },
+        "release_slot_12": {
+          "type": "timeline_product",
+          "disabled": true,
+          "settings": {
+            "product": "",
+            "release_month": "00",
+            "category": "merch",
+            "confidence": "research",
+            "fallback_title": "Release slot 12",
+            "fallback_link": "/collections/type-merchandise"
+          }
+        }
+      },
+      "block_order": [
+        "moon12",
+        "moon11",
+        "friendship_cup",
+        "release_slot_04",
+        "release_slot_05",
+        "release_slot_06",
+        "release_slot_07",
+        "release_slot_08",
+        "release_slot_09",
+        "release_slot_10",
+        "release_slot_11",
+        "release_slot_12"
+      ],
+      "settings": {
+        "eyebrow": "KAYOU · MY LITTLE PONY",
+        "heading": "2026 Release Timeline",
+        "text": "KAYOU My Little Pony cards and collectibles. Release dates marked unconfirmed may change.",
+        "release_year": "2026",
+        "note": "Release dates are separate from dispatch and delivery estimates. Dates marked unconfirmed are not guaranteed."
+      }
+    },
+    "p10_daily_store_heat_ApNDY8": {
+      "type": "p10-daily-store-heat",
+      "name": "P10 daily store heat",
+      "settings": {
+        "enabled": false,
+        "eyebrow": "pakracards · DAILY RANKING",
+        "heading": "COLLECTOR HEAT / TOP 5",
+        "text": "Rolling 60-day ranking. Refreshed daily.",
+        "footer": "Ranked from recent store demand.",
+        "accent": "#f43f68",
+        "image_fit": "contain"
+      }
+    }
+  },
+  "order": [
+    "p10_home_discovery",
+    "p10_home_articles",
+    "p10_release_timeline",
+    "p10_daily_store_heat_ApNDY8"
+  ]
+}

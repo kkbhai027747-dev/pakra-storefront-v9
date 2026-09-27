@@ -1,0 +1,95 @@
+{%- liquid
+  assign p10_context_id = context_id
+  if p10_context_id == blank
+    assign p10_context_id = title | handleize
+  endif
+  assign p10_context_title = title | default: 'Category'
+  assign p10_context_kicker = kicker | default: 'Shop by category'
+  assign p10_context_link = link
+  assign p10_context_collection = context_collection
+  assign p10_context_featured = featured_product
+  assign p10_query = search_query | default: p10_context_title | downcase
+  assign p10_query = p10_query | replace: 'cards', '' | replace: 'card', '' | replace: '&', ' ' | strip
+  assign p10_is_box_query = false
+  assign p10_count = 0
+  assign p10_hot_handle = ''
+
+  if p10_query contains 'box' or p10_query contains 'pack' or p10_query contains 'sealed'
+    assign p10_is_box_query = true
+  endif
+-%}
+
+<div class="p10-context-panel" data-p10-rec-panel="{{ p10_context_id | escape }}" data-p10-context-title="{{ p10_context_title | escape }}" hidden>
+  <p class="p10-context-panel__eyebrow">{{ p10_context_kicker | escape }}</p>
+  <h3>{{ p10_context_title | escape }}</h3>
+  <div class="p10-context-panel__products">
+    {%- if p10_context_collection != blank and p10_context_collection.products.size > 0 -%}
+      {%- for product in p10_context_collection.products limit: 50 -%}
+        {%- liquid
+          assign p10_terms = product.title | append: ' ' | append: product.vendor | append: ' ' | append: product.tags | downcase
+          assign p10_is_match = true
+
+          if p10_context_collection.handle == 'all-products'
+            assign p10_is_match = false
+            if p10_is_box_query
+              if p10_terms contains 'edition' or p10_terms contains 'series' or p10_terms contains 'box' or p10_terms contains 'pack' or p10_terms contains 'booster'
+                assign p10_is_match = true
+              endif
+              if p10_terms contains 'plush' or p10_terms contains 'vinyl' or p10_terms contains 'charm' or p10_terms contains 'reesee' or p10_terms contains 'merch' or p10_terms contains 'keychain'
+                assign p10_is_match = false
+              endif
+            elsif p10_query != blank and p10_terms contains p10_query
+              assign p10_is_match = true
+            endif
+          endif
+        -%}
+        {%- if p10_is_match and p10_count == 0 -%}
+          {%- render 'p10-smart-product-card', product: product, label: 'Hot pick' -%}
+          {%- assign p10_hot_handle = product.handle -%}
+          {%- assign p10_count = p10_count | plus: 1 -%}
+          {%- break -%}
+        {%- endif -%}
+      {%- endfor -%}
+
+      {%- assign p10_new_products = p10_context_collection.products | sort: 'created_at' | reverse -%}
+      {%- for product in p10_new_products limit: 50 -%}
+        {%- liquid
+          assign p10_terms = product.title | append: ' ' | append: product.vendor | append: ' ' | append: product.tags | downcase
+          assign p10_is_match = true
+
+          if p10_context_collection.handle == 'all-products'
+            assign p10_is_match = false
+            if p10_is_box_query
+              if p10_terms contains 'edition' or p10_terms contains 'series' or p10_terms contains 'box' or p10_terms contains 'pack' or p10_terms contains 'booster'
+                assign p10_is_match = true
+              endif
+              if p10_terms contains 'plush' or p10_terms contains 'vinyl' or p10_terms contains 'charm' or p10_terms contains 'reesee' or p10_terms contains 'merch' or p10_terms contains 'keychain'
+                assign p10_is_match = false
+              endif
+            elsif p10_query != blank and p10_terms contains p10_query
+              assign p10_is_match = true
+            endif
+          endif
+        -%}
+        {%- if p10_is_match and product.handle != p10_hot_handle and p10_count < 2 -%}
+          {%- render 'p10-smart-product-card', product: product, label: 'New listing' -%}
+          {%- assign p10_count = p10_count | plus: 1 -%}
+          {%- break -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endif -%}
+
+    {%- if p10_count == 0 and p10_context_featured != blank -%}
+      {%- render 'p10-smart-product-card', product: p10_context_featured, label: 'New listing' -%}
+      {%- assign p10_count = p10_count | plus: 1 -%}
+    {%- endif -%}
+  </div>
+
+  {%- if p10_count == 0 -%}
+    <p class="p10-context-panel__empty">Open this path to view the current listings.</p>
+  {%- endif -%}
+
+  {%- if p10_context_link != blank -%}
+    <a class="p10-context-panel__cta" href="{{ p10_context_link }}">Open {{ p10_context_title | escape }}</a>
+  {%- endif -%}
+</div>

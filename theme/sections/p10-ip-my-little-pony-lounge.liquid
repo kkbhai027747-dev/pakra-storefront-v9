@@ -1,0 +1,2293 @@
+{% liquid
+  assign section_id = 'p10-ip-mlp-' | append: section.id
+  assign mlp_collection = section.settings.source_collection
+  if mlp_collection == blank
+    assign mlp_collection = collections['ip-my-little-pony']
+  endif
+
+  assign card_box_url = section.settings.card_box_link
+  if card_box_url == blank
+    assign card_box_url = '/collections/cn-mlp-card-boxes'
+  endif
+
+  assign merch_url = section.settings.merch_link
+  if merch_url == blank
+    assign merch_url = '/collections/plushies-merch/mlp'
+  endif
+
+  assign tcg_url = section.settings.tcg_link
+  if tcg_url == blank or tcg_url == '/pages/tcg-battle'
+    assign tcg_url = '/collections/tcg-card-boxes'
+  endif
+
+  assign guide_url = section.settings.guide_link
+  if guide_url == blank
+    assign guide_url = '/blogs/guide/safe-shipping-mlp-kayou-cards'
+  endif
+
+  assign english_cards_url = '/collections/english-card-boxes'
+  assign fun_moments_url = '/collections/cn-shadow-edition-card-boxes'
+  assign moon_url = '/collections/cn-moon-edition-card-boxes'
+  assign rainbow_url = '/collections/cn-rainbow-edition-card-boxes'
+  assign star_url = '/collections/cn-fan-xin-edition-card-boxes'
+  assign reesee_filter_url = '/collections/ip-my-little-pony/reesee'
+  assign auldey_filter_url = '/collections/ip-my-little-pony/auldey'
+  assign miniso_filter_url = '/collections/ip-my-little-pony/miniso'
+  assign funism_url = '/collections/mlp-funism'
+  assign charms_url = '/collections/mlp-baimao'
+
+  assign card_box_collection = collections['cn-mlp-card-boxes']
+  assign hero_collection = card_box_collection
+  if hero_collection == blank
+    assign hero_collection = mlp_collection
+  endif
+%}
+
+<section id="{{ section_id }}" class="p10-ip-mlp" data-p10-ip-mlp>
+  <div class="p10-ip-mlp__anchor" id="{{ section.settings.anchor_id | default: 'my-little-pony-collector-zone' | escape }}"></div>
+
+  <div class="p10-ip-mlp__sky" aria-hidden="true">
+    <span class="p10-ip-mlp__sky-band"></span>
+    <span class="p10-ip-mlp__sky-band"></span>
+    <span class="p10-ip-mlp__sky-band"></span>
+    <span class="p10-ip-mlp__spark"></span>
+    <span class="p10-ip-mlp__spark"></span>
+    <span class="p10-ip-mlp__spark"></span>
+    <span class="p10-ip-mlp__sticker p10-ip-mlp__sticker--moon"></span>
+    <span class="p10-ip-mlp__sticker p10-ip-mlp__sticker--rainbow"></span>
+  </div>
+
+  <div class="p10-ip-mlp__nav">
+    <a class="p10-ip-mlp__back" href="{{ section.settings.back_link | default: '/collections' }}">
+      <span aria-hidden="true">&larr;</span>
+      <span>{{ section.settings.back_label | default: 'Back' | escape }}</span>
+    </a>
+  </div>
+
+  <div class="p10-ip-mlp__hero">
+    <div class="p10-ip-mlp__hero-copy">
+      <p class="p10-ip-mlp__eyebrow" data-mlp-hero-item>{{ section.settings.eyebrow | default: 'KAYOU My Little Pony collector zone' | escape }}</p>
+      <h1 class="p10-ip-mlp__heading" data-mlp-hero-item>{{ section.settings.heading | default: 'My Little Pony' | escape }}</h1>
+      <p class="p10-ip-mlp__subheading" data-mlp-hero-item>
+        {{ section.settings.subheading | default: 'Shop KAYOU MLP sealed card boxes, starter decks, figures, plush, charms, and collector merch in one place.' | escape }}
+      </p>
+
+      <div class="p10-ip-mlp__series-strip" aria-label="Featured KAYOU My Little Pony paths" data-mlp-hero-item>
+        <span><b>Fun</b> T2</span>
+        <span><b>Rainbow</b> T3</span>
+        <span><b>Moon</b> T4</span>
+        <span><b>Star</b> T5</span>
+      </div>
+
+      <form class="p10-ip-mlp__search" action="/search" method="get" role="search" data-mlp-hero-item>
+        <input type="hidden" name="options[prefix]" value="last">
+        <input type="hidden" name="options[fields]" value="title,tag,product_type,variants.title,vendor">
+        <input type="hidden" name="type" value="product">
+        <label for="{{ section_id }}-search">Find</label>
+        <input id="{{ section_id }}-search" type="search" name="q" placeholder="Search products or series">
+        <button type="submit">Search</button>
+      </form>
+
+      <div class="p10-ip-mlp__quick-links" aria-label="Original My Little Pony category shortcuts" data-mlp-hero-item>
+        <button class="is-active" type="button" data-mlp-filter="sealed-cards" data-mlp-scope="sealed-cards" data-kicker="SEALED CARD BOXES" data-title="Sealed card boxes" data-copy="Browse KAYOU MLP display boxes, booster-style releases, and starter decks. Merchandise and single cards stay in their own paths." data-url="{{ card_box_url }}" data-link-label="Browse sealed card boxes" data-mlp-products-url="/collections/cn-mlp-card-boxes/products.json?limit=24||/collections/english-card-boxes/products.json?limit=24||/collections/tcg-card-boxes/products.json?limit=24" aria-pressed="true">Card boxes</button>
+        <button type="button" data-mlp-filter="chinese-cards" data-mlp-scope="sealed-cards" data-kicker="CHINESE CARD BOXES" data-title="Chinese sealed card boxes" data-copy="Browse KAYOU My Little Pony Chinese display boxes and booster-style releases without single-card or merchandise listings." data-url="{{ card_box_url }}" data-mlp-products-url="/collections/cn-mlp-card-boxes/products.json?limit=24" data-mlp-search-query="KAYOU MLP Chinese card box" aria-pressed="false">Chinese cards</button>
+        <button type="button" data-mlp-filter="english-cards" data-mlp-scope="sealed-cards" data-kicker="ENGLISH CARD BOXES" data-title="English sealed card boxes" data-copy="Browse My Little Pony English sealed boxes and decks without single-card or merchandise listings." data-url="{{ english_cards_url }}" data-mlp-products-url="/collections/english-card-boxes/products.json?limit=24" data-mlp-search-query="MLP English card box" aria-pressed="false">English cards</button>
+        <button type="button" data-mlp-filter="tcg" data-mlp-scope="sealed-cards" data-kicker="TCG CARD PRODUCTS" data-title="Playable TCG boxes and decks" data-copy="Browse sealed playable trading-card products separately from collectible merchandise and individual cards." data-url="{{ tcg_url }}" data-mlp-products-url="/collections/tcg-card-boxes/products.json?limit=24" data-mlp-search-query="MLP TCG cards" aria-pressed="false">TCG cards</button>
+        <button type="button" data-mlp-filter="merch" data-mlp-scope="merch" data-kicker="MLP MERCH &amp; COLLECTIBLES" data-title="Merch &amp; collectibles" data-copy="Browse acrylic stands, figures, plush, charms, blind boxes, and display goods without card-box or single-card listings." data-url="{{ merch_url }}" data-link-label="Browse MLP merch" data-mlp-products-url="/collections/mlp-reesee/products.json?limit=24||/collections/mlp-auldey/products.json?limit=24||/collections/mlp-funism/products.json?limit=24||/collections/mlp-searchfun/products.json?limit=24||/collections/mlp-pinkypinky/products.json?limit=24||/collections/mlp-baimao/products.json?limit=24||/collections/mlp-kader-kaduo/products.json?limit=24" data-mlp-search-query="MLP merch" aria-pressed="false">MLP merch</button>
+      </div>
+    </div>
+
+    <div class="p10-ip-mlp__stage" aria-label="My Little Pony card preview" data-mlp-hero-item>
+      <div class="p10-ip-mlp__stage-glow" aria-hidden="true"></div>
+      <div class="p10-ip-mlp__logo-lockup">
+        <img
+          src="{{ 'p10-ip-my-little-pony.webp' | asset_url }}"
+          alt="My Little Pony"
+          width="700"
+          height="700"
+          loading="eager"
+          decoding="async"
+        >
+        <span>
+          <b>KAYOU MLP boxes &amp; merch</b>
+          <small>Curated product zone</small>
+        </span>
+      </div>
+
+      <div class="p10-ip-mlp__stage-badges" aria-label="Collection highlights">
+        <span>Sealed boxes</span>
+        <span>Figures &amp; plush</span>
+        <span>Merch gifts</span>
+      </div>
+
+      <div class="p10-ip-mlp__hero-products">
+        {% assign hero_product_count = 0 %}
+        {% if hero_collection != blank and hero_collection.all_products_count > 0 %}
+          {% for product in hero_collection.products limit: 24 %}
+            {% liquid
+              assign hero_tags_text = product.tags | join: ' '
+              assign hero_scope_text = product.title | append: ' ' | append: product.handle | append: ' ' | append: product.type | append: ' ' | append: hero_tags_text | downcase
+              assign hero_is_single_card = false
+              if hero_scope_text contains 'single card' or hero_scope_text contains 'single-card' or hero_scope_text contains 'single_card' or hero_scope_text contains 'card bundle' or hero_scope_text contains 'individual card'
+                assign hero_is_single_card = true
+              endif
+            %}
+            {% unless hero_is_single_card %}
+            <a class="p10-ip-mlp__hero-product" href="{{ product.url }}" style="--item: {{ hero_product_count }};">
+              {% if product.featured_image != blank %}
+                {{
+                  product.featured_image
+                  | image_url: width: 420
+                  | image_tag:
+                    loading: 'eager',
+                    widths: '220, 320, 420',
+                    sizes: '(min-width: 990px) 10vw, 35vw',
+                    alt: product.title,
+                    class: 'p10-ip-mlp__hero-img'
+                }}
+              {% else %}
+                <img
+                  src="{{ 'p10-ip-my-little-pony.webp' | asset_url }}"
+                  alt="{{ product.title | escape }}"
+                  width="420"
+                  height="420"
+                  loading="eager"
+                  decoding="async"
+                  class="p10-ip-mlp__hero-img"
+                >
+              {% endif %}
+            </a>
+            {% assign hero_product_count = hero_product_count | plus: 1 %}
+            {% if hero_product_count >= 4 %}{% break %}{% endif %}
+            {% endunless %}
+          {% endfor %}
+        {% endif %}
+        {% if hero_product_count == 0 %}
+          <span class="p10-ip-mlp__hero-product p10-ip-mlp__hero-product--empty">
+            <img
+              src="{{ 'p10-ip-my-little-pony.webp' | asset_url }}"
+              alt=""
+              width="420"
+              height="420"
+              loading="eager"
+              decoding="async"
+              class="p10-ip-mlp__hero-img"
+            >
+          </span>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="p10-ip-mlp__browser" id="mlp-product-paths" data-mlp-browser data-mlp-reveal aria-label="My Little Pony category browser">
+    <aside class="p10-ip-mlp__sidebar" aria-label="My Little Pony page filters">
+      <div class="p10-ip-mlp__sidebar-head">
+        <p class="p10-ip-mlp__eyebrow">Category map</p>
+        <h2>Browse MLP paths</h2>
+      </div>
+
+      <div class="p10-ip-mlp__sidebar-group">
+        <span>Choose product type</span>
+        <button class="p10-ip-mlp__filter is-active" type="button" data-mlp-filter="sealed-cards" data-mlp-scope="sealed-cards" data-kicker="SEALED CARD BOXES" data-title="Sealed card boxes" data-copy="Browse KAYOU MLP display boxes, booster-style releases, and starter decks. Merchandise and single cards stay in their own paths." data-url="{{ card_box_url }}" data-link-label="Browse sealed card boxes" data-mlp-products-url="/collections/cn-mlp-card-boxes/products.json?limit=24||/collections/english-card-boxes/products.json?limit=24||/collections/tcg-card-boxes/products.json?limit=24" aria-pressed="true">
+          <strong>Sealed card boxes</strong>
+          <small>Boxes, decks, and sealed card releases</small>
+        </button>
+        <button class="p10-ip-mlp__filter" type="button" data-mlp-filter="merch" data-mlp-scope="merch" data-kicker="MLP MERCH &amp; COLLECTIBLES" data-title="Merch &amp; collectibles" data-copy="Browse acrylic stands, figures, plush, charms, blind boxes, and display goods without card-box or single-card listings." data-url="{{ merch_url }}" data-link-label="Browse MLP merch" data-mlp-products-url="/collections/mlp-reesee/products.json?limit=24||/collections/mlp-auldey/products.json?limit=24||/collections/mlp-funism/products.json?limit=24||/collections/mlp-searchfun/products.json?limit=24||/collections/mlp-pinkypinky/products.json?limit=24||/collections/mlp-baimao/products.json?limit=24||/collections/mlp-kader-kaduo/products.json?limit=24" data-mlp-search-query="MLP merch" aria-pressed="false">
+          <strong>Merch &amp; collectibles</strong>
+          <small>Figures, plush, charms, and display goods</small>
+        </button>
+      </div>
+
+      <div class="p10-ip-mlp__sidebar-group">
+        <span>Cards</span>
+        <button class="p10-ip-mlp__filter" type="button" data-mlp-filter="chinese-cards" data-mlp-scope="sealed-cards" data-kicker="CHINESE CARD BOXES" data-title="Chinese sealed card boxes" data-copy="Browse KAYOU My Little Pony Chinese display boxes and booster-style releases without single-card or merchandise listings." data-url="{{ card_box_url }}" data-mlp-products-url="/collections/cn-mlp-card-boxes/products.json?limit=24" data-mlp-search-query="KAYOU MLP card boxes" aria-pressed="false">
+          <strong>Chinese card boxes</strong>
+          <small>Sealed Chinese card releases</small>
+        </button>
+      </div>
+
+      <div class="p10-ip-mlp__sidebar-group">
+        <span>CCG Card Boxes</span>
+        <button class="p10-ip-mlp__filter" type="button" data-mlp-filter="fun-moments" data-mlp-scope="sealed-cards" data-kicker="Fun Moments / T2" data-title="Fun Moments Edition" data-copy="Budget-friendly KAYOU MLP openings with bright character moments and accessible sealed boxes." data-url="{{ fun_moments_url }}" data-mlp-products-url="/collections/cn-shadow-edition-card-boxes/products.json?limit=24" data-mlp-search-query="KAYOU MLP Fun Moments Edition" aria-pressed="false">
+          <strong>Fun Moments Edition</strong>
+          <small>Accessible box path</small>
+        </button>
+        <button class="p10-ip-mlp__filter" type="button" data-mlp-filter="moon" data-mlp-scope="sealed-cards" data-kicker="Moon / T4" data-title="Moon Edition" data-copy="Browse Moon Edition sealed boxes and booster-style products in a focused collector path." data-url="{{ moon_url }}" data-mlp-products-url="/collections/cn-moon-edition-card-boxes/products.json?limit=24" data-mlp-search-query="KAYOU MLP Moon Edition box" aria-pressed="false">
+          <strong>Moon Edition</strong>
+          <small>Sealed box path</small>
+        </button>
+        <button class="p10-ip-mlp__filter" type="button" data-mlp-filter="rainbow" data-mlp-scope="sealed-cards" data-kicker="Rainbow / T3" data-title="Rainbow Edition" data-copy="Colorful card art and balanced chase paths for Rainbow Edition collectors." data-url="{{ rainbow_url }}" data-mlp-products-url="/collections/cn-rainbow-edition-card-boxes/products.json?limit=24" data-mlp-search-query="KAYOU MLP Rainbow Edition" aria-pressed="false">
+          <strong>Rainbow Edition</strong>
+          <small>Colorful box path</small>
+        </button>
+        <button class="p10-ip-mlp__filter" type="button" data-mlp-filter="star" data-mlp-scope="sealed-cards" data-kicker="Star / T5" data-title="Star Edition" data-copy="Premium display cards and collector boxes for the Star Edition path." data-url="{{ star_url }}" data-mlp-products-url="/collections/cn-fan-xin-edition-card-boxes/products.json?limit=24" data-mlp-search-query="KAYOU MLP Star Edition" aria-pressed="false">
+          <strong>Star Edition</strong>
+          <small>Premium box path</small>
+        </button>
+      </div>
+
+      <div class="p10-ip-mlp__sidebar-group">
+        <span>Merch by Brand</span>
+        <button class="p10-ip-mlp__filter" type="button" data-mlp-filter="reesee" data-mlp-scope="merch" data-kicker="Merch by Brand" data-title="Reesee plush and merch" data-copy="Soft goods, plush, and gift-friendly My Little Pony collectible goods." data-url="{{ reesee_filter_url }}" data-mlp-products-url="/collections/mlp-reesee/products.json?limit=24" data-mlp-search-query="Reesee MLP" aria-pressed="false">
+          <strong>Reesee plush and merch</strong>
+          <small>Soft goods and gifts</small>
+        </button>
+        <button class="p10-ip-mlp__filter" type="button" data-mlp-filter="auldey" data-mlp-scope="merch" data-kicker="Merch by Brand" data-title="AULDEY toys and dioramas" data-copy="Character toys and diorama-style collectibles grouped away from trading cards." data-url="{{ auldey_filter_url }}" data-mlp-search-query="AULDEY MLP" aria-pressed="false">
+          <strong>AULDEY toys and dioramas</strong>
+          <small>Character toys</small>
+        </button>
+        <button class="p10-ip-mlp__filter" type="button" data-mlp-filter="miniso" data-mlp-scope="merch" data-kicker="Merch by Brand" data-title="MINISO figures" data-copy="Figure and blind-box browsing for My Little Pony display collectors." data-url="{{ miniso_filter_url }}" data-mlp-search-query="MINISO MLP" aria-pressed="false">
+          <strong>MINISO figures</strong>
+          <small>Figures and blind boxes</small>
+        </button>
+        <button class="p10-ip-mlp__filter" type="button" data-mlp-filter="charms" data-mlp-scope="merch" data-kicker="Merch by Brand" data-title="Keychains and charms" data-copy="Small display goods, charms, and easy gift add-ons in the My Little Pony zone." data-url="{{ charms_url }}" data-mlp-products-url="/collections/mlp-baimao/products.json?limit=24" data-mlp-search-query="MLP charm keychain" aria-pressed="false">
+          <strong>Keychains and charms</strong>
+          <small>Small display goods</small>
+        </button>
+      </div>
+
+      <p class="p10-ip-mlp__sidebar-note">This zone is reserved for boxed products and merchandise. Single cards remain in the separate Single Cards area.</p>
+    </aside>
+
+    <div class="p10-ip-mlp__mobile-picker" data-mlp-mobile-picker>
+      <label for="{{ section_id }}-mobile-path">
+        <span>MLP path</span>
+        <strong data-mlp-mobile-current>Sealed card boxes</strong>
+      </label>
+      <select id="{{ section_id }}-mobile-path" data-mlp-mobile-select aria-label="Choose My Little Pony product path"></select>
+    </div>
+
+    <div class="p10-ip-mlp__result-stage" data-mlp-result-stage aria-live="polite">
+      <div class="p10-ip-mlp__result-head">
+        <div>
+          <p class="p10-ip-mlp__eyebrow" data-mlp-result-kicker>SEALED CARD BOXES</p>
+          <h2 data-mlp-result-title>Sealed card boxes</h2>
+          <p data-mlp-result-copy>Browse KAYOU MLP display boxes, booster-style releases, and starter decks. Merchandise and single cards stay in their own paths.</p>
+        </div>
+        <div class="p10-ip-mlp__result-actions">
+          <a href="{{ card_box_url }}" data-mlp-result-link>Browse sealed card boxes</a>
+          <span data-mlp-result-count>Showing preview items</span>
+        </div>
+      </div>
+
+      <div class="p10-ip-mlp__lane p10-ip-mlp__lane--filtered" data-mlp-results>
+      {% if card_box_collection != blank and card_box_collection.all_products_count > 0 %}
+        {% assign rendered_product_count = 0 %}
+        {% assign rendered_product_handles = '|' %}
+        {% for product in card_box_collection.products limit: 250 %}
+          {% liquid
+            assign product_image_alt = product.title
+            if product.featured_image != blank and product.featured_image.alt != blank
+              assign product_image_alt = product.featured_image.alt
+            endif
+            assign product_tags_text = product.tags | join: ' '
+            assign product_search_text = product.title | append: ' ' | append: product.handle | append: ' ' | append: product.type | append: ' ' | append: product_tags_text | downcase
+            assign product_handle_token = '|' | append: product.handle | append: '|'
+            assign product_is_mlp = false
+            assign product_is_single_card = false
+            assign product_is_merch = false
+            assign product_is_duplicate = false
+            if product_search_text contains 'mlp' or product_search_text contains 'my little pony'
+              assign product_is_mlp = true
+            endif
+            if product_search_text contains 'single card' or product_search_text contains 'single-card' or product_search_text contains 'single_card' or product_search_text contains 'card bundle' or product_search_text contains 'individual card'
+              assign product_is_single_card = true
+            endif
+            if product_search_text contains 'collectible merch' or product_search_text contains 'collector merch' or product_search_text contains 'mlp merch' or product_search_text contains 'plushies & merch' or product_search_text contains 'acrylic' or product_search_text contains 'plush' or product_search_text contains 'keychain' or product_search_text contains 'charm' or product_search_text contains 'sticker' or product_search_text contains 'figure' or product_search_text contains 'blind box'
+              assign product_is_merch = true
+            endif
+            if rendered_product_handles contains product_handle_token
+              assign product_is_duplicate = true
+            endif
+            assign filter_tokens = 'all'
+
+            if product_search_text contains 'card' or product_search_text contains 'kayou' or product_search_text contains 'ccg'
+              assign filter_tokens = filter_tokens | append: ' cards'
+            endif
+            if product_search_text contains 'box' or product_search_text contains 'booster' or product_search_text contains 'sealed' or product_search_text contains 'display'
+              assign filter_tokens = filter_tokens | append: ' card-boxes'
+            endif
+            if product_search_text contains 'fun moments' or product_search_text contains 'shadow'
+              assign filter_tokens = filter_tokens | append: ' fun-moments card-boxes cards'
+            endif
+            if product_search_text contains 'moon' or product_search_text contains 't4w'
+              assign filter_tokens = filter_tokens | append: ' moon cards'
+            endif
+            if product_search_text contains 'rainbow'
+              assign filter_tokens = filter_tokens | append: ' rainbow cards'
+            endif
+            if product_search_text contains 'star' or product_search_text contains 'fan xin' or product_search_text contains 'fanxin'
+              assign filter_tokens = filter_tokens | append: ' star cards'
+            endif
+            if product_search_text contains 'tcg'
+              assign filter_tokens = filter_tokens | append: ' tcg cards'
+            endif
+            if product_search_text contains 'reesee'
+              assign filter_tokens = filter_tokens | append: ' reesee merch'
+            endif
+            if product_search_text contains 'auldey'
+              assign filter_tokens = filter_tokens | append: ' auldey merch'
+            endif
+            if product_search_text contains 'miniso'
+              assign filter_tokens = filter_tokens | append: ' miniso merch'
+            endif
+            if product_search_text contains 'charm' or product_search_text contains 'keychain' or product_search_text contains 'baimao'
+              assign filter_tokens = filter_tokens | append: ' charms merch'
+            endif
+            if product_search_text contains 'plush' or product_search_text contains 'figure' or product_search_text contains 'blind box' or product_search_text contains 'diorama' or product_search_text contains 'toy'
+              assign filter_tokens = filter_tokens | append: ' merch'
+            endif
+          %}
+          {% if product_is_mlp and product_is_single_card == false and product_is_merch == false and product_is_duplicate == false %}
+          <article class="p10-ip-mlp__tile" data-mlp-result-card data-mlp-local-card data-mlp-filter-tags="{{ filter_tokens | strip | escape }}">
+            <a class="p10-ip-mlp__tile-image" href="{{ product.url }}" aria-label="{{ product.title | escape }}">
+              {% if product.featured_image != blank %}
+                {{
+                  product.featured_image
+                  | image_url: width: 520
+                  | image_tag:
+                    loading: 'lazy',
+                    widths: '220, 320, 420, 520',
+                    sizes: '(min-width: 990px) 18vw, 44vw',
+                    alt: product_image_alt,
+                    class: 'p10-ip-mlp__tile-img'
+                }}
+              {% else %}
+                <img
+                  src="{{ 'p10-ip-my-little-pony.webp' | asset_url }}"
+                  alt="{{ product.title | escape }}"
+                  width="520"
+                  height="520"
+                  loading="lazy"
+                  decoding="async"
+                  class="p10-ip-mlp__tile-img"
+                >
+              {% endif %}
+            </a>
+            <div class="p10-ip-mlp__tile-body">
+              <h3>{{ product.title | escape }}</h3>
+              <div class="p10-ip-mlp__tile-meta">
+                <span>{{ product.variants.size }} option{% unless product.variants.size == 1 %}s{% endunless %}</span>
+                <span>{{ product.price_min | money }}</span>
+              </div>
+            </div>
+          </article>
+          {% assign rendered_product_handles = rendered_product_handles | append: product.handle | append: '|' %}
+          {% assign rendered_product_count = rendered_product_count | plus: 1 %}
+          {% if rendered_product_count >= 24 %}{% break %}{% endif %}
+          {% endif %}
+        {% endfor %}
+      {% else %}
+        <article class="p10-ip-mlp__empty">
+          <strong>My Little Pony collection connected</strong>
+          <span>Products will appear here when the collection is available in this theme preview.</span>
+        </article>
+        {% endif %}
+        <div class="p10-ip-mlp__selection-empty" data-mlp-empty hidden>
+          <strong>No preview item matched this filter yet.</strong>
+          <span>Use the full collection link above to browse the complete live path for this category.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="p10-ip-mlp__guide-band" aria-label="Collector guide shortcuts" data-mlp-reveal>
+    <div>
+      <p class="p10-ip-mlp__eyebrow">Collector guide</p>
+      <h2>Choose by format first</h2>
+    </div>
+    <div class="p10-ip-mlp__guide-grid">
+      <a href="{{ guide_url }}">
+        <span>Shipping notes</span>
+        <strong>Card protection and buying confidence</strong>
+      </a>
+      <a href="/pages/mlp-t4">
+        <span>Moon guide</span>
+        <strong>Visual references for Moon Edition collectors</strong>
+      </a>
+      <a href="/pages/mlp-t3">
+        <span>Rainbow guide</span>
+        <strong>Series browsing before choosing a product</strong>
+      </a>
+    </div>
+  </div>
+
+  <div class="p10-ip-mlp__buyer-note" data-mlp-reveal>
+    <strong>Buyer note</strong>
+    <span>Random sealed products vary by pack or box. Card selection, characters, and rarity are not guaranteed unless a product page states it directly.</span>
+  </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+<script>
+  (() => {
+    const rootId = {{ section_id | json }};
+
+    function initMlpFilters() {
+      const root = document.getElementById(rootId);
+      if (!root || root.p10MlpFilterReady) return;
+
+      const buttons = Array.from(root.querySelectorAll('[data-mlp-filter]'));
+      const localCards = Array.from(root.querySelectorAll('[data-mlp-local-card]'));
+      const resultGrid = root.querySelector('[data-mlp-results]');
+      const resultStage = root.querySelector('[data-mlp-result-stage]');
+      const kicker = root.querySelector('[data-mlp-result-kicker]');
+      const title = root.querySelector('[data-mlp-result-title]');
+      const copy = root.querySelector('[data-mlp-result-copy]');
+      const link = root.querySelector('[data-mlp-result-link]');
+      const count = root.querySelector('[data-mlp-result-count]');
+      const empty = root.querySelector('[data-mlp-empty]');
+      const mobileSelect = root.querySelector('[data-mlp-mobile-select]');
+      const mobileCurrent = root.querySelector('[data-mlp-mobile-current]');
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const fallbackImage = {{ 'p10-ip-my-little-pony.webp' | asset_url | json }};
+      const remoteCache = new Map();
+
+      if (!buttons.length || !resultStage || !resultGrid) return;
+      root.p10MlpFilterReady = true;
+
+      const cardMatches = (card, filter) => {
+        if (filter === 'all') return true;
+        return (card.dataset.mlpFilterTags || '').split(/\s+/).includes(filter);
+      };
+
+      const escapeHtml = (value) => String(value || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+
+      const money = (value) => {
+        const amount = Number.parseFloat(String(value || '').replace(/[^\d.]/g, ''));
+        if (!Number.isFinite(amount) || amount <= 0) return '';
+        return `$${amount.toFixed(2)}`;
+      };
+
+      const cleanProductUrl = (product) => {
+        if (product.url) return String(product.url).split('?')[0];
+        if (product.handle) return `/products/${product.handle}`;
+        return '#';
+      };
+
+      const normaliseTags = (tags) => Array.isArray(tags)
+        ? tags
+        : String(tags || '').split(',').map((tag) => tag.trim()).filter(Boolean);
+
+      const normaliseCollectionProduct = (product) => ({
+        title: product.title || '',
+        handle: product.handle || '',
+        url: cleanProductUrl(product),
+        image: product.images?.[0]?.src || product.featured_image || fallbackImage,
+        imageAlt: product.images?.[0]?.alt || product.title || 'My Little Pony product',
+        optionCount: product.variants?.length || 1,
+        price: money(product.variants?.[0]?.price || product.price_min || product.price),
+        tags: normaliseTags(product.tags),
+        productType: product.product_type || product.type || ''
+      });
+
+      const normaliseSearchProduct = (product) => ({
+        title: product.title || '',
+        handle: product.handle || '',
+        url: cleanProductUrl(product),
+        image: product.featured_image?.url || product.image || fallbackImage,
+        imageAlt: product.featured_image?.alt || product.title || 'My Little Pony product',
+        optionCount: product.variants?.length || 1,
+        price: money(product.price_min || product.price),
+        tags: normaliseTags(product.tags),
+        productType: product.product_type || product.type || ''
+      });
+
+      const productLooksMlp = (product) => {
+        const text = `${product.title || ''} ${product.handle || ''} ${product.productType || ''} ${(product.tags || []).join(' ')}`.toLowerCase();
+        return text.includes('mlp') || text.includes('my little pony');
+      };
+
+      const productIsSingleCard = (product) => {
+        const text = `${product.title || ''} ${product.handle || ''} ${product.productType || ''} ${(product.tags || []).join(' ')}`.toLowerCase();
+        return text.includes('single card')
+          || text.includes('single-card')
+          || text.includes('single_card')
+          || text.includes('card bundle')
+          || text.includes('individual card');
+      };
+
+      const productIsMerch = (product) => {
+        const text = `${product.title || ''} ${product.handle || ''} ${product.productType || ''} ${(product.tags || []).join(' ')}`.toLowerCase();
+        return text.includes('collectible merch')
+          || text.includes('collector merch')
+          || text.includes('mlp merch')
+          || text.includes('plushies & merch')
+          || text.includes('acrylic')
+          || text.includes('plush')
+          || text.includes('keychain')
+          || text.includes('charm')
+          || text.includes('sticker')
+          || text.includes('figure')
+          || text.includes('blind box')
+          || text.includes('diorama')
+          || text.includes('display goods');
+      };
+
+      const productIsSealedCardProduct = (product) => {
+        if (productIsSingleCard(product) || productIsMerch(product)) return false;
+        const text = `${product.title || ''} ${product.handle || ''} ${product.productType || ''} ${(product.tags || []).join(' ')}`.toLowerCase();
+        return text.includes('trading cards')
+          || text.includes('trading card box')
+          || text.includes('card packs')
+          || text.includes('booster box')
+          || text.includes('starter deck')
+          || text.includes('sealed card')
+          || text.includes('mlp card box')
+          || text.includes('ccg cards')
+          || text.includes('tcg cards');
+      };
+
+      const productMatchesScope = (product, scope) => {
+        if (scope === 'sealed-cards') return productIsSealedCardProduct(product);
+        if (scope === 'merch') return productIsMerch(product) && !productIsSealedCardProduct(product);
+        return true;
+      };
+
+      const fetchRemoteProducts = async (button) => {
+        const cacheKey = [
+          button.dataset.mlpFilter || '',
+          button.dataset.mlpScope || '',
+          button.dataset.mlpProductsUrl || '',
+          button.dataset.mlpSearchQuery || ''
+        ].join('|');
+        if (remoteCache.has(cacheKey)) return remoteCache.get(cacheKey);
+
+        let products = [];
+        const productUrls = String(button.dataset.mlpProductsUrl || '')
+          .split('||')
+          .map((url) => url.trim())
+          .filter(Boolean);
+        if (productUrls.length) {
+          const productGroups = await Promise.all(productUrls.map(async (productsUrl) => {
+            try {
+              const response = await fetch(productsUrl, { headers: { Accept: 'application/json' } });
+              if (!response.ok) return [];
+              const data = await response.json();
+              return (data.products || []).map(normaliseCollectionProduct);
+            } catch (error) {
+              console.warn('MLP category collection fetch failed', productsUrl, error);
+              return [];
+            }
+          }));
+          const longestGroup = Math.max(0, ...productGroups.map((group) => group.length));
+          for (let productIndex = 0; productIndex < longestGroup; productIndex += 1) {
+            productGroups.forEach((group) => {
+              if (group[productIndex]) products.push(group[productIndex]);
+            });
+          }
+        }
+
+        const searchQuery = button.dataset.mlpSearchQuery;
+        if (!products.length && searchQuery) {
+          try {
+            const suggestUrl = `/search/suggest.json?q=${encodeURIComponent(searchQuery)}&resources[type]=product&resources[limit]=24&resources[options][unavailable_products]=last&resources[options][fields]=title,tag,product_type,variants.title,vendor`;
+            const response = await fetch(suggestUrl, { headers: { Accept: 'application/json' } });
+            if (response.ok) {
+              const data = await response.json();
+              products = (data.resources?.results?.products || [])
+                .map(normaliseSearchProduct)
+                .filter((product) => product.title);
+            }
+          } catch (error) {
+            console.warn('MLP category search fetch failed', error);
+          }
+        }
+
+        const seenProductUrls = new Set();
+        const productScope = button.dataset.mlpScope || '';
+        products = products
+          .filter((product) => product.title && productLooksMlp(product) && !productIsSingleCard(product))
+          .filter((product) => productMatchesScope(product, productScope))
+          .filter((product) => {
+            const key = product.url || product.handle || product.title;
+            if (seenProductUrls.has(key)) return false;
+            seenProductUrls.add(key);
+            return true;
+          })
+          .slice(0, 24);
+        remoteCache.set(cacheKey, products);
+        return products;
+      };
+
+      const renderRemoteCard = (product, filter) => `
+        <article class="p10-ip-mlp__tile" data-mlp-result-card data-mlp-remote-card data-mlp-remote-filter="${escapeHtml(filter)}" data-mlp-filter-tags="${escapeHtml(filter)}">
+          <a class="p10-ip-mlp__tile-image" href="${escapeHtml(product.url)}" aria-label="${escapeHtml(product.title)}">
+            <img
+              src="${escapeHtml(product.image || fallbackImage)}"
+              alt="${escapeHtml(product.imageAlt || product.title)}"
+              width="520"
+              height="520"
+              loading="lazy"
+              decoding="async"
+              class="p10-ip-mlp__tile-img"
+            >
+          </a>
+          <div class="p10-ip-mlp__tile-body">
+            <h3>${escapeHtml(product.title)}</h3>
+            <div class="p10-ip-mlp__tile-meta">
+              <span>${product.optionCount || 1} option${product.optionCount === 1 ? '' : 's'}</span>
+              <span>${escapeHtml(product.price || '')}</span>
+            </div>
+          </div>
+        </article>
+      `;
+
+      const animateSelection = (visibleCards) => {
+        if (!window.gsap || reduceMotion.matches) return;
+        const gsap = window.gsap;
+        const cards = gsap.utils.toArray(visibleCards).slice(0, 12);
+        const yByGrid = gsap.utils.distribute({ base: 10, amount: 12, from: 'center' });
+        gsap.fromTo(
+          resultStage,
+          { y: 8, autoAlpha: 0.88 },
+          { y: 0, autoAlpha: 1, duration: 0.24, ease: 'power2.out', overwrite: true }
+        );
+        if (cards.length) {
+          gsap.fromTo(
+            cards,
+            { y: (index, target, targets) => yByGrid(index, target, targets), scale: 0.975, autoAlpha: 0 },
+            { y: 0, scale: 1, autoAlpha: 1, duration: 0.36, stagger: { each: 0.028, from: 'center' }, ease: 'power2.out', overwrite: true }
+          );
+        }
+      };
+
+      const setVisibleCards = (visibleCards, filter, animate) => {
+        if (empty) empty.hidden = visibleCards.length > 0;
+        if (count) {
+          count.textContent = visibleCards.length
+            ? `${visibleCards.length} shown on this page`
+            : 'Open full collection for this path';
+        }
+        root.dataset.mlpActiveFilter = filter;
+        if (animate) animateSelection(visibleCards);
+      };
+
+      const buildMobileSelect = () => {
+        if (!mobileSelect || mobileSelect.options.length) return;
+        const groups = Array.from(root.querySelectorAll('.p10-ip-mlp__sidebar-group'));
+        groups.forEach((group) => {
+          const groupLabel = group.querySelector(':scope > span')?.textContent?.trim() || 'MLP paths';
+          const optgroup = document.createElement('optgroup');
+          optgroup.label = groupLabel;
+
+          Array.from(group.querySelectorAll('.p10-ip-mlp__filter')).forEach((button) => {
+            const option = document.createElement('option');
+            option.value = button.dataset.mlpFilter || '';
+            option.textContent = button.querySelector('strong')?.textContent?.trim() || button.textContent.trim();
+            optgroup.appendChild(option);
+          });
+
+          if (optgroup.children.length) mobileSelect.appendChild(optgroup);
+        });
+      };
+
+      const applyFilter = async (sourceButton, animate = true) => {
+        const filter = sourceButton.dataset.mlpFilter || 'all';
+        buttons.forEach((button) => {
+          const active = button.dataset.mlpFilter === filter;
+          button.classList.toggle('is-active', active);
+          button.setAttribute('aria-pressed', active ? 'true' : 'false');
+        });
+
+        if (kicker) kicker.textContent = sourceButton.dataset.kicker || sourceButton.textContent.trim();
+        if (title) title.textContent = sourceButton.dataset.title || sourceButton.textContent.trim();
+        if (copy) copy.textContent = sourceButton.dataset.copy || '';
+        if (link) {
+          link.textContent = sourceButton.dataset.linkLabel || 'Open full collection';
+          link.hidden = !sourceButton.dataset.url;
+          if (sourceButton.dataset.url) link.setAttribute('href', sourceButton.dataset.url);
+        }
+        if (mobileSelect && Array.from(mobileSelect.options).some((option) => option.value === filter)) {
+          mobileSelect.value = filter;
+        }
+        if (mobileCurrent) {
+          mobileCurrent.textContent = sourceButton.querySelector('strong')?.textContent?.trim() || sourceButton.textContent.trim();
+        }
+
+        const usesRemoteSource = Boolean(sourceButton.dataset.mlpProductsUrl || sourceButton.dataset.mlpSearchQuery);
+
+        if (usesRemoteSource) {
+          if (count) count.textContent = 'Loading products...';
+          if (empty) empty.hidden = true;
+          Array.from(root.querySelectorAll('[data-mlp-result-card]')).forEach((card) => {
+            card.hidden = true;
+            card.classList.add('is-filtered-out');
+          });
+
+          const products = await fetchRemoteProducts(sourceButton);
+          if (!products.length && filter === 'all') {
+            const visibleCards = [];
+            localCards.forEach((card) => {
+              card.hidden = false;
+              card.classList.remove('is-filtered-out');
+              visibleCards.push(card);
+            });
+            setVisibleCards(visibleCards, filter, animate);
+            return;
+          }
+          const existingRemote = Array.from(root.querySelectorAll('[data-mlp-remote-card]'))
+            .filter((card) => card.dataset.mlpRemoteFilter === filter);
+          if (!existingRemote.length && products.length) {
+            empty.insertAdjacentHTML('beforebegin', products.map((product) => renderRemoteCard(product, filter)).join(''));
+          }
+
+          const visibleCards = [];
+          Array.from(root.querySelectorAll('[data-mlp-result-card]')).forEach((card) => {
+            const visible = card.dataset.mlpRemoteFilter === filter;
+            card.hidden = !visible;
+            card.classList.toggle('is-filtered-out', !visible);
+            if (visible) visibleCards.push(card);
+          });
+          setVisibleCards(visibleCards, filter, animate);
+          return;
+        }
+
+        const visibleCards = [];
+        Array.from(root.querySelectorAll('[data-mlp-remote-card]')).forEach((card) => {
+          card.hidden = true;
+          card.classList.add('is-filtered-out');
+        });
+        localCards.forEach((card) => {
+          const visible = cardMatches(card, filter);
+          card.hidden = !visible;
+          card.classList.toggle('is-filtered-out', !visible);
+          if (visible) visibleCards.push(card);
+        });
+
+        setVisibleCards(visibleCards, filter, animate);
+      };
+
+      buttons.forEach((button) => {
+        button.addEventListener('click', () => {
+          applyFilter(button);
+        });
+      });
+
+      buildMobileSelect();
+      if (mobileSelect) {
+        mobileSelect.addEventListener('change', () => {
+          const selected = mobileSelect.value;
+          const source = Array.from(root.querySelectorAll('.p10-ip-mlp__sidebar [data-mlp-filter]'))
+            .find((button) => button.dataset.mlpFilter === selected);
+          if (source) applyFilter(source);
+        });
+      }
+
+      applyFilter(buttons.find((button) => button.classList.contains('is-active')) || buttons[0], false);
+    }
+
+    function initMlpMotion() {
+      const root = document.getElementById(rootId);
+      if (!root || !window.gsap) return;
+
+      const gsap = window.gsap;
+      const ScrollTrigger = window.ScrollTrigger;
+      if (ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
+
+      if (root.p10MlpMotion && typeof root.p10MlpMotion.revert === 'function') {
+        root.p10MlpMotion.revert();
+      }
+
+      const mm = gsap.matchMedia();
+      root.p10MlpMotion = mm;
+
+      mm.add(
+        {
+          isDesktop: '(min-width: 990px)',
+          reduceMotion: '(prefers-reduced-motion: reduce)'
+        },
+        (context) => {
+          const reduceMotion = context.conditions.reduceMotion;
+          const heroItems = root.querySelectorAll('[data-mlp-hero-item]');
+          const heroCards = root.querySelectorAll('.p10-ip-mlp__hero-product');
+          const revealItems = root.querySelectorAll('[data-mlp-reveal]');
+          const skyBands = root.querySelectorAll('.p10-ip-mlp__sky-band');
+          const stickers = root.querySelectorAll('.p10-ip-mlp__sticker');
+          const productTiles = root.querySelectorAll('.p10-ip-mlp__tile');
+          const introTargets = [...heroItems, ...heroCards, ...revealItems];
+
+          gsap.set(introTargets, { autoAlpha: 1 });
+          if (reduceMotion) return;
+
+          const heroItemArray = gsap.utils.toArray(heroItems);
+          const heroCardArray = gsap.utils.toArray(heroCards);
+          const introLift = gsap.utils.distribute({ base: 14, amount: 14, from: 'start' });
+          const intro = gsap.timeline({ defaults: { duration: 0.68, ease: 'power3.out' } });
+          intro
+            .addLabel('copy')
+            .fromTo(heroItemArray, { y: (index, target, targets) => introLift(index, target, targets), autoAlpha: 0 }, { y: 0, autoAlpha: 1, stagger: 0.075 }, 'copy')
+            .addLabel('cards', '<0.18')
+            .fromTo(heroCardArray, { y: 28, rotation: (index) => (index % 2 ? 1.8 : -1.8), scale: 0.95, autoAlpha: 0 }, { y: 0, rotation: 0, scale: 1, autoAlpha: 1, stagger: 0.07 }, 'cards')
+            .fromTo(stickers, { y: 10, rotation: -4, autoAlpha: 0 }, { y: 0, rotation: 0, autoAlpha: 0.5, stagger: 0.08 }, '<0.08');
+
+          if (ScrollTrigger) {
+            ScrollTrigger.batch(revealItems, {
+              start: 'top 86%',
+              once: true,
+              onEnter: (batch) => {
+                gsap.fromTo(
+                  batch,
+                  { y: 24, autoAlpha: 0 },
+                  { y: 0, autoAlpha: 1, duration: 0.58, stagger: { each: 0.06, from: 'start' }, ease: 'power2.out', overwrite: true }
+                );
+              }
+            });
+
+            ScrollTrigger.batch(productTiles, {
+              start: 'top 92%',
+              once: true,
+              interval: 0.08,
+              batchMax: () => (context.conditions.isDesktop ? 6 : 4),
+              onEnter: (batch) => {
+                gsap.fromTo(
+                  batch,
+                  { y: 18, scale: 0.985, autoAlpha: 0 },
+                  { y: 0, scale: 1, autoAlpha: 1, duration: 0.34, stagger: { each: 0.035, from: 'start' }, ease: 'power2.out', overwrite: true }
+                );
+              }
+            });
+
+            if (context.conditions.isDesktop) {
+              gsap.to(skyBands, {
+                x: (index) => (index % 2 === 0 ? 24 : -24),
+                ease: 'none',
+                scrollTrigger: {
+                  trigger: root,
+                  start: 'top bottom',
+                  end: 'bottom top',
+                  scrub: 1
+                }
+              });
+
+              gsap.to(stickers, {
+                y: (index) => (index % 2 === 0 ? -28 : 22),
+                rotation: (index) => (index % 2 === 0 ? 7 : -5),
+                ease: 'none',
+                scrollTrigger: {
+                  trigger: root,
+                  start: 'top bottom',
+                  end: 'bottom top',
+                  scrub: 1.2
+                }
+              });
+            }
+          }
+        }
+      );
+    }
+
+    function initMlpPage() {
+      initMlpFilters();
+      initMlpMotion();
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initMlpPage, { once: true });
+    } else {
+      initMlpPage();
+    }
+
+    window.addEventListener('load', initMlpPage, { once: true });
+    document.addEventListener('shopify:section:load', (event) => {
+      if (event.target && event.target.querySelector && event.target.querySelector('[data-p10-ip-mlp]')) {
+        initMlpPage();
+      }
+    });
+  })();
+</script>
+
+{% stylesheet %}
+  .p10-ip-mlp {
+    --p10-mlp-ink: #201936;
+    --p10-mlp-muted: #6f677d;
+    --p10-mlp-line: rgba(32,25,54,0.12);
+    --p10-mlp-gold: #d49a25;
+    --p10-mlp-pink: #e85d9f;
+    --p10-mlp-sky: #55a8df;
+    --p10-mlp-mint: #58c7a9;
+    --p10-mlp-violet: #8b72d9;
+    --p10-mlp-rose: #ff8fc7;
+    --p10-mlp-cream: #fff4d8;
+    --p10-mlp-paper: #fffdf7;
+    --p10-mlp-shadow: 0 24px 70px rgba(32,25,54,0.13);
+    --p10-mlp-soft-shadow: 0 14px 34px rgba(32,25,54,0.08);
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    padding: 32px 0 84px;
+    background:
+      linear-gradient(180deg, rgba(255,248,253,0.96) 0%, rgba(244,251,255,0.98) 38%, rgba(255,253,244,0.96) 100%),
+      repeating-linear-gradient(135deg, rgba(232,93,159,0.045) 0 1px, transparent 1px 18px),
+      repeating-linear-gradient(45deg, rgba(85,168,223,0.035) 0 1px, transparent 1px 22px);
+    color: var(--p10-mlp-ink);
+  }
+
+  .p10-ip-mlp::before {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.42) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.36) 1px, transparent 1px);
+    background-size: 72px 72px;
+    mask-image: linear-gradient(180deg, rgba(0,0,0,0.48), rgba(0,0,0,0.06) 62%, transparent);
+    content: "";
+  }
+
+  .p10-ip-mlp *,
+  .p10-ip-mlp *::before,
+  .p10-ip-mlp *::after {
+    box-sizing: border-box;
+  }
+
+  .p10-ip-mlp a {
+    color: inherit;
+  }
+
+  .p10-ip-mlp__anchor {
+    position: absolute;
+    top: 0;
+  }
+
+  .p10-ip-mlp__sky {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .p10-ip-mlp__sky-band,
+  .p10-ip-mlp__spark,
+  .p10-ip-mlp__sticker {
+    position: absolute;
+    display: block;
+  }
+
+  .p10-ip-mlp__sky-band {
+    left: 0;
+    width: 100%;
+    border-radius: 999px;
+    opacity: 0.58;
+  }
+
+  .p10-ip-mlp__sky-band:nth-child(1) {
+    top: 132px;
+    height: 18px;
+    background: linear-gradient(90deg, transparent 0 8%, rgba(232,93,159,0.44), rgba(212,154,37,0.36), rgba(88,199,169,0.34), rgba(85,168,223,0.36), transparent 92% );
+  }
+
+  .p10-ip-mlp__sky-band:nth-child(2) {
+    top: 164px;
+    height: 12px;
+    background: linear-gradient(90deg, transparent 0 18%, rgba(139,114,217,0.28), rgba(85,168,223,0.28), rgba(232,93,159,0.28), transparent 82% );
+  }
+
+  .p10-ip-mlp__sky-band:nth-child(3) {
+    bottom: 74px;
+    height: 16px;
+    background: linear-gradient(90deg, transparent 0 14%, rgba(88,199,169,0.22), rgba(212,154,37,0.2), rgba(232,93,159,0.22), transparent 88% );
+  }
+
+  .p10-ip-mlp__spark {
+    width: 26px;
+    height: 26px;
+    background: rgba(232,93,159,0.28);
+    clip-path: polygon(50% 0, 62% 34%, 98% 34%, 68% 55%, 80% 92%, 50% 70%, 20% 92%, 32% 55%, 2% 34%, 38% 34%);
+    animation: p10-mlp-spark 4.8s ease-in-out infinite alternate;
+  }
+
+  .p10-ip-mlp__spark:nth-child(4) {
+    top: 92px;
+    left: 8%;
+  }
+
+  .p10-ip-mlp__spark:nth-child(5) {
+    top: 420px;
+    right: 10%;
+    width: 20px;
+    height: 20px;
+    background: rgba(85,168,223,0.28);
+    animation-duration: 5.6s;
+  }
+
+  .p10-ip-mlp__spark:nth-child(6) {
+    bottom: 210px;
+    left: 18%;
+    width: 22px;
+    height: 22px;
+    background: rgba(212,154,37,0.3);
+    animation-duration: 5.2s;
+  }
+
+  .p10-ip-mlp__sticker {
+    border: 1px solid rgba(255,255,255,0.74);
+    opacity: 0.5;
+    filter: drop-shadow(0 12px 22px rgba(32,25,54,0.08));
+    will-change: transform;
+  }
+
+  .p10-ip-mlp__sticker--moon {
+    top: 244px;
+    right: 6%;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background:
+      linear-gradient(135deg, transparent 46%, rgba(255,255,255,0.78) 47% 53%, transparent 54%),
+      linear-gradient(145deg, #fff6bf, #ffd8ef 68%, #dfefff);
+  }
+
+  .p10-ip-mlp__sticker--rainbow {
+    bottom: 310px;
+    left: 5%;
+    width: 96px;
+    height: 52px;
+    border-radius: 52px 52px 8px 8px;
+    background:
+      linear-gradient(#fffaf0, #fffaf0) padding-box,
+      linear-gradient(90deg, var(--p10-mlp-pink), var(--p10-mlp-gold), var(--p10-mlp-mint), var(--p10-mlp-sky), var(--p10-mlp-violet)) border-box;
+    border-width: 8px;
+  }
+
+  @keyframes p10-mlp-spark {
+    from { scale: 0.92; opacity: 0.4; }
+    to { scale: 1.08; opacity: 0.82; }
+  }
+
+  .p10-ip-mlp__nav,
+  .p10-ip-mlp__hero,
+  .p10-ip-mlp__browser,
+  .p10-ip-mlp__products,
+  .p10-ip-mlp__guide-band,
+  .p10-ip-mlp__buyer-note {
+    position: relative;
+    z-index: 1;
+    width: min(100% - 48px, 1280px);
+    margin: 0 auto;
+  }
+
+  .p10-ip-mlp__nav {
+    padding-bottom: 36px;
+  }
+
+  .p10-ip-mlp__back {
+    display: inline-flex;
+    min-height: 36px;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 16px;
+    border: 1px solid var(--p10-mlp-line);
+    border-radius: 999px;
+    background: rgba(255,255,255,0.88);
+    color: var(--p10-mlp-ink);
+    font-size: 11px;
+    font-weight: 900;
+    line-height: 1;
+    text-decoration: none;
+    text-transform: uppercase;
+    box-shadow: var(--p10-mlp-soft-shadow);
+    transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+  }
+
+  .p10-ip-mlp__back:hover,
+  .p10-ip-mlp__back:focus-visible {
+    border-color: rgba(232,93,159,0.36);
+    background: #fff;
+    transform: translateY(-2px);
+  }
+
+  .p10-ip-mlp__hero {
+    display: grid;
+    grid-template-columns: minmax(340px, 0.96fr) minmax(390px, 0.86fr);
+    gap: clamp(28px, 5vw, 72px);
+    align-items: center;
+    min-height: 560px;
+  }
+
+  .p10-ip-mlp__hero-copy {
+    position: relative;
+    display: grid;
+    gap: 18px;
+    max-width: 700px;
+  }
+
+  .p10-ip-mlp__hero-copy::before {
+    position: absolute;
+    left: -22px;
+    top: 4px;
+    width: 7px;
+    height: min(100%, 360px);
+    border-radius: 999px;
+    background: linear-gradient(180deg, var(--p10-mlp-pink), var(--p10-mlp-gold), var(--p10-mlp-mint), var(--p10-mlp-sky), var(--p10-mlp-violet));
+    box-shadow: 0 0 0 6px rgba(255,255,255,0.58);
+    content: "";
+  }
+
+  .p10-ip-mlp__eyebrow {
+    margin: 0;
+    color: var(--p10-mlp-gold);
+    font-size: 10px;
+    font-weight: 950;
+    letter-spacing: 0;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  .p10-ip-mlp__heading {
+    margin: 0;
+    color: transparent;
+    background: linear-gradient(105deg, var(--p10-mlp-ink) 0 42%, var(--p10-mlp-pink) 54%, var(--p10-mlp-violet) 78%, var(--p10-mlp-ink) 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    font-size: clamp(52px, 6.7vw, 92px);
+    font-weight: 950;
+    letter-spacing: 0;
+    line-height: 0.96;
+  }
+
+  .p10-ip-mlp__subheading {
+    max-width: 620px;
+    margin: 0;
+    color: var(--p10-mlp-muted);
+    font-size: 15px;
+    font-weight: 680;
+    line-height: 1.62;
+  }
+
+  .p10-ip-mlp__series-strip {
+    display: grid;
+    max-width: 620px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .p10-ip-mlp__series-strip span {
+    display: grid;
+    min-height: 58px;
+    align-content: center;
+    gap: 4px;
+    padding: 10px 12px;
+    border: 1px solid rgba(32,25,54,0.1);
+    border-radius: 12px;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,249,254,0.86)),
+      linear-gradient(90deg, rgba(232,93,159,0.14), rgba(85,168,223,0.1));
+    box-shadow: var(--p10-mlp-soft-shadow);
+    color: var(--p10-mlp-gold);
+    font-size: 10px;
+    font-weight: 950;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .p10-ip-mlp__series-strip b {
+    color: var(--p10-mlp-ink);
+    font-size: 13px;
+    line-height: 1.1;
+    text-transform: none;
+  }
+
+  .p10-ip-mlp__search {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 10px;
+    max-width: 640px;
+    padding: 10px;
+    border: 1px solid rgba(232,93,159,0.18);
+    border-radius: 14px;
+    background: rgba(255,255,255,0.92);
+    box-shadow: var(--p10-mlp-shadow);
+  }
+
+  .p10-ip-mlp__search label {
+    display: inline-grid;
+    min-height: 36px;
+    place-items: center;
+    padding: 0 12px;
+    border-radius: 8px;
+    background: #fff7df;
+    color: var(--p10-mlp-gold);
+    font-size: 10px;
+    font-weight: 950;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .p10-ip-mlp__search input {
+    width: 100%;
+    min-width: 0;
+    min-height: 38px;
+    border: 0;
+    background: transparent;
+    color: var(--p10-mlp-ink);
+    font: inherit;
+    font-size: 13px;
+    font-weight: 750;
+    outline: none;
+  }
+
+  .p10-ip-mlp__search button,
+  .p10-ip-mlp__products-header a {
+    display: inline-flex;
+    min-height: 40px;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 16px;
+    border: 0;
+    border-radius: 8px;
+    background: var(--p10-mlp-ink);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 950;
+    line-height: 1;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: 0 10px 20px rgba(32,25,54,0.13);
+    transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease;
+  }
+
+  .p10-ip-mlp__search button:hover,
+  .p10-ip-mlp__search button:focus-visible,
+  .p10-ip-mlp__products-header a:hover,
+  .p10-ip-mlp__products-header a:focus-visible {
+    background: #2e2449;
+    box-shadow: 0 16px 28px rgba(32,25,54,0.18);
+    transform: translateY(-2px);
+  }
+
+  .p10-ip-mlp__quick-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    max-width: 640px;
+  }
+
+  .p10-ip-mlp__quick-links button {
+    display: inline-flex;
+    min-height: 32px;
+    align-items: center;
+    padding: 9px 12px;
+    border: 1px solid rgba(32,25,54,0.12);
+    border-radius: 999px;
+    background: rgba(255,255,255,0.88);
+    color: var(--p10-mlp-ink);
+    font-size: 11px;
+    font-weight: 900;
+    line-height: 1;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: 0 8px 16px rgba(32,25,54,0.06);
+    transition: transform 150ms ease, border-color 150ms ease, background 150ms ease, color 150ms ease;
+  }
+
+  .p10-ip-mlp__quick-links button:hover,
+  .p10-ip-mlp__quick-links button:focus-visible {
+    border-color: rgba(232,93,159,0.34);
+    background: #fff;
+    transform: translateY(-2px);
+  }
+
+  .p10-ip-mlp__quick-links button.is-active {
+    border-color: var(--p10-mlp-ink);
+    background: var(--p10-mlp-ink);
+    color: #fff;
+  }
+
+  .p10-ip-mlp__stage {
+    position: relative;
+    display: grid;
+    min-height: 430px;
+    align-content: space-between;
+    gap: 22px;
+    padding: 24px;
+    border: 1px solid rgba(32,25,54,0.12);
+    border-radius: 22px;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,0.96), rgba(255,252,247,0.91)),
+      repeating-linear-gradient(90deg, rgba(232,93,159,0.07) 0 36px, rgba(85,168,223,0.06) 36px 72px, rgba(88,199,169,0.055) 72px 108px);
+    box-shadow: var(--p10-mlp-shadow);
+  }
+
+  .p10-ip-mlp__stage::before {
+    position: absolute;
+    inset: 0 0 auto;
+    height: 7px;
+    border-radius: 18px 18px 0 0;
+    background: linear-gradient(90deg, var(--p10-mlp-pink), var(--p10-mlp-gold), var(--p10-mlp-mint), var(--p10-mlp-sky), var(--p10-mlp-violet));
+    content: "";
+  }
+
+  .p10-ip-mlp__stage::after {
+    position: absolute;
+    inset: auto 18px 92px;
+    height: 12px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, transparent, rgba(32,25,54,0.1), transparent);
+    content: "";
+  }
+
+  .p10-ip-mlp__stage-glow {
+    position: absolute;
+    inset: 8px;
+    border-radius: 18px;
+    background:
+      linear-gradient(125deg, rgba(255,255,255,0.52), transparent 34%),
+      repeating-linear-gradient(135deg, transparent 0 34px, rgba(255,255,255,0.28) 34px 36px);
+    pointer-events: none;
+  }
+
+  .p10-ip-mlp__logo-lockup {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .p10-ip-mlp__logo-lockup img {
+    display: block;
+    width: 116px;
+    height: 82px;
+    object-fit: contain;
+    padding: 10px;
+    border: 1px solid rgba(32,25,54,0.08);
+    border-radius: 18px;
+    background: rgba(255,255,255,0.88);
+    box-shadow: 0 14px 28px rgba(32,25,54,0.08);
+  }
+
+  .p10-ip-mlp__logo-lockup b,
+  .p10-ip-mlp__logo-lockup small {
+    display: block;
+  }
+
+  .p10-ip-mlp__logo-lockup b {
+    font-size: 16px;
+    font-weight: 950;
+    line-height: 1.05;
+  }
+
+  .p10-ip-mlp__logo-lockup small {
+    margin-top: 4px;
+    color: var(--p10-mlp-muted);
+    font-size: 11px;
+    font-weight: 850;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  .p10-ip-mlp__stage-badges {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .p10-ip-mlp__stage-badges span {
+    display: inline-flex;
+    min-height: 28px;
+    align-items: center;
+    padding: 7px 10px;
+    border: 1px solid rgba(32,25,54,0.1);
+    border-radius: 999px;
+    background: rgba(255,255,255,0.78);
+    color: var(--p10-mlp-ink);
+    font-size: 10px;
+    font-weight: 900;
+    line-height: 1;
+  }
+
+  .p10-ip-mlp__hero-products {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+    align-items: end;
+  }
+
+  .p10-ip-mlp__hero-product {
+    display: flex;
+    aspect-ratio: 0.72 / 1;
+    min-width: 0;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    border: 1px solid rgba(32,25,54,0.12);
+    border-radius: 14px;
+    background: rgba(255,255,255,0.9);
+    box-shadow: 0 12px 28px rgba(32,25,54,0.09);
+    text-decoration: none;
+    transform-origin: 50% 80%;
+    transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+    will-change: transform;
+  }
+
+  .p10-ip-mlp__hero-product:hover,
+  .p10-ip-mlp__hero-product:focus-visible {
+    border-color: rgba(232,93,159,0.3);
+    box-shadow: 0 18px 34px rgba(32,25,54,0.13);
+    transform: translateY(-6px) rotate(-1deg);
+  }
+
+  .p10-ip-mlp__hero-product:nth-child(2),
+  .p10-ip-mlp__hero-product:nth-child(4) {
+    translate: 0 24px;
+  }
+
+  .p10-ip-mlp__hero-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .p10-ip-mlp__section-heading {
+    margin-bottom: 18px;
+  }
+
+  .p10-ip-mlp__section-heading h2,
+  .p10-ip-mlp__products-header h2,
+  .p10-ip-mlp__guide-band h2 {
+    margin: 8px 0 0;
+    color: var(--p10-mlp-ink);
+    font-size: clamp(28px, 3vw, 44px);
+    font-weight: 950;
+    letter-spacing: 0;
+    line-height: 1;
+  }
+
+  .p10-ip-mlp__browser {
+    display: grid;
+    grid-template-columns: 280px minmax(0, 1fr);
+    gap: 24px;
+    align-items: start;
+    margin-top: 54px;
+  }
+
+  .p10-ip-mlp__sidebar {
+    position: sticky;
+    top: 24px;
+    display: grid;
+    max-height: calc(100vh - 48px);
+    overflow: auto;
+    padding: 16px;
+    border: 1px solid rgba(32,25,54,0.12);
+    border-radius: 18px;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,0.94), rgba(255,249,254,0.88)),
+      linear-gradient(90deg, rgba(232,93,159,0.08), transparent 18%);
+    box-shadow: 0 18px 42px rgba(32,25,54,0.08);
+    scrollbar-color: rgba(232,93,159,0.38) transparent;
+  }
+
+  .p10-ip-mlp__sidebar::before {
+    position: absolute;
+    inset: 12px auto 12px 0;
+    width: 5px;
+    border-radius: 999px;
+    background: linear-gradient(180deg, var(--p10-mlp-pink), var(--p10-mlp-gold), var(--p10-mlp-mint), var(--p10-mlp-sky), var(--p10-mlp-violet));
+    content: "";
+  }
+
+  .p10-ip-mlp__sidebar-head {
+    padding-bottom: 14px;
+  }
+
+  .p10-ip-mlp__sidebar-head h2,
+  .p10-ip-mlp__result-head h2 {
+    margin: 7px 0 0;
+    color: var(--p10-mlp-ink);
+    font-size: clamp(24px, 2.2vw, 34px);
+    font-weight: 950;
+    letter-spacing: 0;
+    line-height: 1;
+  }
+
+  .p10-ip-mlp__sidebar-group {
+    display: grid;
+    gap: 8px;
+    padding: 14px 0;
+    border-top: 1px solid rgba(32,25,54,0.1);
+  }
+
+  .p10-ip-mlp__sidebar-group > span,
+  .p10-ip-mlp__guide-grid span {
+    display: block;
+    color: var(--p10-mlp-gold);
+    font-size: 10px;
+    font-weight: 950;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  .p10-ip-mlp__filter {
+    --path-accent: var(--p10-mlp-pink);
+    position: relative;
+    display: grid;
+    width: 100%;
+    min-height: 58px;
+    align-content: center;
+    gap: 4px;
+    padding: 12px;
+    border: 1px solid rgba(32,25,54,0.1);
+    border-left: 4px solid transparent;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.74);
+    color: var(--p10-mlp-ink);
+    text-align: left;
+    cursor: pointer;
+    overflow: hidden;
+    transition: transform 180ms ease, border-color 180ms ease, background 180ms ease, box-shadow 180ms ease;
+  }
+
+  .p10-ip-mlp__filter::before {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 4px;
+    background: var(--path-accent);
+    opacity: 0.18;
+    content: "";
+  }
+
+  .p10-ip-mlp__filter[data-mlp-filter="moon"] {
+    --path-accent: var(--p10-mlp-sky);
+  }
+
+  .p10-ip-mlp__filter[data-mlp-filter="rainbow"] {
+    --path-accent: var(--p10-mlp-mint);
+  }
+
+  .p10-ip-mlp__filter[data-mlp-filter="star"] {
+    --path-accent: var(--p10-mlp-violet);
+  }
+
+  .p10-ip-mlp__filter[data-mlp-filter="sealed-cards"],
+  .p10-ip-mlp__filter[data-mlp-filter="chinese-cards"],
+  .p10-ip-mlp__filter[data-mlp-filter="english-cards"],
+  .p10-ip-mlp__filter[data-mlp-filter="tcg"] {
+    --path-accent: var(--p10-mlp-gold);
+  }
+
+  .p10-ip-mlp__filter[data-mlp-filter="reesee"],
+  .p10-ip-mlp__filter[data-mlp-filter="auldey"],
+  .p10-ip-mlp__filter[data-mlp-filter="miniso"],
+  .p10-ip-mlp__filter[data-mlp-filter="charms"] {
+    --path-accent: var(--p10-mlp-mint);
+  }
+
+  .p10-ip-mlp__filter:hover,
+  .p10-ip-mlp__filter:focus-visible,
+  .p10-ip-mlp__tile:hover,
+  .p10-ip-mlp__tile:focus-within {
+    border-color: rgba(32,25,54,0.2);
+    box-shadow: 0 18px 38px rgba(32,25,54,0.1);
+    transform: translateY(-3px);
+  }
+
+  .p10-ip-mlp__filter.is-active {
+    border-color: rgba(232,93,159,0.34);
+    border-left-color: var(--path-accent);
+    background:
+      linear-gradient(90deg, rgba(255,237,247,0.96), rgba(246,251,255,0.92)),
+      #fff;
+    box-shadow: 0 14px 28px rgba(232,93,159,0.12);
+  }
+
+  .p10-ip-mlp__filter.is-active::before {
+    opacity: 0.72;
+  }
+
+  .p10-ip-mlp__filter strong {
+    color: var(--p10-mlp-ink);
+    font-size: 13px;
+    font-weight: 950;
+    line-height: 1.15;
+  }
+
+  .p10-ip-mlp__filter small,
+  .p10-ip-mlp__sidebar-note {
+    color: var(--p10-mlp-muted);
+    font-size: 11px;
+    font-weight: 720;
+    line-height: 1.25;
+  }
+
+  .p10-ip-mlp__sidebar-note {
+    margin: 12px 0 0;
+  }
+
+  .p10-ip-mlp__mobile-picker {
+    display: none;
+  }
+
+  .p10-ip-mlp__result-stage {
+    position: relative;
+    display: grid;
+    gap: 18px;
+    min-width: 0;
+    padding: 24px 24px 24px 28px;
+    border: 1px solid rgba(32,25,54,0.12);
+    border-radius: 22px;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,0.94), rgba(255,251,253,0.9)),
+      repeating-linear-gradient(90deg, rgba(32,25,54,0.035) 0 1px, transparent 1px 42px),
+      linear-gradient(90deg, rgba(232,93,159,0.08), rgba(85,168,223,0.06), rgba(88,199,169,0.06));
+    box-shadow: var(--p10-mlp-shadow);
+  }
+
+  .p10-ip-mlp__result-stage::before {
+    position: absolute;
+    inset: 20px auto 20px 12px;
+    width: 6px;
+    border-radius: 999px;
+    background: linear-gradient(180deg, var(--p10-mlp-pink), var(--p10-mlp-gold), var(--p10-mlp-sky));
+    content: "";
+  }
+
+  .p10-ip-mlp__result-head {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 18px;
+    align-items: end;
+  }
+
+  .p10-ip-mlp__result-head p[data-mlp-result-copy] {
+    max-width: 720px;
+    margin: 10px 0 0;
+    color: var(--p10-mlp-muted);
+    font-size: 13px;
+    font-weight: 680;
+    line-height: 1.55;
+  }
+
+  .p10-ip-mlp__result-actions {
+    display: grid;
+    justify-items: end;
+    gap: 8px;
+  }
+
+  .p10-ip-mlp__result-actions a {
+    display: inline-flex;
+    min-height: 40px;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 16px;
+    border-radius: 8px;
+    background: var(--p10-mlp-ink);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 950;
+    line-height: 1;
+    text-decoration: none;
+    box-shadow: 0 10px 20px rgba(32,25,54,0.13);
+    transition: transform 160ms ease, background 160ms ease, box-shadow 160ms ease;
+  }
+
+  .p10-ip-mlp__result-actions a:hover,
+  .p10-ip-mlp__result-actions a:focus-visible {
+    background: #2e2449;
+    box-shadow: 0 16px 28px rgba(32,25,54,0.18);
+    transform: translateY(-2px);
+  }
+
+  .p10-ip-mlp__result-actions span {
+    color: var(--p10-mlp-gold);
+    font-size: 11px;
+    font-weight: 900;
+    line-height: 1.2;
+  }
+
+  .p10-ip-mlp__selection-empty {
+    display: grid;
+    grid-column: 1 / -1;
+    gap: 8px;
+    padding: 22px;
+    border: 1px solid rgba(32,25,54,0.12);
+    border-radius: 14px;
+    background: rgba(255,255,255,0.82);
+  }
+
+  .p10-ip-mlp__selection-empty[hidden],
+  .p10-ip-mlp__tile[hidden] {
+    display: none !important;
+  }
+
+  .p10-ip-mlp__selection-empty strong {
+    color: var(--p10-mlp-ink);
+    font-size: 15px;
+    font-weight: 950;
+    line-height: 1.2;
+  }
+
+  .p10-ip-mlp__selection-empty span {
+    color: var(--p10-mlp-muted);
+    font-size: 12px;
+    font-weight: 720;
+    line-height: 1.35;
+  }
+
+  .p10-ip-mlp__products {
+    margin-top: 74px;
+  }
+
+  .p10-ip-mlp__products-header,
+  .p10-ip-mlp__guide-band {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+  }
+
+  .p10-ip-mlp__products-header {
+    margin-bottom: 18px;
+  }
+
+  .p10-ip-mlp__lane {
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 14px !important;
+  }
+
+  .p10-ip-mlp__lane.p10-ip-mlp__lane--filtered {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+
+  .p10-ip-mlp__tile,
+  .p10-ip-mlp__empty {
+    position: relative;
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    flex: none !important;
+    overflow: hidden;
+    border: 1px solid rgba(32,25,54,0.1);
+    border-radius: 16px;
+    background: rgba(255,255,255,0.9);
+    box-shadow: 0 14px 34px rgba(32,25,54,0.07);
+    transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
+  }
+
+  .p10-ip-mlp__tile::before {
+    position: absolute;
+    inset: 0 0 auto;
+    height: 4px;
+    background: linear-gradient(90deg, var(--p10-mlp-pink), var(--p10-mlp-gold), var(--p10-mlp-mint), var(--p10-mlp-sky));
+    opacity: 0.62;
+    content: "";
+  }
+
+  .p10-ip-mlp__tile-image {
+    display: flex;
+    aspect-ratio: 1 / 0.72;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+    background:
+      linear-gradient(180deg, rgba(255,250,252,0.9), rgba(247,252,255,0.88)),
+      repeating-linear-gradient(135deg, transparent 0 18px, rgba(232,93,159,0.045) 18px 20px),
+      #ffffff;
+  }
+
+  .p10-ip-mlp__tile-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 10px 16px rgba(32,25,54,0.11));
+    transition: transform 220ms ease;
+  }
+
+  .p10-ip-mlp__tile:hover .p10-ip-mlp__tile-img,
+  .p10-ip-mlp__tile:focus-within .p10-ip-mlp__tile-img {
+    transform: translateY(-4px) scale(1.03);
+  }
+
+  .p10-ip-mlp__tile-body {
+    display: flex;
+    min-height: 140px;
+    flex-direction: column;
+    padding: 14px;
+  }
+
+  .p10-ip-mlp__tile-body h3 {
+    display: -webkit-box;
+    min-height: 54px;
+    margin: 0;
+    overflow: hidden;
+    color: var(--p10-mlp-ink);
+    font-size: 14px;
+    font-weight: 900;
+    line-height: 1.28;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+
+  .p10-ip-mlp__tile-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: auto;
+    padding-top: 12px;
+    color: var(--p10-mlp-gold);
+    font-size: 11px;
+    font-weight: 900;
+    line-height: 1.1;
+  }
+
+  .p10-ip-mlp__tile-meta span {
+    display: inline-flex;
+    min-height: 22px;
+    align-items: center;
+    padding: 5px 7px;
+    border-radius: 999px;
+    background: rgba(255,246,220,0.84);
+    white-space: nowrap;
+  }
+
+  .p10-ip-mlp__tile-meta span:last-child {
+    background: rgba(255,255,255,0.72);
+    color: #bd7f0b;
+  }
+
+  .p10-ip-mlp__empty {
+    grid-column: 1 / -1;
+    padding: 22px;
+  }
+
+  .p10-ip-mlp__empty strong,
+  .p10-ip-mlp__empty span {
+    display: block;
+  }
+
+  .p10-ip-mlp__empty strong {
+    color: var(--p10-mlp-ink);
+    font-size: 18px;
+    font-weight: 950;
+  }
+
+  .p10-ip-mlp__empty span {
+    margin-top: 8px;
+    color: var(--p10-mlp-muted);
+    font-size: 13px;
+    font-weight: 750;
+  }
+
+  .p10-ip-mlp__guide-band {
+    align-items: center;
+    margin-top: 74px;
+  }
+
+  .p10-ip-mlp__guide-grid {
+    display: grid;
+    width: min(58%, 660px);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .p10-ip-mlp__guide-grid a {
+    position: relative;
+    display: grid;
+    min-height: 112px;
+    align-content: space-between;
+    gap: 12px;
+    padding: 14px;
+    border: 1px solid rgba(32,25,54,0.1);
+    overflow: hidden;
+    border-radius: 16px;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,250,254,0.88)),
+      linear-gradient(90deg, rgba(232,93,159,0.08), rgba(85,168,223,0.06));
+    text-decoration: none;
+    box-shadow: var(--p10-mlp-soft-shadow);
+    transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+  }
+
+  .p10-ip-mlp__guide-grid a::before {
+    position: absolute;
+    inset: 0 0 auto;
+    height: 4px;
+    background: linear-gradient(90deg, var(--p10-mlp-gold), var(--p10-mlp-pink), var(--p10-mlp-sky));
+    content: "";
+  }
+
+  .p10-ip-mlp__guide-grid a:hover,
+  .p10-ip-mlp__guide-grid a:focus-visible {
+    border-color: rgba(232,93,159,0.25);
+    box-shadow: 0 18px 38px rgba(32,25,54,0.11);
+    transform: translateY(-3px);
+  }
+
+  .p10-ip-mlp__guide-grid strong {
+    font-size: 13px;
+    font-weight: 900;
+    line-height: 1.25;
+  }
+
+  .p10-ip-mlp__buyer-note {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    margin-top: 18px;
+    padding: 16px 18px;
+    border-left: 4px solid var(--p10-mlp-gold);
+    border-radius: 12px;
+    background: rgba(255,255,255,0.82);
+    color: var(--p10-mlp-muted);
+    font-size: 13px;
+    font-weight: 650;
+    line-height: 1.5;
+  }
+
+  .p10-ip-mlp__buyer-note strong {
+    flex: 0 0 auto;
+    color: var(--p10-mlp-ink);
+    font-size: 12px;
+    font-weight: 950;
+    text-transform: uppercase;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .p10-ip-mlp *,
+    .p10-ip-mlp *::before,
+    .p10-ip-mlp *::after {
+      animation: none !important;
+      transition: none !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  @media (max-width: 1180px) {
+    .p10-ip-mlp__browser {
+      grid-template-columns: 248px minmax(0, 1fr);
+      gap: 18px;
+    }
+
+    .p10-ip-mlp__guide-band {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .p10-ip-mlp__guide-grid {
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 989px) {
+    .p10-ip-mlp {
+      padding: 26px 0 58px;
+    }
+
+    .p10-ip-mlp__nav,
+    .p10-ip-mlp__hero,
+    .p10-ip-mlp__browser,
+    .p10-ip-mlp__products,
+    .p10-ip-mlp__guide-band,
+    .p10-ip-mlp__buyer-note {
+      width: min(100% - 32px, 900px);
+    }
+
+    .p10-ip-mlp__nav {
+      padding-bottom: 28px;
+    }
+
+    .p10-ip-mlp__hero {
+      grid-template-columns: minmax(0, 1fr);
+      min-height: 0;
+      gap: 30px;
+    }
+
+    .p10-ip-mlp__hero-copy::before {
+      left: -12px;
+      width: 5px;
+    }
+
+    .p10-ip-mlp__heading {
+      font-size: clamp(42px, 12vw, 64px);
+    }
+
+    .p10-ip-mlp__stage {
+      min-height: 360px;
+    }
+
+    .p10-ip-mlp__browser {
+      grid-template-columns: minmax(0, 1fr);
+      margin-top: 40px;
+    }
+
+    .p10-ip-mlp__sidebar {
+      display: none;
+    }
+
+    .p10-ip-mlp__mobile-picker {
+      display: grid;
+      gap: 8px;
+      padding: 12px;
+      border: 1px solid rgba(232,93,159,0.16);
+      border-radius: 14px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.94), rgba(255,249,254,0.9)),
+        linear-gradient(90deg, rgba(232,93,159,0.08), rgba(85,168,223,0.06));
+      box-shadow: 0 14px 34px rgba(32,25,54,0.07);
+    }
+
+    .p10-ip-mlp__mobile-picker label {
+      display: grid;
+      gap: 3px;
+    }
+
+    .p10-ip-mlp__mobile-picker label span {
+      color: var(--p10-mlp-gold);
+      font-size: 10px;
+      font-weight: 950;
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+
+    .p10-ip-mlp__mobile-picker label strong {
+      color: var(--p10-mlp-ink);
+      font-size: 16px;
+      font-weight: 950;
+      line-height: 1.1;
+    }
+
+    .p10-ip-mlp__mobile-picker select {
+      width: 100%;
+      min-height: 46px;
+      padding: 0 40px 0 12px;
+      border: 1px solid rgba(32,25,54,0.14);
+      border-radius: 10px;
+      background: #fff;
+      color: var(--p10-mlp-ink);
+      font: inherit;
+      font-size: 13px;
+      font-weight: 850;
+    }
+
+    .p10-ip-mlp__result-head {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .p10-ip-mlp__result-actions {
+      justify-items: start;
+    }
+
+    .p10-ip-mlp__lane {
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      gap: 10px !important;
+    }
+
+    .p10-ip-mlp__lane.p10-ip-mlp__lane--filtered {
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+
+    .p10-ip-mlp__products-header {
+      align-items: flex-start;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .p10-ip-mlp__search {
+      grid-template-columns: 1fr;
+    }
+
+    .p10-ip-mlp__search label,
+    .p10-ip-mlp__search button {
+      width: 100%;
+    }
+
+    .p10-ip-mlp__hero-products {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .p10-ip-mlp__series-strip {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 6px;
+    }
+
+    .p10-ip-mlp__series-strip span {
+      min-height: 42px;
+      padding: 7px 6px;
+      font-size: 9px;
+    }
+
+    .p10-ip-mlp__series-strip b {
+      font-size: 10px;
+    }
+
+    .p10-ip-mlp__stage {
+      min-height: 0;
+      padding: 18px;
+      border-radius: 18px;
+    }
+
+    .p10-ip-mlp__hero-product {
+      aspect-ratio: 0.86 / 1;
+      padding: 8px;
+    }
+
+    .p10-ip-mlp__stage-badges {
+      gap: 6px;
+    }
+
+    .p10-ip-mlp__stage-badges span {
+      min-height: 24px;
+      padding: 6px 8px;
+      font-size: 9px;
+    }
+
+    .p10-ip-mlp__hero-product:nth-child(2),
+    .p10-ip-mlp__hero-product:nth-child(4) {
+      translate: 0;
+    }
+
+    .p10-ip-mlp__sticker {
+      display: none;
+    }
+
+    .p10-ip-mlp__result-stage {
+      padding: 18px 14px 18px 18px;
+      border-radius: 18px;
+    }
+
+    .p10-ip-mlp__result-stage::before {
+      inset: 18px auto 18px 8px;
+      width: 4px;
+    }
+
+    .p10-ip-mlp__guide-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .p10-ip-mlp__products-header {
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .p10-ip-mlp__products-header a {
+      width: 100%;
+    }
+
+    .p10-ip-mlp__tile-image {
+      aspect-ratio: 1 / 0.62;
+      padding: 12px;
+    }
+
+    .p10-ip-mlp__tile-body {
+      min-height: 132px;
+      padding: 12px;
+    }
+
+    .p10-ip-mlp__tile-body h3 {
+      min-height: 62px;
+      font-size: 12px;
+      line-height: 1.28;
+      overflow-wrap: anywhere;
+      -webkit-line-clamp: 4;
+    }
+
+    .p10-ip-mlp__tile-meta {
+      min-height: 20px;
+      margin-top: 8px;
+      padding-top: 10px;
+      font-size: 10px;
+      gap: 4px;
+    }
+
+    .p10-ip-mlp__tile-meta span {
+      min-height: 20px;
+      padding: 4px 5px;
+    }
+
+    .p10-ip-mlp__buyer-note {
+      flex-direction: column;
+      gap: 6px;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "P10 MLP IP Lounge",
+  "tag": "section",
+  "class": "section-p10-ip-mlp",
+  "settings": [
+    {
+      "type": "collection",
+      "id": "source_collection",
+      "label": "Source collection"
+    },
+    {
+      "type": "text",
+      "id": "anchor_id",
+      "label": "Anchor ID",
+      "default": "my-little-pony-collector-zone"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "KAYOU My Little Pony collector zone"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "My Little Pony"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Shop KAYOU MLP sealed card boxes, starter decks, figures, plush, charms, and collector merch in one place."
+    },
+    {
+      "type": "url",
+      "id": "card_box_link",
+      "label": "Card box link"
+    },
+    {
+      "type": "url",
+      "id": "merch_link",
+      "label": "Merch link"
+    },
+    {
+      "type": "url",
+      "id": "tcg_link",
+      "label": "TCG link"
+    },
+    {
+      "type": "url",
+      "id": "guide_link",
+      "label": "Guide link"
+    },
+    {
+      "type": "url",
+      "id": "back_link",
+      "label": "Back link"
+    },
+    {
+      "type": "text",
+      "id": "back_label",
+      "label": "Back label",
+      "default": "Back"
+    }
+  ],
+  "presets": [
+    {
+      "name": "P10 MLP IP Lounge"
+    }
+  ]
+}
+{% endschema %}

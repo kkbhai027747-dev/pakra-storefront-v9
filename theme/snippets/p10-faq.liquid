@@ -1,0 +1,121 @@
+{% doc %}
+  Shared FAQ presentation using the existing FAQ page as its answer source.
+  @param {string} mode - home or page
+  @param {page} faq_page - Page containing the authoritative FAQ content
+  @param {string} section_id - Parent section identifier
+{% enddoc %}
+
+{% liquid
+  assign faq_mode = mode | default: 'home'
+  assign faq_source = faq_page
+  if faq_source == blank
+    if faq_mode == 'page'
+      assign faq_source = page
+    else
+      assign faq_source = pages['faq']
+    endif
+  endif
+  assign faq_heading_id = 'p10-faq-title-' | append: section_id | append: '-' | append: faq_mode
+  assign contact_url = pages['contact'].url | default: 'mailto:contact@pakracards.com'
+  assign question_ids = 'authenticity,boxes,returns,shipping,duties,packing' | split: ','
+%}
+
+{{ 'p10-faq.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'p10-faq.js' | asset_url }}" defer="defer"></script>
+
+<section class="p10-faq p10-faq--{{ faq_mode }}" data-p10-faq data-mode="{{ faq_mode }}" aria-labelledby="{{ faq_heading_id }}">
+  <div class="p10-faq__shell">
+    <header class="p10-faq__header">
+      <div>
+        {% if faq_mode == 'page' %}
+          <p class="p10-faq__eyebrow">{{ 'p10_faq.page.eyebrow' | t }}</p>
+          <h1 class="p10-faq__title" id="{{ faq_heading_id }}">{{ 'p10_faq.page.title' | t }}</h1>
+          <p class="p10-faq__intro">{{ 'p10_faq.page.intro' | t }}</p>
+        {% else %}
+          <p class="p10-faq__eyebrow">{{ 'p10_faq.home.eyebrow' | t }}</p>
+          <h2 class="p10-faq__title" id="{{ faq_heading_id }}">{{ 'p10_faq.home.title' | t }}</h2>
+        {% endif %}
+      </div>
+      {% if faq_mode == 'page' %}
+        <a class="p10-faq__link" href="{{ contact_url }}">{{ 'p10_faq.support.contact' | t }} <span aria-hidden="true">{% render 'icon-link-arrow-right' %}</span></a>
+      {% else %}
+        <a class="p10-faq__link" href="{{ faq_source.url | default: '/pages/faq' }}">{{ 'p10_faq.home.link' | t }} <span aria-hidden="true">{% render 'icon-link-arrow-right' %}</span></a>
+      {% endif %}
+    </header>
+
+    <div class="p10-faq__source rte" data-p10-faq-source>
+      {% if faq_source.content != blank %}
+        {{ faq_source.content }}
+      {% else %}
+        <p>{{ 'p10_faq.unavailable' | t }}</p>
+      {% endif %}
+    </div>
+    <div class="p10-faq__groups" data-p10-faq-groups hidden></div>
+
+    {% if faq_mode == 'page' %}
+      <aside class="p10-faq__support">
+        <h2 class="p10-faq__support-title">{{ 'p10_faq.support.title' | t }}</h2>
+        <p class="p10-faq__support-text">{{ 'p10_faq.support.text' | t }}</p>
+        <nav class="p10-faq__support-links" aria-label="{{ 'p10_faq.support.label' | t }}">
+          <a href="/policies/shipping-policy">{{ 'p10_faq.support.shipping_policy' | t }}</a>
+          <a href="/policies/refund-policy">{{ 'p10_faq.support.refund_policy' | t }}</a>
+          <a class="p10-faq__link" href="{{ contact_url }}">{{ 'p10_faq.support.contact' | t }} <span aria-hidden="true">{% render 'icon-link-arrow-right' %}</span></a>
+        </nav>
+      </aside>
+    {% endif %}
+
+    <template data-p10-faq-group="buying">
+      <section class="p10-faq__group" data-group="buying">
+        <header class="p10-faq__group-heading">
+          <span class="p10-faq__group-icon" aria-hidden="true">{% render 'icon-cart-note' %}</span>
+          <div>
+            {% if faq_mode == 'page' %}
+              <h2 class="p10-faq__group-title">{{ 'p10_faq.groups.buying.title' | t }}</h2>
+            {% else %}
+              <h3 class="p10-faq__group-title">{{ 'p10_faq.groups.buying.title' | t }}</h3>
+            {% endif %}
+            <p class="p10-faq__group-description">{{ 'p10_faq.groups.buying.description' | t }}</p>
+          </div>
+        </header>
+      </section>
+    </template>
+    <template data-p10-faq-group="delivery">
+      <section class="p10-faq__group" data-group="delivery">
+        <header class="p10-faq__group-heading">
+          <span class="p10-faq__group-icon" aria-hidden="true">{% render 'icon-cart-shipping' %}</span>
+          <div>
+            {% if faq_mode == 'page' %}
+              <h2 class="p10-faq__group-title">{{ 'p10_faq.groups.delivery.title' | t }}</h2>
+            {% else %}
+              <h3 class="p10-faq__group-title">{{ 'p10_faq.groups.delivery.title' | t }}</h3>
+            {% endif %}
+            <p class="p10-faq__group-description">{{ 'p10_faq.groups.delivery.description' | t }}</p>
+          </div>
+        </header>
+      </section>
+    </template>
+    <template data-p10-faq-item>
+      <details class="p10-faq__item">
+        <summary class="p10-faq__summary">
+          <span class="p10-faq__question" data-p10-faq-label></span>
+          <span class="p10-faq__toggle" aria-hidden="true">
+            <span class="icon-plus">{% render 'icon-plus' %}</span>
+            <span class="icon-minus">{% render 'icon-minus' %}</span>
+          </span>
+        </summary>
+        <div class="p10-faq__answer"></div>
+      </details>
+    </template>
+    {% for question_id in question_ids %}
+      {% liquid
+        assign source_key = 'p10_faq.questions.' | append: question_id | append: '.source'
+        assign label_key = 'p10_faq.questions.' | append: question_id | append: '.label'
+        assign group_id = 'delivery'
+        if forloop.index <= 3
+          assign group_id = 'buying'
+        endif
+      %}
+      <template data-p10-faq-question="{{ question_id }}" data-group="{{ group_id }}" data-source-question="{{ source_key | t | escape }}" data-label="{{ label_key | t | escape }}"></template>
+    {% endfor %}
+  </div>
+</section>

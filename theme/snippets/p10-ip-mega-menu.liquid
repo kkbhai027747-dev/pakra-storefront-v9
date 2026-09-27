@@ -1,0 +1,111 @@
+{% doc %}
+  Renders the IP menu, synchronized with this theme's IP Directory.
+  @param {link} link - The parent navigation link.
+  @param ip_blocks - Fallback IP logo blocks.
+  @param {string} [menu_label] - The parent label.
+{% enddoc %}
+
+{%- liquid
+  assign p10_ip_count = 0
+  assign p10_ip_index_url = routes.collections_url | default: '/collections'
+  for ip_block in ip_blocks
+    if ip_block.type == 'p10_ip_logo'
+      assign p10_ip_count = p10_ip_count | plus: 1
+    endif
+  endfor
+-%}
+
+<li class="menu-lv-item menu-lv-1 has-megamenu dropdown block_layout--full p10-modern-mega p10-ip-mega">
+  <a class="menu-lv-1__action header__menu-item list-menu__item link focus-inset menu_mobile_link link-effect" href="{{ p10_ip_index_url }}" aria-haspopup="true">
+    <span class="text{% if link.current or link.child_active %} header__active-menu-item{% endif %} p-relative">{{ menu_label | default: link.title | escape }}</span>
+    <span class="icon-dropdown" aria-hidden="true">{% render 'icon-caret-right' %}</span>
+  </a>
+
+  <div class="menu-dropdown custom-scrollbar p10-modern-mega__dropdown p-absolute top-auto left-0 w-100 zi-10 o-x-hidden o-y-auto text-left opacity-0">
+    <div class="container-full">
+      <div class="p10-modern-mega__shell p10-ip-mega__shell">
+        <div class="p10-modern-mega__intro">
+          <span class="p10-modern-mega__eyebrow">Explore collections</span>
+          <strong>Shop by IP</strong>
+          <p>Browse your favorite series and collections.</p>
+          <a class="p10-modern-mega__view-all" href="{{ p10_ip_index_url }}">View all IPs <span aria-hidden="true">→</span></a>
+        </div>
+
+        <div
+          class="p10-ip-mega__cards"
+          data-p10-ip-card-source
+          data-p10-ip-directory-url="{{ p10_ip_index_url }}"
+          role="list"
+          aria-label="Featured IP collections"
+        >
+          {%- for ip_block in ip_blocks -%}
+            {%- if ip_block.type == 'p10_ip_logo' -%}
+              {%- liquid
+                assign ip_name = ip_block.settings.ip_name | strip
+                assign ip_key = ip_name | handleize
+                assign ip_link = p10_ip_index_url | append: '?ip=' | append: ip_key
+                assign ip_logo = ip_block.settings.logo
+                assign ip_logo_asset = ip_block.settings.logo_asset | strip
+                assign ip_alt = ip_block.settings.image_alt | strip | default: ip_name
+              -%}
+              {%- if ip_name != blank -%}
+                <a
+                  class="p10-ip-mega__card"
+                  href="{{ ip_link }}"
+                  role="listitem"
+                  aria-label="Shop {{ ip_name | escape }}"
+                  {{ ip_block.shopify_attributes }}
+                >
+                  <span class="p10-ip-mega__media">
+                    {%- if ip_logo != blank -%}
+                      {{
+                        ip_logo
+                        | image_url: width: 320
+                        | image_tag:
+                          loading: 'lazy',
+                          widths: '120, 180, 240, 320',
+                          sizes: '(min-width: 1025px) 142px, 42vw',
+                          class: 'p10-ip-mega__image',
+                          alt: ip_alt
+                      }}
+                    {%- elsif ip_logo_asset != blank -%}
+                      <img
+                        class="p10-ip-mega__image"
+                        src="{{ ip_logo_asset | asset_url }}"
+                        alt="{{ ip_alt | escape }}"
+                        width="240"
+                        height="120"
+                        loading="lazy"
+                      >
+                    {%- else -%}
+                      <span class="p10-ip-mega__fallback" aria-hidden="true">{{ ip_name | slice: 0, 2 | upcase }}</span>
+                    {%- endif -%}
+                  </span>
+                  <span class="p10-ip-mega__name">{{ ip_name | escape }}</span>
+                </a>
+              {%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+
+          {%- if p10_ip_count == 0 and request.design_mode -%}
+            <div class="p10-ip-mega__empty">Add an “IP logo link” block in the Theme Editor.</div>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</li>
+
+<script src="{{ 'p10-ip-menu-sync.js' | asset_url }}" defer="defer"></script>
+
+{% stylesheet %}
+  @media screen and (min-width: 1025px) {
+    .section-header-navigation .p10-ip-mega__cards[data-p10-ip-card-source] {
+      grid-auto-flow: row;
+      grid-auto-columns: auto;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      overflow-x: visible;
+      scroll-snap-type: none;
+    }
+  }
+{% endstylesheet %}

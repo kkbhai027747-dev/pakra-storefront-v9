@@ -1,0 +1,210 @@
+{%- liquid
+  assign sidebar_heading = section.settings.heading | default: page.title
+  assign sidebar_variant = variant | default: 'desktop'
+  assign universal_source_collection = section.settings.universal_source_collection
+  assign fallback_logo_asset = ''
+
+  case section.settings.ip_key
+    when 'mlp'
+      assign fallback_logo_asset = 'p10-ip-my-little-pony.webp'
+    when 'naruto'
+      assign fallback_logo_asset = 'p10-ip-naruto.webp'
+    when 'harry-potter'
+      assign fallback_logo_asset = 'p10-ip-harry-potter.webp'
+    when 'powerpuff'
+      assign fallback_logo_asset = 'p10-ip-powerpuff-girls.webp'
+    when 'inuyasha'
+      assign fallback_logo_asset = 'p10-ip-inuyasha.webp'
+    when 'arknights'
+      assign fallback_logo_asset = 'p10-ip-arknights.png'
+    when 'pokemon'
+      assign fallback_logo_asset = 'p10-ip-pokemon.webp'
+    when 'disney'
+      assign fallback_logo_asset = 'p10-ip-disney.webp'
+    when 'marvel'
+      assign fallback_logo_asset = 'p10-ip-marvel.webp'
+    when 'dc'
+      assign fallback_logo_asset = 'p10-ip-dc.webp'
+  endcase
+-%}
+
+<div class="p10-ip-sidebar p10-ip-sidebar--{{ sidebar_variant }}" data-ip-sidebar>
+  <header class="p10-ip-sidebar__identity">
+    <span class="p10-ip-sidebar__logo-frame">
+      {%- if section.settings.logo != blank -%}
+        {{
+          section.settings.logo
+          | image_url: width: 240
+          | image_tag:
+            loading: 'eager',
+            widths: '96, 144, 192, 240',
+            sizes: '72px',
+            alt: sidebar_heading,
+            class: 'p10-ip-sidebar__logo'
+        }}
+      {%- elsif fallback_logo_asset != blank -%}
+        <img
+          class="p10-ip-sidebar__logo"
+          src="{{ fallback_logo_asset | asset_url }}"
+          alt="{{ sidebar_heading | escape }}"
+          width="144"
+          height="96"
+          loading="eager"
+        >
+      {%- else -%}
+        <span class="p10-ip-sidebar__logo-fallback" aria-hidden="true">
+          {{ sidebar_heading | slice: 0 | upcase }}
+        </span>
+      {%- endif -%}
+    </span>
+    <span class="p10-ip-sidebar__identity-copy">
+      <span class="p10-ip-sidebar__eyebrow">Collector index</span>
+      <strong>Browse {{ sidebar_heading | escape }}</strong>
+    </span>
+  </header>
+
+  <nav class="p10-ip-sidebar__navigation" aria-label="{{ sidebar_heading | escape }} product navigation">
+    {%- for lane_key in lane_order -%}
+      {%- liquid
+        assign enable_setting = 'enable_' | append: lane_key
+        assign label_setting = lane_key | append: '_label'
+        assign lane_enabled = section.settings[enable_setting]
+        assign lane_has_source = false
+        assign lane_intent_count = 0
+
+        if lane_enabled
+          for block in section.blocks
+            if block.type == 'lane_source' and block.settings.lane == lane_key and block.settings.collection != blank
+              assign route_source_matches = true
+              if universal_source_collection != blank and block.settings.collection.handle != universal_source_collection.handle
+                assign route_source_matches = false
+              endif
+
+              if route_source_matches
+                assign lane_has_source = true
+                break
+              endif
+            endif
+          endfor
+        endif
+
+        if lane_has_source
+          for block in section.blocks
+            if block.type == 'intent' and block.settings.lane == lane_key
+              if block.settings.collection != blank or block.settings.product_types != blank or block.settings.product_tags != blank or block.settings.product_handles != blank or block.settings.link != blank
+                assign lane_intent_count = lane_intent_count | plus: 1
+              endif
+            endif
+          endfor
+        endif
+      -%}
+
+      {%- if lane_enabled and lane_has_source -%}
+        <details
+          class="p10-ip-sidebar__group{% if lane_key == first_valid_lane %} is-current{% endif %}"
+          data-sidebar-group
+          data-sidebar-lane="{{ lane_key }}"
+          open
+        >
+          <summary
+            class="p10-ip-sidebar__group-summary"
+            data-lane-target="{{ lane_key }}"
+            aria-controls="P10IpLane-{{ section.id }}-{{ lane_key }}"
+            aria-current="{% if lane_key == first_valid_lane %}true{% else %}false{% endif %}"
+          >
+            <span class="p10-ip-sidebar__lane{% if lane_key == first_valid_lane %} is-active{% endif %}">
+              <span class="p10-ip-sidebar__lane-mark" aria-hidden="true">0{{ forloop.index }}</span>
+              <span>{{ section.settings[label_setting] | escape }}</span>
+            </span>
+            <span class="p10-ip-sidebar__toggle" aria-hidden="true"></span>
+          </summary>
+
+          <div class="p10-ip-sidebar__options">
+            <button
+              type="button"
+              class="p10-ip-sidebar__option is-active"
+              data-intent-target=""
+              data-lane="{{ lane_key }}"
+              aria-pressed="true"
+            >
+              <span>All {{ section.settings[label_setting] | escape }}</span>
+              <span aria-hidden="true">→</span>
+            </button>
+
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'intent' and block.settings.lane == lane_key -%}
+                {%- liquid
+                  assign filter_kind = block.settings.filter_kind | default: 'collection'
+                  assign filter_values = ''
+                  assign intent_target = block.id
+                  if filter_kind == 'product_type'
+                    assign product_type_values = block.settings.product_types | split: ','
+                    for product_type_value in product_type_values
+                      assign normalized_product_type = product_type_value | strip | handleize
+                      if normalized_product_type != blank
+                        assign filter_values = filter_values | append: '|' | append: normalized_product_type
+                      endif
+                    endfor
+                  elsif filter_kind == 'product_tag'
+                    assign product_tag_values = block.settings.product_tags | split: ','
+                    for product_tag_value in product_tag_values
+                      assign normalized_product_tag = product_tag_value | strip | downcase | url_encode
+                      if normalized_product_tag != blank
+                        assign filter_values = filter_values | append: '|' | append: normalized_product_tag
+                      endif
+                    endfor
+                  elsif filter_kind == 'product_handle'
+                    assign product_handle_values = block.settings.product_handles | split: ','
+                    for product_handle_value in product_handle_values
+                      assign normalized_product_handle = product_handle_value | strip | downcase
+                      if normalized_product_handle != blank
+                        assign filter_values = filter_values | append: '|' | append: normalized_product_handle
+                      endif
+                    endfor
+                  elsif block.settings.collection != blank
+                    assign intent_target = block.settings.collection.handle
+                    assign filter_values = '|' | append: block.settings.collection.handle
+                  endif
+
+                  if filter_values != blank
+                    assign filter_values = filter_values | append: '|'
+                  endif
+                -%}
+                {%- if filter_values != blank -%}
+                  <button
+                    type="button"
+                    class="p10-ip-sidebar__option"
+                    data-intent-target="{{ intent_target | escape }}"
+                    data-lane="{{ lane_key }}"
+                    data-filter-kind="{{ filter_kind | escape }}"
+                    data-filter-values="{{ filter_values | escape }}"
+                    data-filter-level="{{ block.settings.classification_level | escape }}"
+                    aria-pressed="false"
+                    {% if sidebar_variant == 'desktop' %}{{ block.shopify_attributes }}{% endif %}
+                  >
+                    <span>{{ block.settings.label | escape }}</span>
+                    <span aria-hidden="true">→</span>
+                  </button>
+                {%- elsif block.settings.link != blank -%}
+                  <a
+                    class="p10-ip-sidebar__option"
+                    href="{{ block.settings.link }}"
+                    {% if sidebar_variant == 'desktop' %}{{ block.shopify_attributes }}{% endif %}
+                  >
+                    <span>{{ block.settings.label | escape }}</span>
+                    <span aria-hidden="true">↗</span>
+                  </a>
+                {%- endif -%}
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </details>
+      {%- endif -%}
+    {%- endfor -%}
+  </nav>
+
+  <footer class="p10-ip-sidebar__footer">
+    <span>{{ sidebar_heading | escape }}</span>
+    <span>Curated shopping routes</span>
+  </footer>
+</div>

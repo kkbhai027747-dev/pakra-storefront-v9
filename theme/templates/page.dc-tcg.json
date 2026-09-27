@@ -1,0 +1,80 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "p10_ip_storefront_dc_tcg": {
+      "type": "p10-ip-storefront",
+      "blocks": {
+        "sealed_all": {
+          "type": "lane_source",
+          "settings": {
+            "lane": "sealed",
+            "collection": "type-sealed-cards",
+            "allowed_product_types": "",
+            "additional_product_handles": ""
+          }
+        },
+        "intent_display_boxes": {
+          "type": "intent",
+          "settings": {
+            "lane": "sealed",
+            "label": "Display boxes",
+            "filter_kind": "product_type",
+            "collection": "",
+            "product_types": "Trading Card Box, Trading Card Boxes",
+            "product_handles": "",
+            "classification_level": "product_format",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "sealed_all",
+        "intent_display_boxes"
+      ],
+      "settings": {
+        "ip_key": "dc",
+        "skin": "dc",
+        "eyebrow": "DC TCG CARDS",
+        "heading": "DC",
+        "subheading": "Browse DC trading card game (TCG) display boxes.",
+        "source_collection": "ip-dc",
+        "universal_publisher": "",
+        "universal_product_type": "TCG",
+        "isolate_card_type": true,
+        "universal_market": "",
+        "universal_source_collection": "type-sealed-cards",
+        "show_intro_header": true,
+        "show_search": true,
+        "lane_order": "sealed,merch",
+        "enable_sealed": true,
+        "sealed_label": "TCG card products",
+        "sealed_copy": "Explore DC TCG display boxes and sealed releases.",
+        "sealed_link": "",
+        "enable_merch": false,
+        "merch_label": "Merch & Collectibles",
+        "merch_copy": "",
+        "merch_link": "",
+        "initial_products_desktop": 12,
+        "initial_products_mobile": 8,
+        "load_more_step": 12,
+        "excluded_collection_handles": "single,singles-gallery,type-single-cards,type-merchandise,type-card-accessories",
+        "single_card_catalog_link": "",
+        "show_content": false,
+        "show_page_content": true,
+        "keep_empty_intents": true,
+        "empty_state_link": ""
+      }
+    }
+  },
+  "order": [
+    "p10_ip_storefront_dc_tcg"
+  ]
+}

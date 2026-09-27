@@ -1,0 +1,347 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "p10_ip_storefront_mlp": {
+      "type": "p10-ip-storefront",
+      "blocks": {
+        "sealed_cn": {
+          "type": "lane_source",
+          "settings": {
+            "lane": "sealed",
+            "collection": "cn-mlp-card-boxes",
+            "allowed_product_types": "Trading Card Box, Trading Card Boxes, Collectible Card Gift Box"
+          }
+        },
+        "sealed_tcg": {
+          "type": "lane_source",
+          "settings": {
+            "lane": "sealed",
+            "collection": "tcg-card-boxes",
+            "allowed_product_types": "Trading Card Box, Trading Card Boxes",
+            "additional_product_handles": "kayou-my-little-pony-trading-card-game-disorder-time-booster-display-box, kayou-my-little-pony-trading-card-game-nightmare-night-booster-packs"
+          }
+        },
+        "sealed_bundles": {
+          "type": "lane_source",
+          "settings": {
+            "lane": "sealed",
+            "collection": "cn-trading-card-boxes",
+            "allowed_product_types": "Collector Bundles"
+          }
+        },
+        "merch_reesee": {
+          "type": "lane_source",
+          "settings": {
+            "lane": "merch",
+            "collection": "mlp-reesee",
+            "allowed_product_types": ""
+          }
+        },
+        "merch_auldey": {
+          "type": "lane_source",
+          "settings": {
+            "lane": "merch",
+            "collection": "mlp-auldey",
+            "allowed_product_types": ""
+          }
+        },
+        "merch_funism": {
+          "type": "lane_source",
+          "settings": {
+            "lane": "merch",
+            "collection": "mlp-funism",
+            "allowed_product_types": ""
+          }
+        },
+        "merch_searchfun": {
+          "type": "lane_source",
+          "settings": {
+            "lane": "merch",
+            "collection": "mlp-searchfun",
+            "allowed_product_types": ""
+          }
+        },
+        "merch_pinkypinky": {
+          "type": "lane_source",
+          "settings": {
+            "lane": "merch",
+            "collection": "mlp-pinkypinky",
+            "allowed_product_types": ""
+          }
+        },
+        "merch_baimao": {
+          "type": "lane_source",
+          "settings": {
+            "lane": "merch",
+            "collection": "mlp-baimao",
+            "allowed_product_types": ""
+          }
+        },
+        "merch_kader": {
+          "type": "lane_source",
+          "settings": {
+            "lane": "merch",
+            "collection": "mlp-kader-kaduo",
+            "allowed_product_types": ""
+          }
+        },
+        "merch_kayou_general": {
+          "type": "lane_source",
+          "settings": {
+            "lane": "merch",
+            "collection": "kayou-merch",
+            "allowed_product_types": "Acrylic Stand / Display, Badge / Pin, Blind Box Figure, Card Binder / Album, Collectible Sticker Box, Hanging Charms, Plush / Plush Charm"
+          }
+        },
+        "merch_miniso": {
+          "type": "lane_source",
+          "settings": {
+            "lane": "merch",
+            "collection": "miniso",
+            "allowed_product_types": "Blind Box Figure, Plush / Plush Charm, Plush Toys"
+          }
+        },
+        "merch_new_binders": {
+          "type": "lane_source",
+          "settings": {
+            "lane": "merch",
+            "collection": "mlp-new-merch-arrivals",
+            "allowed_product_types": "Card Binder / Album"
+          }
+        },
+        "merch_guest_picks": {
+          "type": "lane_source",
+          "settings": {
+            "lane": "merch",
+            "collection": "mlpekayou-guest-picks",
+            "allowed_product_types": "K-PRIZE Lottery Draw"
+          }
+        },
+        "intent_fun_moments": {
+          "type": "intent",
+          "settings": {
+            "lane": "sealed",
+            "label": "Fun Moments",
+            "filter_kind": "collection",
+            "collection": "cn-shadow-edition-card-boxes",
+            "product_types": "",
+            "classification_level": "series",
+            "link": ""
+          }
+        },
+        "intent_rainbow": {
+          "type": "intent",
+          "settings": {
+            "lane": "sealed",
+            "label": "Rainbow",
+            "filter_kind": "collection",
+            "collection": "cn-rainbow-edition-card-boxes",
+            "product_types": "",
+            "classification_level": "series",
+            "link": ""
+          }
+        },
+        "intent_moon": {
+          "type": "intent",
+          "settings": {
+            "lane": "sealed",
+            "label": "Moon",
+            "filter_kind": "collection",
+            "collection": "cn-moon-edition-card-boxes",
+            "product_types": "",
+            "classification_level": "series",
+            "link": ""
+          }
+        },
+        "intent_star": {
+          "type": "intent",
+          "settings": {
+            "lane": "sealed",
+            "label": "Star",
+            "filter_kind": "collection",
+            "collection": "cn-fan-xin-edition-card-boxes",
+            "product_types": "",
+            "classification_level": "series",
+            "link": ""
+          }
+        },
+        "intent_gift_boxes_bundles": {
+          "type": "intent",
+          "settings": {
+            "lane": "sealed",
+            "label": "Gift Boxes & Bundles",
+            "filter_kind": "product_type",
+            "collection": "",
+            "product_types": "Collectible Card Gift Box",
+            "product_handles": "",
+            "classification_level": "product_format",
+            "link": ""
+          }
+        },
+        "intent_stardust_edition_1": {
+          "type": "intent",
+          "settings": {
+            "lane": "sealed",
+            "label": "Stardust Edition",
+            "filter_kind": "product_tag",
+            "collection": "",
+            "product_types": "",
+            "product_tags": "Qimeng Party",
+            "product_handles": "",
+            "classification_level": "series",
+            "link": ""
+          }
+        },
+        "intent_magic_book": {
+          "type": "intent",
+          "settings": {
+            "lane": "sealed",
+            "label": "Magic Book",
+            "filter_kind": "product_tag",
+            "collection": "",
+            "product_types": "",
+            "product_tags": "Magic Book",
+            "product_handles": "",
+            "classification_level": "series",
+            "link": ""
+          }
+        },
+        "intent_plush": {
+          "type": "intent",
+          "settings": {
+            "lane": "merch",
+            "label": "Plush & character goods",
+            "filter_kind": "product_type",
+            "collection": "",
+            "product_types": "Plush / Plush Charm, Plush Toys, Collectible Toys, Fidget Toys",
+            "link": ""
+          }
+        },
+        "intent_figures": {
+          "type": "intent",
+          "settings": {
+            "lane": "merch",
+            "label": "Figures & blind boxes",
+            "filter_kind": "product_type",
+            "collection": "",
+            "product_types": "Blind Box Figure",
+            "link": ""
+          }
+        },
+        "intent_display": {
+          "type": "intent",
+          "settings": {
+            "lane": "merch",
+            "label": "Acrylic displays & tickets",
+            "filter_kind": "product_type",
+            "collection": "",
+            "product_types": "Acrylic Stand / Display, Collectible Ticket",
+            "link": ""
+          }
+        },
+        "intent_accessories": {
+          "type": "intent",
+          "settings": {
+            "lane": "merch",
+            "label": "Bags, charms & accessories",
+            "filter_kind": "product_type",
+            "collection": "",
+            "product_types": "Keychain / Charm, Hanging Charms, Jewelry & Accessories, Ita Bag, Hair Accessories, Jewelry, Badge / Pin",
+            "link": ""
+          }
+        },
+        "intent_binders": {
+          "type": "intent",
+          "settings": {
+            "lane": "merch",
+            "label": "Binders & albums",
+            "filter_kind": "product_type",
+            "collection": "",
+            "product_types": "Card Binder / Album",
+            "link": ""
+          }
+        },
+        "intent_special": {
+          "type": "intent",
+          "settings": {
+            "lane": "merch",
+            "label": "Special releases",
+            "filter_kind": "product_type",
+            "collection": "",
+            "product_types": "Collectible Sticker Box, K-PRIZE Lottery Draw",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "sealed_cn",
+        "sealed_tcg",
+        "sealed_bundles",
+        "merch_reesee",
+        "merch_auldey",
+        "merch_funism",
+        "merch_searchfun",
+        "merch_pinkypinky",
+        "merch_baimao",
+        "merch_kader",
+        "merch_kayou_general",
+        "merch_miniso",
+        "merch_new_binders",
+        "merch_guest_picks",
+        "intent_fun_moments",
+        "intent_rainbow",
+        "intent_moon",
+        "intent_star",
+        "intent_gift_boxes_bundles",
+        "intent_stardust_edition_1",
+        "intent_magic_book",
+        "intent_plush",
+        "intent_figures",
+        "intent_display",
+        "intent_accessories",
+        "intent_binders",
+        "intent_special"
+      ],
+      "settings": {
+        "ip_key": "mlp",
+        "skin": "mlp",
+        "eyebrow": "KAYOU MY LITTLE PONY",
+        "heading": "My Little Pony",
+        "subheading": "Choose sealed card boxes or character merchandise through clear, separate shopping routes.",
+        "source_collection": "cn-ccg-card-boxes",
+        "universal_publisher": "KAYOU",
+        "universal_product_type": "CCG",
+        "universal_market": "CN",
+        "universal_source_collection": "cn-mlp-card-boxes",
+        "show_search": true,
+        "lane_order": "sealed,merch",
+        "enable_sealed": true,
+        "sealed_label": "Sealed card boxes",
+        "sealed_copy": "Display boxes, booster-style releases, starter decks, and sealed card products.",
+        "sealed_link": "/collections/cn-mlp-card-boxes",
+        "enable_merch": false,
+        "merch_label": "Merch & collectibles",
+        "merch_copy": "Figures, plush, charms, acrylic displays, blind boxes, and character goods.",
+        "merch_link": "/collections/plushies-merch",
+        "initial_products_desktop": 12,
+        "initial_products_mobile": 8,
+        "load_more_step": 12,
+        "excluded_collection_handles": "single,singles-gallery",
+        "single_card_catalog_link": "/pages/single-cards",
+        "show_content": false,
+        "empty_state_link": ""
+      }
+    }
+  },
+  "order": [
+    "p10_ip_storefront_mlp"
+  ]
+}

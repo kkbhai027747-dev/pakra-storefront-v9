@@ -1,0 +1,191 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "p10_blog_editorial_hub_20260726": {
+      "type": "p10-blog-editorial-hub",
+      "name": "P10 Blog Editorial Hub",
+      "blocks": {
+        "topic_product": {
+          "type": "topic",
+          "settings": {
+            "eyebrow": "01 · Product",
+            "title": "Products, Releases & Reviews",
+            "description": "New releases, hands-on product stories, event notes, and practical buying guidance.",
+            "link": "/blogs/ambers-ponycove",
+            "chapter_1": "Moon 12",
+            "chapter_1_link": "/blogs/ambers-ponycove/moon-12-midsummer-night-story-kayou-events",
+            "chapter_2": "Mistmane Gift Box",
+            "chapter_2_link": "/blogs/ambers-ponycove/mistmane-qiji-zonghua-kayou-mlp-tcg-gift-box-review",
+            "chapter_3": "Booster Box Guide",
+            "chapter_3_link": "/blogs/guide/best-mlp-kayou-booster-box-buyers-guide",
+            "chapter_4": "New Arrivals",
+            "chapter_4_link": "/collections/new-arrivals-7-days",
+            "accent": "coral"
+          }
+        },
+        "topic_academy": {
+          "type": "topic",
+          "settings": {
+            "eyebrow": "02 · Learn",
+            "title": "Collector Academy & DIY",
+            "description": "Buying advice, authenticity checks, safe shipping, hands-on crafts, and display ideas.",
+            "link": "/blogs/guide",
+            "chapter_1": "Buying Guides",
+            "chapter_1_link": "/blogs/guide/best-mlp-kayou-booster-box-buyers-guide",
+            "chapter_2": "Authenticity",
+            "chapter_2_link": "/blogs/guide/spot-fake-mlp-kayou-boxes",
+            "chapter_3": "DIY & Display",
+            "chapter_3_link": "/blogs/diy",
+            "chapter_4": "Safe Shipping",
+            "chapter_4_link": "/blogs/guide/safe-shipping-mlp-kayou-cards",
+            "accent": "blue"
+          }
+        },
+        "topic_shop": {
+          "type": "topic",
+          "settings": {
+            "eyebrow": "03 · First-hand",
+            "title": "Behind the Shop",
+            "description": "Player feedback, collecting habits, personal stories, and the decisions behind the store.",
+            "link": "/blogs/ambers-ponycove",
+            "chapter_1": "Community Feedback",
+            "chapter_1_link": "/blogs/ambers-ponycove/you-spoke-were-listening-player-feedback-my-prisma-tcg",
+            "chapter_2": "Our Story",
+            "chapter_2_link": "/blogs/ambers-ponycove/why-i-started-this-little-corner-a-journey-from-childhood-magic-to-real-world-connection-by-amber",
+            "chapter_3": "Collecting Mindset",
+            "chapter_3_link": "/blogs/ambers-ponycove/don-t-just-chase-the-hit-how-to-build-a-healthy-collecting-mindset",
+            "chapter_4": "Shop Diary",
+            "chapter_4_link": "/blogs/ambers-ponycove",
+            "accent": "mint"
+          }
+        },
+        "topic_database": {
+          "type": "topic",
+          "settings": {
+            "eyebrow": "04 · Reference",
+            "title": "Card Database",
+            "description": "Series, card positions, card numbers, and collector reference chapters.",
+            "link": "/pages/mlp-tcg",
+            "chapter_1": "T2 · Fun Moments",
+            "chapter_1_link": "/pages/t2-7",
+            "chapter_2": "T3 · Rainbow",
+            "chapter_2_link": "/pages/mlp-t3",
+            "chapter_3": "T4 · Moon",
+            "chapter_3_link": "/pages/mlp-t4",
+            "chapter_4": "T5 · Star",
+            "chapter_4_link": "/pages/mlp-t5",
+            "accent": "gold"
+          }
+        },
+        "filter_category_guides": {
+          "type": "filter_link",
+          "settings": {
+            "group": "category",
+            "label": "Collector Academy",
+            "link": "/blogs/guide"
+          }
+        },
+        "filter_category_shop": {
+          "type": "filter_link",
+          "settings": {
+            "group": "category",
+            "label": "Behind the Shop",
+            "link": "/blogs/ambers-ponycove"
+          }
+        },
+        "filter_series_t2": {
+          "type": "filter_link",
+          "settings": {
+            "group": "series",
+            "label": "T2 · Fun Moments",
+            "link": "/pages/t2-7"
+          }
+        },
+        "filter_series_t3": {
+          "type": "filter_link",
+          "settings": {
+            "group": "series",
+            "label": "T3 · Rainbow",
+            "link": "/pages/mlp-t3"
+          }
+        },
+        "filter_series_t4": {
+          "type": "filter_link",
+          "settings": {
+            "group": "series",
+            "label": "T4 · Moon",
+            "link": "/pages/mlp-t4"
+          }
+        },
+        "filter_series_t5": {
+          "type": "filter_link",
+          "settings": {
+            "group": "series",
+            "label": "T5 · Star",
+            "link": "/pages/mlp-t5"
+          }
+        },
+        "filter_category_product": {
+          "type": "filter_link",
+          "settings": {
+            "group": "category",
+            "label": "Products & Reviews",
+            "link": "/blogs/ambers-ponycove"
+          }
+        },
+        "filter_category_diy": {
+          "type": "filter_link",
+          "settings": {
+            "group": "category",
+            "label": "DIY & Display",
+            "link": "/blogs/diy"
+          }
+        },
+        "filter_category_reference": {
+          "type": "filter_link",
+          "settings": {
+            "group": "category",
+            "label": "Card Database",
+            "link": "/pages/mlp-tcg"
+          }
+        }
+      },
+      "block_order": [
+        "topic_product",
+        "topic_academy",
+        "topic_shop",
+        "topic_database",
+        "filter_category_product",
+        "filter_category_guides",
+        "filter_category_diy",
+        "filter_category_shop",
+        "filter_category_reference",
+        "filter_series_t2",
+        "filter_series_t3",
+        "filter_series_t4",
+        "filter_series_t5"
+      ],
+      "settings": {
+        "eyebrow": "pakracards · Collector Journal",
+        "heading": "Stories worth collecting.",
+        "description": "Fresh collector intelligence, honest buying guidance, complete set references, and real stories from behind the shop.",
+        "journal_blog": "ambers-ponycove",
+        "featured_article": "",
+        "featured_style": "auto",
+        "search_placeholder": "Search reviews, DIY, guides, and shop stories",
+        "articles_per_page": 12
+      }
+    }
+  },
+  "order": [
+    "p10_blog_editorial_hub_20260726"
+  ]
+}

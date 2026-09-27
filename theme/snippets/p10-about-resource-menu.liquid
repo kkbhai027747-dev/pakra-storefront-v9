@@ -1,0 +1,10 @@
+{%- liquid
+  assign p10_about_label = link.title | default: 'About Us'
+  assign p10_about_hub_url = p10_blog_url | default: pages['blog'].url | default: '/pages/blog'
+-%}
+
+<li class="menu-lv-item menu-lv-1 text-left no-megamenu p10-nav-about-hub">
+  <a href="{{ p10_about_hub_url }}" class="menu-lv-1__action header__menu-item header__menu-item list-menu__item link link--text focus-inset link-effect">
+    <span class="text{% if link.current or request.path == p10_about_hub_url %} header__active-menu-item{% endif %} p-relative">{{ p10_about_label | escape }}</span>
+  </a>
+</li>

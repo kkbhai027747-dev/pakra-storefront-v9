@@ -1,0 +1,310 @@
+{{ 'tcg-battle-showcase.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign p10_default_product_handle = 'kayou-mlp-friendship-voyage-starter-deck-box-private'
+  assign p10_default_product = all_products[p10_default_product_handle]
+  assign p10_primary_product_url = '#p10-tcg-products'
+  if p10_default_product != blank
+    assign p10_primary_product_url = p10_default_product.url
+  endif
+  assign p10_products_limit = section.settings.products_limit | default: 48
+-%}
+
+<section class="p10-tcg-battle" data-p10-tcg-battle-page>
+  <div class="p10-tcg-battle__hero">
+    <div class="p10-tcg-battle__hero-copy" data-p10-tcg-reveal>
+      <p class="p10-tcg-battle__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      <h1>{{ section.settings.heading | escape }}</h1>
+      <div class="p10-tcg-battle__lede">
+        {{ section.settings.subheading }}
+      </div>
+      <div class="p10-tcg-battle__actions">
+        <a class="p10-tcg-battle__button p10-tcg-battle__button--primary" href="{{ p10_primary_product_url }}">Shop starter deck</a>
+        <a class="p10-tcg-battle__button p10-tcg-battle__button--secondary" href="#p10-tcg-products">Browse battle cards</a>
+      </div>
+      <dl class="p10-tcg-battle__stats" aria-label="TCG page highlights">
+        <div>
+          <dt>Game Route</dt>
+          <dd>MLP TCG</dd>
+        </div>
+        <div>
+          <dt>Current Line</dt>
+          <dd>Friendship Voyage</dd>
+        </div>
+        <div>
+          <dt>Product Focus</dt>
+          <dd>Decks</dd>
+        </div>
+      </dl>
+    </div>
+
+    <div class="p10-tcg-battle__arena" data-p10-tcg-reveal>
+      <div class="p10-tcg-battle__arena-card p10-tcg-battle__arena-card--large">
+        <img
+          src="{{ 'tcg-battle-hero-motion.jpg' | asset_url }}"
+          alt="KAYOU My Little Pony Friendship Voyage TCG battle cards"
+          loading="eager"
+          width="900"
+          height="900"
+        >
+      </div>
+      <div class="p10-tcg-battle__arena-stack">
+        <img
+          src="{{ 'tcg-battle-starter-lineup.jpg' | asset_url }}"
+          alt="KAYOU Friendship Voyage starter deck lineup"
+          loading="eager"
+          width="900"
+          height="900"
+        >
+        <span>Starter Deck</span>
+      </div>
+      <div class="p10-tcg-battle__arena-chip">Playable TCG</div>
+    </div>
+  </div>
+
+  <div class="p10-tcg-battle__toolbar" data-p10-tcg-toolbar id="p10-tcg-products" data-p10-tcg-reveal>
+    <div class="p10-tcg-battle__toolbar-head">
+      <div>
+        <p class="p10-tcg-battle__eyebrow">Battle-card finder</p>
+        <h2>Find playable KAYOU TCG products</h2>
+      </div>
+      <strong data-p10-tcg-result-count>0 products</strong>
+    </div>
+
+    <div class="p10-tcg-battle__search-row">
+      <label class="p10-tcg-battle__search">
+        <span class="visually-hidden">Search TCG products</span>
+        <input type="search" placeholder="Search starter deck, Friendship Voyage, Rainbow Dash..." data-p10-tcg-search>
+      </label>
+      <label class="p10-tcg-battle__sort">
+        <span class="visually-hidden">Sort TCG products</span>
+        <select data-p10-tcg-sort>
+          <option value="featured">Featured</option>
+          <option value="price-asc">Price low to high</option>
+          <option value="price-desc">Price high to low</option>
+          <option value="title-asc">A to Z</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="p10-tcg-battle__filter-bank" data-p10-tcg-filter-bank>
+      <div class="p10-tcg-battle__filter-row" data-filter-group="game">
+        <span>Game</span>
+        <button type="button" class="is-active" data-filter-value="">All TCG <b data-count>0</b></button>
+        <button type="button" data-filter-value="mlp-tcg">MLP TCG <b data-count>0</b></button>
+      </div>
+      <div class="p10-tcg-battle__filter-row" data-filter-group="type">
+        <span>Deck Type</span>
+        <button type="button" class="is-active" data-filter-value="">All types <b data-count>0</b></button>
+        <button type="button" data-filter-value="starter-deck">Starter Deck <b data-count>0</b></button>
+        <button type="button" data-filter-value="character-deck">Character Deck <b data-count>0</b></button>
+        <button type="button" data-filter-value="sealed-tcg">Sealed TCG <b data-count>0</b></button>
+      </div>
+      <div class="p10-tcg-battle__filter-row" data-filter-group="line">
+        <span>Line</span>
+        <button type="button" class="is-active" data-filter-value="">All lines <b data-count>0</b></button>
+        <button type="button" data-filter-value="friendship-voyage">Friendship Voyage <b data-count>0</b></button>
+      </div>
+      <div class="p10-tcg-battle__filter-row" data-filter-group="role">
+        <span>Role</span>
+        <button type="button" class="is-active" data-filter-value="">All roles <b data-count>0</b></button>
+        <button type="button" data-filter-value="twilight-sparkle">Twilight Sparkle <b data-count>0</b></button>
+        <button type="button" data-filter-value="rainbow-dash">Rainbow Dash <b data-count>0</b></button>
+        <button type="button" data-filter-value="applejack">Applejack <b data-count>0</b></button>
+        <button type="button" data-filter-value="pinkie-pie">Pinkie Pie <b data-count>0</b></button>
+        <button type="button" data-filter-value="fluttershy">Fluttershy <b data-count>0</b></button>
+        <button type="button" data-filter-value="rarity">Rarity <b data-count>0</b></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="p10-tcg-battle__grid" data-p10-tcg-grid>
+    {%- liquid
+      assign p10_seen_handles = '|'
+      assign p10_source_collection = section.settings.source_collection
+    -%}
+
+    {%- if section.settings.use_auto_collection and p10_source_collection != blank -%}
+      {%- for p10_product in p10_source_collection.products limit: p10_products_limit -%}
+        {%- liquid
+          assign p10_product_handle_token = '|' | append: p10_product.handle | append: '|'
+          assign p10_product_tags = p10_product.tags | join: '|' | downcase
+          assign p10_product_title = p10_product.title | downcase
+          assign p10_product_type = p10_product.type | downcase
+          assign p10_is_tcg_product = false
+          assign p10_is_single_card = false
+
+          if p10_product_tags contains 'card game' or p10_product_tags contains 'starter deck' or p10_product_tags contains 'character deck' or p10_product_tags contains 'friendship voyage' or p10_product_tags contains 'mlp trading card'
+            assign p10_is_tcg_product = true
+          endif
+          if p10_product_tags contains 'single card' or p10_product_title contains 'single card' or p10_product_type contains 'single'
+            assign p10_is_single_card = true
+          endif
+        -%}
+        {%- unless p10_seen_handles contains p10_product_handle_token -%}
+        {%- if p10_is_tcg_product and p10_is_single_card == false -%}
+          {%- render 'tcg-battle-product-card', product: p10_product -%}
+          {%- assign p10_seen_handles = p10_seen_handles | append: p10_product.handle | append: '|' -%}
+        {%- endif -%}
+        {%- endunless -%}
+      {%- endfor -%}
+    {%- endif -%}
+
+    {%- for p10_product in section.settings.product_list -%}
+      {%- liquid
+        assign p10_product_handle_token = '|' | append: p10_product.handle | append: '|'
+        assign p10_product_tags = p10_product.tags | join: '|' | downcase
+        assign p10_product_title = p10_product.title | downcase
+        assign p10_product_type = p10_product.type | downcase
+        assign p10_is_tcg_product = false
+        assign p10_is_single_card = false
+
+        if p10_product_tags contains 'card game' or p10_product_tags contains 'starter deck' or p10_product_tags contains 'character deck' or p10_product_tags contains 'friendship voyage' or p10_product_tags contains 'mlp trading card'
+          assign p10_is_tcg_product = true
+        endif
+        if p10_product_tags contains 'single card' or p10_product_title contains 'single card' or p10_product_type contains 'single'
+          assign p10_is_single_card = true
+        endif
+      -%}
+      {%- unless p10_seen_handles contains p10_product_handle_token -%}
+      {%- if p10_is_tcg_product and p10_is_single_card == false -%}
+        {%- render 'tcg-battle-product-card', product: p10_product -%}
+        {%- assign p10_seen_handles = p10_seen_handles | append: p10_product.handle | append: '|' -%}
+      {%- endif -%}
+      {%- endunless -%}
+    {%- endfor -%}
+
+    {%- if p10_default_product != blank -%}
+      {%- liquid
+        assign p10_product_handle_token = '|' | append: p10_default_product.handle | append: '|'
+      -%}
+      {%- unless p10_seen_handles contains p10_product_handle_token -%}
+        {%- render 'tcg-battle-product-card', product: p10_default_product -%}
+      {%- endunless -%}
+    {%- endif -%}
+  </div>
+
+  <div class="p10-tcg-battle__empty" data-p10-tcg-empty hidden>
+    <h2>No battle-card products match this filter.</h2>
+    <p>Clear one filter or search another deck, line, or character role.</p>
+  </div>
+
+  <div class="p10-tcg-battle__seo" data-p10-tcg-reveal>
+    <div>
+      <p class="p10-tcg-battle__eyebrow">TCG category note</p>
+      <h2>{{ section.settings.seo_heading | escape }}</h2>
+      {{ section.settings.seo_text }}
+    </div>
+    <img
+      src="{{ 'tcg-battle-deck-grid.jpg' | asset_url }}"
+      alt="KAYOU My Little Pony Friendship Voyage TCG deck product lineup"
+      loading="lazy"
+      width="900"
+      height="900"
+    >
+  </div>
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "name": {{ section.settings.heading | json }},
+      "description": {{ section.settings.seo_text | strip_html | json }},
+      "url": {{ canonical_url | json }},
+      "image": {{ 'tcg-battle-hero-motion.jpg' | asset_url | json }},
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": {{ shop.name | json }},
+        "url": {{ shop.url | json }}
+      },
+      "about": [
+        "KAYOU My Little Pony TCG",
+        "Friendship Voyage starter decks",
+        "Playable trading card game products"
+      ]
+    }
+  </script>
+</section>
+
+<script src="{{ 'tcg-battle-showcase.js' | asset_url }}" defer="defer"></script>
+
+{% schema %}
+{
+  "name": "TCG battle showcase",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "KAYOU TCG Battle Cards"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "KAYOU My Little Pony TCG Battle Cards"
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "<p>A dedicated route for playable KAYOU MLP trading-card-game products.</p>"
+    },
+    {
+      "type": "text",
+      "id": "intro_title",
+      "label": "Intro title",
+      "default": "BATTLE TCG"
+    },
+    {
+      "type": "text",
+      "id": "intro_subtitle",
+      "label": "Intro subtitle",
+      "default": "FRIENDSHIP VOYAGE"
+    },
+    {
+      "type": "text",
+      "id": "seo_heading",
+      "label": "SEO heading",
+      "default": "Playable KAYOU MLP TCG products"
+    },
+    {
+      "type": "richtext",
+      "id": "seo_text",
+      "label": "SEO text",
+      "default": "<p>This page separates playable KAYOU My Little Pony TCG products from collection single cards.</p>"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_auto_collection",
+      "label": "Use source collection products",
+      "default": false
+    },
+    {
+      "type": "collection",
+      "id": "source_collection",
+      "label": "Source collection"
+    },
+    {
+      "type": "range",
+      "id": "products_limit",
+      "label": "Product limit",
+      "min": 4,
+      "max": 80,
+      "step": 4,
+      "default": 48
+    },
+    {
+      "type": "product_list",
+      "id": "product_list",
+      "label": "Pinned TCG products",
+      "limit": 24
+    }
+  ],
+  "presets": [
+    {
+      "name": "TCG battle showcase"
+    }
+  ]
+}
+{% endschema %}

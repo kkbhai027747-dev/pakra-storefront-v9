@@ -1,0 +1,26 @@
+{%- liquid
+  assign image_loading = loading | default: 'lazy'
+  assign image_priority = fetchpriority | default: 'auto'
+  assign image_sizes = sizes | default: '(min-width: 990px) 40vw, 100vw'
+  assign image_alt = article.image.alt | default: article.title
+-%}
+
+{%- if article.image != blank -%}
+  <span class="p10-blog-card__image-frame">
+    {{
+      article.image
+      | image_url: width: 1600
+      | image_tag:
+        widths: '360, 540, 720, 960, 1200, 1600',
+        sizes: image_sizes,
+        loading: image_loading,
+        fetchpriority: image_priority,
+        class: 'p10-blog-card__image',
+        alt: image_alt
+    }}
+  </span>
+{%- else -%}
+  <span class="p10-blog-card__text-image" aria-hidden="true">
+    <span>{{ article.title | escape }}</span>
+  </span>
+{%- endif -%}

@@ -1,0 +1,668 @@
+{{ 'p10-blog-editorial-hub.css' | asset_url | stylesheet_tag }}
+
+
+{%- if blog != blank -%}
+  {%- assign journal_blog = blog -%}
+{%- else -%}
+  {%- assign journal_blog = section.settings.journal_blog -%}
+  {%- if journal_blog == blank -%}
+    {%- assign journal_blog = blogs['guide'] -%}
+  {%- endif -%}
+{%- endif -%}
+
+{%- assign journal_articles = journal_blog.articles -%}
+{%- assign journal_heading = section.settings.heading -%}
+{%- assign database_fallback = false -%}
+{%- if journal_blog.handle == 'tcg-database' and journal_blog.articles_count == 0 -%}
+  {%- assign database_fallback = true -%}
+  {%- assign database_handles = 'mlp-t2,mlp-3,mlp-t4,mlp-t5,mlp-tcg,mlp-new-year-gift-box,mlp-cute-chiba-party,mlp-star-series,mlp-book-of-magic,mlp-pr-cards' | split: ',' -%}
+  {%- for database_handle in database_handles -%}
+    {%- assign journal_articles = journal_articles | concat: blogs[database_handle].articles -%}
+  {%- endfor -%}
+  {%- assign journal_articles = journal_articles | sort: 'published_at' | reverse -%}
+  {%- assign journal_heading = 'KAYOU MLP Card Database' -%}
+{%- endif -%}
+
+{%- assign featured_article = section.settings.featured_article -%}
+{%- if featured_article == blank and journal_blog != blank -%}
+  {%- for candidate in journal_articles limit: 50 -%}
+    {%- if candidate.tags contains 'feature:eligible' -%}
+      {%- assign featured_article = candidate -%}
+      {%- break -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endif -%}
+
+{%- if featured_article == blank and journal_blog != blank -%}
+  {%- assign featured_article = journal_articles.first -%}
+{%- endif -%}
+
+<section
+  class="p10-blog-editorial"
+  data-p10-blog-editorial
+  aria-label="{{ journal_heading | escape }}"
+  {{ section.shopify_attributes }}
+>
+  <div class="p10-blog-editorial__inner page-width">
+    <header class="p10-blog-editorial__masthead">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="p10-blog-editorial__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      {%- endif -%}
+      <h1 class="p10-blog-editorial__heading">{{ journal_heading | escape }}</h1>
+      {%- if section.settings.description != blank -%}
+        <p class="p10-blog-editorial__description">{{ section.settings.description | escape }}</p>
+      {%- endif -%}
+    </header>
+
+    <div class="p10-blog-editorial__lead">
+      <section class="p10-blog-editorial__today" aria-labelledby="p10-today-heading-{{ section.id }}">
+        <h2 id="p10-today-heading-{{ section.id }}" class="p10-blog-editorial__section-heading">Today’s Pick</h2>
+        {%- if featured_article != blank -%}
+          {%- render 'p10-blog-card',
+            article: featured_article,
+            style_override: section.settings.featured_style,
+            featured: true,
+            loading: 'eager',
+            fetchpriority: 'high',
+            sizes: '(min-width: 990px) 58vw, 100vw',
+            label: 'Today’s Pick'
+          -%}
+        {%- endif -%}
+      </section>
+
+      <aside class="p10-blog-editorial__week" aria-labelledby="p10-week-heading-{{ section.id }}">
+        <h2 id="p10-week-heading-{{ section.id }}" class="p10-blog-editorial__section-heading">This Week</h2>
+        {%- if journal_blog != blank -%}
+          {%- assign weekly_count = 0 -%}
+          {%- for article in journal_articles limit: 10 -%}
+            {%- if featured_article == blank or article.id != featured_article.id -%}
+              <div class="p10-blog-editorial__week-item">
+                {%- render 'p10-blog-card',
+                  article: article,
+                  style_override: 'auto',
+                  featured: false,
+                  loading: 'lazy',
+                  fetchpriority: 'auto',
+                  sizes: '(min-width: 990px) 21vw, 100vw',
+                  label: 'This week'
+                -%}
+              </div>
+              {%- assign weekly_count = weekly_count | plus: 1 -%}
+              {%- if weekly_count == 2 -%}
+                {%- break -%}
+              {%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+      </aside>
+    </div>
+
+    <section class="p10-blog-editorial__topics" aria-labelledby="p10-topics-heading-{{ section.id }}">
+      <header class="p10-blog-editorial__section-header">
+        <p class="p10-blog-editorial__section-kicker">Explore the journal</p>
+        <h2 id="p10-topics-heading-{{ section.id }}" class="p10-blog-editorial__section-heading">Browse by Topic</h2>
+      </header>
+
+      <div class="p10-blog-editorial__topic-grid">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'topic' -%}
+            <article
+              class="p10-blog-editorial__topic-card p10-blog-editorial__topic-card--{{ block.settings.accent | escape }}"
+              {{ block.shopify_attributes }}
+            >
+              {%- if block.settings.link != blank -%}
+                <a class="p10-blog-editorial__topic-main" href="{{ block.settings.link | escape }}">
+                  {%- if block.settings.eyebrow != blank -%}
+                    <p class="p10-blog-editorial__topic-eyebrow">{{ block.settings.eyebrow | escape }}</p>
+                  {%- endif -%}
+                  <h3 class="p10-blog-editorial__topic-title">{{ block.settings.title | escape }}</h3>
+                  {%- if block.settings.description != blank -%}
+                    <p class="p10-blog-editorial__topic-description">{{ block.settings.description | escape }}</p>
+                  {%- endif -%}
+                </a>
+              {%- else -%}
+                <div class="p10-blog-editorial__topic-main">
+                  {%- if block.settings.eyebrow != blank -%}
+                    <p class="p10-blog-editorial__topic-eyebrow">{{ block.settings.eyebrow | escape }}</p>
+                  {%- endif -%}
+                  <h3 class="p10-blog-editorial__topic-title">{{ block.settings.title | escape }}</h3>
+                  {%- if block.settings.description != blank -%}
+                    <p class="p10-blog-editorial__topic-description">{{ block.settings.description | escape }}</p>
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+
+              <nav
+                class="p10-blog-editorial__chapters"
+                aria-label="{{ block.settings.title | escape }} chapters"
+              >
+                <ul role="list">
+                  {%- if block.settings.chapter_1 != blank and block.settings.chapter_1_link != blank -%}
+                    <li>
+                      <a href="{{ block.settings.chapter_1_link | escape }}">
+                        {{- block.settings.chapter_1 | escape -}}
+                      </a>
+                    </li>
+                  {%- endif -%}
+                  {%- if block.settings.chapter_2 != blank and block.settings.chapter_2_link != blank -%}
+                    <li>
+                      <a href="{{ block.settings.chapter_2_link | escape }}">
+                        {{- block.settings.chapter_2 | escape -}}
+                      </a>
+                    </li>
+                  {%- endif -%}
+                  {%- if block.settings.chapter_3 != blank and block.settings.chapter_3_link != blank -%}
+                    <li>
+                      <a href="{{ block.settings.chapter_3_link | escape }}">
+                        {{- block.settings.chapter_3 | escape -}}
+                      </a>
+                    </li>
+                  {%- endif -%}
+                  {%- if block.settings.chapter_4 != blank and block.settings.chapter_4_link != blank -%}
+                    <li>
+                      <a href="{{ block.settings.chapter_4_link | escape }}">
+                        {{- block.settings.chapter_4 | escape -}}
+                      </a>
+                    </li>
+                  {%- endif -%}
+                </ul>
+              </nav>
+            </article>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </section>
+
+    <section class="p10-blog-editorial__research" aria-labelledby="p10-research-heading-{{ section.id }}">
+      <header class="p10-blog-editorial__section-header">
+        <p class="p10-blog-editorial__section-kicker">Find your next story</p>
+        <h2 id="p10-research-heading-{{ section.id }}" class="p10-blog-editorial__section-heading">
+          Research &amp; Discover
+        </h2>
+      </header>
+
+      <form class="p10-blog-editorial__search" action="{{ routes.search_url | escape }}" method="get" role="search">
+        <input type="hidden" name="type" value="article">
+        <input type="hidden" name="options[prefix]" value="last">
+        <label for="p10-blog-search-{{ section.id }}">Search the Collector Journal</label>
+        <div class="p10-blog-editorial__search-controls">
+          <input
+            id="p10-blog-search-{{ section.id }}"
+            type="search"
+            name="q"
+            placeholder="{{ section.settings.search_placeholder | escape }}"
+          >
+          <button type="submit">Search</button>
+        </div>
+      </form>
+
+      <nav class="p10-blog-editorial__filters p10-blog-editorial__filters--desktop" aria-label="Article filters">
+        <div class="p10-blog-editorial__filter-group">
+          <h3>Category</h3>
+          <ul role="list">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'filter_link' and block.settings.group == 'category' -%}
+                {%- if block.settings.label != blank and block.settings.link != blank -%}
+                  <li {{ block.shopify_attributes }}>
+                    <a href="{{ block.settings.link | escape }}">{{ block.settings.label | escape }}</a>
+                  </li>
+                {%- endif -%}
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        </div>
+        <div class="p10-blog-editorial__filter-group">
+          <h3>Series</h3>
+          <ul role="list">
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'filter_link' and block.settings.group == 'series' -%}
+                {%- if block.settings.label != blank and block.settings.link != blank -%}
+                  <li {{ block.shopify_attributes }}>
+                    <a href="{{ block.settings.link | escape }}">{{ block.settings.label | escape }}</a>
+                  </li>
+                {%- endif -%}
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        </div>
+      </nav>
+
+      <button
+        class="p10-blog-editorial__filter-open"
+        type="button"
+        data-p10-filter-open
+        aria-expanded="false"
+        aria-controls="p10-filter-drawer-{{ section.id }}"
+      >
+        Browse filters
+      </button>
+
+      <aside
+        id="p10-filter-drawer-{{ section.id }}"
+        class="p10-blog-editorial__filter-drawer"
+        data-p10-filter-drawer
+        aria-hidden="true"
+        aria-labelledby="p10-filter-drawer-heading-{{ section.id }}"
+        role="dialog"
+        aria-modal="true"
+      >
+        <header class="p10-blog-editorial__filter-drawer-header">
+          <h2 id="p10-filter-drawer-heading-{{ section.id }}">Browse filters</h2>
+          <button type="button" data-p10-filter-close aria-label="Close filters">Close</button>
+        </header>
+        <nav aria-label="Mobile article filters">
+          <div class="p10-blog-editorial__filter-group">
+            <h3>Category</h3>
+            <ul role="list">
+              {%- for block in section.blocks -%}
+                {%- if block.type == 'filter_link' and block.settings.group == 'category' -%}
+                  {%- if block.settings.label != blank and block.settings.link != blank -%}
+                    <li><a href="{{ block.settings.link | escape }}">{{ block.settings.label | escape }}</a></li>
+                  {%- endif -%}
+                {%- endif -%}
+              {%- endfor -%}
+            </ul>
+          </div>
+          <div class="p10-blog-editorial__filter-group">
+            <h3>Series</h3>
+            <ul role="list">
+              {%- for block in section.blocks -%}
+                {%- if block.type == 'filter_link' and block.settings.group == 'series' -%}
+                  {%- if block.settings.label != blank and block.settings.link != blank -%}
+                    <li><a href="{{ block.settings.link | escape }}">{{ block.settings.label | escape }}</a></li>
+                  {%- endif -%}
+                {%- endif -%}
+              {%- endfor -%}
+            </ul>
+          </div>
+        </nav>
+      </aside>
+      <button
+        class="p10-blog-editorial__filter-backdrop"
+        type="button"
+        data-p10-filter-backdrop
+        aria-label="Close filters"
+        tabindex="-1"
+      ></button>
+    </section>
+
+    <section class="p10-blog-editorial__latest" aria-labelledby="p10-latest-heading-{{ section.id }}">
+      <header class="p10-blog-editorial__section-header">
+        <p class="p10-blog-editorial__section-kicker">Fresh from the journal</p>
+        <h2 id="p10-latest-heading-{{ section.id }}" class="p10-blog-editorial__section-heading">Latest Articles</h2>
+      </header>
+
+      {%- if journal_blog != blank and journal_blog.articles_count > 0 -%}
+        {%- assign articles_per_page = section.settings.articles_per_page -%}
+        {%- paginate journal_blog.articles by articles_per_page -%}
+          <div class="p10-blog-editorial__latest-grid">
+            {%- for article in journal_blog.articles -%}
+              {%- render 'p10-blog-card',
+                article: article,
+                style_override: 'auto',
+                featured: false,
+                loading: 'lazy',
+                fetchpriority: 'auto',
+                sizes: '(min-width: 990px) 31vw, (min-width: 750px) 48vw, 100vw',
+                label: 'Collector Journal'
+              -%}
+            {%- endfor -%}
+          </div>
+
+          {%- if paginate.pages > 1 -%}
+            <nav class="p10-blog-editorial__pagination" aria-label="Article pages">
+              {%- if paginate.previous -%}
+                <a
+                  class="p10-blog-editorial__pagination-previous"
+                  href="{{ paginate.previous.url | escape }}"
+                  rel="prev"
+                  aria-label="Previous page"
+                >
+                  Previous
+                </a>
+              {%- endif -%}
+
+              <ol role="list">
+                {%- for part in paginate.parts -%}
+                  <li>
+                    {%- if part.is_link -%}
+                      <a href="{{ part.url | escape }}" aria-label="Page {{ part.title | escape }}">
+                        {{- part.title | escape -}}
+                      </a>
+                    {%- elsif part.title == paginate.current_page -%}
+                      <span aria-current="page" aria-label="Page {{ part.title | escape }}">
+                        {{- part.title | escape -}}
+                      </span>
+                    {%- else -%}
+                      <span>{{ part.title | escape }}</span>
+                    {%- endif -%}
+                  </li>
+                {%- endfor -%}
+              </ol>
+
+              {%- if paginate.next -%}
+                <a
+                  class="p10-blog-editorial__pagination-next"
+                  href="{{ paginate.next.url | escape }}"
+                  rel="next"
+                  aria-label="Next page"
+                >
+                  Next
+                </a>
+              {%- endif -%}
+            </nav>
+          {%- endif -%}
+
+          <script type="application/ld+json">
+            {
+              "@context": "https://schema.org",
+              "@type": "CollectionPage",
+              "name": {{ journal_heading | json }},
+              "url": {{ canonical_url | json }},
+              "mainEntity": {
+                "@type": "ItemList",
+                "numberOfItems": {{ journal_blog.articles | size }},
+                "itemListElement": [
+                  {%- for article in journal_blog.articles -%}
+                    {
+                      "@type": "ListItem",
+                      "position": {{ forloop.index }},
+                      "name": {{ article.title | json }},
+                      "url": {{ shop.url | append: article.url | json }}
+                    }{%- unless forloop.last -%},{%- endunless -%}
+                  {%- endfor -%}
+                ]
+              }
+            }
+          </script>
+        {%- endpaginate -%}
+      {%- elsif database_fallback and journal_articles.size > 0 -%}
+        <div class="p10-blog-editorial__latest-grid">
+          {%- for article in journal_articles -%}
+            {%- render 'p10-blog-card', article: article, style_override: 'auto', featured: false, loading: 'lazy', fetchpriority: 'auto', sizes: '(min-width: 990px) 31vw, (min-width: 750px) 48vw, 100vw', label: 'Collector Guide' -%}
+          {%- endfor -%}
+        </div>
+        <script type="application/ld+json">
+          {"@context":"https://schema.org","@type":"CollectionPage","name":{{ journal_heading | json }},"url":{{ canonical_url | json }},"mainEntity":{"@type":"ItemList","numberOfItems":{{ journal_articles.size }},"itemListElement":[
+            {%- for article in journal_articles -%}
+              {"@type":"ListItem","position":{{ forloop.index }},"name":{{ article.title | json }},"url":{{ shop.url | append: article.url | json }}}{%- unless forloop.last -%},{%- endunless -%}
+            {%- endfor -%}
+          ]}}
+        </script>
+      {%- else -%}
+        <p class="p10-blog-editorial__empty">No articles have been published yet.</p>
+        <script type="application/ld+json">
+          {
+            "@context": "https://schema.org",
+            "@type": "CollectionPage",
+            "name": {{ journal_heading | json }},
+            "url": {{ canonical_url | json }},
+            "mainEntity": {
+              "@type": "ItemList",
+              "numberOfItems": 0,
+              "itemListElement": []
+            }
+          }
+        </script>
+      {%- endif -%}
+    </section>
+  </div>
+</section>
+
+<script src="{{ 'p10-blog-editorial-hub.js' | asset_url }}"></script>
+
+{% schema %}
+{
+  "name": "P10 Blog Editorial Hub",
+  "max_blocks": 30,
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "pakracards · Collector Journal"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Stories worth collecting."
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Fresh collector intelligence, honest buying guidance, complete set references, and real stories from behind the shop."
+    },
+    {
+      "type": "blog",
+      "id": "journal_blog",
+      "label": "Journal source blog"
+    },
+    {
+      "type": "article",
+      "id": "featured_article",
+      "label": "Manual Today’s Pick"
+    },
+    {
+      "type": "select",
+      "id": "featured_style",
+      "label": "Today’s Pick display style",
+      "default": "auto",
+      "options": [
+        {
+          "value": "auto",
+          "label": "Use article tag / BLOG-01 fallback"
+        },
+        {
+          "value": "BLOG-01",
+          "label": "BLOG-01 · Clean Feature"
+        },
+        {
+          "value": "BLOG-02",
+          "label": "BLOG-02 · Compact Split"
+        },
+        {
+          "value": "BLOG-03",
+          "label": "BLOG-03 · Caption Bridge"
+        },
+        {
+          "value": "BLOG-04",
+          "label": "BLOG-04 · Editorial Lead"
+        },
+        {
+          "value": "BLOG-05",
+          "label": "BLOG-05 · Side-by-Side Proof"
+        },
+        {
+          "value": "BLOG-06",
+          "label": "BLOG-06 · Collector Index"
+        },
+        {
+          "value": "BLOG-07",
+          "label": "BLOG-07 · Human Note"
+        },
+        {
+          "value": "BLOG-08",
+          "label": "BLOG-08 · Product Focus"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "search_placeholder",
+      "label": "Search placeholder",
+      "default": "Search guides, series, and shop stories"
+    },
+    {
+      "type": "range",
+      "id": "articles_per_page",
+      "label": "Articles per page",
+      "min": 6,
+      "max": 24,
+      "step": 3,
+      "default": 12
+    }
+  ],
+  "blocks": [
+    {
+      "type": "topic",
+      "name": "Primary category",
+      "settings": [
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Small label",
+          "default": "01 · Product"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Product & Release Guides"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "New releases, product lines, and series-level collector guidance."
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Category link"
+        },
+        {
+          "type": "text",
+          "id": "chapter_1",
+          "label": "Chapter 1 label"
+        },
+        {
+          "type": "url",
+          "id": "chapter_1_link",
+          "label": "Chapter 1 link"
+        },
+        {
+          "type": "text",
+          "id": "chapter_2",
+          "label": "Chapter 2 label"
+        },
+        {
+          "type": "url",
+          "id": "chapter_2_link",
+          "label": "Chapter 2 link"
+        },
+        {
+          "type": "text",
+          "id": "chapter_3",
+          "label": "Chapter 3 label"
+        },
+        {
+          "type": "url",
+          "id": "chapter_3_link",
+          "label": "Chapter 3 link"
+        },
+        {
+          "type": "text",
+          "id": "chapter_4",
+          "label": "Chapter 4 label"
+        },
+        {
+          "type": "url",
+          "id": "chapter_4_link",
+          "label": "Chapter 4 link"
+        },
+        {
+          "type": "select",
+          "id": "accent",
+          "label": "Accent",
+          "default": "coral",
+          "options": [
+            {
+              "value": "coral",
+              "label": "Coral"
+            },
+            {
+              "value": "blue",
+              "label": "Blue"
+            },
+            {
+              "value": "mint",
+              "label": "Mint"
+            },
+            {
+              "value": "gold",
+              "label": "Gold"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "filter_link",
+      "name": "Research filter link",
+      "settings": [
+        {
+          "type": "select",
+          "id": "group",
+          "label": "Group",
+          "default": "category",
+          "options": [
+            {
+              "value": "category",
+              "label": "Category"
+            },
+            {
+              "value": "series",
+              "label": "Series"
+            },
+            {
+              "value": "year",
+              "label": "Year"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Collector Academy"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "P10 Blog Editorial Hub",
+      "blocks": [
+        {
+          "type": "topic"
+        },
+        {
+          "type": "topic"
+        },
+        {
+          "type": "topic"
+        },
+        {
+          "type": "topic"
+        },
+        {
+          "type": "filter_link"
+        },
+        {
+          "type": "filter_link"
+        },
+        {
+          "type": "filter_link"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

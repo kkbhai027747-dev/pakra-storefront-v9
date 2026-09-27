@@ -1,0 +1,253 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "p10_ip_storefront_mlp_merch": {
+      "type": "p10-ip-storefront",
+      "blocks": {
+        "merch_reesee": {
+          "type": "lane_source",
+          "settings": {
+            "lane": "merch",
+            "collection": "mlp-reesee",
+            "allowed_product_types": ""
+          }
+        },
+        "merch_auldey": {
+          "type": "lane_source",
+          "settings": {
+            "lane": "merch",
+            "collection": "mlp-auldey",
+            "allowed_product_types": ""
+          }
+        },
+        "merch_funism": {
+          "type": "lane_source",
+          "settings": {
+            "lane": "merch",
+            "collection": "mlp-funism",
+            "allowed_product_types": ""
+          }
+        },
+        "merch_searchfun": {
+          "type": "lane_source",
+          "settings": {
+            "lane": "merch",
+            "collection": "mlp-searchfun",
+            "allowed_product_types": ""
+          }
+        },
+        "merch_pinkypinky": {
+          "type": "lane_source",
+          "settings": {
+            "lane": "merch",
+            "collection": "mlp-pinkypinky",
+            "allowed_product_types": ""
+          }
+        },
+        "merch_baimao": {
+          "type": "lane_source",
+          "settings": {
+            "lane": "merch",
+            "collection": "mlp-baimao",
+            "allowed_product_types": ""
+          }
+        },
+        "merch_kader": {
+          "type": "lane_source",
+          "settings": {
+            "lane": "merch",
+            "collection": "mlp-kader-kaduo",
+            "allowed_product_types": ""
+          }
+        },
+        "merch_kayou_general": {
+          "type": "lane_source",
+          "settings": {
+            "lane": "merch",
+            "collection": "kayou-merch",
+            "allowed_product_types": "Acrylic Stand / Display, Badge / Pin, Blind Box Figure, Card Binder / Album, Collectible Sticker Box, Hanging Charms, Keychain / Charm, Plush / Plush Charm"
+          }
+        },
+        "merch_miniso": {
+          "type": "lane_source",
+          "settings": {
+            "lane": "merch",
+            "collection": "miniso",
+            "allowed_product_types": "Blind Box Figure, Plush / Plush Charm, Plush Toys"
+          }
+        },
+        "merch_new_binders": {
+          "type": "lane_source",
+          "settings": {
+            "lane": "merch",
+            "collection": "mlp-new-merch-arrivals",
+            "allowed_product_types": "Card Binder / Album"
+          }
+        },
+        "merch_type_merchandise_bundles": {
+          "type": "lane_source",
+          "settings": {
+            "lane": "merch",
+            "collection": "type-merchandise",
+            "allowed_product_types": "Building Block Blind Box, Collector Bundles, Tote Bag"
+          }
+        },
+        "merch_type_card_accessories": {
+          "type": "lane_source",
+          "settings": {
+            "lane": "merch",
+            "collection": "type-card-accessories",
+            "allowed_product_types": "Card Playmat"
+          }
+        },
+        "merch_guest_picks": {
+          "type": "lane_source",
+          "settings": {
+            "lane": "merch",
+            "collection": "mlpekayou-guest-picks",
+            "allowed_product_types": "K-PRIZE Lottery Draw"
+          }
+        },
+        "intent_plush": {
+          "type": "intent",
+          "settings": {
+            "lane": "merch",
+            "label": "Plush & character goods",
+            "filter_kind": "product_type",
+            "collection": "",
+            "product_types": "Plush / Plush Charm, Plush Toys, Collectible Toys, Fidget Toys",
+            "product_handles": "",
+            "classification_level": "product_format",
+            "link": ""
+          }
+        },
+        "intent_figures": {
+          "type": "intent",
+          "settings": {
+            "lane": "merch",
+            "label": "Figures & blind boxes",
+            "filter_kind": "product_type",
+            "collection": "",
+            "product_types": "Blind Box Figure, Building Block Blind Box",
+            "product_handles": "",
+            "classification_level": "product_format",
+            "link": ""
+          }
+        },
+        "intent_display": {
+          "type": "intent",
+          "settings": {
+            "lane": "merch",
+            "label": "Acrylic displays & tickets",
+            "filter_kind": "product_type",
+            "collection": "",
+            "product_types": "Acrylic Stand / Display, Collectible Ticket",
+            "product_handles": "",
+            "classification_level": "product_format",
+            "link": ""
+          }
+        },
+        "intent_accessories": {
+          "type": "intent",
+          "settings": {
+            "lane": "merch",
+            "label": "Bags, charms & accessories",
+            "filter_kind": "product_type",
+            "collection": "",
+            "product_types": "Card Playmat, Keychain / Charm, Hanging Charms, Jewelry & Accessories, Ita Bag, Hair Accessories, Jewelry, Badge / Pin, Tote Bag",
+            "product_handles": "",
+            "classification_level": "product_format",
+            "link": ""
+          }
+        },
+        "intent_binders": {
+          "type": "intent",
+          "settings": {
+            "lane": "merch",
+            "label": "Binders & albums",
+            "filter_kind": "product_type",
+            "collection": "",
+            "product_types": "Card Binder / Album",
+            "product_handles": "",
+            "classification_level": "product_format",
+            "link": ""
+          }
+        },
+        "intent_special": {
+          "type": "intent",
+          "settings": {
+            "lane": "merch",
+            "label": "Special releases",
+            "filter_kind": "product_type",
+            "collection": "",
+            "product_types": "Collectible Sticker Box, Collector Bundles, K-PRIZE Lottery Draw",
+            "product_handles": "",
+            "classification_level": "product_format",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "merch_type_card_accessories",
+        "merch_reesee",
+        "merch_auldey",
+        "merch_funism",
+        "merch_searchfun",
+        "merch_pinkypinky",
+        "merch_baimao",
+        "merch_kader",
+        "merch_kayou_general",
+        "merch_miniso",
+        "merch_new_binders",
+        "merch_type_merchandise_bundles",
+        "merch_guest_picks",
+        "intent_plush",
+        "intent_figures",
+        "intent_display",
+        "intent_accessories",
+        "intent_binders",
+        "intent_special"
+      ],
+      "settings": {
+        "ip_key": "mlp",
+        "skin": "mlp",
+        "eyebrow": "MY LITTLE PONY MERCH & COLLECTIBLES",
+        "heading": "My Little Pony",
+        "subheading": "Browse My Little Pony character merchandise and collectibles.",
+        "source_collection": "mlp-1",
+        "universal_publisher": "KAYOU",
+        "universal_product_type": "Merch & Collectibles",
+        "universal_market": "",
+        "universal_source_collection": "",
+        "show_search": true,
+        "lane_order": "merch",
+        "enable_sealed": false,
+        "sealed_label": "Sealed card boxes",
+        "sealed_copy": "",
+        "sealed_link": "",
+        "enable_merch": true,
+        "merch_label": "Merch & collectibles",
+        "merch_copy": "Figures, plush, charms, acrylic displays, binders, and character goods.",
+        "merch_link": "/collections/my-little-pony",
+        "initial_products_desktop": 12,
+        "initial_products_mobile": 8,
+        "load_more_step": 12,
+        "excluded_collection_handles": "single,singles-gallery",
+        "single_card_catalog_link": "/pages/single-cards",
+        "show_content": false,
+        "empty_state_link": "/collections/my-little-pony"
+      }
+    }
+  },
+  "order": [
+    "p10_ip_storefront_mlp_merch"
+  ]
+}

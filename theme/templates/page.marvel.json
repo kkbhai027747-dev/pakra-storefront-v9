@@ -1,0 +1,107 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "p10_ip_storefront_marvel": {
+      "type": "p10-ip-storefront",
+      "blocks": {
+        "sealed_all": {
+          "type": "lane_source",
+          "settings": {
+            "lane": "sealed",
+            "collection": "type-sealed-cards",
+            "allowed_product_types": "",
+            "additional_product_handles": ""
+          }
+        },
+        "merch_all": {
+          "type": "lane_source",
+          "settings": {
+            "lane": "merch",
+            "collection": "type-merchandise",
+            "allowed_product_types": "",
+            "additional_product_handles": ""
+          }
+        },
+        "merch_accessories": {
+          "type": "lane_source",
+          "settings": {
+            "lane": "merch",
+            "collection": "type-card-accessories",
+            "allowed_product_types": "",
+            "additional_product_handles": ""
+          }
+        },
+        "intent_ccg": {
+          "type": "intent",
+          "settings": {
+            "lane": "sealed",
+            "label": "CCG",
+            "filter_kind": "product_tag",
+            "collection": "",
+            "product_types": "",
+            "product_tags": "CCG, CCG Cards",
+            "product_handles": "",
+            "classification_level": "unclassified",
+            "link": ""
+          }
+        },
+        "intent_tcg": {
+          "type": "intent",
+          "settings": {
+            "lane": "sealed",
+            "label": "TCG",
+            "filter_kind": "product_tag",
+            "collection": "",
+            "product_types": "",
+            "product_tags": "TCG, TCG Cards",
+            "product_handles": "",
+            "classification_level": "unclassified",
+            "link": ""
+          }
+        }
+      },
+      "block_order": ["sealed_all", "merch_all", "merch_accessories", "intent_ccg", "intent_tcg"],
+      "settings": {
+        "ip_key": "marvel",
+        "skin": "marvel",
+        "eyebrow": "MARVEL COLLECTOR HUB",
+        "heading": "Marvel",
+        "subheading": "Browse Marvel collectible card game (CCG), trading card game (TCG), merchandise, and collectibles routes.",
+        "source_collection": "ip-marvel",
+        "universal_publisher": "",
+        "universal_product_type": "",
+        "universal_market": "",
+        "universal_source_collection": "",
+        "show_intro_header": true,
+        "show_search": true,
+        "lane_order": "sealed,merch",
+        "enable_sealed": true,
+        "sealed_label": "CCG & TCG card products",
+        "sealed_copy": "Marvel sealed card products, separated into CCG and TCG collector routes.",
+        "sealed_link": "/collections/ip-marvel",
+        "enable_merch": true,
+        "merch_label": "Merch & Collectibles",
+        "merch_copy": "Marvel figures, accessories, character goods, and collector items.",
+        "merch_link": "/collections/ip-marvel",
+        "initial_products_desktop": 12,
+        "initial_products_mobile": 8,
+        "load_more_step": 12,
+        "excluded_collection_handles": "single,singles-gallery",
+        "single_card_catalog_link": "",
+        "show_content": false,
+        "show_page_content": true,
+        "keep_empty_intents": true,
+        "empty_state_link": "/collections/ip-marvel"
+      }
+    }
+  },
+  "order": ["p10_ip_storefront_marvel"]
+}

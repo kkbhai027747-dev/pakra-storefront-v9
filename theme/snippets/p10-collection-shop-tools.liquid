@@ -1,0 +1,74 @@
+{%- liquid
+  assign p10_secondary_ip_handles = 'ip-hatsune-miku,ip-detective-conan,ip-miracle-nikki,ip-ye-luoli,ip-shining-nikki,ip-persona-5-royal,ip-miraculous-ladybug,ip-natsume,ip-dunhuang-museum,ip-tom-and-jerry' | split: ','
+  assign p10_single_collection = collections['type-single-cards']
+  assign p10_single_url = p10_single_collection.url | default: '/collections/type-single-cards'
+  assign p10_single_page_url = pages['kayou-mlp-card-catalog'].url | default: '/pages/kayou-mlp-card-catalog'
+  assign p10_database_url = blogs['tcg-database'].url | default: '/blogs/tcg-database'
+  assign p10_is_single_collection = false
+  if collection.handle == 'type-single-cards' or collection.handle == 'single' or collection.handle == 'singles-gallery'
+    assign p10_is_single_collection = true
+  endif
+-%}
+
+{%- unless p10_secondary_ip_handles contains collection.handle -%}
+<section class="p10-collection-tools" aria-label="Shop by collecting goal">
+  <form class="p10-collection-search" action="{{ routes.search_url }}" method="get" role="search">
+  <input type="hidden" name="options[prefix]" value="last">
+  <input type="hidden" name="options[fields]" value="title,tag,product_type,variants.title,vendor">
+    <input type="hidden" name="type" value="product">
+    <label for="p10-collection-search-{{ section.id }}">Find</label>
+    <input id="p10-collection-search-{{ section.id }}" type="search" name="q" placeholder="{% if p10_is_single_collection %}Search card code, rarity, or series{% else %}Search products or series{% endif %}" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+    <button type="submit" aria-label="Search products">{% render 'icon-search' %}<span>Search</span></button>
+  </form>
+
+  <nav class="p10-collection-chips" aria-label="Quick product categories">
+    {%- case collection.handle -%}
+      {%- when 'group-shop-by-ip', 'ip-my-little-pony', 'ip-transformers', 'ip-naruto', 'ip-inuyasha', 'ip-arknights', 'ip-harry-potter', 'ip-the-powerpuff-girls', 'ip-persona-5-royal', 'ip-hatsune-miku', 'ip-disney' -%}
+        <a class="p10-collection-chip{% if collection.handle == 'group-shop-by-ip' %} is-active{% endif %}" href="/collections/group-shop-by-ip">Shop by IP</a>
+        <a class="p10-collection-chip" href="/collections/type-sealed-cards">Sealed Cards</a>
+        <a class="p10-collection-chip" href="{{ p10_single_page_url }}">Single Cards</a>
+        <a class="p10-collection-chip" href="/collections/type-merchandise">Merchandise</a>
+        <a class="p10-collection-chip" href="/collections/type-card-accessories">Card Accessories</a>
+      {%- when 'group-shop-by-type', 'type-sealed-cards', 'type-single-cards', 'type-merchandise', 'type-card-accessories' -%}
+        <a class="p10-collection-chip{% if collection.handle == 'group-shop-by-type' %} is-active{% endif %}" href="/collections/group-shop-by-type">All product types</a>
+        <a class="p10-collection-chip{% if collection.handle == 'type-sealed-cards' %} is-active{% endif %}" href="/collections/type-sealed-cards">Sealed Cards</a>
+        <a class="p10-collection-chip{% if collection.handle == 'type-single-cards' %} is-active{% endif %}" href="{{ p10_single_page_url }}">Single Cards</a>
+        <a class="p10-collection-chip{% if collection.handle == 'type-merchandise' %} is-active{% endif %}" href="/collections/type-merchandise">Merchandise</a>
+        <a class="p10-collection-chip{% if collection.handle == 'type-card-accessories' %} is-active{% endif %}" href="/collections/type-card-accessories">Card Accessories</a>
+      {%- when 'group-featured', 'featured-new-arrivals', 'buyer-favorites', 'featured-trending-now', 'featured-guest-picks' -%}
+        <a class="p10-collection-chip{% if collection.handle == 'group-featured' %} is-active{% endif %}" href="/collections/group-featured">All featured</a>
+        <a class="p10-collection-chip{% if collection.handle == 'featured-new-arrivals' %} is-active{% endif %}" href="/collections/featured-new-arrivals">New Arrivals</a>
+        <a class="p10-collection-chip{% if collection.handle == 'buyer-favorites' %} is-active{% endif %}" href="/collections/buyer-favorites">Buyer Favorites</a>
+        <a class="p10-collection-chip{% if collection.handle == 'featured-trending-now' %} is-active{% endif %}" href="/collections/featured-trending-now">Trending Now</a>
+        <a class="p10-collection-chip{% if collection.handle == 'featured-guest-picks' %} is-active{% endif %}" href="/collections/featured-guest-picks">Guest Picks</a>
+      {%- when 'tcg-card-boxes' -%}
+        <a class="p10-collection-chip is-active" href="/collections/tcg-card-boxes">TCG cards</a>
+        <a class="p10-collection-chip" href="{{ routes.search_url }}?type=product&amp;options%5Bprefix%5D=last&amp;q=Friendships%20Begin">Friendships Begin</a>
+        <a class="p10-collection-chip" href="{{ routes.search_url }}?type=product&amp;options%5Bprefix%5D=last&amp;q=Fantasy%20Wonderland">Fantasy Wonderland</a>
+        <a class="p10-collection-chip" href="{{ routes.search_url }}?type=product&amp;options%5Bprefix%5D=last&amp;q=Nightmare%20Night">Nightmare Night</a>
+        <a class="p10-collection-chip" href="{{ routes.search_url }}?type=product&amp;options%5Bprefix%5D=last&amp;q=Starter%20Deck">Starter decks</a>
+      {%- when 'english-card-boxes' -%}
+        <a class="p10-collection-chip is-active" href="/collections/english-card-boxes">English cards</a>
+        <a class="p10-collection-chip" href="{{ routes.search_url }}?type=product&amp;options%5Bprefix%5D=last&amp;q=KAYOU%20ENGLISH">KAYOU English</a>
+      {%- when 'cn-trading-card-boxes', 'cn-mlp-card-boxes', 'cn-display-card-boxes', 'cn-booster-card-boxes', 'cn-moon-edition-card-boxes', 'cn-shadow-edition-card-boxes', 'cn-rainbow-edition-card-boxes', 'cn-fan-xin-edition-card-boxes' -%}
+        <a class="p10-collection-chip is-active" href="/collections/cn-trading-card-boxes">Chinese cards</a>
+        <a class="p10-collection-chip" href="/collections/cn-moon-edition-card-boxes">Moon Edition</a>
+        <a class="p10-collection-chip" href="/collections/cn-shadow-edition-card-boxes">Fun Moments Edition</a>
+        <a class="p10-collection-chip" href="/collections/cn-rainbow-edition-card-boxes">Rainbow Edition</a>
+        <a class="p10-collection-chip" href="/collections/cn-fan-xin-edition-card-boxes">Star Edition</a>
+      {%- when 'single', 'singles-gallery' -%}
+        <a class="p10-collection-chip is-active" href="{{ p10_single_url }}">All single cards</a>
+        <a class="p10-collection-chip" href="{{ p10_single_url }}?sort_by=created-descending">New series launch</a>
+        <a class="p10-collection-chip" href="{{ p10_single_url }}?sort_by=best-selling">Hot-selling cards</a>
+        <a class="p10-collection-chip" href="{{ p10_database_url }}">Card guide</a>
+        <a class="p10-collection-chip" href="{{ p10_single_page_url }}">Single-card catalog</a>
+      {%- else -%}
+        <a class="p10-collection-chip{% if collection.handle == 'mlp-1' %} is-active{% endif %}" href="/collections/mlp-1">All MLP</a>
+        <a class="p10-collection-chip" href="/collections/cn-trading-card-boxes">Chinese cards</a>
+        <a class="p10-collection-chip" href="/collections/english-card-boxes">English cards</a>
+        <a class="p10-collection-chip" href="/collections/tcg-card-boxes">TCG cards</a>
+        <a class="p10-collection-chip" href="/collections/mlp-reesee">MLP merch</a>
+    {%- endcase -%}
+  </nav>
+</section>
+{%- endunless -%}

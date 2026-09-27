@@ -1,0 +1,144 @@
+.request-only-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  color: #ffffff;
+  background: rgba(16, 22, 31, 0.42);
+  pointer-events: none;
+}
+
+.request-only-overlay__label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 100%;
+  padding: 9px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.82);
+  border-radius: 999px;
+  background: rgba(16, 22, 31, 0.84);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: 0.04em;
+  text-align: center;
+}
+
+.request-only-price {
+  display: block;
+}
+
+.request-only-price__label {
+  color: currentColor;
+  font-size: inherit;
+  font-weight: 700;
+  line-height: inherit;
+}
+
+.request-only-contact {
+  padding: 20px;
+  border: 1px solid rgba(35, 35, 35, 0.16);
+  border-radius: 8px;
+  background: #f7f7f7;
+}
+
+.request-only-contact__title {
+  display: block;
+  margin: 0 0 8px;
+  color: #232323;
+  font-size: 18px;
+  line-height: 1.3;
+}
+
+.request-only-contact__message {
+  margin: 0 0 16px;
+  color: #4d4d4d;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.request-only-form__form,
+.request-only-form {
+  margin: 0;
+}
+
+.request-only-form__trigger {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin: 0;
+  cursor: pointer;
+  list-style: none;
+  text-align: center;
+}
+
+.request-only-form__trigger::-webkit-details-marker {
+  display: none;
+}
+
+.request-only-form[open] .request-only-form__trigger {
+  margin-bottom: 16px;
+}
+
+.request-only-form__panel {
+  padding-top: 4px;
+}
+
+.request-only-form__field {
+  margin-bottom: 14px;
+}
+
+.request-only-form__label {
+  display: block;
+  margin-bottom: 6px;
+  color: #232323;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.request-only-form__input,
+.request-only-form__submit {
+  width: 100%;
+}
+
+.request-only-form__message {
+  margin-bottom: 14px;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.request-only-form__message--success {
+  color: #1d5d37;
+  background: #e9f6ee;
+}
+
+.request-only-form__message--error {
+  color: #8b1e1e;
+  background: #fcecec;
+}
+
+body:has([data-request-only]) .productView-stickyCart {
+  display: none !important;
+}
+
+@media (max-width: 749px) {
+  .request-only-overlay {
+    padding: 10px;
+  }
+
+  .request-only-overlay__label {
+    padding: 7px 10px;
+    font-size: 11px;
+  }
+
+  .request-only-contact {
+    padding: 16px;
+  }
+}

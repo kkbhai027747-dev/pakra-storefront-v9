@@ -1,0 +1,11 @@
+<style>
+[data-prisma-photo-search-container="true"]{position:relative}
+form[action*="/search"] input[data-prisma-photo-search-enhanced="true"]{padding-right:90px!important}
+form[action*="/search"] button[data-prisma-photo-search-enhanced="true"]{position:absolute;right:44px;top:50%;transform:translateY(-50%);width:36px;height:36px;padding:0;border:0;background:transparent;color:inherit;font-size:0;cursor:pointer;z-index:2}
+form[action*="/search"] button[data-prisma-photo-search-enhanced="true"]::before{content:"";display:block;width:20px;height:16px;margin:auto;border:2px solid currentColor;border-radius:3px;box-sizing:border-box}
+form[action*="/search"] button[data-prisma-photo-search-enhanced="true"]::after{content:"";position:absolute;width:5px;height:5px;border:2px solid currentColor;border-radius:50%;left:50%;top:50%;transform:translate(-50%,-50%)}
+</style>
+<script type="module">
+import { startPhotoSearchEnhancer } from "https://myprisma-photo-search-free.myprisma-photo-search.workers.dev/prisma-photo-search.js";
+startPhotoSearchEnhancer("https://myprisma-photo-search-free.myprisma-photo-search.workers.dev/index/manifest.json");
+</script>

@@ -1,0 +1,330 @@
+{{ 'p10-ip-storefront.css' | asset_url | stylesheet_tag }}
+{{ 'p10-guest-picks.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign has_curator = false
+  if section.settings.show_curator_attribution
+    if section.settings.curator_name != blank or section.settings.curator_image != blank or section.settings.curator_quote != blank
+      assign has_curator = true
+    endif
+  endif
+
+  assign has_side_panel = false
+  if section.settings.show_partner_panel or has_curator
+    assign has_side_panel = true
+  endif
+
+  assign page_heading = section.settings.heading | default: collection.title
+  assign partner_url = section.settings.partner_url | default: 'https://www.mlpekayou.com/'
+-%}
+
+<section
+  class="p10-ip-storefront p10-guest-picks{% if has_side_panel %} p10-guest-picks--with-panel{% else %} p10-guest-picks--neutral{% endif %}"
+  data-section-id="{{ section.id }}"
+>
+  <div class="p10-guest-picks__inner">
+    <header class="p10-guest-picks__hero">
+      <div class="p10-guest-picks__intro">
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="p10-guest-picks__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        {%- endif -%}
+        <h1>{{ page_heading | escape }}</h1>
+        {%- if section.settings.introduction != blank -%}
+          <div class="p10-guest-picks__copy rte">{{ section.settings.introduction }}</div>
+        {%- endif -%}
+        {%- if collection.handle == 'mlpekayou-guest-picks' -%}
+          <aside class="p10-guest-picks__shipping" aria-labelledby="KeeganShipping-{{ section.id }}">
+            <p class="p10-guest-picks__shipping-label">{{ 'keegan.shipping.warehouse' | t }}</p>
+            <p class="p10-guest-picks__shipping-title" id="KeeganShipping-{{ section.id }}">{{ 'keegan.shipping.heading_html' | t }}</p>
+            <p class="p10-guest-picks__shipping-detail">{{ 'keegan.shipping.detail' | t }}</p>
+          </aside>
+        {%- endif -%}
+      </div>
+
+      {%- if has_side_panel -%}
+        <div class="p10-guest-picks__side">
+          {%- if section.settings.show_partner_panel -%}
+            <aside class="p10-guest-picks__partner" aria-label="MLPEKAYOU official website">
+              {%- if section.settings.partner_label != blank -%}
+                <p class="p10-guest-picks__partner-label">{{ section.settings.partner_label | escape }}</p>
+              {%- endif -%}
+              <a
+                class="p10-guest-picks__partner-logo"
+                href="{{ partner_url }}"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Visit the MLPEKAYOU official website"
+              >
+                <img
+                  src="{{ 'mlpekayou-logo-keegan-transparent-v3.png' | asset_url }}"
+                  alt="MLPEKAYOU"
+                  width="2095"
+                  height="329"
+                  loading="eager"
+                >
+              </a>
+              {%- if section.settings.partner_heading != blank -%}
+                <h2>{{ section.settings.partner_heading | escape }}</h2>
+              {%- endif -%}
+              {%- if section.settings.partner_copy != blank -%}
+                <div class="p10-guest-picks__partner-copy rte">{{ section.settings.partner_copy }}</div>
+              {%- endif -%}
+              {%- if section.settings.partner_link_label != blank -%}
+                <a
+                  class="p10-guest-picks__partner-cta"
+                  href="{{ partner_url }}"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {{ section.settings.partner_link_label | escape }}
+                  <span aria-hidden="true">→</span>
+                </a>
+              {%- endif -%}
+            </aside>
+          {%- endif -%}
+
+          {%- if has_curator -%}
+            <aside class="p10-guest-picks__curator" aria-label="Guest collector">
+              {%- if section.settings.curator_image != blank -%}
+                <div class="p10-guest-picks__portrait">
+                  {{
+                    section.settings.curator_image
+                    | image_url: width: 360
+                    | image_tag:
+                      loading: 'eager',
+                      widths: '120, 180, 240, 360',
+                      sizes: '(min-width: 990px) 132px, 92px',
+                      alt: section.settings.curator_name
+                  }}
+                </div>
+              {%- endif -%}
+              <div class="p10-guest-picks__curator-copy">
+                {%- if section.settings.curator_role != blank -%}
+                  <p class="p10-guest-picks__role">{{ section.settings.curator_role | escape }}</p>
+                {%- endif -%}
+                {%- if section.settings.curator_name != blank -%}
+                  <h2>{{ section.settings.curator_name | escape }}</h2>
+                {%- endif -%}
+                {%- if section.settings.curator_quote != blank -%}
+                  <blockquote>{{ section.settings.curator_quote | escape }}</blockquote>
+                {%- endif -%}
+              </div>
+            </aside>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </header>
+
+    <div class="p10-guest-picks__section-heading">
+      <div>
+        <p>CURATED SHELF</p>
+        <h2>{{ section.settings.shelf_heading | escape }}</h2>
+      </div>
+      {%- if collection.products_count > 0 -%}
+        <span>{{ collection.products_count }} selected</span>
+      {%- endif -%}
+    </div>
+
+    {%- if collection.products_count > 0 -%}
+      <div class="p10-guest-picks__grid">
+        {%- for product in collection.products limit: section.settings.product_limit -%}
+          {%- assign matched_note = false -%}
+          {%- assign matched_recommendation = blank -%}
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'recommendation' and block.settings.product.id == product.id -%}
+              {%- assign matched_note = block -%}
+              {%- assign matched_recommendation = block.settings.recommendation -%}
+              {%- break -%}
+            {%- endif -%}
+          {%- endfor -%}
+
+          <div class="p10-guest-picks__item">
+            {%- render 'p10-ip-storefront-product-card',
+              product: product,
+              lane: 'curated',
+              intent_handles: '',
+              recommendation_badge: section.settings.badge_label,
+              product_view: 'keegan'
+            -%}
+
+            {%- if matched_note and matched_recommendation != blank -%}
+              <aside class="p10-guest-picks__note" {{ matched_note.shopify_attributes }}>
+                {%- if matched_note.settings.reason_label != blank -%}
+                  <p>{{ matched_note.settings.reason_label | escape }}</p>
+                {%- endif -%}
+                <div class="rte">{{ matched_recommendation }}</div>
+              </aside>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      <div class="p10-guest-picks__empty" role="status">
+        <span aria-hidden="true">01</span>
+        <p>{{ section.settings.empty_message | escape }}</p>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "P10 Guest Picks",
+  "tag": "section",
+  "class": "section-p10-guest-picks",
+  "max_blocks": 24,
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "MLPEKAYOU COMMUNITY"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Page heading",
+      "info": "Leave blank to use the collection title.",
+      "default": "Guest Collector Picks"
+    },
+    {
+      "type": "richtext",
+      "id": "introduction",
+      "label": "Introduction",
+      "default": "<p>A focused shelf of collector-led recommendations from the MLPEKAYOU community.</p>"
+    },
+    {
+      "type": "header",
+      "content": "MLPEKAYOU partner panel"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_partner_panel",
+      "label": "Show official partner panel",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "partner_label",
+      "label": "Partner label",
+      "default": "OFFICIAL PARTNER"
+    },
+    {
+      "type": "text",
+      "id": "partner_heading",
+      "label": "Partner heading",
+      "default": "Explore MLPEKAYOU"
+    },
+    {
+      "type": "richtext",
+      "id": "partner_copy",
+      "label": "Partner description",
+      "default": "<p>Continue to MLPEKAYOU for the wider collector community and original platform experience.</p>"
+    },
+    {
+      "type": "url",
+      "id": "partner_url",
+      "label": "MLPEKAYOU official website"
+    },
+    {
+      "type": "text",
+      "id": "partner_link_label",
+      "label": "Partner link label",
+      "default": "Visit official site"
+    },
+    {
+      "type": "header",
+      "content": "Recommendation shelf"
+    },
+    {
+      "type": "text",
+      "id": "shelf_heading",
+      "label": "Product shelf heading",
+      "default": "Recommended right now"
+    },
+    {
+      "type": "text",
+      "id": "badge_label",
+      "label": "Product badge",
+      "default": "Guest Pick"
+    },
+    {
+      "type": "range",
+      "id": "product_limit",
+      "label": "Products shown",
+      "min": 3,
+      "max": 24,
+      "step": 3,
+      "default": 12
+    },
+    {
+      "type": "textarea",
+      "id": "empty_message",
+      "label": "Empty collection message",
+      "default": "Recommendations are being prepared. Please check back soon."
+    },
+    {
+      "type": "header",
+      "content": "Curator consent and profile"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_curator_attribution",
+      "label": "Show curator attribution",
+      "info": "Keep off until the curator approves their public name, portrait, and wording.",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "curator_image",
+      "label": "Curator portrait"
+    },
+    {
+      "type": "text",
+      "id": "curator_role",
+      "label": "Curator role",
+      "default": "Guest Collector"
+    },
+    {
+      "type": "text",
+      "id": "curator_name",
+      "label": "Curator name"
+    },
+    {
+      "type": "textarea",
+      "id": "curator_quote",
+      "label": "Curator quote"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "recommendation",
+      "name": "Recommendation",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product",
+          "info": "Select a product that is already in this manual collection."
+        },
+        {
+          "type": "text",
+          "id": "reason_label",
+          "label": "Reason label",
+          "default": "Why this pick"
+        },
+        {
+          "type": "richtext",
+          "id": "recommendation",
+          "label": "Recommendation reason"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "P10 Guest Picks"
+    }
+  ]
+}
+{% endschema %}

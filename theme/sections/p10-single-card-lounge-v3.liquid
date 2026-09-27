@@ -1,0 +1,427 @@
+{%- comment -%} p10-single-card-full-audit-cache-v3-20260713 {%- endcomment -%}
+{% render 'p10-single-card-mobile-menu-guard' %}
+{{ 'p10-single-card-catalog.css' | asset_url | stylesheet_tag }}
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+<script src="{{ 'p10-single-card-catalog-20260715-v4.js' | asset_url }}" defer></script>
+
+{%- liquid
+  assign section_id = 'p10-single-card-catalog-' | append: section.id
+  assign anchor_id = section.settings.anchor_id | default: 'single-card-gallery'
+  assign draft_preview_url = 'p10-single-card-catalog-20260715-v4.json' | asset_url
+  assign single_shop_collection = section.settings.source_collection | default: collections['single']
+  assign single_shop_url = section.settings.secondary_cta_link
+  if single_shop_url == blank and single_shop_collection != blank
+    assign single_shop_url = single_shop_collection.url
+  endif
+  if single_shop_url == blank
+    assign single_shop_url = '/collections/single'
+  endif
+  assign card_guide_url = blogs['tcg-database'].url | default: '/blogs/tcg-database'
+-%}
+
+<section
+  id="{{ section_id }}"
+  class="p10-single-card-catalog"
+  data-single-card-catalog
+  data-catalog-data-url="{{ draft_preview_url }}"
+  data-preview-theme-id="156233334972"
+  data-mobile-header-cache-version="v3-20260712"
+  data-all-cards-url="{{ single_shop_url }}"
+  data-filter-mode="discovery"
+  aria-busy="true"
+>
+  <span id="{{ anchor_id }}" class="p10-single-card-catalog__anchor" aria-hidden="true"></span>
+
+  <details class="p10-single-card-catalog__beta" data-beta-notice>
+    <summary>
+      <span>Beta notice</span>
+      <strong>This single-card area is still being tested.</strong>
+      <em>Read notice</em>
+    </summary>
+    <p>
+      This single-card area is still in beta, so a few listings may not display or work correctly. If you notice an issue with a card you want to buy, please contact HAO on Discord and we will fix it as soon as possible. We sincerely apologize for any inconvenience and wish you a wonderful shopping experience.
+    </p>
+  </details>
+
+  <div class="p10-single-card-catalog__utility">
+    <button type="button" class="p10-single-card-catalog__back" data-catalog-back>
+      <span aria-hidden="true">&larr;</span>
+      <span>Back</span>
+    </button>
+    <nav class="p10-single-card-catalog__guide-nav" aria-label="Single-card guides">
+      <a href="{{ card_guide_url }}">Rarity &amp; code guide</a>
+      <a href="{{ card_guide_url }}">Series index</a>
+    </nav>
+  </div>
+
+  <div class="p10-single-card-catalog__mobile-filter-bar" data-mobile-filter-bar>
+    <div>
+      <span data-filter-summary>All cards</span>
+      <strong><span data-mobile-result-count>0</span> card listings</strong>
+    </div>
+    <button type="button" data-mobile-filter-trigger aria-haspopup="dialog" aria-expanded="false">
+      <span aria-hidden="true">&#9776;</span>
+      <span>Filter cards</span>
+    </button>
+  </div>
+  <div class="p10-single-card-catalog__mobile-active" data-mobile-active-filters aria-live="polite"></div>
+
+  <div class="p10-single-card-catalog__edition-bar" aria-hidden="true">
+    <span data-edition-color="fun-moments"></span>
+    <span data-edition-color="rainbow"></span>
+    <span data-edition-color="moon"></span>
+    <span data-edition-color="star"></span>
+    <span data-edition-color="pr"></span>
+    <span data-edition-color="spring-festival"></span>
+  </div>
+
+  <header class="p10-single-card-catalog__hero">
+    <div class="p10-single-card-catalog__intro">
+      {% if section.settings.eyebrow != blank %}
+        <p class="p10-single-card-catalog__eyebrow">{{ section.settings.eyebrow }}</p>
+      {% endif %}
+      <h1>{{ section.settings.heading | default: 'KAYOU MLP Single Cards' }}</h1>
+      {% if section.settings.subheading != blank %}
+        <div class="p10-single-card-catalog__lede">{{ section.settings.subheading }}</div>
+      {% endif %}
+      <div class="p10-single-card-catalog__hero-actions">
+        <a class="p10-single-card-catalog__primary-action" href="#catalog-results-{{ section.id }}">
+          {{ section.settings.primary_cta_label | default: 'Browse single cards' }}
+        </a>
+        <a class="p10-single-card-catalog__secondary-action" href="{{ single_shop_url }}">
+          {{ section.settings.secondary_cta_label | default: 'Shop all single cards' }}
+        </a>
+      </div>
+    </div>
+
+    <aside class="p10-card-spotlight" data-card-spotlight aria-hidden="true">
+      <div class="p10-card-spotlight__cards" data-spotlight-cards></div>
+      <div class="p10-card-spotlight__caption">
+        <span>Collector hand</span>
+        <strong data-spotlight-series>All cards</strong>
+        <em><span data-spotlight-count>0</span> cards in view</em>
+      </div>
+    </aside>
+
+    <div class="p10-single-card-catalog__desktop-filters" data-desktop-filters data-series-context="all" aria-label="Find a single card">
+      <div class="p10-single-card-catalog__filter-heading">
+        <div>
+          <span>Collector index</span>
+          <h2>Find your card</h2>
+        </div>
+        <strong><span data-result-count>0</span> card listings</strong>
+      </div>
+
+      <div class="p10-single-card-catalog__facet" data-desktop-facet="series">
+        <span>Series</span>
+        <div data-desktop-options="series"></div>
+      </div>
+      <div class="p10-single-card-catalog__facet" data-desktop-facet="rarity" hidden>
+        <span>Rarity</span>
+        <div data-desktop-options="rarity"></div>
+      </div>
+      <div class="p10-single-card-catalog__facet" data-desktop-facet="wave" hidden>
+        <span>Wave</span>
+        <div data-desktop-options="wave"></div>
+      </div>
+
+      <div class="p10-single-card-catalog__filter-footer">
+        <div data-active-filters aria-live="polite"></div>
+        <button type="button" data-filter-clear>Clear all</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="p10-catalog-section p10-catalog-section--latest p10-catalog-section--deferred" data-recommendation-section="latest" aria-labelledby="latest-heading-{{ section.id }}">
+      <header class="p10-catalog-section__heading">
+        <div>
+          <p>Latest listing</p>
+          <h2 id="latest-heading-{{ section.id }}">Newest single-card arrivals</h2>
+        </div>
+        <a href="{{ single_shop_url }}?sort_by=created-descending">View all</a>
+      </header>
+      <div class="p10-catalog-rail" data-shelf="latest" data-shelf-limit="6"></div>
+      <p class="p10-catalog-section__empty" data-shelf-empty="latest" hidden>New single cards will appear here as they are added.</p>
+    </section>
+
+    <section class="p10-catalog-section p10-catalog-section--hot p10-catalog-section--deferred" data-recommendation-section="hot" aria-labelledby="hot-heading-{{ section.id }}">
+      <header class="p10-catalog-section__heading">
+        <div>
+          <p>7-day hot</p>
+          <h2 id="hot-heading-{{ section.id }}">Hot-selling single cards</h2>
+        </div>
+        <a href="{{ single_shop_url }}?sort_by=best-selling">View hot</a>
+      </header>
+      <div class="p10-catalog-rail" data-shelf="hot" data-shelf-limit="6"></div>
+      <p class="p10-catalog-section__empty" data-shelf-empty="hot" hidden>Popular cards will appear here as verified sales data becomes available.</p>
+    </section>
+
+    <section class="p10-catalog-section p10-catalog-section--pr p10-catalog-section--deferred" data-recommendation-section="pr" aria-labelledby="pr-heading-{{ section.id }}">
+      <header class="p10-catalog-section__heading">
+        <div>
+          <p>PR / event cards</p>
+          <h2 id="pr-heading-{{ section.id }}">PR activity-card picks</h2>
+        </div>
+        <a href="#catalog-results-{{ section.id }}" data-catalog-series-link="pr">View PR cards</a>
+      </header>
+      <div class="p10-catalog-rail" data-shelf="pr" data-shelf-limit="6"></div>
+      <p class="p10-catalog-section__empty" data-shelf-empty="pr" hidden>PR activity cards will appear here when exact cards are available.</p>
+    </section>
+
+    <section id="catalog-results-{{ section.id }}" class="p10-catalog-results" data-catalog-results aria-labelledby="catalog-heading-{{ section.id }}">
+      <header class="p10-catalog-results__heading">
+        <div>
+          <p>{{ section.settings.gallery_eyebrow | default: 'Collector index' }}</p>
+          <h2 id="catalog-heading-{{ section.id }}">{{ section.settings.gallery_heading | default: 'Browse the complete card catalog' }}</h2>
+        </div>
+        <strong><span data-catalog-result-count>0</span> card listings</strong>
+      </header>
+      <div class="p10-catalog-grid" data-catalog-grid></div>
+      <div class="p10-catalog-results__empty" data-catalog-empty hidden>
+        <p>No cards match these filters.</p>
+        <button type="button" data-filter-clear>Clear filters</button>
+      </div>
+      <button type="button" class="p10-catalog-results__more" data-load-more hidden>Load more cards</button>
+    </section>
+  </main>
+
+  <aside class="p10-single-card-catalog__guide-band" aria-label="Single-card guide">
+    <div>
+      <span>Collector guide</span>
+      <strong>Not sure which rarity or code you need?</strong>
+    </div>
+    <a href="{{ card_guide_url }}">Open the card guide <span aria-hidden="true">&rarr;</span></a>
+  </aside>
+
+  <p class="p10-single-card-catalog__status" data-catalog-status role="status" aria-live="polite">Loading the card catalog...</p>
+
+  <div class="p10-catalog-drawer" data-mobile-filter-drawer hidden>
+    <button type="button" class="p10-catalog-drawer__backdrop" data-mobile-filter-cancel aria-label="Close filters"></button>
+    <div class="p10-catalog-drawer__panel" role="dialog" aria-modal="true" aria-labelledby="p10-filter-title-{{ section.id }}">
+      <header>
+        <div>
+          <span>Card finder</span>
+          <h2 id="p10-filter-title-{{ section.id }}">Filter cards</h2>
+        </div>
+        <button type="button" data-mobile-filter-cancel aria-label="Close filters">&times;</button>
+      </header>
+      <div class="p10-catalog-drawer__body">
+        <fieldset data-drawer-facet="series">
+          <legend>Series</legend>
+          <div data-drawer-options="series"></div>
+        </fieldset>
+        <fieldset data-drawer-facet="rarity" hidden>
+          <legend>Rarity</legend>
+          <div data-drawer-options="rarity"></div>
+        </fieldset>
+        <fieldset data-drawer-facet="wave" hidden>
+          <legend>Wave</legend>
+          <div data-drawer-options="wave"></div>
+        </fieldset>
+      </div>
+      <footer>
+        <button type="button" data-mobile-filter-clear>Clear all</button>
+        <button type="button" data-mobile-filter-apply>Show <span data-draft-result-count>0</span> cards</button>
+      </footer>
+    </div>
+  </div>
+
+  <template data-liquid-fallback>
+    {% for block in section.blocks limit: 6 %}
+      {% liquid
+        assign fallback_link = block.settings.link | default: single_shop_url
+        assign fallback_alt = block.settings.image_alt | default: block.settings.title
+      %}
+      <article
+        data-fallback-card
+        data-series="{{ block.settings.series_key | default: block.settings.edition_key | handleize }}"
+        data-rarity="{{ block.settings.rarity_key | handleize }}"
+        data-wave="{{ block.settings.wave_key | handleize }}"
+      >
+        <a href="{{ fallback_link }}">
+          {% if block.settings.image_url != blank %}
+            <img
+              src="{{ block.settings.image_url }}"
+              alt="{{ fallback_alt | escape }}"
+              loading="lazy"
+              decoding="async"
+              width="360"
+              height="500"
+            >
+          {% endif %}
+          <strong>{{ block.settings.code_group | default: block.settings.short_label }}</strong>
+          <span>{{ block.settings.rarity }}</span>
+          {% if block.settings.price_text != blank %}<em>{{ block.settings.price_text }}</em>{% endif %}
+        </a>
+      </article>
+    {% endfor %}
+  </template>
+
+  <noscript>
+    <p class="p10-single-card-catalog__noscript">
+      JavaScript is required for card filters. <a href="{{ single_shop_url }}">Browse all single cards</a>.
+    </p>
+  </noscript>
+</section>
+
+{% schema %}
+{
+  "name": "P10 Single Card Lounge",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Hero eyebrow",
+      "default": "Single card gallery"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Hero heading",
+      "default": "KAYOU MLP Single Cards"
+    },
+    {
+      "type": "richtext",
+      "id": "subheading",
+      "label": "Hero text",
+      "default": "<p>pakracards is moving this page toward a focused KAYOU MLP single-card shop: browse by series and rarity first, then use wave only when you need the exact release path.</p>"
+    },
+    {
+      "type": "collection",
+      "id": "source_collection",
+      "label": "Live single-card collection",
+      "info": "Leave blank to use the single collection first, then singles-gallery as fallback."
+    },
+    {
+      "type": "text",
+      "id": "primary_cta_label",
+      "label": "Primary CTA label",
+      "default": "Browse single cards"
+    },
+    {
+      "type": "text",
+      "id": "secondary_cta_label",
+      "label": "Secondary CTA label",
+      "default": "Shop all single cards"
+    },
+    {
+      "type": "url",
+      "id": "secondary_cta_link",
+      "label": "Secondary CTA link"
+    },
+    {
+      "type": "text",
+      "id": "showcase_label",
+      "label": "Showcase accessibility label",
+      "default": "Featured single card groups"
+    },
+    {
+      "type": "text",
+      "id": "anchor_id",
+      "label": "Stable anchor ID",
+      "default": "single-card-gallery"
+    },
+    {
+      "type": "text",
+      "id": "motion_kicker",
+      "label": "Motion kicker",
+      "default": "Card number index"
+    },
+    {
+      "type": "text",
+      "id": "motion_heading",
+      "label": "Motion heading",
+      "default": "Single Cards"
+    },
+    {
+      "type": "text",
+      "id": "motion_text",
+      "label": "Motion text",
+      "default": "Browse cards by series, rarity, wave, and printed code."
+    },
+    {
+      "type": "text",
+      "id": "stats_label",
+      "label": "Stats accessibility label",
+      "default": "Single card catalog highlights"
+    },
+    {
+      "type": "text",
+      "id": "variant_stat_label",
+      "label": "Variant stat label",
+      "default": "cards organized"
+    },
+    {
+      "type": "text",
+      "id": "group_stat_label",
+      "label": "Group stat label",
+      "default": "focused card groups"
+    },
+    {
+      "type": "text",
+      "id": "promise_stat",
+      "label": "Promise stat",
+      "default": "Exact"
+    },
+    {
+      "type": "text",
+      "id": "promise_label",
+      "label": "Promise label",
+      "default": "card-number selection"
+    },
+    {
+      "type": "text",
+      "id": "gallery_eyebrow",
+      "label": "Gallery eyebrow",
+      "default": "Collector paths"
+    },
+    {
+      "type": "text",
+      "id": "gallery_heading",
+      "label": "Gallery heading",
+      "default": "Browse by series, wave, and rarity"
+    },
+    {
+      "type": "text",
+      "id": "card_cta_label",
+      "label": "Card CTA label",
+      "default": "View cards"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "card_group",
+      "name": "Card group",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title" },
+        { "type": "text", "id": "short_label", "label": "Showcase short label" },
+        { "type": "text", "id": "edition", "label": "Edition label" },
+        { "type": "text", "id": "edition_key", "label": "Edition filter key" },
+        { "type": "text", "id": "series", "label": "Series label" },
+        { "type": "text", "id": "series_key", "label": "Series filter key" },
+        { "type": "text", "id": "wave", "label": "Wave label" },
+        { "type": "text", "id": "wave_key", "label": "Wave filter key" },
+        { "type": "text", "id": "rarity", "label": "Rarity label" },
+        { "type": "text", "id": "rarity_key", "label": "Rarity filter key" },
+        { "type": "text", "id": "code_group", "label": "Code group" },
+        { "type": "text", "id": "meta", "label": "Meta text" },
+        { "type": "number", "id": "variant_count", "label": "Variant count", "default": 0 },
+        {
+          "type": "text",
+          "id": "price_text",
+          "label": "Lowest price text",
+          "info": "Fallback only. Live products use the product minimum price automatically."
+        },
+        { "type": "url", "id": "link", "label": "Product link" },
+        { "type": "text", "id": "image_url", "label": "Image URL" },
+        { "type": "text", "id": "image_alt", "label": "Image alt" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "P10 Single Card Lounge" }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,208 @@
+<style>
+  /* 1. 强制全屏技术：突破主题安全框，左右 0 留白 */
+  .tcg-full-bleed-banner {
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    display: flex;
+    align-items: center;
+    min-height: {{ section.settings.desktop_height }}px;
+    background-color: #000; /* 终极保障：文字区的底层绝对纯黑 */
+    overflow: hidden;
+  }
+  
+  /* 2. 背景图片与智能蒙版 (桌面端) */
+  .tcg-banner-bg {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: center;
+    z-index: 1;
+    
+    /* 核心修复：强制左侧 0%-35% 完全透明，露出底部纯黑。35%-60%平滑过渡 */
+    -webkit-mask-image: linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 35%, rgba(0,0,0,1) 60%);
+    mask-image: linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 35%, rgba(0,0,0,1) 60%);
+  }
+  
+  /* 3. 辅助遮罩：增加深度的黑色氛围 */
+  .tcg-banner-overlay {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(to right, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 80%);
+    z-index: 2;
+  }
+  
+  /* 4. 文字内容：左对齐排版 */
+  .tcg-banner-content {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+    text-align: left;
+  }
+  
+  .tcg-sub { 
+    color: {{ section.settings.accent_color }}; 
+    font-weight: 800; 
+    font-size: 14px; 
+    text-transform: uppercase; 
+    margin-bottom: 10px; 
+    letter-spacing: 1px; 
+  }
+  .tcg-head { 
+    color: #fff; 
+    font-size: 52px; 
+    font-weight: 900; 
+    margin: 0 0 10px 0; 
+    line-height: 1.1; 
+  }
+  .tcg-desc { 
+    color: #ccc; 
+    font-size: 18px; 
+    margin-bottom: 24px; 
+    max-width: 500px;
+  }
+  .tcg-btn {
+    display: inline-block;
+    background-color: {{ section.settings.accent_color }};
+    color: #000;
+    padding: 14px 32px;
+    font-size: 14px;
+    font-weight: 800;
+    text-decoration: none;
+    border-radius: 4px;
+    text-transform: uppercase;
+    transition: transform 0.2s ease;
+  }
+  .tcg-btn:hover { transform: scale(1.05); }
+
+  /* 5. 手机端适配 (Mobile) 核心修复 */
+  @media (max-width: 768px) {
+    .tcg-full-bleed-banner {
+      min-height: {{ section.settings.mobile_height }}px;
+      align-items: flex-end; 
+    }
+    
+    /* 核心修复：手机端图片底部 0%-40% 强制透明，露出纯黑，确保文字和按钮不被干扰 */
+    .tcg-banner-bg {
+      -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 40%, rgba(0,0,0,1) 70%);
+      mask-image: linear-gradient(to top, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 40%, rgba(0,0,0,1) 70%);
+    }
+    
+    /* 手机端辅助黑色渐变改为由下至上 */
+    .tcg-banner-overlay {
+      background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 80%);
+    }
+    
+    .tcg-banner-content {
+      padding: 0 20px 30px 20px;
+    }
+    .tcg-head { font-size: 36px; }
+    .tcg-desc { font-size: 15px; }
+  }
+</style>
+
+<div class="tcg-full-bleed-banner">
+  {% if section.settings.image != blank %}
+    <img src="{{ section.settings.image | img_url: 'master' }}" class="tcg-banner-bg" alt="{{ section.settings.heading | escape }}" loading="lazy">
+  {% else %}
+    <div class="tcg-banner-bg" style="background-color: #111;"></div>
+  {% endif %}
+  
+  <div class="tcg-banner-overlay"></div>
+  
+  <div class="tcg-banner-content">
+    {% if section.settings.subheading != blank %}
+      <div class="tcg-sub">{{ section.settings.subheading }}</div>
+    {% endif %}
+    {% if section.settings.heading != blank %}
+      <h2 class="tcg-head">{{ section.settings.heading }}</h2>
+    {% endif %}
+    {% if section.settings.text != blank %}
+      <div class="tcg-desc">{{ section.settings.text }}</div>
+    {% endif %}
+    {% if section.settings.button_label != blank %}
+      <a href="{{ section.settings.button_link }}" class="tcg-btn">{{ section.settings.button_label }}</a>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Full Bleed Hero Banner",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Background Image"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "CHASE THE MAGIC"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Main Heading",
+      "default": "Pick Your Next Big Hit"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Description Text",
+      "default": "Ready to pull a Grail? We've stocked the most sought-after Kayou booster boxes."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button Label",
+      "default": "Browse Collection"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "range",
+      "id": "desktop_height",
+      "min": 300,
+      "max": 800,
+      "step": 50,
+      "unit": "px",
+      "label": "Desktop Height",
+      "default": 450
+    },
+    {
+      "type": "range",
+      "id": "mobile_height",
+      "min": 250,
+      "max": 600,
+      "step": 50,
+      "unit": "px",
+      "label": "Mobile Height",
+      "default": 400
+    }
+  ],
+  "presets": [
+    {
+      "name": "Full Bleed Hero Banner",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}

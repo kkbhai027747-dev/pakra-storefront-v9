@@ -1,0 +1,2092 @@
+{% liquid
+  assign section_id = 'p10-home-discovery-' | append: section.id
+  assign hero_asset = section.settings.hero_asset | strip
+  if hero_asset == blank
+    assign hero_asset = 'qy08-football-home-hero-desktop-v3.webp'
+  endif
+  assign hero_asset_mobile = section.settings.hero_asset_mobile | strip
+  if hero_asset_mobile == blank
+    assign hero_asset_mobile = 'qy08-football-home-hero-mobile-v3.webp'
+  endif
+  assign primary_link = section.settings.primary_link | default: '/collections/featured-new-arrivals'
+  assign secondary_link = section.settings.secondary_link | default: '/collections/type-merchandise'
+  assign hero_left_link = section.settings.hero_left_link
+  assign hero_right_link = section.settings.hero_right_link
+  assign split_hero_enabled = false
+  if hero_left_link != blank and hero_right_link != blank
+    assign split_hero_enabled = true
+  endif
+  assign hero_slides = section.blocks | where: 'type', 'hero_slide'
+  assign retired_hero_ids = 'hero_fx02' | split: ','
+  assign hero_slide_count = 0
+  for block in hero_slides
+    unless retired_hero_ids contains block.id
+      assign hero_slide_count = hero_slide_count | plus: 1
+    endunless
+  endfor
+%}
+
+<section id="{{ section_id }}" class="p10-home-discovery" data-p10-home-discovery>
+  <div class="p10-home-discovery__shell">
+    <div
+      class="p10-home-discovery__carousel"
+      data-p10-hero-carousel
+      data-home-discovery-reveal
+      data-autoplay="{{ section.settings.hero_autoplay }}"
+      data-interval="{{ section.settings.rotation_interval | default: 7 | times: 1000 }}"
+    >
+      <div class="p10-home-discovery__stage-track">
+        {% if hero_slide_count > 0 %}
+          {% assign hero_render_index = 0 %}
+          {% for block in hero_slides %}
+            {% if retired_hero_ids contains block.id %}{% continue %}{% endif %}
+            {% liquid
+              assign hero_is_first = false
+              if hero_render_index == 0
+                assign hero_is_first = true
+              endif
+              assign desktop_image = block.settings.desktop_image
+              assign mobile_image = block.settings.mobile_image
+              assign desktop_asset = block.settings.desktop_image_asset | strip
+              assign mobile_asset = block.settings.mobile_image_asset | strip
+              if desktop_image != blank
+                assign desktop_src = desktop_image | image_url: width: 2400
+              else
+                assign desktop_src = desktop_asset | asset_url
+              endif
+              if mobile_image != blank
+                assign mobile_src = mobile_image | image_url: width: 1200
+              elsif mobile_asset != blank
+                assign mobile_src = mobile_asset | asset_url
+              else
+                assign mobile_src = desktop_src
+              endif
+              assign slide_primary_link = block.settings.primary_link | default: '/collections/featured-new-arrivals'
+              assign slide_secondary_link = block.settings.secondary_link
+              assign slide_split_enabled = false
+              if block.id == 'hero_heimantou' and slide_primary_link != blank and slide_secondary_link != blank
+                assign slide_split_enabled = true
+              endif
+            %}
+            <header
+              class="p10-home-discovery__stage{% if desktop_asset == 'p10-pokemon-30th-hero-desktop.webp' %} p10-home-discovery__stage--pokemon-30th{% endif %}{% if hero_is_first %} is-active{% endif %}"
+              data-p10-hero-slide
+              aria-hidden="{% if hero_is_first %}false{% else %}true{% endif %}"
+              {{ block.shopify_attributes }}
+            >
+              <picture class="p10-home-discovery__stage-media">
+                <source media="(max-width: 760px)" srcset="{{ mobile_src }}">
+                <img
+                  src="{{ desktop_src }}"
+                  alt="{{ block.settings.image_alt | default: block.settings.heading | escape }}"
+                  width="1920"
+                  height="720"
+                  loading="{% if hero_is_first %}eager{% else %}lazy{% endif %}"
+                  {% if hero_is_first %}fetchpriority="high"{% endif %}
+                  decoding="async"
+                >
+              </picture>
+              {% if block.id == 'hero_heimantou' %}
+                <span class="p10-home-discovery__heimantou-brand" data-p10-heimantou-brand>PAKRACARDS × HEIMANTOU</span>
+              {% endif %}
+              {% if slide_split_enabled %}
+                <nav class="p10-home-discovery__split-links" aria-label="{{ block.settings.heading | default: 'Community collaboration bundles' | escape }}">
+                  <a class="p10-home-discovery__split-link p10-home-discovery__split-link--flower" href="{{ slide_primary_link }}" aria-label="{{ block.settings.primary_label | escape }}">
+                    <span class="p10-home-discovery__visually-hidden">{{ block.settings.primary_label | escape }}</span>
+                  </a>
+                  <a class="p10-home-discovery__split-link p10-home-discovery__split-link--ultimate" href="{{ slide_secondary_link }}" aria-label="{{ block.settings.secondary_label | escape }}">
+                    <span class="p10-home-discovery__visually-hidden">{{ block.settings.secondary_label | escape }}</span>
+                  </a>
+                </nav>
+              {% elsif slide_primary_link != blank %}
+                <a class="p10-home-discovery__full-link" href="{{ slide_primary_link }}" aria-label="{{ block.settings.primary_label | default: block.settings.heading | escape }}">
+                  <span class="p10-home-discovery__visually-hidden">{{ block.settings.primary_label | default: block.settings.heading | escape }}</span>
+                </a>
+              {% else %}
+              <span class="p10-home-discovery__stage-shade" aria-hidden="true"></span>
+              <span class="p10-home-discovery__stage-hint" aria-hidden="true">
+                {{ block.settings.hint | default: 'Explore the feature' | escape }} <span>&rarr;</span>
+              </span>
+              <div class="p10-home-discovery__stage-copy" data-home-stage-copy>
+                <div class="p10-home-discovery__stage-message">
+                  <p class="p10-home-discovery__eyebrow">{{ block.settings.eyebrow | default: 'COLLECTOR STORE' | escape }}</p>
+                  {% if hero_is_first %}
+                    <h2 class="p10-home-discovery__stage-title">{{ block.settings.heading | default: 'pakracards' | escape }}</h2>
+                  {% else %}
+                    <h2 class="p10-home-discovery__stage-title">{{ block.settings.heading | default: 'pakracards' | escape }}</h2>
+                  {% endif %}
+                  <p class="p10-home-discovery__intro">{{ block.settings.text | escape }}</p>
+                </div>
+                <div class="p10-home-discovery__actions">
+                  <a class="p10-home-discovery__button p10-home-discovery__button--primary" href="{{ slide_primary_link }}"{% unless hero_is_first %} tabindex="-1"{% endunless %}>
+                    {{ block.settings.primary_label | default: 'Shop the release' | escape }}
+                  </a>
+                  {% if slide_secondary_link != blank and block.settings.secondary_label != blank %}
+                    <a class="p10-home-discovery__button p10-home-discovery__button--secondary" href="{{ slide_secondary_link }}"{% unless hero_is_first %} tabindex="-1"{% endunless %}>
+                      {{ block.settings.secondary_label | escape }}
+                    </a>
+                  {% endif %}
+                </div>
+              </div>
+              {% endif %}
+            </header>
+            {% assign hero_render_index = hero_render_index | plus: 1 %}
+          {% endfor %}
+        {% else %}
+          <header class="p10-home-discovery__stage is-active" data-p10-hero-slide aria-hidden="false">
+            <picture class="p10-home-discovery__stage-media">
+              <source media="(max-width: 760px)" srcset="{{ hero_asset_mobile | asset_url }}">
+              <img src="{{ hero_asset | asset_url }}" alt="{{ section.settings.hero_alt | default: 'Featured pakracards collector release' | escape }}" width="1920" height="720" loading="eager" fetchpriority="high" decoding="async">
+            </picture>
+            {% if split_hero_enabled %}
+              <nav class="p10-home-discovery__split-links" aria-label="Community collaboration bundles">
+                <a class="p10-home-discovery__split-link p10-home-discovery__split-link--flower" href="{{ hero_left_link }}" aria-label="{{ section.settings.hero_left_label | escape }}">
+                  <span class="p10-home-discovery__visually-hidden">{{ section.settings.hero_left_label | escape }}</span>
+                </a>
+                <a class="p10-home-discovery__split-link p10-home-discovery__split-link--ultimate" href="{{ hero_right_link }}" aria-label="{{ section.settings.hero_right_label | escape }}">
+                  <span class="p10-home-discovery__visually-hidden">{{ section.settings.hero_right_label | escape }}</span>
+                </a>
+              </nav>
+            {% else %}
+              <span class="p10-home-discovery__stage-shade" aria-hidden="true"></span>
+              <span class="p10-home-discovery__stage-hint" aria-hidden="true">Explore the feature <span>&rarr;</span></span>
+              <div class="p10-home-discovery__stage-copy" data-home-stage-copy>
+                <div class="p10-home-discovery__stage-message">
+                  <p class="p10-home-discovery__eyebrow">{{ section.settings.eyebrow | default: 'COLLECTOR STORE' | escape }}</p>
+                  <h2 class="p10-home-discovery__stage-title">{{ section.settings.heading | default: 'pakracards' | escape }}</h2>
+                  <p class="p10-home-discovery__intro">{{ section.settings.text | default: 'Collect by universe. Browse cards and character goods through clear, separate paths.' | escape }}</p>
+                </div>
+                <div class="p10-home-discovery__actions">
+                  <a class="p10-home-discovery__button p10-home-discovery__button--primary" href="{{ primary_link }}">{{ section.settings.primary_label | default: 'Shop new arrivals' | escape }}</a>
+                  <a class="p10-home-discovery__button p10-home-discovery__button--secondary" href="{{ secondary_link }}">{{ section.settings.secondary_label | default: 'Browse character goods' | escape }}</a>
+                </div>
+              </div>
+            {% endif %}
+          </header>
+        {% endif %}
+      </div>
+
+      {% if hero_slide_count > 1 %}
+        <div class="p10-home-discovery__hero-controls" role="group" aria-label="Featured releases">
+          {% assign hero_dot_index = 0 %}
+          {% for block in hero_slides %}
+            {% if retired_hero_ids contains block.id %}{% continue %}{% endif %}
+            <button
+              type="button"
+              class="p10-home-discovery__hero-dot{% if hero_dot_index == 0 %} is-active{% endif %}"
+              data-p10-hero-dot
+              aria-label="Show {{ block.settings.heading | default: 'featured release' | escape }}"
+              aria-pressed="{% if hero_dot_index == 0 %}true{% else %}false{% endif %}"
+            ><span>{{ hero_dot_index | plus: 1 }}</span></button>
+            {% assign hero_dot_index = hero_dot_index | plus: 1 %}
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="p10-home-discovery__path-head" data-home-discovery-reveal>
+      <div>
+        <p class="p10-home-discovery__eyebrow p10-home-discovery__eyebrow--ink">Store directory</p>
+        <h2>{{ section.settings.directory_heading | default: 'Start with what you know.' | escape }}</h2>
+      </div>
+      <p>{{ section.settings.directory_text | default: 'Choose a universe or jump straight to the product type you want.' | escape }}</p>
+    </div>
+
+    <div class="p10-home-discovery__directory">
+      <section class="p10-home-discovery__axis" aria-labelledby="{{ section_id }}-ip-heading">
+        <div class="p10-home-discovery__axis-head">
+          <div>
+            <span>01</span>
+            <h3 id="{{ section_id }}-ip-heading">Shop by IP</h3>
+          </div>
+          <a href="{{ section.settings.ip_all_link | default: '/collections/group-shop-by-ip' }}">View all IP</a>
+        </div>
+        {% assign ip_routes = section.blocks | where: 'type', 'ip_route' %}
+        {% if ip_routes.size > 0 %}
+          <div class="p10-home-discovery__ip-showcase" data-home-ip-showcase>
+            <div class="p10-home-discovery__ip-selector" role="tablist" aria-label="Featured IP series" aria-orientation="vertical">
+              {% for block in ip_routes %}
+                <button
+                  class="p10-home-discovery__ip-tab{% if forloop.first %} is-active{% endif %}"
+                  type="button"
+                  id="{{ section_id }}-ip-series-tab-{{ block.id }}"
+                  role="tab"
+                  aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+                  aria-controls="{{ section_id }}-ip-series-panel-{{ block.id }}"
+                  tabindex="{% if forloop.first %}0{% else %}-1{% endif %}"
+                  data-home-ip-tab="{{ block.id }}"
+                  style="--route-accent: {{ block.settings.accent_color }};"
+                >
+                  <span>{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+                  <strong>{{ block.settings.title | escape }}</strong>
+                  <small>{{ block.settings.series_title | escape }}</small>
+                </button>
+              {% endfor %}
+            </div>
+
+            <div class="p10-home-discovery__ip-panels">
+              {% for block in ip_routes %}
+                {% liquid
+                  assign featured_product = block.settings.product
+                  assign feature_image = block.settings.feature_image
+                  assign feature_asset = block.settings.feature_image_asset | strip
+                  assign feature_clip = block.settings.feature_clip | strip
+                  assign feature_crop = block.settings.feature_crop | split: ' '
+                  assign crop_x = feature_crop[0] | plus: 0
+                  assign crop_y = feature_crop[1] | plus: 0
+                  assign crop_width = feature_crop[2] | plus: 0
+                  assign crop_height = feature_crop[3] | plus: 0
+                  assign source_width = feature_crop[4] | plus: 0
+                  assign source_height = feature_crop[5] | plus: 0
+                  assign crop_right = crop_x | plus: crop_width
+                  assign crop_bottom = crop_y | plus: crop_height
+                  assign valid_feature_crop = false
+                  if feature_crop.size == 6 and crop_x >= 0 and crop_y >= 0 and crop_width > 0 and crop_height > 0 and crop_right <= source_width and crop_bottom <= source_height
+                    assign valid_feature_crop = true
+                  endif
+                  if valid_feature_crop or block.settings.feature_is_card
+                    assign feature_clip = ''
+                  endif
+                  if feature_image == blank and feature_asset == blank
+                    assign feature_image = featured_product.featured_image
+                  endif
+                  assign box_image = block.settings.box_image
+                  assign box_asset = block.settings.box_image_asset | strip
+                  if box_image == blank and box_asset == blank
+                    assign box_image = featured_product.featured_image
+                  endif
+                  assign route_link = block.settings.link | default: featured_product.url
+                  assign shop_link = block.settings.shop_link | default: route_link
+                  assign feature_link = block.settings.feature_link | default: route_link
+                  assign product_title = featured_product.title | default: block.settings.series_title
+                  assign card_count = 0
+                  for card_index in (1..4)
+                    assign card_image_key = 'card_image_' | append: card_index
+                    assign card_asset_key = 'card_image_asset_' | append: card_index
+                    assign card_image = block.settings[card_image_key]
+                    assign card_asset = block.settings[card_asset_key] | strip
+                    if card_image != blank or card_asset != blank
+                      assign card_count = card_count | plus: 1
+                    endif
+                  endfor
+                %}
+                <article
+                  class="p10-home-discovery__ip-panel{% if forloop.first %} is-active{% endif %}"
+                  id="{{ section_id }}-ip-series-panel-{{ block.id }}"
+                  role="tabpanel"
+                  aria-labelledby="{{ section_id }}-ip-series-tab-{{ block.id }}"
+                  aria-hidden="{% if forloop.first %}false{% else %}true{% endif %}"
+                  data-home-ip-panel="{{ block.id }}"
+                  style="--route-accent: {{ block.settings.accent_color }};"
+                  {% unless forloop.first %}hidden{% endunless %}
+                  {{ block.shopify_attributes }}
+                >
+                  <div class="p10-home-discovery__ip-visual{% if card_count == 0 %} p10-home-discovery__ip-visual--single{% endif %}">
+                    {% if feature_image != blank or feature_asset != blank %}
+                      <a class="p10-home-discovery__ip-feature{% if block.settings.feature_is_card or valid_feature_crop %} p10-home-discovery__ip-feature--card{% endif %}{% if feature_clip != blank %} p10-home-discovery__ip-feature--cutout{% endif %}"{% if feature_clip != blank %} style="--feature-clip: polygon({{ feature_clip | escape }});"{% endif %}{% if feature_link != blank %} href="{{ feature_link }}"{% endif %} aria-label="{{ block.settings.feature_image_alt | default: product_title | escape }}">
+                        {% if valid_feature_crop %}
+                          {% liquid
+                            if feature_image != blank
+                              assign source_url = feature_image | image_url: width: source_width
+                            else
+                              assign source_url = feature_asset | asset_url
+                            endif
+                          %}
+                          <svg class="p10-home-discovery__ip-card-crop" viewBox="{{ crop_x }} {{ crop_y }} {{ crop_width }} {{ crop_height }}" width="{{ crop_width }}" height="{{ crop_height }}" aria-hidden="true" focusable="false">
+                            <image href="{{ source_url | escape }}" width="{{ source_width }}" height="{{ source_height }}" />
+                          </svg>
+                        {% elsif feature_image != blank %}
+                          {{ feature_image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '360, 600, 900, 1200', sizes: '(max-width: 760px) 60vw, 30vw', alt: block.settings.feature_image_alt }}
+                        {% else %}
+                          <img
+                            src="{{ feature_asset | asset_url }}"
+                            alt="{{ block.settings.feature_image_alt | default: block.settings.series_title | escape }}"
+                            width="1200"
+                            height="900"
+                            loading="lazy"
+                            decoding="async"
+                          >
+                        {% endif %}
+                      </a>
+                    {% else %}
+                      <div class="p10-home-discovery__ip-media-pending">
+                        <span>Series showcase ready</span>
+                        <strong>{{ block.settings.series_title | escape }}</strong>
+                        <small>Store artwork will be added with the release.</small>
+                      </div>
+                    {% endif %}
+
+                    {% if card_count > 0 %}
+                      <div class="p10-home-discovery__ip-cards" aria-label="{{ block.settings.series_title | escape }} featured card artwork" style="--card-count: {{ card_count }};">
+                        {% for card_index in (1..4) %}
+                          {% liquid
+                            assign card_image_key = 'card_image_' | append: card_index
+                            assign card_asset_key = 'card_image_asset_' | append: card_index
+                            assign card_image = block.settings[card_image_key]
+                            assign card_asset = block.settings[card_asset_key] | strip
+                            assign card_link_key = 'card_link_' | append: card_index
+                            assign card_label_key = 'card_label_' | append: card_index
+                            assign card_link = block.settings[card_link_key] | default: route_link
+                            assign card_label = block.settings[card_label_key] | default: product_title
+                            assign card_crop_key = 'card_crop_' | append: card_index
+                            assign card_crop = block.settings[card_crop_key] | split: ' '
+                            assign crop_x = card_crop[0] | plus: 0
+                            assign crop_y = card_crop[1] | plus: 0
+                            assign crop_width = card_crop[2] | plus: 0
+                            assign crop_height = card_crop[3] | plus: 0
+                            assign source_width = card_crop[4] | plus: 0
+                            assign source_height = card_crop[5] | plus: 0
+                            assign crop_right = crop_x | plus: crop_width
+                            assign crop_bottom = crop_y | plus: crop_height
+                            assign valid_card_crop = false
+                            if card_crop.size == 6 and crop_x >= 0 and crop_y >= 0 and crop_width > 0 and crop_height > 0 and crop_right <= source_width and crop_bottom <= source_height
+                              assign valid_card_crop = true
+                            endif
+                          %}
+                          {% if card_image != blank or card_asset != blank %}
+                            <a class="p10-home-discovery__ip-card"{% if card_link != blank %} href="{{ card_link }}"{% endif %} aria-label="{{ card_label | escape }}" style="--card-index: {{ card_index }};">
+                              {% if valid_card_crop %}
+                                {% liquid
+                                  if card_image != blank
+                                    assign source_url = card_image | image_url: width: source_width
+                                  else
+                                    assign source_url = card_asset | asset_url
+                                  endif
+                                %}
+                                <svg class="p10-home-discovery__ip-card-crop" viewBox="{{ crop_x }} {{ crop_y }} {{ crop_width }} {{ crop_height }}" width="{{ crop_width }}" height="{{ crop_height }}" aria-hidden="true" focusable="false">
+                                  <image href="{{ source_url | escape }}" width="{{ source_width }}" height="{{ source_height }}" />
+                                </svg>
+                              {% elsif card_image != blank %}
+                                {{ card_image | image_url: width: 480 | image_tag: loading: 'lazy', widths: '180, 300, 480', sizes: '(max-width: 760px) 24vw, 7vw', alt: block.settings.series_title }}
+                              {% else %}
+                                <img
+                                  src="{{ card_asset | asset_url }}"
+                                  alt="{{ block.settings.series_title | escape }} featured card {{ card_index }}"
+                                  width="420"
+                                  height="590"
+                                  loading="lazy"
+                                  decoding="async"
+                                >
+                              {% endif %}
+                            </a>
+                          {% endif %}
+                        {% endfor %}
+                      </div>
+                    {% endif %}
+
+                  </div>
+
+                  <div class="p10-home-discovery__ip-details">
+                    <p>{{ block.settings.label | default: block.settings.title | escape }}</p>
+                    <h4>{{ block.settings.series_title | escape }}</h4>
+                    {% if block.settings.series_local_title != blank %}
+                      <strong>{{ block.settings.series_local_title | escape }}</strong>
+                    {% endif %}
+                    {% if block.settings.text != blank %}
+                      <div>{{ block.settings.text | escape | newline_to_br }}</div>
+                    {% endif %}
+                    {% if box_image != blank or box_asset != blank %}
+                      <figure class="p10-home-discovery__ip-product">
+                        <a class="p10-home-discovery__ip-product-link"{% if route_link != blank %} href="{{ route_link }}"{% endif %} aria-label="{{ product_title | escape }}">
+                          <span class="p10-home-discovery__ip-product-image">
+                            {% if box_image != blank %}
+                              {{ box_image | image_url: width: 720 | image_tag: loading: 'lazy', widths: '240, 480, 720', sizes: '(max-width: 760px) 80vw, 28vw', alt: product_title }}
+                            {% else %}
+                              <img src="{{ box_asset | asset_url }}" alt="{{ block.settings.box_image_alt | default: product_title | escape }}" width="720" height="720" loading="lazy" decoding="async">
+                            {% endif %}
+                          </span>
+                          <span class="p10-home-discovery__ip-product-title">{{ product_title | escape }} <span aria-hidden="true">&rarr;</span></span>
+                          {% if featured_product != blank and featured_product.available == false %}
+                            <span class="p10-home-discovery__ip-product-status">{{ 'products.product.sold_out' | t }}</span>
+                          {% endif %}
+                        </a>
+                      </figure>
+                    {% endif %}
+                    {% if shop_link != blank %}
+                      <a class="p10-home-discovery__ip-shop" href="{{ shop_link }}">
+                        {{ block.settings.shop_label | default: 'Shop Now' | escape }} <span aria-hidden="true">&rarr;</span>
+                      </a>
+                    {% else %}
+                      <small>Product link will be added when this series is ready.</small>
+                    {% endif %}
+                  </div>
+                </article>
+              {% endfor %}
+            </div>
+          </div>
+        {% endif %}
+      </section>
+
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .p10-home-discovery {
+    --home-ink: #16171a;
+    --home-paper: #ffffff;
+    --home-soft: #f4f5f3;
+    --home-muted: #656a72;
+    --home-line: #d9dce0;
+    --home-focus: #2e7fdb;
+    padding: 18px 0 54px;
+    background: var(--home-paper);
+    color: var(--home-ink);
+  }
+
+  .p10-home-discovery *,
+  .p10-home-discovery *::before,
+  .p10-home-discovery *::after {
+    box-sizing: border-box;
+  }
+
+  .p10-home-discovery__shell {
+    width: min(1320px, calc(100% - 32px));
+    margin: 0 auto;
+  }
+
+  .p10-home-discovery__carousel {
+    position: relative;
+  }
+
+  .p10-home-discovery__stage-track {
+    display: grid;
+  }
+
+  .p10-home-discovery__stage {
+    grid-area: 1 / 1;
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    align-items: end;
+    min-height: 480px;
+    max-height: 540px;
+    overflow: hidden;
+    border: 1px solid rgba(22, 23, 26, 0.18);
+    border-radius: 8px;
+    background: #1a1b1e;
+    color: #ffffff;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 320ms ease-out, visibility 0s linear 320ms;
+  }
+
+  .p10-home-discovery__stage.is-active {
+    z-index: 1;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transition-delay: 0s;
+  }
+
+  .p10-home-discovery__hero-controls {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    z-index: 7;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.56);
+    border-radius: 999px;
+    background: rgba(18, 20, 26, 0.58);
+    backdrop-filter: blur(8px);
+  }
+
+  .p10-home-discovery__hero-dot {
+    display: grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    padding: 0;
+    border: 1px solid transparent;
+    border-radius: 50%;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.72);
+    cursor: pointer;
+    font: 800 10px/1 var(--font-body-family, inherit);
+    transition: background-color 120ms ease-out, color 120ms ease-out, transform 120ms ease-out;
+  }
+
+  .p10-home-discovery__hero-dot:hover,
+  .p10-home-discovery__hero-dot:focus-visible {
+    color: #ffffff;
+    transform: translateY(-1px);
+  }
+
+  .p10-home-discovery__hero-dot:focus-visible {
+    outline: 2px solid #ffffff;
+    outline-offset: 2px;
+  }
+
+  .p10-home-discovery__hero-dot.is-active {
+    border-color: rgba(255, 255, 255, 0.48);
+    background: #ffffff;
+    color: #17181b;
+  }
+
+  .p10-home-discovery__stage-media,
+  .p10-home-discovery__stage-media img,
+  .p10-home-discovery__stage-shade {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .p10-home-discovery__stage-media img {
+    display: block;
+    max-width: none;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .p10-home-discovery__stage--pokemon-30th .p10-home-discovery__stage-media img {
+    object-fit: contain;
+    background: #0b1b3b;
+  }
+
+  .p10-home-discovery__heimantou-brand {
+    position: absolute;
+    top: 10px;
+    left: 0;
+    z-index: 6;
+    display: block;
+    width: 270px;
+    min-height: 22px;
+    padding: 4px 8px 3px clamp(34px, 3.9vw, 52px);
+    background: linear-gradient(105deg, #f8f6f2 0 18%, #efe2ea 18% 100%);
+    color: #342b37;
+    font-size: clamp(8px, 0.68vw, 10px);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: 0.14em;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+
+  .p10-home-discovery__split-links {
+    position: absolute;
+    inset: 21% 0 0;
+    z-index: 5;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .p10-home-discovery__split-link {
+    position: relative;
+    display: block;
+    min-width: 0;
+    cursor: pointer;
+    transition: background-color 140ms ease-out;
+  }
+
+  .p10-home-discovery__split-link:hover {
+    background: rgba(255, 255, 255, 0.045);
+  }
+
+  .p10-home-discovery__split-link:focus-visible {
+    z-index: 1;
+    outline: 3px solid #fff5bd;
+    outline-offset: -6px;
+  }
+
+  .p10-home-discovery__full-link {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    display: block;
+    cursor: pointer;
+    transition: background-color 140ms ease-out;
+  }
+
+  .p10-home-discovery__full-link:hover {
+    background: rgba(255, 255, 255, 0.035);
+  }
+
+  .p10-home-discovery__full-link:focus-visible {
+    outline: 3px solid #fff5bd;
+    outline-offset: -6px;
+  }
+
+  .p10-home-discovery__visually-hidden {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+  }
+
+  .p10-home-discovery__stage-shade {
+    background: rgba(12, 14, 18, 0.12);
+  }
+
+  .p10-home-discovery__stage-hint {
+    position: absolute;
+    right: 16px;
+    bottom: 16px;
+    z-index: 2;
+    display: none;
+    align-items: center;
+    gap: 10px;
+    min-height: 36px;
+    padding: 8px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.86);
+    border-radius: 4px;
+    background: rgba(19, 21, 25, 0.72);
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .p10-home-discovery__stage-copy {
+    position: absolute;
+    inset: auto 0 0;
+    z-index: 3;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+    width: 100%;
+    margin: 0;
+    padding: 72px 22px 20px;
+    background: linear-gradient(180deg, rgba(12, 14, 18, 0), rgba(12, 14, 18, 0.9) 48%);
+    color: #ffffff;
+  }
+
+  .p10-home-discovery__stage-message {
+    min-width: 0;
+    max-width: 700px;
+  }
+
+  .p10-home-discovery__eyebrow {
+    margin: 0 0 10px;
+    color: #fff071;
+    font-size: 11px;
+    font-weight: 900;
+    line-height: 1.2;
+    letter-spacing: 0;
+    text-transform: uppercase;
+  }
+
+  .p10-home-discovery__eyebrow--ink {
+    color: #d94c72;
+  }
+
+  .p10-home-discovery h1,
+  .p10-home-discovery h2,
+  .p10-home-discovery h3,
+  .p10-home-discovery strong {
+    letter-spacing: 0;
+  }
+
+  .p10-home-discovery h1,
+  .p10-home-discovery__stage-title {
+    max-width: 700px;
+    margin: 0;
+    color: #ffffff;
+    font-family: var(--font-heading-family, inherit);
+    font-size: 36px;
+    font-weight: 900;
+    line-height: 1;
+  }
+
+  .p10-home-discovery__intro {
+    max-width: 660px;
+    margin: 8px 0 0;
+    color: rgba(255, 255, 255, 0.88);
+    font-size: 15px;
+    font-weight: 650;
+    line-height: 1.55;
+  }
+
+  .p10-home-discovery__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 8px;
+    margin: 0;
+  }
+
+  .p10-home-discovery__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    padding: 0 16px;
+    border: 1px solid rgba(255, 255, 255, 0.78);
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: 0;
+    text-decoration: none;
+    transition: color 140ms ease, background-color 140ms ease, transform 140ms ease;
+  }
+
+  .p10-home-discovery__button--primary {
+    background: #ffffff;
+    color: var(--home-ink);
+  }
+
+  .p10-home-discovery__button--secondary {
+    background: rgba(14, 16, 20, 0.28);
+    color: #ffffff;
+  }
+
+  .p10-home-discovery__button:hover {
+    transform: translateY(-2px);
+  }
+
+  .p10-home-discovery__button:active {
+    transform: translateY(0);
+  }
+
+  .p10-home-discovery a:focus-visible {
+    outline: 3px solid var(--home-focus);
+    outline-offset: 3px;
+  }
+
+  .p10-home-discovery__path-head {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(260px, 0.55fr);
+    align-items: end;
+    gap: 30px;
+    padding: 48px 0 22px;
+    border-bottom: 1px solid var(--home-line);
+  }
+
+  .p10-home-discovery__path-head h2 {
+    margin: 0;
+    font-size: 36px;
+    font-weight: 900;
+    line-height: 1.05;
+  }
+
+  .p10-home-discovery__path-head > p {
+    margin: 0;
+    color: var(--home-muted);
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  .p10-home-discovery__directory {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+    padding-top: 26px;
+  }
+
+  .p10-home-discovery__axis {
+    min-width: 0;
+  }
+
+  .p10-home-discovery__axis + .p10-home-discovery__axis {
+    padding-left: 32px;
+    border-left: 1px solid var(--home-line);
+  }
+
+  .p10-home-discovery__axis-head,
+  .p10-home-discovery__axis-head > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .p10-home-discovery__axis-head {
+    margin-bottom: 13px;
+  }
+
+  .p10-home-discovery__axis-head > div {
+    justify-content: flex-start;
+  }
+
+  .p10-home-discovery__axis-head span {
+    color: var(--home-muted);
+    font-size: 10px;
+    font-weight: 900;
+  }
+
+  .p10-home-discovery__axis-head h3 {
+    margin: 0;
+    font-size: 21px;
+    font-weight: 900;
+    line-height: 1.1;
+  }
+
+  .p10-home-discovery__axis-head a {
+    color: var(--home-ink);
+    font-size: 11px;
+    font-weight: 850;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .p10-home-discovery__ip-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .p10-home-discovery__ip-route,
+  .p10-home-discovery__category-route {
+    position: relative;
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid color-mix(in srgb, var(--route-accent, #cfd2d7) 45%, var(--home-line));
+    border-radius: 6px;
+    background: color-mix(in srgb, var(--route-accent, #cfd2d7) 14%, #ffffff);
+    color: var(--home-ink);
+    text-decoration: none;
+    transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+  }
+
+  .p10-home-discovery__ip-route:hover,
+  .p10-home-discovery__category-route:hover {
+    border-color: color-mix(in srgb, var(--route-accent, #7c838e) 76%, var(--home-ink));
+    box-shadow: 0 16px 34px rgba(20, 22, 26, 0.1);
+    transform: translateY(-3px);
+  }
+
+  .p10-home-discovery__ip-route {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(110px, 0.7fr);
+    min-height: 164px;
+    padding: 16px;
+  }
+
+  .p10-home-discovery__ip-route--featured {
+    grid-column: 1 / -1;
+    min-height: 214px;
+  }
+
+  .p10-home-discovery__route-copy,
+  .p10-home-discovery__category-copy {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    align-content: start;
+    gap: 5px;
+    min-width: 0;
+  }
+
+  .p10-home-discovery__route-copy > span,
+  .p10-home-discovery__category-copy > span {
+    color: color-mix(in srgb, var(--route-accent, #68707b) 70%, var(--home-ink));
+    font-size: 9px;
+    font-weight: 900;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  .p10-home-discovery__route-copy strong,
+  .p10-home-discovery__category-copy strong {
+    font-size: 16px;
+    font-weight: 900;
+    line-height: 1.12;
+    overflow-wrap: anywhere;
+  }
+
+  .p10-home-discovery__route-copy small,
+  .p10-home-discovery__category-copy small {
+    color: var(--home-muted);
+    font-size: 11px;
+    font-weight: 650;
+    line-height: 1.35;
+  }
+
+  .p10-home-discovery__route-media {
+    position: relative;
+    min-width: 0;
+  }
+
+  .p10-home-discovery__route-media img {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .p10-home-discovery__route-arrow {
+    position: absolute;
+    right: 12px;
+    bottom: 10px;
+    z-index: 2;
+    font-size: 16px;
+    font-weight: 900;
+    transition: transform 160ms ease;
+  }
+
+  .p10-home-discovery__ip-route:hover .p10-home-discovery__route-arrow,
+  .p10-home-discovery__category-route:hover .p10-home-discovery__route-arrow {
+    transform: translateX(3px);
+  }
+
+  .p10-home-discovery__ip-showcase {
+    display: grid;
+    grid-template-columns: 144px minmax(0, 1fr);
+    gap: 10px;
+    min-width: 0;
+  }
+
+  .p10-home-discovery__ip-selector {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    min-width: 0;
+    align-self: start;
+  }
+
+  .p10-home-discovery__ip-tab {
+    position: relative;
+    display: grid;
+    grid-template-columns: 22px minmax(0, 1fr);
+    align-items: center;
+    gap: 3px 7px;
+    width: 100%;
+    min-width: 0;
+    min-height: 72px;
+    padding: 9px;
+    overflow: hidden;
+    border: 1px solid color-mix(in srgb, var(--route-accent, #cfd2d7) 46%, var(--home-line));
+    border-radius: 7px;
+    background: color-mix(in srgb, var(--route-accent, #cfd2d7) 10%, #ffffff);
+    color: var(--home-ink);
+    cursor: pointer;
+    font: inherit;
+    text-align: left;
+    transition: border-color 160ms ease, background-color 160ms ease, color 160ms ease, transform 160ms ease;
+  }
+
+  .p10-home-discovery__ip-tab::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 3px;
+    background: var(--route-accent, var(--home-ink));
+  }
+
+  .p10-home-discovery__ip-tab:hover {
+    border-color: var(--route-accent, var(--home-ink));
+    transform: translateX(2px);
+  }
+
+  .p10-home-discovery__ip-tab.is-active {
+    border-color: var(--home-ink);
+    background: var(--home-ink);
+    color: #ffffff;
+  }
+
+  .p10-home-discovery__ip-tab > span {
+    grid-row: 1 / span 2;
+    color: var(--route-accent, currentColor);
+    font-size: 8px;
+    font-weight: 900;
+    letter-spacing: 0.04em;
+  }
+
+  .p10-home-discovery__ip-tab strong {
+    align-self: end;
+    min-width: 0;
+    font-size: 12px;
+    font-weight: 900;
+    line-height: 1.08;
+    overflow-wrap: normal;
+    word-break: normal;
+  }
+
+  .p10-home-discovery__ip-tab small {
+    align-self: start;
+    min-width: 0;
+    color: var(--home-muted);
+    font-size: 8px;
+    font-weight: 750;
+    line-height: 1.2;
+  }
+
+  .p10-home-discovery__ip-tab.is-active small {
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  .p10-home-discovery__ip-panels,
+  .p10-home-discovery__ip-panel {
+    min-width: 0;
+  }
+
+  .p10-home-discovery__ip-panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(180px, 0.8fr);
+    min-height: 625px;
+    height: 100%;
+    overflow: hidden;
+    border: 1px solid color-mix(in srgb, var(--route-accent, #cfd2d7) 52%, var(--home-line));
+    border-radius: 8px;
+    background: color-mix(in srgb, var(--route-accent, #cfd2d7) 8%, #ffffff);
+  }
+
+  .p10-home-discovery__ip-panel[hidden] {
+    display: none;
+  }
+
+  .p10-home-discovery__ip-visual {
+    position: relative;
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) 136px;
+    min-width: 0;
+    overflow: hidden;
+    border-right: 1px solid rgba(22, 23, 26, 0.12);
+    background:
+      radial-gradient(circle at 48% 32%, rgba(255, 255, 255, 0.92), transparent 48%),
+      color-mix(in srgb, var(--route-accent, #cfd2d7) 19%, #f3f3f1);
+  }
+
+  .p10-home-discovery__ip-feature {
+    display: grid;
+    place-items: center;
+    min-width: 0;
+    min-height: 0;
+    padding: 14px 16px 6px;
+  }
+
+  .p10-home-discovery__ip-visual--single {
+    grid-template-rows: 1fr;
+  }
+
+  .p10-home-discovery__ip-feature img,
+  .p10-home-discovery__ip-product-image img,
+  .p10-home-discovery__ip-card img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+  }
+
+  .p10-home-discovery__ip-feature img {
+    max-width: 440px;
+    max-height: 480px;
+    filter: drop-shadow(0 14px 16px rgba(26, 28, 34, 0.14));
+  }
+
+  .p10-home-discovery__ip-feature--cutout {
+    filter: drop-shadow(0 14px 16px rgba(26, 28, 34, 0.14));
+  }
+
+  .p10-home-discovery__ip-feature--cutout > img {
+    height: auto;
+    max-height: none;
+    clip-path: var(--feature-clip);
+    filter: none;
+  }
+
+  .p10-home-discovery__ip-feature--card {
+    position: relative;
+    padding: 44px 48px;
+  }
+
+  .p10-home-discovery__ip-feature--card > img,
+  .p10-home-discovery__ip-feature--card > svg {
+    width: auto;
+    height: 340px;
+    max-width: 78%;
+    max-height: 100%;
+    border-radius: 12px;
+    transform: rotate(4deg);
+    filter: drop-shadow(0 16px 12px rgba(26, 28, 34, 0.24));
+    transition: transform 180ms ease;
+  }
+
+  .p10-home-discovery__ip-feature--card::before,
+  .p10-home-discovery__ip-feature--card::after {
+    content: "✦";
+    position: absolute;
+    color: #ffffff;
+    font-size: 44px;
+    line-height: 1;
+    text-shadow: 0 0 18px var(--route-accent);
+    pointer-events: none;
+  }
+
+  .p10-home-discovery__ip-feature--card::before {
+    top: 22%;
+    left: 18%;
+  }
+
+  .p10-home-discovery__ip-feature--card::after {
+    right: 17%;
+    bottom: 16%;
+    font-size: 34px;
+  }
+
+  .p10-home-discovery__ip-feature--card:is(:hover, :focus-visible) > :is(img, svg) {
+    transform: translateY(-5px) rotate(1deg);
+  }
+
+  .p10-home-discovery__ip-card-crop {
+    display: block;
+    overflow: hidden;
+  }
+
+  .p10-home-discovery__ip-cards {
+    display: grid;
+    grid-template-columns: repeat(var(--card-count, 4), minmax(0, 1fr));
+    gap: 6px;
+    min-width: 0;
+    padding: 9px 10px 11px;
+    border-top: 1px solid rgba(22, 23, 26, 0.1);
+    background: rgba(255, 255, 255, 0.62);
+  }
+
+  .p10-home-discovery__ip-card {
+    display: grid;
+    place-items: center;
+    min-width: 0;
+    min-height: 0;
+    transform: rotate(calc((var(--card-index) - 2.5) * 1.2deg));
+  }
+
+  .p10-home-discovery__ip-card img,
+  .p10-home-discovery__ip-card svg {
+    width: auto;
+    height: 114px;
+    max-width: 100%;
+    filter: drop-shadow(0 6px 7px rgba(22, 23, 26, 0.2));
+  }
+
+  .p10-home-discovery__ip-card svg {
+    border-radius: 4px;
+  }
+
+  .p10-home-discovery__ip-product {
+    display: grid;
+    flex: 1;
+    width: 100%;
+    margin: 18px 0;
+    padding: 16px;
+    border: 1px solid var(--home-line);
+    border-radius: 6px;
+    background: #ffffff;
+    color: #16171a;
+  }
+
+  .p10-home-discovery__ip-product-link {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .p10-home-discovery__ip-product-image {
+    display: grid;
+    flex: 1;
+    place-items: center;
+    min-height: 200px;
+  }
+
+  .p10-home-discovery__ip-product-image img {
+    max-height: 310px;
+    transition: transform 180ms ease;
+  }
+
+  .p10-home-discovery__ip-product-title {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: 12px;
+    font-weight: 750;
+    line-height: 1.4;
+  }
+
+  .p10-home-discovery__ip-product-status {
+    align-self: flex-start;
+    padding: 4px 8px;
+    border-radius: 4px;
+    background: #f0f0f0;
+    color: #545454;
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  .p10-home-discovery__ip-product:hover {
+    border-color: var(--route-accent);
+  }
+
+  .p10-home-discovery__ip-product:hover img {
+    transform: scale(1.035);
+  }
+
+  .p10-home-discovery__ip-showcase a:focus-visible,
+  .p10-home-discovery__ip-tab:focus-visible {
+    outline: 3px solid var(--home-focus);
+    outline-offset: -3px;
+  }
+
+  .p10-home-discovery__ip-media-pending {
+    grid-row: 1 / -1;
+    display: grid;
+    align-content: center;
+    justify-items: start;
+    gap: 6px;
+    min-width: 0;
+    padding: 24px;
+    color: var(--home-ink);
+  }
+
+  .p10-home-discovery__ip-media-pending span {
+    color: color-mix(in srgb, var(--route-accent, #68707b) 72%, var(--home-ink));
+    font-size: 8px;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .p10-home-discovery__ip-media-pending strong {
+    max-width: 360px;
+    font-family: var(--font-heading-family, inherit);
+    font-size: clamp(23px, 2.2vw, 34px);
+    font-weight: 900;
+    line-height: 0.98;
+  }
+
+  .p10-home-discovery__ip-media-pending small {
+    color: var(--home-muted);
+    font-size: 11px;
+    line-height: 1.4;
+  }
+
+  .p10-home-discovery__ip-details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-width: 0;
+    padding: 22px 17px 17px;
+    background: rgba(255, 255, 255, 0.84);
+  }
+
+  .p10-home-discovery__ip-details > p {
+    margin: 0 0 8px;
+    color: color-mix(in srgb, var(--route-accent, #68707b) 72%, var(--home-ink));
+    font-size: 8px;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .p10-home-discovery__ip-details h4 {
+    margin: 0;
+    font-family: var(--font-heading-family, inherit);
+    font-size: clamp(22px, 2vw, 30px);
+    font-weight: 900;
+    line-height: 1;
+    overflow-wrap: normal;
+    word-break: normal;
+  }
+
+  .p10-home-discovery__ip-details > strong {
+    margin-top: 6px;
+    color: var(--home-muted);
+    font-size: 12px;
+    font-weight: 850;
+  }
+
+  .p10-home-discovery__ip-details > div {
+    margin-top: 16px;
+    color: var(--home-muted);
+    font-size: 11px;
+    font-weight: 650;
+    line-height: 1.45;
+  }
+
+  .p10-home-discovery__ip-shop {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    width: 100%;
+    min-height: 40px;
+    margin-top: auto;
+    padding: 0 12px;
+    border: 1px solid var(--home-ink);
+    border-radius: 4px;
+    background: var(--home-ink);
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: 900;
+    text-decoration: none;
+    transition: transform 150ms ease, background-color 150ms ease;
+  }
+
+  .p10-home-discovery__ip-shop:hover {
+    background: color-mix(in srgb, var(--route-accent, #68707b) 42%, var(--home-ink));
+    transform: translateY(-2px);
+  }
+
+  .p10-home-discovery__ip-details > small {
+    margin-top: auto;
+    color: var(--home-muted);
+    font-size: 9px;
+    font-weight: 700;
+    line-height: 1.4;
+  }
+
+  .p10-home-discovery__category-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .p10-home-discovery__category-route {
+    display: grid;
+    grid-template-columns: 64px minmax(0, 1fr);
+    align-items: center;
+    gap: 11px;
+    min-height: 106px;
+    padding: 12px 30px 12px 12px;
+  }
+
+  .p10-home-discovery__category-media {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 64px;
+    aspect-ratio: 1;
+    overflow: hidden;
+    border: 1px solid rgba(22, 23, 26, 0.1);
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.72);
+  }
+
+  .p10-home-discovery__category-media img {
+    display: block;
+    width: 88%;
+    height: 88%;
+    object-fit: contain;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .p10-home-discovery__ip-card {
+      position: relative;
+      z-index: 0;
+      transform-origin: center;
+      transition: transform 180ms ease-out;
+    }
+
+    .p10-home-discovery__ip-card img {
+      transition: filter 180ms ease-out;
+    }
+
+    .p10-home-discovery__ip-card:hover {
+      z-index: 2;
+      transform: rotate(0deg) scale(1.1);
+    }
+
+    .p10-home-discovery__ip-card:hover img {
+      filter: drop-shadow(0 12px 13px rgba(22, 23, 26, 0.28));
+    }
+
+    .p10-home-discovery__stage-hint {
+      display: inline-flex;
+      transition: opacity 160ms ease-out, transform 180ms ease-out;
+    }
+
+    .p10-home-discovery__stage-copy {
+      opacity: 0;
+      transform: translateY(16px);
+      pointer-events: none;
+      transition: opacity 180ms ease-out, transform 220ms ease-out;
+    }
+
+    .p10-home-discovery__stage:hover .p10-home-discovery__stage-copy,
+    .p10-home-discovery__stage:focus-within .p10-home-discovery__stage-copy {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .p10-home-discovery__stage:hover .p10-home-discovery__stage-hint,
+    .p10-home-discovery__stage:focus-within .p10-home-discovery__stage-hint {
+      opacity: 0;
+      transform: translateY(4px);
+      pointer-events: none;
+    }
+  }
+
+  @media (max-width: 1100px) {
+    .p10-home-discovery__directory {
+      grid-template-columns: 1fr;
+    }
+
+    .p10-home-discovery__axis + .p10-home-discovery__axis {
+      padding-top: 26px;
+      padding-left: 0;
+      border-top: 1px solid var(--home-line);
+      border-left: 0;
+    }
+
+    .p10-home-discovery__category-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 760px) {
+    .p10-home-discovery {
+      padding: 10px 0 38px;
+      overflow-x: clip;
+    }
+
+    .p10-home-discovery__shell {
+      width: min(100% - 18px, 1320px);
+    }
+
+    .p10-home-discovery__path-head {
+      display: none;
+    }
+
+    .p10-home-discovery__directory {
+      display: block;
+      padding-top: 18px;
+    }
+
+    .p10-home-discovery__directory > .p10-home-discovery__axis + .p10-home-discovery__axis {
+      display: none;
+    }
+
+    .p10-home-discovery__carousel,
+    .p10-home-discovery__stage-track,
+    .p10-home-discovery__stage {
+      min-width: 0;
+      max-width: 100%;
+    }
+
+    .p10-home-discovery__stage {
+      display: grid;
+      min-height: 0;
+      max-height: none;
+      overflow: hidden;
+      background: #ffffff;
+      color: var(--home-ink);
+    }
+
+    .p10-home-discovery__hero-controls {
+      top: 10px;
+      right: 10px;
+      gap: 4px;
+      padding: 5px;
+    }
+
+    .p10-home-discovery__hero-dot {
+      width: 24px;
+      height: 24px;
+    }
+
+    .p10-home-discovery__stage-media {
+      position: relative;
+      inset: auto;
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 4 / 5;
+    }
+
+    .p10-home-discovery__stage-media img {
+      object-position: center;
+    }
+
+    .p10-home-discovery__heimantou-brand {
+      top: 0;
+      display: flex;
+      align-items: flex-end;
+      width: clamp(170px, 39%, 290px);
+      min-height: clamp(22px, 6.25vw, 48px);
+      padding: 0 clamp(5px, 1vw, 8px) clamp(3px, 0.75vw, 6px) 6%;
+      background: #f8f6f3;
+      font-size: clamp(7.5px, 1.2vw, 9px);
+      letter-spacing: 0.13em;
+    }
+
+    .p10-home-discovery__split-links {
+      inset: 19% 0 0;
+      grid-template-columns: 1fr;
+      grid-template-rows: repeat(2, minmax(44px, 1fr));
+    }
+
+    .p10-home-discovery__stage-shade {
+      display: none;
+    }
+
+    .p10-home-discovery__stage-hint {
+      display: none;
+    }
+
+    .p10-home-discovery__stage-copy {
+      position: static;
+      inset: auto;
+      align-items: stretch;
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
+      margin: 0;
+      padding: 18px 16px 16px;
+      border-top: 1px solid var(--home-line);
+      background: #ffffff;
+      color: var(--home-ink);
+      opacity: 1;
+      transform: none;
+      pointer-events: auto;
+    }
+
+    .p10-home-discovery__stage-message {
+      max-width: none;
+    }
+
+    .p10-home-discovery__stage-copy .p10-home-discovery__eyebrow {
+      margin-bottom: 7px;
+      color: #d94c72;
+    }
+
+    .p10-home-discovery h1,
+    .p10-home-discovery__stage-title {
+      max-width: 420px;
+      color: var(--home-ink);
+      font-size: 28px;
+      line-height: 1.04;
+    }
+
+    .p10-home-discovery__intro {
+      max-width: 420px;
+      margin-top: 10px;
+      color: var(--home-muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .p10-home-discovery__actions {
+      display: grid;
+      grid-template-columns: 1fr;
+      width: 100%;
+      min-width: 0;
+      margin: 0;
+    }
+
+    .p10-home-discovery__button {
+      width: 100%;
+      min-width: 0;
+      min-height: 40px;
+      padding: 0 12px;
+      font-size: 11px;
+      line-height: 1.2;
+      text-align: center;
+      white-space: normal;
+    }
+
+    .p10-home-discovery__button--primary {
+      border-color: var(--home-ink);
+      background: var(--home-ink);
+      color: #ffffff;
+    }
+
+    .p10-home-discovery__button--secondary {
+      border-color: var(--home-ink);
+      background: #ffffff;
+      color: var(--home-ink);
+    }
+
+    .p10-home-discovery__path-head {
+      grid-template-columns: 1fr;
+      gap: 10px;
+      padding: 34px 0 16px;
+    }
+
+    .p10-home-discovery__path-head h2 {
+      font-size: 28px;
+    }
+
+    .p10-home-discovery__axis-head {
+      align-items: flex-start;
+    }
+
+    .p10-home-discovery__ip-showcase {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 12px;
+    }
+
+    .p10-home-discovery__ip-selector {
+      flex-direction: row;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 3px 0 8px;
+      scroll-snap-type: x proximity;
+    }
+
+    .p10-home-discovery__ip-tab {
+      flex: 0 0 142px;
+      grid-template-columns: 18px minmax(0, 1fr);
+      align-content: center;
+      justify-items: start;
+      gap: 4px;
+      min-height: 72px;
+      padding: 10px;
+      scroll-snap-align: start;
+    }
+
+    .p10-home-discovery__ip-tab > span {
+      grid-row: 1 / span 2;
+      font-size: 7px;
+    }
+
+    .p10-home-discovery__ip-tab strong {
+      align-self: auto;
+      font-size: 12px;
+      line-height: 1.05;
+    }
+
+    .p10-home-discovery__ip-tab small {
+      align-self: auto;
+      font-size: 9px;
+      line-height: 1.18;
+    }
+
+    .p10-home-discovery__ip-panel {
+      grid-template-columns: minmax(0, 1fr);
+      min-height: 0;
+      height: auto;
+    }
+
+    .p10-home-discovery__ip-visual {
+      grid-template-rows: 280px auto;
+      border-right: 0;
+      border-bottom: 1px solid rgba(22, 23, 26, 0.12);
+    }
+
+    .p10-home-discovery__ip-feature {
+      padding: 12px 10px 5px;
+      overflow: hidden;
+    }
+
+    .p10-home-discovery__ip-feature img {
+      width: 100%;
+      height: 260px;
+      max-height: 260px;
+    }
+
+    .p10-home-discovery__ip-feature--cutout > img {
+      height: auto;
+      max-width: 260px;
+      max-height: none;
+    }
+
+    .p10-home-discovery__ip-feature--card {
+      padding: 28px 36px;
+    }
+
+    .p10-home-discovery__ip-feature--card > img,
+    .p10-home-discovery__ip-feature--card > svg {
+      width: auto;
+      height: 218px;
+    }
+
+    .p10-home-discovery__ip-card img,
+    .p10-home-discovery__ip-card svg {
+      height: 100px;
+    }
+
+    .p10-home-discovery__ip-cards {
+      grid-template-columns: repeat(var(--card-count, 4), minmax(0, 1fr));
+      grid-template-rows: 106px;
+      gap: 6px;
+      padding: 8px;
+    }
+
+    .p10-home-discovery__ip-product {
+      margin: 16px 0;
+    }
+
+    .p10-home-discovery__ip-product-image img {
+      height: 220px;
+    }
+
+    .p10-home-discovery__ip-media-pending {
+      min-height: 274px;
+      padding: 16px;
+    }
+
+    .p10-home-discovery__ip-media-pending strong {
+      font-size: 21px;
+    }
+
+    .p10-home-discovery__ip-media-pending small {
+      font-size: 10px;
+    }
+
+    .p10-home-discovery__ip-details {
+      padding: 14px 12px 12px;
+    }
+
+    .p10-home-discovery__ip-details > p {
+      margin-bottom: 6px;
+      font-size: 7px;
+    }
+
+    .p10-home-discovery__ip-details h4 {
+      font-size: 21px;
+    }
+
+    .p10-home-discovery__ip-details > strong {
+      margin-top: 5px;
+      font-size: 10px;
+    }
+
+    .p10-home-discovery__ip-details > div {
+      margin-top: 10px;
+      font-size: 10px;
+      line-height: 1.4;
+    }
+
+    .p10-home-discovery__ip-shop {
+      min-height: 38px;
+      margin-top: 14px;
+      padding: 0 10px;
+      font-size: 9px;
+    }
+
+    .p10-home-discovery__ip-details > small {
+      margin-top: 14px;
+      font-size: 8px;
+    }
+
+    .p10-home-discovery__category-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .p10-home-discovery__category-route {
+      grid-template-columns: 52px minmax(0, 1fr);
+      min-height: 98px;
+      padding: 10px 26px 10px 10px;
+    }
+
+    .p10-home-discovery__category-media {
+      width: 52px;
+    }
+
+    .p10-home-discovery__category-copy small {
+      display: none;
+    }
+  }
+
+  @media (max-width: 420px) {
+    .p10-home-discovery__actions {
+      grid-template-columns: 1fr;
+    }
+
+    .p10-home-discovery__button {
+      width: 100%;
+    }
+
+    .p10-home-discovery__category-route {
+      grid-template-columns: 1fr;
+      align-content: start;
+      min-height: 132px;
+    }
+
+    .p10-home-discovery__category-media {
+      width: 48px;
+    }
+
+    .p10-home-discovery__category-copy strong {
+      font-size: 14px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .p10-home-discovery *,
+    .p10-home-discovery *::before,
+    .p10-home-discovery *::after {
+      scroll-behavior: auto !important;
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+    }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  (() => {
+    const init = () => {
+      document.querySelectorAll('[data-p10-home-discovery]').forEach((root) => {
+        if (root.dataset.homeDiscoveryReady === 'true') return;
+        root.dataset.homeDiscoveryReady = 'true';
+
+        const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+        const carousel = root.querySelector('[data-p10-hero-carousel]');
+        const slides = carousel ? [...carousel.querySelectorAll('[data-p10-hero-slide]')] : [];
+        const dots = carousel ? [...carousel.querySelectorAll('[data-p10-hero-dot]')] : [];
+        const ipShowcase = root.querySelector('[data-home-ip-showcase]');
+
+        if (ipShowcase) {
+          const ipSelector = ipShowcase.querySelector('[role="tablist"]');
+          const ipTabs = [...ipShowcase.querySelectorAll('[data-home-ip-tab]')];
+          const ipPanels = [...ipShowcase.querySelectorAll('[data-home-ip-panel]')];
+          const mobileIpLayout = window.matchMedia('(max-width: 760px)');
+          const updateIpOrientation = () => ipSelector?.setAttribute('aria-orientation', mobileIpLayout.matches ? 'horizontal' : 'vertical');
+          updateIpOrientation();
+          mobileIpLayout.addEventListener('change', updateIpOrientation);
+          const activateIp = (key, moveFocus = false) => {
+            const nextTab = ipTabs.find((tab) => tab.dataset.homeIpTab === key);
+            const nextPanel = ipPanels.find((panel) => panel.dataset.homeIpPanel === key);
+            if (!nextTab || !nextPanel) return;
+
+            ipTabs.forEach((tab) => {
+              const active = tab === nextTab;
+              tab.classList.toggle('is-active', active);
+              tab.setAttribute('aria-selected', active ? 'true' : 'false');
+              tab.tabIndex = active ? 0 : -1;
+            });
+            ipPanels.forEach((panel) => {
+              const active = panel === nextPanel;
+              panel.classList.toggle('is-active', active);
+              panel.hidden = !active;
+              panel.setAttribute('aria-hidden', active ? 'false' : 'true');
+            });
+            if (moveFocus) nextTab.focus();
+            if (mobileIpLayout.matches) {
+              ipSelector.scrollTo({ left: nextTab.offsetLeft - ipSelector.offsetLeft, behavior: reduced ? 'instant' : 'smooth' });
+            }
+          };
+
+          activateIp(ipTabs[0]?.dataset.homeIpTab);
+          ipShowcase.addEventListener('click', (event) => {
+            if (!(event.target instanceof Element)) return;
+            const nextTab = event.target.closest('[data-home-ip-tab]');
+            if (!nextTab || !ipShowcase.contains(nextTab)) return;
+            activateIp(nextTab.dataset.homeIpTab);
+          });
+          ipSelector?.addEventListener('keydown', (event) => {
+            if (!(event.target instanceof Element)) return;
+            const currentTab = event.target.closest('[data-home-ip-tab]');
+            const currentIndex = ipTabs.indexOf(currentTab);
+            if (currentIndex < 0) return;
+
+            let nextIndex = null;
+            if (event.key === (mobileIpLayout.matches ? 'ArrowRight' : 'ArrowDown')) nextIndex = (currentIndex + 1) % ipTabs.length;
+            if (event.key === (mobileIpLayout.matches ? 'ArrowLeft' : 'ArrowUp')) nextIndex = (currentIndex - 1 + ipTabs.length) % ipTabs.length;
+            if (event.key === 'Home') nextIndex = 0;
+            if (event.key === 'End') nextIndex = ipTabs.length - 1;
+            if (nextIndex === null) return;
+            event.preventDefault();
+            activateIp(ipTabs[nextIndex].dataset.homeIpTab, true);
+          });
+          root.addEventListener('shopify:block:select', (event) => activateIp(event.detail.blockId));
+        }
+
+        if (carousel && slides.length > 0) {
+          let current = Math.max(0, slides.findIndex((slide) => slide.classList.contains('is-active')));
+          let timer = 0;
+          let inViewport = true;
+          const paused = new Set();
+          const interval = Math.max(3000, Number.parseInt(carousel.dataset.interval || '7000', 10));
+          const autoplay = carousel.dataset.autoplay === 'true' && !reduced && slides.length > 1;
+
+          const setSlideInteractive = (slide, active) => {
+            slide.classList.toggle('is-active', active);
+            slide.setAttribute('aria-hidden', active ? 'false' : 'true');
+            slide.querySelectorAll('a, button, input, select, textarea, [tabindex]').forEach((element) => {
+              if (active) {
+                if (element.dataset.carouselTabindex !== undefined) {
+                  const previous = element.dataset.carouselTabindex;
+                  if (previous === '') element.removeAttribute('tabindex');
+                  else element.setAttribute('tabindex', previous);
+                  delete element.dataset.carouselTabindex;
+                }
+              } else {
+                if (element.dataset.carouselTabindex === undefined) {
+                  element.dataset.carouselTabindex = element.getAttribute('tabindex') || '';
+                }
+                element.setAttribute('tabindex', '-1');
+              }
+            });
+          };
+
+          const schedule = () => {
+            window.clearTimeout(timer);
+            if (!autoplay || paused.size > 0 || !inViewport || document.hidden) return;
+            timer = window.setTimeout(() => show(current + 1), interval);
+          };
+
+          const show = (nextIndex) => {
+            current = (nextIndex + slides.length) % slides.length;
+            slides.forEach((slide, index) => setSlideInteractive(slide, index === current));
+            dots.forEach((dot, index) => {
+              const active = index === current;
+              dot.classList.toggle('is-active', active);
+              dot.setAttribute('aria-pressed', active ? 'true' : 'false');
+            });
+            schedule();
+          };
+
+          const pause = (reason) => {
+            paused.add(reason);
+            window.clearTimeout(timer);
+          };
+          const resume = (reason) => {
+            paused.delete(reason);
+            schedule();
+          };
+
+          dots.forEach((dot, index) => dot.addEventListener('click', () => show(index)));
+          carousel.addEventListener('mouseenter', () => pause('hover'));
+          carousel.addEventListener('mouseleave', () => resume('hover'));
+          carousel.addEventListener('focusin', () => pause('focus'));
+          carousel.addEventListener('focusout', () => {
+            window.setTimeout(() => {
+              if (!carousel.contains(document.activeElement)) resume('focus');
+            }, 0);
+          });
+          document.addEventListener('visibilitychange', schedule);
+
+          if ('IntersectionObserver' in window) {
+            const observer = new IntersectionObserver((entries) => {
+              inViewport = entries[0]?.isIntersecting ?? true;
+              schedule();
+            }, { threshold: 0.18 });
+            observer.observe(carousel);
+          }
+
+          show(current);
+        }
+
+        if (reduced || !window.gsap) return;
+
+        const items = [
+          ...root.querySelectorAll('[data-home-discovery-reveal]'),
+          ...root.querySelectorAll('[data-route-kind]'),
+        ].filter((item, index, array) => item && array.indexOf(item) === index);
+
+        window.gsap.fromTo(
+          items,
+          { autoAlpha: 0, y: 14 },
+          { autoAlpha: 1, y: 0, duration: 0.38, stagger: 0.035, ease: 'power2.out', clearProps: 'transform,opacity,visibility' }
+        );
+      });
+    };
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init, { once: true });
+    } else {
+      init();
+    }
+    document.addEventListener('shopify:section:load', init);
+  })();
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "P10 home discovery",
+  "tag": "section",
+  "class": "section-p10-home-discovery",
+  "settings": [
+    { "type": "text", "id": "hero_asset", "label": "Desktop hero asset", "default": "qy08-football-home-hero-desktop-v3.webp" },
+    { "type": "text", "id": "hero_asset_mobile", "label": "Mobile hero asset", "default": "qy08-football-home-hero-mobile-v3.webp" },
+    { "type": "text", "id": "hero_alt", "label": "Hero image alt", "default": "Featured pakracards collector release" },
+    { "type": "url", "id": "hero_left_link", "label": "Split hero: Flower Sea link" },
+    { "type": "text", "id": "hero_left_label", "label": "Split hero: Flower Sea accessible label" },
+    { "type": "url", "id": "hero_right_link", "label": "Split hero: Ultimate link" },
+    { "type": "text", "id": "hero_right_label", "label": "Split hero: Ultimate accessible label" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "pakracards" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Collect by universe. Browse by form." },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "Find cards and character goods through clear IP and category paths." },
+    { "type": "url", "id": "primary_link", "label": "Primary link" },
+    { "type": "text", "id": "primary_label", "label": "Primary label", "default": "Shop new arrivals" },
+    { "type": "url", "id": "secondary_link", "label": "Secondary link" },
+    { "type": "text", "id": "secondary_label", "label": "Secondary label", "default": "Browse character goods" },
+    { "type": "checkbox", "id": "hero_autoplay", "label": "Autoplay hero slides", "default": true },
+    { "type": "range", "id": "rotation_interval", "label": "Seconds per slide", "min": 3, "max": 12, "step": 1, "default": 7, "unit": "s" },
+    { "type": "text", "id": "directory_heading", "label": "Directory heading", "default": "Start with what you know." },
+    { "type": "textarea", "id": "directory_text", "label": "Directory text", "default": "Choose an IP to explore its featured series." },
+    { "type": "url", "id": "ip_all_link", "label": "All IP link" }
+  ],
+  "blocks": [
+    {
+      "type": "hero_slide",
+      "name": "Hero slide",
+      "settings": [
+        { "type": "image_picker", "id": "desktop_image", "label": "Desktop image" },
+        { "type": "image_picker", "id": "mobile_image", "label": "Mobile image" },
+        { "type": "text", "id": "desktop_image_asset", "label": "Desktop theme asset filename" },
+        { "type": "text", "id": "mobile_image_asset", "label": "Mobile theme asset filename" },
+        { "type": "text", "id": "image_alt", "label": "Image alt text" },
+        { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "KAYOU MY LITTLE PONY" },
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Featured collector release" },
+        { "type": "textarea", "id": "text", "label": "Text", "default": "Discover the latest sealed collector release." },
+        { "type": "text", "id": "primary_label", "label": "Primary label", "default": "Shop the release" },
+        { "type": "url", "id": "primary_link", "label": "Primary link" },
+        { "type": "text", "id": "secondary_label", "label": "Secondary label" },
+        { "type": "url", "id": "secondary_link", "label": "Secondary link" },
+        { "type": "text", "id": "hint", "label": "Desktop hover hint", "default": "Explore the feature" }
+      ]
+    },
+    {
+      "type": "ip_route",
+      "name": "IP featured series",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Eyebrow", "default": "Featured series" },
+        { "type": "text", "id": "title", "label": "IP title", "default": "My Little Pony" },
+        { "type": "text", "id": "series_title", "label": "Series title", "default": "Featured release" },
+        { "type": "text", "id": "series_local_title", "label": "Local series title" },
+        { "type": "textarea", "id": "text", "label": "Series introduction" },
+        { "type": "product", "id": "product", "label": "Featured product" },
+        { "type": "url", "id": "link", "label": "Shop link" },
+        { "type": "url", "id": "shop_link", "label": "Button link", "info": "Defaults to the shop link. Set only when the button opens a different product." },
+        { "type": "text", "id": "shop_label", "label": "Shop button label", "default": "Shop Now" },
+        { "type": "image_picker", "id": "feature_image", "label": "Theme illustration" },
+        { "type": "text", "id": "feature_image_asset", "label": "Theme illustration asset" },
+        { "type": "text", "id": "feature_image_alt", "label": "Theme illustration alt" },
+        { "type": "url", "id": "feature_link", "label": "Main card link", "info": "Defaults to the featured product." },
+        { "type": "checkbox", "id": "feature_is_card", "label": "Display as a floating card", "default": false },
+        { "type": "text", "id": "feature_crop", "label": "Main card crop", "info": "Optional source pixels: x y width height original-width original-height. Leave blank for a standalone image." },
+        { "type": "text", "id": "feature_clip", "label": "Main image outline", "info": "Optional polygon points in percentages: x% y%, x% y%, ... Applies to standalone images only. Leave blank for no outline crop." },
+        { "type": "image_picker", "id": "card_image_1", "label": "Featured card 1" },
+        { "type": "text", "id": "card_image_asset_1", "label": "Featured card 1 asset" },
+        { "type": "url", "id": "card_link_1", "label": "Featured card 1 link" },
+        { "type": "text", "id": "card_label_1", "label": "Featured card 1 link label" },
+        { "type": "text", "id": "card_crop_1", "label": "Card 1 crop", "info": "Optional source pixels: x y width height original-width original-height." },
+        { "type": "image_picker", "id": "card_image_2", "label": "Featured card 2" },
+        { "type": "text", "id": "card_image_asset_2", "label": "Featured card 2 asset" },
+        { "type": "url", "id": "card_link_2", "label": "Featured card 2 link" },
+        { "type": "text", "id": "card_label_2", "label": "Featured card 2 link label" },
+        { "type": "text", "id": "card_crop_2", "label": "Card 2 crop", "info": "Optional source pixels: x y width height original-width original-height." },
+        { "type": "image_picker", "id": "card_image_3", "label": "Featured card 3" },
+        { "type": "text", "id": "card_image_asset_3", "label": "Featured card 3 asset" },
+        { "type": "url", "id": "card_link_3", "label": "Featured card 3 link" },
+        { "type": "text", "id": "card_label_3", "label": "Featured card 3 link label" },
+        { "type": "text", "id": "card_crop_3", "label": "Card 3 crop", "info": "Optional source pixels: x y width height original-width original-height." },
+        { "type": "image_picker", "id": "card_image_4", "label": "Featured card 4" },
+        { "type": "text", "id": "card_image_asset_4", "label": "Featured card 4 asset" },
+        { "type": "url", "id": "card_link_4", "label": "Featured card 4 link" },
+        { "type": "text", "id": "card_label_4", "label": "Featured card 4 link label" },
+        { "type": "text", "id": "card_crop_4", "label": "Card 4 crop", "info": "Optional source pixels: x y width height original-width original-height." },
+        { "type": "image_picker", "id": "box_image", "label": "Box image" },
+        { "type": "text", "id": "box_image_asset", "label": "Box image asset" },
+        { "type": "text", "id": "box_image_alt", "label": "Box image alt" },
+        { "type": "color", "id": "accent_color", "label": "Accent color", "default": "#f08eb2" }
+      ]
+    }
+  ],
+  "max_blocks": 50,
+  "presets": [
+    { "name": "P10 home discovery" }
+  ]
+}
+{% endschema %}

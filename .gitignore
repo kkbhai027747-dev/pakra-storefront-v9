@@ -1,0 +1,86 @@
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+skill-hub.env
+.secrets/
+**/*credential*.json
+**/*credentials*.json
+**/*cookie*.json
+**/*session*.json
+
+# Platform authentication and browser state
+.shopify-appdata/
+.lark-home/
+.gcloud-appdata/
+.wrangler/
+.wrangler-config/
+.runtime/
+**/browser-profiles/
+
+# Dependencies and Python environments
+node_modules/
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Runtime, caches, logs, and generated outputs
+.tmp/
+tmp/
+temp/
+cache/
+.cache/
+logs/
+*.log
+output/
+outputs/
+reports/
+coverage/
+dist/
+build/
+
+# Large product media and archives
+*.zip
+*.7z
+*.rar
+*.tar
+*.tgz
+*.gz
+*.base64
+*.b64
+*.jpg
+*.jpeg
+*.png
+*.webp
+*.gif
+*.tif
+*.tiff
+*.psd
+
+# Local databases and exports
+*.sqlite
+*.sqlite3
+*.db
+*.csv.tmp
+*.xlsx
+*.xls
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+*.swp
+
+# V9's bundled theme assets are source dependencies, not runtime image archives.
+!theme/assets/*.png
+!theme/assets/*.jpg
+!theme/assets/*.jpeg
+!theme/assets/*.webp
+!theme/assets/*.gif
+!theme/assets/*.tif
+!theme/assets/*.tiff
+theme/config/settings_data.json

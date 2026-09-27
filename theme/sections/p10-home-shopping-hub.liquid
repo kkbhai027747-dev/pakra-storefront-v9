@@ -1,0 +1,340 @@
+{{ 'p10-home-shopping-hub.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign p10_featured_collection = section.settings.featured_collection
+  assign p10_featured_limit = section.settings.featured_limit | default: 10
+  assign p10_recent_products = p10_featured_collection.products | sort: 'created_at' | reverse
+  assign p10_community_link = section.settings.community_link | default: '/pages/links'
+  assign p10_community_eyebrow = section.settings.community_eyebrow | default: 'Collector community'
+  assign p10_community_heading = section.settings.community_heading | default: 'Join the pakracards Discord'
+  assign p10_community_text = section.settings.community_text | default: 'Follow drop notes, restock talk, and collector discussions while you choose your next KAYOU card product.'
+  assign p10_community_button = section.settings.community_button | default: 'Open social links'
+-%}
+
+<section id="p10-home-shopping-hub-{{ section.id }}" class="p10-home-shopping-hub" data-p10-home-shopping-hub data-p10-context-section>
+  <div class="p10-home-shopping-hub__inner">
+    <div class="p10-home-shopping-hub__head" data-p10-home-reveal>
+      <div>
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="p10-home-shopping-hub__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        {%- endif -%}
+        <h2>{{ section.settings.heading | escape }}</h2>
+      </div>
+      {%- if section.settings.button_label != blank and section.settings.button_link != blank -%}
+        <a class="p10-home-shopping-hub__link" href="{{ section.settings.button_link }}">{{ section.settings.button_label | escape }}</a>
+      {%- endif -%}
+    </div>
+
+    <div class="p10-home-guide-shell" data-p10-home-reveal>
+      {%- if p10_featured_collection != blank and p10_featured_collection.products.size > 0 -%}
+        <aside class="p10-home-rec-panel p10-home-rec-panel--hot" aria-label="Current popular products">
+          <p class="p10-home-rec-panel__eyebrow">Hot now</p>
+          <strong class="p10-home-rec-panel__title">Current collector picks</strong>
+          <div class="p10-home-rec-panel__items">
+            {%- assign p10_hot_count = 0 -%}
+            {%- for product in p10_featured_collection.products limit: 50 -%}
+              {%- if product.available and p10_hot_count < 2 -%}
+                {%- render 'p10-smart-product-card', product: product, label: 'Hot pick' -%}
+                {%- assign p10_hot_count = p10_hot_count | plus: 1 -%}
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </aside>
+      {%- endif -%}
+
+      <div class="p10-home-guide">
+        <form class="p10-home-guide__form" action="{{ routes.search_url }}" method="get" role="search">
+  <input type="hidden" name="options[prefix]" value="last">
+  <input type="hidden" name="options[fields]" value="title,tag,product_type,variants.title,vendor">
+          <input type="hidden" name="type" value="product">
+          <label class="p10-home-guide__label" for="p10-home-guide-search-{{ section.id }}">Find</label>
+          <input
+            id="p10-home-guide-search-{{ section.id }}"
+            type="search"
+            name="q"
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="off"
+            spellcheck="false"
+            placeholder="{{ section.settings.search_placeholder | escape }}"
+          >
+          <button type="submit">Search</button>
+        </form>
+
+        <nav class="p10-home-guide__routes" aria-label="Guided product categories">
+          {%- if section.settings.button_label != blank and section.settings.button_link != blank -%}
+            <a class="is-primary" href="{{ section.settings.button_link }}">{{ section.settings.button_label | escape }}</a>
+          {%- endif -%}
+          {%- for block in section.blocks -%}
+            {%- liquid
+              assign p10_route_collection = block.settings.collection
+              assign p10_route_has_context = false
+              if p10_route_collection != blank and p10_route_collection.products.size > 0
+                assign p10_route_has_context = true
+              endif
+            -%}
+            <a
+              href="{{ block.settings.link }}"
+              {% if p10_route_has_context %}data-p10-context-button="{{ block.id }}" data-p10-context-label="{{ block.settings.title | escape }}"{% endif %}
+              {{ block.shopify_attributes }}
+            >
+              <span>{{ block.settings.title | escape }}</span>
+              {%- if block.settings.kicker != blank -%}<small>{{ block.settings.kicker | escape }}</small>{%- endif -%}
+            </a>
+          {%- endfor -%}
+        </nav>
+      </div>
+
+      {%- if p10_featured_collection != blank and p10_featured_collection.products.size > 0 -%}
+        <aside class="p10-home-rec-panel p10-home-rec-panel--new" aria-label="New boxed card products">
+          <p class="p10-home-rec-panel__eyebrow">New boxes</p>
+          <strong class="p10-home-rec-panel__title">Recent boxed card releases</strong>
+          <div class="p10-home-rec-panel__items">
+            {%- assign p10_new_count = 0 -%}
+            {%- for product in p10_recent_products limit: 50 -%}
+              {%- liquid
+                assign p10_new_terms = product.title | append: ' ' | append: product.tags | downcase
+                assign p10_is_boxed = false
+                if p10_new_terms contains 'edition' or p10_new_terms contains 'series' or p10_new_terms contains 'box' or p10_new_terms contains 'pack' or p10_new_terms contains 'booster'
+                  assign p10_is_boxed = true
+                endif
+                if p10_new_terms contains 'single' or p10_new_terms contains 'plush' or p10_new_terms contains 'vinyl' or p10_new_terms contains 'charm' or p10_new_terms contains 'reesee' or p10_new_terms contains 'merch' or p10_new_terms contains 'keychain'
+                  assign p10_is_boxed = false
+                endif
+              -%}
+              {%- if p10_is_boxed and p10_new_count < 2 -%}
+                {%- render 'p10-smart-product-card', product: product, label: 'New listing' -%}
+                {%- assign p10_new_count = p10_new_count | plus: 1 -%}
+              {%- endif -%}
+            {%- endfor -%}
+            {%- if p10_new_count == 0 -%}
+              {%- for product in p10_featured_collection.products limit: 1 -%}
+                {%- render 'p10-smart-product-card', product: product, label: 'New listing' -%}
+              {%- endfor -%}
+            {%- endif -%}
+          </div>
+        </aside>
+      {%- endif -%}
+    </div>
+
+    {%- if p10_community_link != blank -%}
+      <a
+        class="p10-discord-callout"
+        href="{{ p10_community_link }}"
+        data-p10-home-reveal
+        aria-label="{{ p10_community_heading | escape }}"
+      >
+        <span class="p10-discord-callout__mark" aria-hidden="true">
+          <span><svg class="p10-discord-icon" viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+        <path d="M20.3 4.4A19.8 19.8 0 0 0 15.4 2.9l-.2.4c1.7.5 2.5 1.1 3.3 1.6a15.5 15.5 0 0 0-5.4-1.7c-.4 0-.8-.1-1.2-.1s-.8 0-1.2.1a15.5 15.5 0 0 0-5.4 1.7c.8-.6 1.7-1.1 3.3-1.6l-.2-.4A19.8 19.8 0 0 0 3.7 4.4C.7 8.9-.1 13.3.3 17.7a20 20 0 0 0 6.1 3.1l.8-1.4a12.7 12.7 0 0 1-1.9-.9l.5-.4a14.1 14.1 0 0 0 12.4 0l.5.4c-.6.4-1.2.7-1.9.9l.8 1.4a20 20 0 0 0 6.1-3.1c.5-5.1-.8-9.4-3.4-13.3ZM8.2 15.2c-1.2 0-2.1-1.1-2.1-2.4s.9-2.4 2.1-2.4 2.1 1.1 2.1 2.4-.9 2.4-2.1 2.4Zm7.6 0c-1.2 0-2.1-1.1-2.1-2.4s.9-2.4 2.1-2.4 2.1 1.1 2.1 2.4-.9 2.4-2.1 2.4Z"/>
+      </svg></span>
+        </span>
+        <span class="p10-discord-callout__copy">
+          <small>{{ p10_community_eyebrow | escape }}</small>
+          <strong>{{ p10_community_heading | escape }}</strong>
+          <span>{{ p10_community_text | escape }}</span>
+        </span>
+        <span class="p10-discord-callout__button">
+          {{ p10_community_button | escape }}
+          <span aria-hidden="true">&rarr;</span>
+        </span>
+      </a>
+    {%- endif -%}
+
+    <div class="p10-context-drawer" data-p10-recommendation-root hidden>
+      <div class="p10-context-drawer__panel" role="dialog" aria-label="Category product recommendations">
+        <button class="p10-context-drawer__close" type="button" data-p10-context-close aria-label="Close recommendations">&times;</button>
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign p10_context_collection = block.settings.collection
+          -%}
+          {%- if p10_context_collection != blank and p10_context_collection.products.size > 0 -%}
+            {%- render 'p10-context-recommendation-panel',
+              context_id: block.id,
+              title: block.settings.title,
+              kicker: block.settings.kicker,
+              link: block.settings.link,
+              context_collection: p10_context_collection,
+              search_query: block.settings.title
+            -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+
+    {%- if p10_featured_collection != blank and p10_featured_collection.products.size > 0 -%}
+      <div class="p10-home-featured" data-p10-home-reveal>
+        <div class="p10-home-featured__head">
+          <h3>{{ section.settings.featured_heading | escape }}</h3>
+          <a href="{{ p10_featured_collection.url }}">View all</a>
+        </div>
+        <div class="p10-home-featured__rail" data-p10-home-product-rail>
+          {%- assign p10_featured_count = 0 -%}
+          {%- for product in p10_featured_collection.products limit: 50 -%}
+            {%- if product.available and p10_featured_count < p10_featured_limit -%}
+              
+              <article class="p10-home-product" data-p10-home-product-card>
+              <a href="{{ product.url }}" aria-label="View {{ product.title | escape }}">
+              <span class="p10-home-product__media">
+              {%- if product.featured_image -%}
+              {%- assign p10_product_image_alt = product.featured_image.alt | default: product.title | escape -%}
+              {{ product.featured_image | image_url: width: 620 | image_tag:
+              loading: 'lazy',
+              widths: '220, 360, 520, 620',
+              sizes: '(min-width: 990px) 18vw, 44vw',
+              alt: p10_product_image_alt
+              }}
+              {%- else -%}
+              {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+              {%- endif -%}
+              </span>
+              <span class="p10-home-product__info">
+              {%- if product.vendor != blank -%}<span class="p10-home-product__vendor">{{ product.vendor | escape }}</span>{%- endif -%}
+              <strong>{{ product.title | escape }}</strong>
+              {% render 'p10-product-buying-tags', product: product %}
+              <span class="p10-home-product__price">{% if product.price_varies %}From {% endif %}{{ product.price_min | money }}</span>
+              </span>
+              </a>
+              </article>
+              {%- assign p10_featured_count = p10_featured_count | plus: 1 -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+
+  <script src="{{ 'gsap.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'p10-home-shopping-hub.js' | asset_url }}" defer="defer"></script>
+</section>
+
+{% schema %}
+{
+  "name": "P10 shopping hub",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "pakracards x MLPEKAYOU"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Find your next collectible"
+    },
+    {
+      "type": "text",
+      "id": "search_placeholder",
+      "label": "Search placeholder",
+      "default": "Search Moon, Fun Moments, Rainbow, Star..."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Browse all products"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "collection",
+      "id": "featured_collection",
+      "label": "Featured collection"
+    },
+    {
+      "type": "text",
+      "id": "featured_heading",
+      "label": "Featured heading",
+      "default": "Collector picks"
+    },
+    {
+      "type": "range",
+      "id": "featured_limit",
+      "label": "Products to show",
+      "min": 4,
+      "max": 12,
+      "step": 1,
+      "default": 8
+    },
+    {
+      "type": "url",
+      "id": "community_link",
+      "label": "Community link"
+    },
+    {
+      "type": "text",
+      "id": "community_eyebrow",
+      "label": "Community eyebrow",
+      "default": "Collector community"
+    },
+    {
+      "type": "text",
+      "id": "community_heading",
+      "label": "Community heading",
+      "default": "Join the pakracards Discord"
+    },
+    {
+      "type": "text",
+      "id": "community_text",
+      "label": "Community text",
+      "default": "Follow drop notes, restock talk, and collector discussions while you choose your next KAYOU card product."
+    },
+    {
+      "type": "text",
+      "id": "community_button",
+      "label": "Community button",
+      "default": "Open social links"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Search shortcut",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Optional image"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Recommendation collection"
+        },
+        {
+          "type": "text",
+          "id": "kicker",
+          "label": "Kicker",
+          "default": "Browse"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Category"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Description"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "P10 shopping hub"
+    }
+  ]
+}
+{% endschema %}

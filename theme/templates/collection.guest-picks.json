@@ -1,0 +1,38 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "p10-guest-picks",
+      "settings": {
+        "eyebrow": "MLPEKAYOU × pakracards",
+        "heading": "Recommended by the community.",
+        "introduction": "<p>A focused shelf of collector-led recommendations from the MLPEKAYOU community, gathered to make the next choice clearer.</p>",
+        "show_partner_panel": true,
+        "partner_label": "OFFICIAL PARTNER",
+        "partner_heading": "Explore MLPEKAYOU",
+        "partner_copy": "<p>Continue to MLPEKAYOU for the wider collector community and original platform experience.</p>",
+        "partner_url": "https://www.mlpekayou.com/",
+        "partner_link_label": "Visit MLPEKAYOU official site",
+        "shelf_heading": "Recommended right now",
+        "show_curator_attribution": false,
+        "curator_name": "",
+        "curator_role": "Guest Collector",
+        "curator_quote": "",
+        "badge_label": "Guest Pick",
+        "product_limit": 12,
+        "empty_message": "Recommendations are being prepared. Please check back soon."
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

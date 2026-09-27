@@ -1,0 +1,35 @@
+{% layout none %}
+
+{%- paginate collection.products by 50 -%}
+  {%- liquid
+    assign cutoff_timestamp = 'now' | date: '%s' | minus: 604800
+    assign expired_found = false
+    assign page_offset = paginate.current_page | minus: 1 | times: 50
+  -%}
+
+  {%- capture new_arrival_items -%}
+    {%- for product in collection.products -%}
+      {%- liquid
+        assign product_created_timestamp = product.created_at | date: '%s' | plus: 0
+        assign serial = page_offset | plus: forloop.index
+      -%}
+      {%- if product_created_timestamp >= cutoff_timestamp -%}
+        <li class="product">
+          {% render 'product-grid-layout',
+            product_card_product: product,
+            portrait_aspect_ratio: '125',
+            serial: serial,
+            sectionId: 'new-arrivals-7-days',
+            loading: true
+          %}
+        </li>
+      {%- else -%}
+        {%- assign expired_found = true -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endcapture -%}
+
+  <div data-new-arrivals-feed data-expired="{{ expired_found }}"{% if paginate.next and expired_found == false %} data-next-url="{{ paginate.next.url | escape }}"{% endif %}>
+    <ul data-new-arrivals-items>{{ new_arrival_items }}</ul>
+  </div>
+{%- endpaginate -%}

@@ -1,0 +1,81 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-lookbook-page",
+      "settings": {
+        "show_breadcrumb": true,
+        "breadcrumb_color": "#999999",
+        "breadcrumb_alignment": "left",
+        "breadcrumb_bg": "",
+        "breadcrumb_gradient": "",
+        "breadcrumb_bg_mb": "#f6f6f6",
+        "breadcrumb_gradient_mb": "",
+        "show_page_title": true,
+        "page_title_color": "#111116",
+        "page_title_alignment": "left",
+        "database_eyebrow": "MLP PR card visual database",
+        "database_text": "Browse the My Little Pony PR card visual guide index by release type. Compare CCG PR cards, TCG PR cards, and collaboration PR cards through their linked collector guides, reference images, and category-specific card information.",
+        "enable_database_splash": true,
+        "container": "1170",
+        "side_padding_full_width": 0,
+        "mg_top_desktop": 0,
+        "mg_top_tablet": 0,
+        "mg_top_mobile": 0,
+        "mg_bottom_desktop": 0,
+        "mg_bottom_tablet": 0,
+        "mg_bottom_mobile": 0
+      }
+    },
+    "blocks_pr_guides": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_731a28a_pr_guides": {
+          "type": "ai_gen_block_731a28a",
+          "settings": {
+            "blog": "mlp-pr-cards",
+            "posts_limit": 24,
+            "show_header": false,
+            "section_title": "MLP PR Cards visual guide",
+            "section_subtitle": "Browse the collector guide entries as a visual index.",
+            "title_size": 32,
+            "title_weight": "700",
+            "title_transform": "none",
+            "subtitle_size": 16,
+            "header_spacing": 40,
+            "grid_gap": 20,
+            "max_width": 1300,
+            "section_padding": 30,
+            "post_title_size": 18,
+            "post_title_weight": "700",
+            "post_title_transform": "none",
+            "title_spacing": 8,
+            "title_color": "#000000",
+            "subtitle_color": "#666666",
+            "post_title_color": "#111116",
+            "post_title_hover_color": "#111116",
+            "image_bg_color": "#f8f4fb"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_731a28a_pr_guides"
+      ],
+      "name": "Wiki blog grid",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main",
+    "blocks_pr_guides"
+  ]
+}

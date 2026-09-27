@@ -1,0 +1,593 @@
+{% liquid
+  assign autoplay = section.settings.autoplay
+  assign slide_count = section.blocks.size
+  assign interval_ms = section.settings.rotation_interval | times: 1000
+  assign desktop_ratio = section.settings.desktop_aspect_width | append: ' / ' | append: section.settings.desktop_aspect_height
+  assign mobile_ratio = section.settings.mobile_aspect_width | append: ' / ' | append: section.settings.mobile_aspect_height
+  assign first_block = section.blocks.first
+  assign first_desktop_asset = first_block.settings.desktop_image_asset | strip
+  assign first_mobile_asset = first_block.settings.mobile_image_asset | strip
+  assign first_desktop_preload_asset = first_desktop_asset
+  assign first_mobile_preload_asset = first_mobile_asset
+  if first_desktop_asset == 'qy08-football-home-hero-desktop.png'
+    assign first_desktop_preload_asset = 'qy08-football-home-hero-desktop-v3jpg.jpg'
+  endif
+  if first_mobile_asset == 'qy08-football-home-hero-mobile.png'
+    assign first_mobile_preload_asset = 'qy08-football-home-hero-mobile-v3jpg.jpg'
+  endif
+%}
+
+{% if first_block != blank %}
+  {% if first_block.settings.mobile_image != blank %}
+    <link rel="preload" as="image" href="{{ first_block.settings.mobile_image | image_url: width: 1200 }}" media="(max-width: 749px)" fetchpriority="high">
+  {% elsif first_mobile_preload_asset != blank %}
+    <link rel="preload" as="image" href="{{ first_mobile_preload_asset | asset_url }}" media="(max-width: 749px)" fetchpriority="high">
+  {% endif %}
+
+  {% if first_block.settings.desktop_image != blank %}
+    <link rel="preload" as="image" href="{{ first_block.settings.desktop_image | image_url: width: 2200 }}" media="(min-width: 750px)" fetchpriority="high">
+  {% elsif first_desktop_preload_asset != blank %}
+    <link rel="preload" as="image" href="{{ first_desktop_preload_asset | asset_url }}" media="(min-width: 750px)" fetchpriority="high">
+  {% endif %}
+{% endif %}
+
+<style>
+  .v3-rotating-hero-{{ section.id }} {
+    --v3-hero-interval: {{ interval_ms }}ms;
+    --v3-hero-desktop-ratio: {{ desktop_ratio }};
+    --v3-hero-mobile-ratio: {{ mobile_ratio }};
+    position: relative;
+    left: 50%;
+    width: 100vw;
+    margin-left: -50vw;
+    background: #050505;
+    overflow: hidden;
+    isolation: isolate;
+  }
+
+  .v3-rotating-hero-{{ section.id }} .v3-rotating-hero__viewport {
+    position: relative;
+    width: 100%;
+    aspect-ratio: var(--v3-hero-desktop-ratio);
+    background: radial-gradient(circle at 70% 38%, rgba(255,255,255,.08), transparent 38%), #050505;
+  }
+
+  .v3-rotating-hero-{{ section.id }} .v3-rotating-hero__slide {
+    position: absolute;
+    inset: 0;
+    display: block;
+    color: inherit;
+    text-decoration: none;
+    opacity: 0;
+    transform: scale(1.025);
+    transition: opacity 900ms cubic-bezier(.22, .61, .36, 1), transform 1600ms cubic-bezier(.16, 1, .3, 1);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .v3-rotating-hero-{{ section.id }} .v3-rotating-hero__slide.is-active {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: auto;
+    z-index: 2;
+  }
+
+  .v3-rotating-hero-{{ section.id }} .v3-rotating-hero__picture,
+  .v3-rotating-hero-{{ section.id }} .v3-rotating-hero__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .v3-rotating-hero-{{ section.id }} .v3-rotating-hero__image {
+    object-fit: contain;
+    object-position: center;
+    background: #050505;
+  }
+
+  .v3-rotating-hero-{{ section.id }} .v3-rotating-hero__shade {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+    background:
+      linear-gradient(90deg, rgba(0,0,0,.18), transparent 18%, transparent 82%, rgba(0,0,0,.18)),
+      linear-gradient(180deg, rgba(0,0,0,.08), transparent 26%, rgba(0,0,0,.12));
+  }
+
+  .v3-rotating-hero-{{ section.id }} .v3-rotating-hero__controls {
+    position: absolute;
+    left: 50%;
+    bottom: clamp(12px, 2vw, 24px);
+    z-index: 4;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    transform: translateX(-50%);
+    padding: 8px 10px;
+    border: 1px solid rgba(255,255,255,.22);
+    border-radius: 999px;
+    background: rgba(7, 8, 12, .42);
+    box-shadow: 0 14px 34px rgba(0,0,0,.22);
+    backdrop-filter: blur(10px);
+  }
+
+  .v3-rotating-hero-{{ section.id }} .v3-rotating-hero__dot {
+    position: relative;
+    width: 52px;
+    height: 4px;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(255,255,255,.24);
+    cursor: pointer;
+  }
+
+  .v3-rotating-hero-{{ section.id }} .v3-rotating-hero__dot::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    background: linear-gradient(90deg, #ffffff, #f3c65d);
+    border-radius: inherit;
+    transform: scaleX(0);
+    transform-origin: left center;
+  }
+
+  .v3-rotating-hero-{{ section.id }} .v3-rotating-hero__dot.is-active::after {
+    animation: v3HeroProgress-{{ section.id }} var(--v3-hero-interval) linear forwards;
+  }
+
+  .v3-rotating-hero-{{ section.id }}.is-paused .v3-rotating-hero__dot.is-active::after {
+    animation-play-state: paused;
+  }
+
+  .v3-rotating-hero-{{ section.id }} .v3-rotating-hero__dot:focus-visible {
+    outline: 2px solid rgba(255,255,255,.9);
+    outline-offset: 3px;
+  }
+
+  .v3-rotating-hero-{{ section.id }} .v3-rotating-hero__sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  @keyframes v3HeroProgress-{{ section.id }} {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+  }
+
+  @media screen and (max-width: 749px) {
+    .v3-rotating-hero-{{ section.id }} .v3-rotating-hero__viewport {
+      aspect-ratio: var(--v3-hero-mobile-ratio);
+    }
+
+    .v3-rotating-hero-{{ section.id }} .v3-rotating-hero__controls {
+      bottom: 10px;
+      gap: 7px;
+      padding: 7px 8px;
+    }
+
+    .v3-rotating-hero-{{ section.id }} .v3-rotating-hero__dot {
+      width: 38px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .v3-rotating-hero-{{ section.id }} .v3-rotating-hero__slide {
+      transition: none;
+      transform: none;
+    }
+
+    .v3-rotating-hero-{{ section.id }} .v3-rotating-hero__dot.is-active::after {
+      animation: none;
+      transform: scaleX(1);
+    }
+  }
+</style>
+
+<section
+  class="v3-rotating-hero v3-rotating-hero-{{ section.id }} is-paused"
+  aria-label="{{ section.settings.accessible_label | escape }}"
+  data-v3-rotating-hero
+  data-autoplay="{{ autoplay }}"
+  data-interval="{{ interval_ms }}"
+>
+  <div class="v3-rotating-hero__viewport">
+    {% for block in section.blocks %}
+      {% liquid
+        assign desktop_asset = block.settings.desktop_image_asset | strip
+        assign mobile_asset = block.settings.mobile_image_asset | strip
+        assign desktop_hero_asset = desktop_asset
+        assign mobile_hero_asset = mobile_asset
+        if desktop_asset == 'qy08-football-home-hero-desktop.png'
+          assign desktop_hero_asset = 'qy08-football-home-hero-desktop-v3jpg.jpg'
+        endif
+        if mobile_asset == 'qy08-football-home-hero-mobile.png'
+          assign mobile_hero_asset = 'qy08-football-home-hero-mobile-v3jpg.jpg'
+        endif
+        assign desktop_image = block.settings.desktop_image
+        assign mobile_image = block.settings.mobile_image
+        assign slide_heading = block.settings.heading | default: section.settings.accessible_label
+        assign slide_alt = block.settings.alt_text | default: slide_heading
+        assign slide_link = block.settings.link
+        assign is_first = false
+        if forloop.first
+          assign is_first = true
+        endif
+      %}
+
+      {% capture slide_media %}
+        <picture class="v3-rotating-hero__picture">
+          {% if mobile_image != blank %}
+            <source
+              media="(max-width: 749px)"
+              {% if is_first %}srcset="{{ mobile_image | image_url: width: 1200 }}"{% else %}data-v3-hero-srcset="{{ mobile_image | image_url: width: 1200 }}"{% endif %}
+            >
+          {% elsif mobile_hero_asset != blank %}
+            <source
+              media="(max-width: 749px)"
+              {% if is_first %}srcset="{{ mobile_hero_asset | asset_url }}"{% else %}data-v3-hero-srcset="{{ mobile_hero_asset | asset_url }}"{% endif %}
+            >
+          {% endif %}
+
+          {% if desktop_image != blank %}
+            <img
+              class="v3-rotating-hero__image"
+              src="{% if is_first %}{{ desktop_image | image_url: width: 2200 }}{% else %}data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0%200%20{{ desktop_image.width }}%20{{ desktop_image.height }}'%3E%3C/svg%3E{% endif %}"
+              {% unless is_first %}data-v3-hero-src="{{ desktop_image | image_url: width: 2200 }}"{% endunless %}
+              alt="{{ slide_alt | escape }}"
+              width="{{ desktop_image.width }}"
+              height="{{ desktop_image.height }}"
+              decoding="async"
+              {% if is_first %}loading="eager" fetchpriority="high"{% else %}loading="lazy" fetchpriority="low"{% endif %}
+            >
+          {% elsif desktop_hero_asset != blank %}
+            <img
+              class="v3-rotating-hero__image"
+              src="{% if is_first %}{{ desktop_hero_asset | asset_url }}{% else %}data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0%200%201880%20720'%3E%3C/svg%3E{% endif %}"
+              {% unless is_first %}data-v3-hero-src="{{ desktop_hero_asset | asset_url }}"{% endunless %}
+              alt="{{ slide_alt | escape }}"
+              width="1880"
+              height="720"
+              decoding="async"
+              {% if is_first %}loading="eager" fetchpriority="high"{% else %}loading="lazy" fetchpriority="low"{% endif %}
+            >
+          {% else %}
+            {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg v3-rotating-hero__image' }}
+          {% endif %}
+        </picture>
+        <span class="v3-rotating-hero__sr">
+          {{ slide_heading }}{% if block.settings.text != blank %}. {{ block.settings.text }}{% endif %}
+        </span>
+      {% endcapture %}
+
+      {% if slide_link != blank %}
+        <a
+          class="v3-rotating-hero__slide{% if forloop.first %} is-active{% endif %}"
+          href="{{ slide_link }}"
+          data-v3-hero-slide
+          data-index="{{ forloop.index0 }}"
+          aria-hidden="{% if forloop.first %}false{% else %}true{% endif %}"
+          {% unless forloop.first %}tabindex="-1"{% endunless %}
+          {{ block.shopify_attributes }}
+        >
+          {{ slide_media }}
+        </a>
+      {% else %}
+        <div
+          class="v3-rotating-hero__slide{% if forloop.first %} is-active{% endif %}"
+          data-v3-hero-slide
+          data-index="{{ forloop.index0 }}"
+          aria-hidden="{% if forloop.first %}false{% else %}true{% endif %}"
+          {{ block.shopify_attributes }}
+        >
+          {{ slide_media }}
+        </div>
+      {% endif %}
+    {% endfor %}
+
+    <div class="v3-rotating-hero__shade" aria-hidden="true"></div>
+
+    {% if slide_count > 1 %}
+      <div class="v3-rotating-hero__controls" aria-label="Hero posters">
+        {% for block in section.blocks %}
+          <button
+            class="v3-rotating-hero__dot{% if forloop.first %} is-active{% endif %}"
+            type="button"
+            aria-label="Show {{ block.settings.heading | default: 'poster' | escape }}"
+            aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}"
+            data-v3-hero-dot
+            data-index="{{ forloop.index0 }}"
+          ></button>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<script>
+  (() => {
+    const root = document.currentScript.previousElementSibling;
+    if (!root || root.dataset.v3HeroReady === 'true') return;
+    root.dataset.v3HeroReady = 'true';
+
+    const slides = Array.from(root.querySelectorAll('[data-v3-hero-slide]'));
+    const dots = Array.from(root.querySelectorAll('[data-v3-hero-dot]'));
+    const interval = Number(root.dataset.interval || 7000);
+    const autoplay = root.dataset.autoplay === 'true';
+    const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let active = 0;
+    let timer = null;
+    let startedAt = 0;
+    let remaining = interval;
+    let inView = true;
+    let preloadTimer = null;
+
+    const hydrateSlide = (index) => {
+      const slide = slides[index];
+      if (!slide || slide.dataset.v3HeroHydrated === 'true') return;
+
+      slide.querySelectorAll('[data-v3-hero-srcset]').forEach((source) => {
+        source.setAttribute('srcset', source.dataset.v3HeroSrcset);
+        source.removeAttribute('data-v3-hero-srcset');
+      });
+
+      slide.querySelectorAll('[data-v3-hero-src]').forEach((image) => {
+        image.src = image.dataset.v3HeroSrc;
+        image.removeAttribute('data-v3-hero-src');
+      });
+
+      slide.dataset.v3HeroHydrated = 'true';
+    };
+
+    const hydrateNext = () => hydrateSlide((active + 1) % slides.length);
+
+    const getActiveImage = () => slides[active]?.querySelector('img');
+
+    const onActiveImageReady = (callback) => {
+      const image = getActiveImage();
+      if (!image || image.complete) {
+        callback();
+        return;
+      }
+      if (image.dataset.v3HeroLoadWatch === 'true') return;
+      image.dataset.v3HeroLoadWatch = 'true';
+      image.addEventListener('load', () => {
+        image.dataset.v3HeroLoadWatch = 'false';
+        callback();
+      }, { once: true });
+      image.addEventListener('error', () => {
+        image.dataset.v3HeroLoadWatch = 'false';
+        callback();
+      }, { once: true });
+    };
+
+    const preloadNextWhenIdle = (delay = 2800) => {
+      if (slides.length < 2 || preloadTimer) return;
+      preloadTimer = window.setTimeout(() => {
+        preloadTimer = null;
+        const run = () => {
+          if (!document.hidden && inView) hydrateNext();
+        };
+        const activeImage = getActiveImage();
+        if (activeImage && !activeImage.complete) {
+          onActiveImageReady(() => preloadNextWhenIdle(1200));
+          return;
+        }
+        if ('requestIdleCallback' in window) {
+          window.requestIdleCallback(run, { timeout: 1800 });
+        } else {
+          run();
+        }
+      }, delay);
+    };
+
+    const canPlay = () => autoplay && !reduceMotion && slides.length > 1 && inView && !document.hidden;
+
+    const activate = (next) => {
+      if (!slides.length) return;
+      active = (next + slides.length) % slides.length;
+      hydrateSlide(active);
+      slides.forEach((slide, index) => {
+        slide.classList.toggle('is-active', index === active);
+        slide.setAttribute('aria-hidden', index === active ? 'false' : 'true');
+        if (slide.tagName === 'A') slide.tabIndex = index === active ? 0 : -1;
+      });
+      dots.forEach((dot, index) => {
+        dot.classList.toggle('is-active', index === active);
+        dot.setAttribute('aria-pressed', index === active ? 'true' : 'false');
+      });
+      preloadNextWhenIdle(3200);
+    };
+
+    const stop = () => {
+      if (timer) {
+        window.clearTimeout(timer);
+        remaining = Math.max(400, remaining - (Date.now() - startedAt));
+      }
+      timer = null;
+      root.classList.add('is-paused');
+    };
+
+    const start = (delay = remaining) => {
+      if (timer) window.clearTimeout(timer);
+      if (!canPlay()) return;
+      if (!getActiveImage()?.complete) {
+        root.classList.add('is-paused');
+        onActiveImageReady(() => start(interval));
+        return;
+      }
+      root.classList.remove('is-paused');
+      startedAt = Date.now();
+      preloadNextWhenIdle(1200);
+      timer = window.setTimeout(() => {
+        remaining = interval;
+        activate(active + 1);
+        start(interval);
+      }, delay);
+    };
+
+    dots.forEach((dot) => {
+      dot.addEventListener('click', () => {
+        activate(Number(dot.dataset.index || 0));
+        remaining = interval;
+        start(interval);
+      });
+    });
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        stop();
+      } else {
+        start(Math.min(remaining, interval));
+        preloadNextWhenIdle(1400);
+      }
+    });
+
+    if ('IntersectionObserver' in window) {
+      inView = false;
+      const observer = new IntersectionObserver((entries) => {
+        const entry = entries[0];
+        inView = Boolean(entry && entry.isIntersecting);
+        if (inView) {
+          start(Math.min(remaining, interval));
+          preloadNextWhenIdle(1600);
+        } else {
+          stop();
+        }
+      }, { threshold: 0.16 });
+      observer.observe(root);
+    }
+
+    root.addEventListener('mouseenter', stop);
+    root.addEventListener('mouseleave', () => start());
+    root.addEventListener('focusin', stop);
+    root.addEventListener('focusout', () => start());
+
+    activate(0);
+    if (document.readyState === 'complete') {
+      preloadNextWhenIdle(2400);
+    } else {
+      window.addEventListener('load', () => preloadNextWhenIdle(2400), { once: true });
+    }
+
+    window.requestAnimationFrame(() => start(interval));
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "V3 rotating hero",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Auto-rotate slides",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "rotation_interval",
+      "label": "Rotation interval",
+      "min": 4,
+      "max": 12,
+      "step": 1,
+      "unit": "s",
+      "default": 7
+    },
+    {
+      "type": "text",
+      "id": "accessible_label",
+      "label": "Accessible label",
+      "default": "Featured pakracards posters"
+    },
+    {
+      "type": "number",
+      "id": "desktop_aspect_width",
+      "label": "Desktop aspect width",
+      "default": 1880
+    },
+    {
+      "type": "number",
+      "id": "desktop_aspect_height",
+      "label": "Desktop aspect height",
+      "default": 720
+    },
+    {
+      "type": "number",
+      "id": "mobile_aspect_width",
+      "label": "Mobile aspect width",
+      "default": 638
+    },
+    {
+      "type": "number",
+      "id": "mobile_aspect_height",
+      "label": "Mobile aspect height",
+      "default": 870
+    }
+  ],
+  "blocks": [
+    {
+      "type": "poster",
+      "name": "Poster",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "desktop_image",
+          "label": "Desktop image"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile image"
+        },
+        {
+          "type": "text",
+          "id": "desktop_image_asset",
+          "label": "Desktop theme asset fallback"
+        },
+        {
+          "type": "text",
+          "id": "mobile_image_asset",
+          "label": "Mobile theme asset fallback"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Accessible heading",
+          "default": "Featured poster"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Accessible description"
+        },
+        {
+          "type": "text",
+          "id": "alt_text",
+          "label": "Image alt text"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Poster link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "V3 rotating hero"
+    }
+  ]
+}
+{% endschema %}

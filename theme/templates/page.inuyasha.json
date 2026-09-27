@@ -1,0 +1,51 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "p10_ip_storefront_inuyasha": {
+      "type": "p10-ip-storefront",
+      "blocks": {
+        "sealed_all": { "type": "lane_source", "settings": { "lane": "sealed", "collection": "cn-inuyasha-card-boxes", "allowed_product_types": "Trading Card Box" } },
+        "merch_all": { "type": "lane_source", "settings": { "lane": "merch", "collection": "inuyasha-collectibles", "allowed_product_types": "Blind Box Figure" } },
+        "intent_figures": { "type": "intent", "settings": { "lane": "merch", "label": "Figure blind boxes", "filter_kind": "product_type", "collection": "", "product_types": "Blind Box Figure", "link": "" } }
+      },
+      "block_order": ["sealed_all", "merch_all", "intent_figures"],
+      "settings": {
+        "ip_key": "inuyasha",
+        "skin": "inuyasha",
+        "eyebrow": "INUYASHA COLLECTIBLES",
+        "heading": "Inuyasha",
+        "subheading": "Choose sealed card boxes or figure blind boxes without mixed product types.",
+        "source_collection": "inuyasha",
+        "universal_product_type": "CCG",
+        "universal_market": "CN",
+        "universal_source_collection": "cn-inuyasha-card-boxes",
+        "show_search": true,
+        "lane_order": "sealed,merch",
+        "enable_sealed": true,
+        "sealed_label": "Sealed card boxes",
+        "sealed_copy": "Inuyasha sealed card boxes and releases.",
+        "sealed_link": "/collections/cn-inuyasha-card-boxes",
+        "enable_merch": false,
+        "merch_label": "Merch & collectibles",
+        "merch_copy": "Inuyasha figure blind boxes and character goods.",
+        "merch_link": "/collections/inuyasha-collectibles",
+        "initial_products_desktop": 12,
+        "initial_products_mobile": 8,
+        "load_more_step": 12,
+        "excluded_collection_handles": "single,singles-gallery",
+        "single_card_catalog_link": "/pages/single-cards",
+        "show_content": false,
+        "empty_state_link": ""
+      }
+    }
+  },
+  "order": ["p10_ip_storefront_inuyasha"]
+}

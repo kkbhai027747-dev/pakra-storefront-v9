@@ -1,0 +1,84 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "p10-merch-hub",
+      "settings": {
+        "eyebrow": "MERCH DIRECTORY",
+        "heading": "Character Goods",
+        "subheading": "Browse plush, charms, figures, blind boxes, acrylic goods, bags, and display pieces by IP and product type.",
+        "back_link": "/collections",
+        "back_label": "Shop by IP",
+        "featured_collection": "plushies-merch",
+        "collection_link": "shopify://collections/plushies-merch",
+        "collection_label": "Shop all merch",
+        "visual_label": "Featured character goods",
+        "visual_interval": 5,
+        "product_limit": 48
+      },
+      "blocks": {
+        "slide_plush": {
+          "type": "visual_slide",
+          "settings": {
+            "image_asset": "p10-merch-route-plush.webp",
+            "image_alt": "My Little Pony Rainbow Dash plush in a character goods display",
+            "kicker": "Featured shelf",
+            "heading": "Plush companions",
+            "kind": "plush",
+            "action_label": "Browse plush"
+          }
+        },
+        "slide_charms": {
+          "type": "visual_slide",
+          "settings": {
+            "image_asset": "p10-merch-route-baimao-charms.jpg",
+            "image_alt": "My Little Pony beaded character charm held in hand",
+            "kicker": "Daily accessories",
+            "heading": "Charms for bags and keys",
+            "kind": "charms",
+            "action_label": "Browse charms"
+          }
+        },
+        "slide_bags": {
+          "type": "visual_slide",
+          "settings": {
+            "image_asset": "p10-merch-route-pinkypinky-bags.jpg",
+            "image_alt": "My Little Pony character plush bag collection",
+            "kicker": "Carry goods",
+            "heading": "Character bags",
+            "kind": "bags",
+            "action_label": "Browse bags"
+          }
+        },
+        "slide_blind_boxes": {
+          "type": "visual_slide",
+          "settings": {
+            "image_asset": "p10-merch-route-funism-blind-box.jpg",
+            "image_alt": "My Little Pony Funism mini figure assortment",
+            "kicker": "Surprise shelf",
+            "heading": "Mini figures and blind boxes",
+            "kind": "blind-box",
+            "action_label": "Browse blind boxes"
+          }
+        }
+      },
+      "block_order": [
+        "slide_plush",
+        "slide_charms",
+        "slide_bags",
+        "slide_blind_boxes"
+      ]
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

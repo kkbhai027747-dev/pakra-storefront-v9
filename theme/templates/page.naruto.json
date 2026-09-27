@@ -1,0 +1,52 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "p10_ip_storefront_naruto": {
+      "type": "p10-ip-storefront",
+      "blocks": {
+        "sealed_all": { "type": "lane_source", "settings": { "lane": "sealed", "collection": "cn-naruto-card-boxes", "allowed_product_types": "Trading Card Box" } },
+        "tier_2": { "type": "intent", "settings": { "lane": "sealed", "label": "Tier 2", "filter_kind": "product_handle", "collection": "", "product_types": "", "product_handles": "anime-ninja-collection-tier-2-wave-9-soldier-chapter-booster-box-official-chinese-edition", "link": "" } },
+        "tier_4": { "type": "intent", "settings": { "lane": "sealed", "label": "Tier 4", "filter_kind": "product_handle", "collection": "", "product_types": "", "product_handles": "anime-ninja-collection-tier-4-wave-7-array-chapter-booster-box-official-chinese-edition, anime-ninja-collection-tier-4-wave-8-array-chapter-booster-box-official-chinese-edition", "link": "" } }
+      },
+      "block_order": ["sealed_all", "tier_2", "tier_4"],
+      "settings": {
+        "ip_key": "naruto",
+        "skin": "naruto",
+        "eyebrow": "KAYOU NARUTO",
+        "heading": "Naruto",
+        "subheading": "Browse Naruto sealed card boxes without unrelated product types.",
+        "source_collection": "ninjia",
+        "universal_publisher": "KAYOU",
+        "universal_product_type": "CCG",
+        "universal_market": "CN",
+        "universal_source_collection": "cn-naruto-card-boxes",
+        "show_search": true,
+        "lane_order": "sealed,merch",
+        "enable_sealed": true,
+        "sealed_label": "Sealed card boxes",
+        "sealed_copy": "KAYOU Naruto sealed display boxes and card releases.",
+        "sealed_link": "/collections/cn-naruto-card-boxes",
+        "enable_merch": false,
+        "merch_label": "Merch & collectibles",
+        "merch_copy": "Naruto character merchandise appears here when available.",
+        "merch_link": "",
+        "initial_products_desktop": 12,
+        "initial_products_mobile": 8,
+        "load_more_step": 12,
+        "excluded_collection_handles": "single,singles-gallery",
+        "single_card_catalog_link": "/pages/single-cards",
+        "show_content": false,
+        "empty_state_link": ""
+      }
+    }
+  },
+  "order": ["p10_ip_storefront_naruto"]
+}

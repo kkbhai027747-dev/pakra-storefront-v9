@@ -1,0 +1,512 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "p10-shop-by-ip",
+      "blocks": {
+        "ip_mlp": {
+          "type": "ip_card",
+          "settings": {
+            "collection": "mlp-1",
+            "title": "My Little Pony",
+            "image": "",
+            "image_url": "https://cdn.shopify.com/s/files/1/0746/1014/7516/files/codex-clipboard-99547f3f-b79f-492e-bc09-051e68c3e076.png?v=1781462079",
+            "link": "/pages/my-little-pony"
+          }
+        },
+        "ip_naruto": {
+          "type": "ip_card",
+          "settings": {
+            "collection": "ninjia",
+            "title": "Naruto",
+            "image": "",
+            "image_url": "https://cdn.shopify.com/s/files/1/0746/1014/7516/files/ff9ab2512d3d393280cabcc47223623b.jpg?v=1775384118",
+            "link": "/pages/naruto"
+          }
+        },
+        "ip_harry_potter": {
+          "type": "ip_card",
+          "settings": {
+            "secondary_tier": true,
+            "collection": "harry-potter",
+            "title": "Harry Potter",
+            "image": "",
+            "image_url": "https://cdn.shopify.com/s/files/1/0746/1014/7516/files/6391ace427ade714b70fb966024ae804_48ca46a5-947a-46a0-b140-f78102a6e35d.jpg?v=1778665836",
+            "link": "/pages/harry-potter"
+          }
+        },
+        "ip_powerpuff_girls": {
+          "type": "ip_card",
+          "settings": {
+            "secondary_tier": true,
+            "collection": "the-powerpuff-girls",
+            "title": "The Powerpuff Girls",
+            "image": "",
+            "image_url": "https://cdn.shopify.com/s/files/1/0746/1014/7516/files/X.png?v=1778664571",
+            "link": "/pages/the-powerpuff-girls"
+          }
+        },
+        "ip_inuyasha": {
+          "type": "ip_card",
+          "settings": {
+            "secondary_tier": true,
+            "collection": "inuyasha",
+            "title": "Inuyasha",
+            "image": "",
+            "image_url": "https://cdn.shopify.com/s/files/1/0746/1014/7516/files/1_d1c36c40-d91a-40aa-91a1-93043e9adc99.png?v=1779092877",
+            "link": "/collections/inuyasha"
+          }
+        },
+        "ip_arknights": {
+          "type": "ip_card",
+          "settings": {
+            "secondary_tier": true,
+            "collection": "arknights",
+            "title": "Arknights",
+            "image": "",
+            "image_url": "",
+            "link": "/pages/arknights"
+          }
+        },
+        "ip_pokemon": {
+          "type": "ip_card",
+          "settings": {
+            "ip_key": "pokemon",
+            "desktop_only": false,
+            "collection": "ip-pokemon",
+            "title": "Pokémon",
+            "image": "",
+            "image_url": "",
+            "link": "/pages/pokemon"
+          }
+        },
+        "ip_disney": {
+          "type": "ip_card",
+          "settings": {
+            "ip_key": "disney",
+            "desktop_only": false,
+            "collection": "ip-disney",
+            "title": "Disney",
+            "image": "",
+            "image_url": "",
+            "link": "/pages/disney"
+          }
+        },
+        "ip_marvel": {
+          "type": "ip_card",
+          "settings": {
+            "secondary_tier": true,
+            "ip_key": "marvel",
+            "desktop_only": false,
+            "collection": "ip-marvel",
+            "title": "Marvel",
+            "image": "",
+            "image_url": "",
+            "link": "/pages/marvel"
+          }
+        },
+        "ip_dc": {
+          "type": "ip_card",
+          "settings": {
+            "secondary_tier": true,
+            "ip_key": "dc",
+            "desktop_only": false,
+            "collection": "ip-dc",
+            "title": "DC",
+            "image": "",
+            "image_url": "",
+            "link": "/pages/dc"
+          }
+        },
+        "ip_one_piece": {
+          "type": "ip_card",
+          "settings": {
+            "secondary_tier": true,
+            "ip_key": "custom",
+            "desktop_only": false,
+            "collection": "",
+            "title": "ONE PIECE",
+            "lane": "Bandai trading cards",
+            "description": "Official ONE PIECE Card Game releases.",
+            "tag_1": "TCG",
+            "tag_2": "",
+            "tag_3": "",
+            "best_for": "ONE PIECE Card Game releases",
+            "cta_label": "Explore ONE PIECE",
+            "image": "",
+            "image_url": "",
+            "link": "/collections?ip=one-piece",
+            "accent": "#c52f37",
+            "soft": "#fff0ed"
+          }
+        },
+        "ip_hatsune_miku": {
+          "type": "ip_card",
+          "settings": {
+            "secondary_tier": true,
+            "collection": "ip-hatsune-miku",
+            "title": "Hatsune Miku",
+            "logo_asset": "p10-ip-logo-hatsune-miku.png",
+            "description": "CCG collectible card releases and individual cards.",
+            "tag_1": "CCG",
+            "tag_2": "Single Cards",
+            "cta_label": "Explore Hatsune Miku",
+            "link": "/collections/ip-hatsune-miku",
+            "accent": "#087e83",
+            "soft": "#eaf8f6"
+          }
+        },
+        "ip_detective_conan": {
+          "type": "ip_card",
+          "settings": {
+            "secondary_tier": true,
+            "collection": "ip-detective-conan",
+            "title": "Detective Conan",
+            "logo_asset": "p10-ip-logo-detective-conan.png",
+            "description": "Detective Conan CCG collectible card releases.",
+            "tag_1": "CCG",
+            "cta_label": "Explore Detective Conan",
+            "link": "/collections/ip-detective-conan/sealed-product",
+            "accent": "#31548b",
+            "soft": "#edf2fa"
+          }
+        },
+        "ip_miracle_nikki": {
+          "type": "ip_card",
+          "settings": {
+            "secondary_tier": true,
+            "collection": "ip-miracle-nikki",
+            "title": "Miracle Nikki",
+            "description": "Miracle Nikki CCG collectible card releases.",
+            "tag_1": "CCG",
+            "cta_label": "Explore Miracle Nikki",
+            "link": "/collections/ip-miracle-nikki/sealed-product",
+            "accent": "#b65081",
+            "soft": "#fff1f7"
+          }
+        },
+        "ip_ye_luoli": {
+          "type": "ip_card",
+          "settings": {
+            "secondary_tier": true,
+            "collection": "ip-ye-luoli",
+            "title": "Ye Luoli",
+            "description": "Individual Ye Luoli collectible cards.",
+            "tag_1": "Single Cards",
+            "cta_label": "Explore Ye Luoli",
+            "link": "/collections/ip-ye-luoli/single-card",
+            "accent": "#8654a0",
+            "soft": "#f8efff"
+          }
+        },
+        "ip_shining_nikki": {
+          "type": "ip_card",
+          "settings": {
+            "secondary_tier": true,
+            "collection": "ip-shining-nikki",
+            "title": "Shining Nikki",
+            "description": "Shining Nikki CCG collectible card releases.",
+            "tag_1": "CCG",
+            "cta_label": "Explore Shining Nikki",
+            "link": "/collections/ip-shining-nikki/sealed-product",
+            "accent": "#9c667c",
+            "soft": "#fff1f4"
+          }
+        },
+        "ip_persona_5_royal": {
+          "type": "ip_card",
+          "settings": {
+            "secondary_tier": true,
+            "collection": "ip-persona-5-royal",
+            "title": "Persona 5 Royal",
+            "logo_asset": "p10-ip-logo-persona-5-royal.png",
+            "description": "Persona 5 Royal CCG collectible card releases.",
+            "tag_1": "CCG",
+            "cta_label": "Explore Persona 5 Royal",
+            "link": "/collections/ip-persona-5-royal/sealed-product",
+            "accent": "#ae2839",
+            "soft": "#fff0f0"
+          }
+        },
+        "ip_miraculous_ladybug": {
+          "type": "ip_card",
+          "settings": {
+            "secondary_tier": true,
+            "collection": "ip-miraculous-ladybug",
+            "title": "Miraculous Ladybug",
+            "logo_asset": "p10-ip-logo-miraculous-ladybug.png",
+            "description": "Miraculous Ladybug trading card display boxes.",
+            "tag_1": "TCG",
+            "cta_label": "Explore Miraculous Ladybug",
+            "link": "/collections/ip-miraculous-ladybug/sealed-product",
+            "accent": "#b5394c",
+            "soft": "#fff2f2"
+          }
+        },
+        "ip_natsume": {
+          "type": "ip_card",
+          "settings": {
+            "secondary_tier": true,
+            "collection": "ip-natsume",
+            "title": "Natsume's Book of Friends",
+            "description": "Natsume's Book of Friends CCG collectible card releases.",
+            "tag_1": "CCG",
+            "cta_label": "Explore Natsume",
+            "link": "/collections/ip-natsume/sealed-product",
+            "accent": "#637b43",
+            "soft": "#f2f6e9"
+          }
+        },
+        "ip_dunhuang_museum": {
+          "type": "ip_card",
+          "settings": {
+            "secondary_tier": true,
+            "collection": "ip-dunhuang-museum",
+            "title": "Dunhuang Museum",
+            "description": "Dunhuang Museum CCG art and heritage card releases.",
+            "tag_1": "CCG",
+            "cta_label": "Explore Dunhuang Museum",
+            "link": "/collections/ip-dunhuang-museum/sealed-product",
+            "accent": "#94672d",
+            "soft": "#faf3e7"
+          }
+        },
+        "ip_fallen_merman": {
+          "type": "ip_card",
+          "settings": {
+            "secondary_tier": true,
+            "title": "The Fallen Merman",
+            "description": "The Fallen Merman Deep Sea Dream CCG collectible cards.",
+            "tag_1": "CCG",
+            "cta_label": "Explore The Fallen Merman",
+            "image_url": "",
+            "link": "/products/kayou-the-fallen-merman-deep-sea-dream-series-2-collectible-card-display-box",
+            "accent": "#357680",
+            "soft": "#ecf7f9"
+          }
+        },
+        "ip_tom_and_jerry": {
+          "type": "ip_card",
+          "settings": {
+            "secondary_tier": true,
+            "collection": "ip-tom-and-jerry",
+            "title": "Tom and Jerry",
+            "description": "Individual Tom and Jerry collectible cards.",
+            "tag_1": "Single Cards",
+            "cta_label": "Explore Tom and Jerry",
+            "link": "/collections/ip-tom-and-jerry/single-card",
+            "accent": "#986531",
+            "soft": "#fff5e8"
+          }
+        },
+        "ip_friends": {
+          "type": "ip_card",
+          "settings": {
+            "ip_key": "custom",
+            "desktop_only": false,
+            "secondary_tier": true,
+            "collection": "ip-friends",
+            "title": "Friends",
+            "description": "Friends collectible cards and boxed releases.",
+            "tag_1": "CCG",
+            "cta_label": "Explore Friends",
+            "link": "/collections/ip-friends"
+          }
+        },
+        "ip_sanrio": {
+          "type": "ip_card",
+          "settings": {
+            "ip_key": "custom",
+            "desktop_only": false,
+            "secondary_tier": true,
+            "collection": "ip-sanrio",
+            "title": "Sanrio",
+            "logo_asset": "p10-ip-logo-sanrio.png",
+            "description": "Sanrio collectible cards and boxed releases.",
+            "tag_1": "CCG",
+            "cta_label": "Explore Sanrio",
+            "link": "/collections/ip-sanrio"
+          }
+        },
+        "ip_warner_bros": {
+          "type": "ip_card",
+          "settings": {
+            "ip_key": "custom",
+            "desktop_only": false,
+            "secondary_tier": true,
+            "collection": "ip-warner-bros",
+            "title": "Warner Bros.",
+            "logo_asset": "p10-ip-logo-warner-bros.png",
+            "description": "Warner Bros. collectible cards and boxed releases.",
+            "tag_1": "CCG",
+            "cta_label": "Explore Warner Bros.",
+            "link": "/collections/ip-warner-bros"
+          }
+        },
+        "ip_game_of_thrones": {
+          "type": "ip_card",
+          "settings": {
+            "ip_key": "custom",
+            "desktop_only": false,
+            "secondary_tier": true,
+            "collection": "ip-game-of-thrones",
+            "title": "Game of Thrones",
+            "logo_asset": "p10-ip-logo-game-of-thrones.png",
+            "description": "Game of Thrones collectible cards and boxed releases.",
+            "tag_1": "CCG",
+            "cta_label": "Explore Game of Thrones",
+            "link": "/collections/ip-game-of-thrones"
+          }
+        },
+        "ip_fantastic_beasts": {
+          "type": "ip_card",
+          "settings": {
+            "ip_key": "custom",
+            "desktop_only": false,
+            "secondary_tier": true,
+            "collection": "ip-fantastic-beasts",
+            "title": "Fantastic Beasts",
+            "description": "Fantastic Beasts collectible cards and boxed releases.",
+            "tag_1": "CCG",
+            "cta_label": "Explore Fantastic Beasts",
+            "link": "/collections/ip-fantastic-beasts"
+          }
+        },
+        "ip_maltese": {
+          "type": "ip_card",
+          "settings": {
+            "ip_key": "custom",
+            "desktop_only": false,
+            "secondary_tier": true,
+            "collection": "ip-maltese",
+            "title": "Maltese",
+            "description": "Maltese collectible cards and boxed releases.",
+            "tag_1": "CCG",
+            "cta_label": "Explore Maltese",
+            "link": "/collections/ip-maltese"
+          }
+        },
+        "ip_please_eat_red_bean": {
+          "type": "ip_card",
+          "settings": {
+            "ip_key": "custom",
+            "desktop_only": false,
+            "secondary_tier": true,
+            "collection": "ip-please-eat-red-bean",
+            "title": "Please Eat Red Bean",
+            "description": "Please Eat Red Bean collectible cards and boxed releases.",
+            "tag_1": "CCG",
+            "cta_label": "Explore Please Eat Red Bean",
+            "link": "/collections/ip-please-eat-red-bean"
+          }
+        },
+        "ip_honkai_star_rail": {
+          "type": "ip_card",
+          "settings": {
+            "ip_key": "custom",
+            "desktop_only": false,
+            "secondary_tier": true,
+            "collection": "ip-honkai-star-rail",
+            "title": "Honkai: Star Rail",
+            "logo_asset": "p10-ip-logo-honkai-star-rail.png",
+            "description": "Honkai: Star Rail collectible cards and boxed releases.",
+            "tag_1": "CCG",
+            "cta_label": "Explore Honkai: Star Rail",
+            "link": "/collections/ip-honkai-star-rail"
+          }
+        },
+        "ip_china_winter_sports_national_team": {
+          "type": "ip_card",
+          "settings": {
+            "ip_key": "custom",
+            "desktop_only": false,
+            "secondary_tier": true,
+            "collection": "ip-china-winter-sports-national-team",
+            "title": "China Winter Sports National Team",
+            "description": "China Winter Sports National Team collectible cards and boxed releases.",
+            "tag_1": "CCG",
+            "cta_label": "Explore China Winter Sports National Team",
+            "link": "/collections/ip-china-winter-sports-national-team"
+          }
+        },
+        "ip_xiao_ma_ben_ben": {
+          "type": "ip_card",
+          "settings": {
+            "ip_key": "custom",
+            "desktop_only": false,
+            "secondary_tier": true,
+            "collection": "ip-xiao-ma-ben-ben",
+            "title": "Xiao Ma Ben Ben",
+            "description": "Xiao Ma Ben Ben collectible cards and boxed releases.",
+            "tag_1": "CCG",
+            "cta_label": "Explore Xiao Ma Ben Ben",
+            "link": "/collections/ip-xiao-ma-ben-ben"
+          }
+        },
+        "ip_final_fantasy": {
+          "type": "ip_card",
+          "settings": {
+            "ip_key": "custom",
+            "desktop_only": false,
+            "secondary_tier": true,
+            "collection": "ip-final-fantasy",
+            "title": "Final Fantasy",
+            "image": "",
+            "image_url": "",
+            "link": "/collections/ip-final-fantasy"
+          }
+        }
+      },
+      "block_order": [
+        "ip_pokemon",
+        "ip_mlp",
+        "ip_naruto",
+        "ip_disney",
+        "ip_harry_potter",
+        "ip_powerpuff_girls",
+        "ip_inuyasha",
+        "ip_arknights",
+        "ip_marvel",
+        "ip_dc",
+        "ip_one_piece",
+        "ip_hatsune_miku",
+        "ip_detective_conan",
+        "ip_miracle_nikki",
+        "ip_ye_luoli",
+        "ip_shining_nikki",
+        "ip_persona_5_royal",
+        "ip_miraculous_ladybug",
+        "ip_natsume",
+        "ip_dunhuang_museum",
+        "ip_fallen_merman",
+        "ip_tom_and_jerry",
+        "ip_friends",
+        "ip_sanrio",
+        "ip_warner_bros",
+        "ip_game_of_thrones",
+        "ip_fantastic_beasts",
+        "ip_maltese",
+        "ip_please_eat_red_bean",
+        "ip_honkai_star_rail",
+        "ip_china_winter_sports_national_team",
+        "ip_xiao_ma_ben_ben",
+        "ip_final_fantasy"
+      ],
+      "settings": {
+        "heading": "SHOP BY IP",
+        "intro": "Explore collectible card games (CCG), trading card games (TCG), merchandise, and collectibles by IP."
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

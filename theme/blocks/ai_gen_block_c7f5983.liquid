@@ -1,0 +1,535 @@
+{% doc %}
+  @prompt
+    Create a fully interactive three-level accordion navigation menu Shopify theme block that dynamically reads from a Shopify navigation linklist using Liquid.
+    
+    Requirements:
+    - Use Liquid to render the menu with handle "menus" (linklists['menus'])
+    - Render all 3 levels: Level1 (SINGLES/SEALED) → Level2 (MLP/NINJA) → Level3 (tier collections)
+    - Each level is a clickable row with a dropdown arrow icon on the right
+    - Clicking a row expands its children below it (accordion style)
+    - Arrow rotates 180 degrees when expanded
+    - If a menu item has no children, clicking it navigates directly to its URL
+    - Use vanilla JavaScript only for toggle interactions
+    - Compact full-width list style, mobile-first
+    - Adding new items to the Shopify menu automatically appears in the navigation without code changes
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-accordion-nav-{{ ai_gen_id }} {
+    display: block;
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    background-color: {{ block.settings.background_color }};
+    border-radius: {{ block.settings.border_radius }}px;
+    overflow: hidden;
+  }
+
+  .ai-accordion-nav-list-{{ ai_gen_id }} {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .ai-accordion-nav-item-{{ ai_gen_id }} {
+    border-bottom: {{ block.settings.divider_width }}px solid {{ block.settings.divider_color }};
+  }
+
+  .ai-accordion-nav-item-{{ ai_gen_id }}:last-child {
+    border-bottom: none;
+  }
+
+  .ai-accordion-nav-row-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: {{ block.settings.item_padding_vertical }}px {{ block.settings.item_padding_horizontal }}px;
+    background-color: {{ block.settings.item_background }};
+    color: {{ block.settings.text_color }};
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    border: none;
+    text-align: left;
+    font-size: {{ block.settings.level1_font_size }}px;
+    font-weight: {{ block.settings.level1_font_weight }};
+  }
+
+  .ai-accordion-nav-row-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.item_hover_background }};
+  }
+
+  .ai-accordion-nav-row-{{ ai_gen_id }}.active {
+    background-color: {{ block.settings.item_active_background }};
+    color: {{ block.settings.active_text_color }};
+  }
+
+  .ai-accordion-nav-label-{{ ai_gen_id }} {
+    flex-grow: 1;
+  }
+
+  .ai-accordion-nav-arrow-{{ ai_gen_id }} {
+    width: {{ block.settings.arrow_size }}px;
+    height: {{ block.settings.arrow_size }}px;
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+    margin-left: 12px;
+  }
+
+  .ai-accordion-nav-arrow-{{ ai_gen_id }}.rotated {
+    transform: rotate(180deg);
+  }
+
+  .ai-accordion-nav-children-{{ ai_gen_id }} {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    background-color: {{ block.settings.submenu_background }};
+  }
+
+  .ai-accordion-nav-children-{{ ai_gen_id }}.expanded {
+    max-height: 2000px;
+  }
+
+  .ai-accordion-nav-level2-{{ ai_gen_id }} {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .ai-accordion-nav-level2-item-{{ ai_gen_id }} {
+    border-bottom: {{ block.settings.divider_width }}px solid {{ block.settings.divider_color }};
+  }
+
+  .ai-accordion-nav-level2-item-{{ ai_gen_id }}:last-child {
+    border-bottom: none;
+  }
+
+  .ai-accordion-nav-level2-row-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: {{ block.settings.item_padding_vertical }}px {{ block.settings.item_padding_horizontal }}px;
+    padding-left: {{ block.settings.item_padding_horizontal | plus: 20 }}px;
+    background-color: {{ block.settings.submenu_background }};
+    color: {{ block.settings.text_color }};
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    border: none;
+    text-align: left;
+    font-size: {{ block.settings.level2_font_size }}px;
+    font-weight: {{ block.settings.level2_font_weight }};
+  }
+
+  .ai-accordion-nav-level2-row-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.item_hover_background }};
+  }
+
+  .ai-accordion-nav-level2-row-{{ ai_gen_id }}.active {
+    background-color: {{ block.settings.item_active_background }};
+    color: {{ block.settings.active_text_color }};
+  }
+
+  .ai-accordion-nav-level3-{{ ai_gen_id }} {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .ai-accordion-nav-level3-item-{{ ai_gen_id }} {
+    border-bottom: {{ block.settings.divider_width }}px solid {{ block.settings.divider_color }};
+  }
+
+  .ai-accordion-nav-level3-item-{{ ai_gen_id }}:last-child {
+    border-bottom: none;
+  }
+
+  .ai-accordion-nav-level3-row-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: {{ block.settings.item_padding_vertical }}px {{ block.settings.item_padding_horizontal }}px;
+    padding-left: {{ block.settings.item_padding_horizontal | plus: 40 }}px;
+    background-color: {{ block.settings.submenu_background }};
+    color: {{ block.settings.text_color }};
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    border: none;
+    text-align: left;
+    font-size: {{ block.settings.level3_font_size }}px;
+    font-weight: {{ block.settings.level3_font_weight }};
+  }
+
+  .ai-accordion-nav-level3-row-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.item_hover_background }};
+  }
+
+  .ai-accordion-nav-level3-row-{{ ai_gen_id }}.active {
+    background-color: {{ block.settings.item_active_background }};
+    color: {{ block.settings.active_text_color }};
+  }
+
+  .ai-accordion-nav-empty-{{ ai_gen_id }} {
+    padding: 40px 20px;
+    text-align: center;
+    color: {{ block.settings.text_color }};
+    opacity: 0.6;
+    font-size: 14px;
+  }
+{% endstyle %}
+
+<accordion-nav-{{ ai_gen_id }} class="ai-accordion-nav-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  {% if linklists[block.settings.menu_handle] != blank and linklists[block.settings.menu_handle].links.size > 0 %}
+    <ul class="ai-accordion-nav-list-{{ ai_gen_id }}">
+      {% for link in linklists[block.settings.menu_handle].links %}
+        <li class="ai-accordion-nav-item-{{ ai_gen_id }}">
+          {% if link.links.size > 0 %}
+            <button
+              class="ai-accordion-nav-row-{{ ai_gen_id }}"
+              data-level="1"
+              aria-expanded="false"
+            >
+              <span class="ai-accordion-nav-label-{{ ai_gen_id }}">{{ link.title }}</span>
+              <svg
+                class="ai-accordion-nav-arrow-{{ ai_gen_id }}"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+            <div class="ai-accordion-nav-children-{{ ai_gen_id }}">
+              <ul class="ai-accordion-nav-level2-{{ ai_gen_id }}">
+                {% for child_link in link.links %}
+                  <li class="ai-accordion-nav-level2-item-{{ ai_gen_id }}">
+                    {% if child_link.links.size > 0 %}
+                      <button
+                        class="ai-accordion-nav-level2-row-{{ ai_gen_id }}"
+                        data-level="2"
+                        aria-expanded="false"
+                      >
+                        <span class="ai-accordion-nav-label-{{ ai_gen_id }}">{{ child_link.title }}</span>
+                        <svg
+                          class="ai-accordion-nav-arrow-{{ ai_gen_id }}"
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        >
+                          <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                      </button>
+                      <div class="ai-accordion-nav-children-{{ ai_gen_id }}">
+                        <ul class="ai-accordion-nav-level3-{{ ai_gen_id }}">
+                          {% for grandchild_link in child_link.links %}
+                            <li class="ai-accordion-nav-level3-item-{{ ai_gen_id }}">
+                              <a
+                                href="{{ grandchild_link.url }}"
+                                class="ai-accordion-nav-level3-row-{{ ai_gen_id }}"
+                              >
+                                <span class="ai-accordion-nav-label-{{ ai_gen_id }}">{{ grandchild_link.title }}</span>
+                              </a>
+                            </li>
+                          {% endfor %}
+                        </ul>
+                      </div>
+                    {% else %}
+                      <a
+                        href="{{ child_link.url }}"
+                        class="ai-accordion-nav-level2-row-{{ ai_gen_id }}"
+                      >
+                        <span class="ai-accordion-nav-label-{{ ai_gen_id }}">{{ child_link.title }}</span>
+                      </a>
+                    {% endif %}
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+          {% else %}
+            <a
+              href="{{ link.url }}"
+              class="ai-accordion-nav-row-{{ ai_gen_id }}"
+            >
+              <span class="ai-accordion-nav-label-{{ ai_gen_id }}">{{ link.title }}</span>
+            </a>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <div class="ai-accordion-nav-empty-{{ ai_gen_id }}">
+      Next, select a menu in the block settings
+    </div>
+  {% endif %}
+</accordion-nav-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class AccordionNav{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        this.buttons = this.querySelectorAll('button[data-level]');
+        this.setupEventListeners();
+      }
+
+      setupEventListeners() {
+        this.buttons.forEach((button) => {
+          button.addEventListener('click', (e) => {
+            e.preventDefault();
+            this.toggleAccordion(button);
+          });
+        });
+      }
+
+      toggleAccordion(button) {
+        const isExpanded = button.getAttribute('aria-expanded') === 'true';
+        const childrenContainer = button.nextElementSibling;
+        const arrow = button.querySelector('.ai-accordion-nav-arrow-{{ ai_gen_id }}');
+
+        if (isExpanded) {
+          button.setAttribute('aria-expanded', 'false');
+          button.classList.remove('active');
+          childrenContainer.classList.remove('expanded');
+          if (arrow) {
+            arrow.classList.remove('rotated');
+          }
+        } else {
+          button.setAttribute('aria-expanded', 'true');
+          button.classList.add('active');
+          childrenContainer.classList.add('expanded');
+          if (arrow) {
+            arrow.classList.add('rotated');
+          }
+        }
+      }
+    }
+
+    customElements.define('accordion-nav-{{ ai_gen_id }}', AccordionNav{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Accordion navigation menu",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Menu"
+    },
+    {
+      "type": "link_list",
+      "id": "menu_handle",
+      "label": "Menu",
+      "default": "main-menu"
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "item_background",
+      "label": "Item background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "item_hover_background",
+      "label": "Item hover background",
+      "default": "#f5f5f5"
+    },
+    {
+      "type": "color",
+      "id": "item_active_background",
+      "label": "Item active background",
+      "default": "#e8e8e8"
+    },
+    {
+      "type": "color",
+      "id": "submenu_background",
+      "label": "Submenu background",
+      "default": "#fafafa"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "active_text_color",
+      "label": "Active text",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "divider_color",
+      "label": "Divider",
+      "default": "#e0e0e0"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "level1_font_size",
+      "label": "Level 1 font size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "select",
+      "id": "level1_font_weight",
+      "label": "Level 1 font weight",
+      "options": [
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "range",
+      "id": "level2_font_size",
+      "label": "Level 2 font size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 15
+    },
+    {
+      "type": "select",
+      "id": "level2_font_weight",
+      "label": "Level 2 font weight",
+      "options": [
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "500"
+    },
+    {
+      "type": "range",
+      "id": "level3_font_size",
+      "label": "Level 3 font size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "select",
+      "id": "level3_font_weight",
+      "label": "Level 3 font weight",
+      "options": [
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-bold" },
+        { "value": "700", "label": "Bold" }
+      ],
+      "default": "400"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "item_padding_vertical",
+      "label": "Item vertical padding",
+      "min": 8,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "item_padding_horizontal",
+      "label": "Item horizontal padding",
+      "min": 8,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Border radius",
+      "min": 0,
+      "max": 20,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "divider_width",
+      "label": "Divider width",
+      "min": 0,
+      "max": 4,
+      "step": 1,
+      "unit": "px",
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "arrow_size",
+      "label": "Arrow size",
+      "min": 12,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    }
+  ],
+  "presets": [
+    {
+      "name": "Accordion navigation menu"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,281 @@
+{% layout none %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,follow">
+  <title>Links - PAKRACARDS</title>
+  {%- if settings.favicon != blank -%}
+    <link rel="icon" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+  {%- endif -%}
+
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      background-image: url('https://cdn.shopify.com/s/files/1/0746/1014/7516/files/1_04a5ab23-18fb-49fe-8b07-c23b2e4559d0.png?v=1778911027');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      background-repeat: no-repeat;
+    }
+
+    .overlay {
+      background-color: rgba(0, 0, 0, 0.15);
+      min-height: 100vh;
+      padding: 60px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-sizing: border-box;
+    }
+
+    .links-back {
+      position: absolute;
+      top: calc(12px + env(safe-area-inset-top, 0px));
+      left: calc(12px + env(safe-area-inset-left, 0px));
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 44px;
+      padding: 0 14px;
+      border-radius: 24px;
+      background: #ffffff;
+      color: #333333;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    }
+
+    .links-back svg {
+      display: block;
+      width: 16px;
+      height: 16px;
+      fill: currentColor;
+    }
+
+    .links-back:hover { background: #f4f4f4; }
+    .links-back:focus-visible { outline: 2px solid #333333; outline-offset: 3px; }
+    .links-back + .overlay { padding-top: calc(72px + env(safe-area-inset-top, 0px)); }
+
+    .profile-container {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #ffffff;
+      text-shadow: 1px 1px 4px rgba(0,0,0,0.6);
+    }
+
+    .profile-pic {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #ffffff;
+      margin-bottom: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+
+    .store-name {
+      font-size: 26px;
+      font-weight: 800;
+      margin: 0 0 10px 0;
+      letter-spacing: 0.5px;
+    }
+
+    .bio {
+      font-size: 15px;
+      max-width: 420px;
+      margin: 0 auto;
+      line-height: 1.5;
+    }
+
+    .social-icons-row {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-bottom: 35px;
+    }
+
+    .social-icon {
+      display: inline-flex;
+      align-items: center;
+      flex-direction: column;
+      gap: 7px;
+      min-width: 48px;
+      color: #ffffff;
+      text-decoration: none;
+      transition: transform 0.2s ease;
+      filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.5));
+    }
+
+    .social-icon svg {
+      display: block;
+      width: 28px;
+      height: 28px;
+      flex: 0 0 auto;
+    }
+
+    .social-icon__label {
+      font-size: 10px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .social-icon:hover {
+      transform: scale(1.1);
+    }
+
+    .links-container {
+      width: 100%;
+      max-width: 450px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .link-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 18px 20px;
+      background-color: #ffffff;
+      color: #333333;
+      text-decoration: none;
+      border-radius: 30px;
+      font-size: 16px;
+      font-weight: 600;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      box-sizing: border-box;
+    }
+
+    .link-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    }
+
+    .link-note {
+      color: #ffffff;
+      display: block;
+      font-size: 13px;
+      line-height: 1.4;
+      margin: -6px 6px 6px;
+      text-align: center;
+      text-shadow: 1px 1px 4px rgba(0,0,0,0.65);
+    }
+  </style>
+</head>
+<body>
+  {% if page.handle == 'links' %}
+    <a class="links-back" data-links-back href="{{ routes.root_url }}">
+      <span aria-hidden="true">{% render 'icon-chevron-left' %}</span>
+      <span>{{ 'general.common.back' | t }}</span>
+    </a>
+  {% endif %}
+  <div class="overlay">
+    <div class="profile-container">
+      <img src="https://cdn.shopify.com/s/files/1/0746/1014/7516/files/20260514225356_1458_9.jpg?v=1778770511" alt="PAKRACARDS" class="profile-pic" width="100" height="100">
+      <h1 class="store-name">PAKRACARDS</h1>
+      <p class="bio">Your home for magical collectible cards, singles, sealed boxes, and new drops.</p>
+    </div>
+
+    <div class="social-icons-row">
+      <a href="https://www.facebook.com/profile.php?id=61584458474464" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Facebook">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+          <path fill="currentColor" d="M14.4 22v-8.2h2.8l.4-3.2h-3.2V8.5c0-.9.3-1.6 1.7-1.6h1.7V4.1c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.3H8.3v3.2h2.8V22h3.3Z"/>
+        </svg>
+        <span class="social-icon__label">Facebook</span>
+      </a>
+      <a href="https://www.instagram.com/amberponycove/" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+          <rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/>
+          <circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/>
+          <circle cx="17.4" cy="6.7" r="1.2" fill="currentColor"/>
+        </svg>
+        <span class="social-icon__label">Instagram</span>
+      </a>
+      <a href="https://www.tiktok.com/@amberpony" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="TikTok">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+          <path fill="currentColor" d="M14.4 3h3.1c.3 2 1.5 3.4 3.5 4v3.1a8.8 8.8 0 0 1-3.5-1.2v6.8a6.3 6.3 0 1 1-5.4-6.2v3.2a3.1 3.1 0 1 0 2.3 3V3Z"/>
+        </svg>
+        <span class="social-icon__label">TikTok</span>
+      </a>
+      <a href="https://www.youtube.com/@AmberPonyCove" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="YouTube">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2.5" y="5.5" width="19" height="13" rx="4" fill="none" stroke="currentColor" stroke-width="2"/>
+          <path fill="currentColor" d="m10 9 5 3-5 3V9Z"/>
+        </svg>
+        <span class="social-icon__label">YouTube</span>
+      </a>
+    </div>
+
+    <div class="links-container">
+      <a href="/products/kayou-mlp-moon-edition-chinese-series-12-t4w12-display-box" class="link-btn" data-primary-moon12>Shop Moon 12 Sealed Box</a>
+      <span class="link-note">Kayou MLP Moon Edition 12 | Ships in 1-3 business days | Free shipping over $60</span>
+      <a href="https://discord.gg/f32nsf2Yfx" target="_blank" rel="noopener noreferrer" class="link-btn">Hang Out &amp; Trade in Discord</a>
+    </div>
+  </div>
+
+  <script>
+    (() => {
+      const back = document.querySelector('[data-links-back]');
+      if (!back) return;
+
+      const home = new URL(back.href);
+      const params = new URLSearchParams(window.location.search);
+      ['preview_theme_id', 'pb'].forEach((key) => {
+        if (params.has(key)) home.searchParams.set(key, params.get(key));
+      });
+      back.href = home.href;
+
+      try {
+        const previous = new URL(document.referrer);
+        if (previous.origin !== window.location.origin || previous.pathname === window.location.pathname) return;
+        back.href = previous.href;
+      } catch {
+        return;
+      }
+
+      back.addEventListener('click', (event) => {
+        if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+        if (window.history.length > 1) {
+          event.preventDefault();
+          window.history.back();
+        }
+      });
+    })();
+  </script>
+
+  <!-- codex-growth-linktree-start -->
+  <script>
+    (function () {
+      var button = document.querySelector('[data-primary-moon12]');
+      if (!button) return;
+      var allowedKeys = {
+        utm_source: true,
+        utm_medium: true,
+        utm_campaign: true,
+        utm_term: true,
+        utm_content: true,
+        gclid: true,
+        fbclid: true,
+        ttclid: true,
+        msclkid: true
+      };
+      var params = new URLSearchParams(window.location.search || '');
+      var cleaned = new URLSearchParams();
+      params.forEach(function (value, key) {
+        if (Object.prototype.hasOwnProperty.call(allowedKeys, key)) cleaned.append(key, value);
+      });
+      var query = cleaned.toString();
+      if (query) button.href = button.href.split('?')[0] + '?' + query;
+    })();
+  </script>
+  <!-- codex-growth-linktree-end -->
+</body>
+</html>

@@ -1,0 +1,581 @@
+{% liquid
+  assign new_collection = section.settings.new_arrivals_collection
+  if new_collection == blank
+    assign new_collection = collections['mlp-new-merch-arrivals']
+  endif
+  if new_collection == blank or new_collection.products.size == 0
+    assign new_collection = collections['all-products']
+  endif
+
+  assign cards_collection = section.settings.cards_collection
+  if cards_collection == blank
+    assign cards_collection = collections['all-products']
+  endif
+
+  assign merch_collection = section.settings.merch_collection
+  if merch_collection == blank
+    assign merch_collection = collections['plushies-merch']
+  endif
+
+  assign new_product_ids = ''
+%}
+
+<section class="p10-home-lanes" data-p10-home-product-lanes>
+  <div class="p10-home-lanes__shell">
+    <header class="p10-home-lanes__intro">
+      <div>
+        <p class="p10-home-lanes__eyebrow">{{ section.settings.eyebrow | default: 'Current shelves' | escape }}</p>
+        <h2>{{ section.settings.heading | default: 'New cards. Character goods. No digging.' | escape }}</h2>
+      </div>
+      <p>{{ section.settings.text | default: 'Fresh releases and collector goods stay in distinct, easy-to-scan lanes.' | escape }}</p>
+    </header>
+
+    {% if new_collection != blank and new_collection.products.size > 0 %}
+      <section class="p10-home-lanes__lane p10-home-lanes__lane--new" data-home-lane="new" data-home-lane-reveal>
+        <div class="p10-home-lanes__head">
+          <div>
+            <span>New now</span>
+            <h3>{{ section.settings.new_heading | default: 'New Arrivals' | escape }}</h3>
+          </div>
+          <a href="{{ new_collection.url }}">{{ section.settings.new_link_label | default: 'View new arrivals' | escape }}</a>
+        </div>
+        <div class="p10-home-lanes__grid">
+          {% for product in new_collection.products limit: section.settings.new_limit %}
+            {% capture new_product_token %}|{{ product.id }}|{% endcapture %}
+            {% assign new_product_ids = new_product_ids | append: new_product_token %}
+            {% liquid
+              assign product_alt = product.featured_image.alt | default: product.title
+            %}
+            <article class="p10-home-lanes__product" data-p10-home-product>
+              <a href="{{ product.url }}">
+                <span class="p10-home-lanes__media">
+                  {% if product.featured_image != blank %}
+                    {{
+                      product.featured_image
+                      | image_url: width: 720
+                      | image_tag:
+                        loading: 'lazy',
+                        widths: '240, 360, 520, 720',
+                        sizes: '(min-width: 1100px) 25vw, (min-width: 760px) 33vw, 50vw',
+                        alt: product_alt
+                    }}
+                  {% else %}
+                    {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                  {% endif %}
+                </span>
+                <span class="p10-home-lanes__body">
+                  <span class="p10-home-lanes__meta">{{ product.vendor | default: 'pakracards' | escape }}</span>
+                  <strong>{{ product.title | escape }}</strong>
+                  <span class="p10-home-lanes__foot">
+                    <span>{% if product.price_varies %}From {% endif %}{{ product.price_min | money }}</span>
+                    <small>{% if product.available %}In stock{% else %}Sold out{% endif %}</small>
+                  </span>
+                </span>
+              </a>
+            </article>
+          {% endfor %}
+        </div>
+      </section>
+    {% endif %}
+
+    {% if cards_collection != blank and cards_collection.products.size > 0 %}
+      <section class="p10-home-lanes__lane p10-home-lanes__lane--cards" data-home-lane="cards" data-home-lane-reveal>
+        <div class="p10-home-lanes__head">
+          <div>
+            <span>Card shelf</span>
+            <h3>{{ section.settings.cards_heading | default: 'Latest Cards' | escape }}</h3>
+          </div>
+          <a href="{{ section.settings.cards_link | default: cards_collection.url }}">{{ section.settings.cards_link_label | default: 'Shop cards' | escape }}</a>
+        </div>
+        <div class="p10-home-lanes__grid">
+          {% assign cards_rendered = 0 %}
+          {% for product in cards_collection.products limit: section.settings.scan_limit %}
+            {% liquid
+              assign classifier = product.title | append: ' ' | append: product.type | append: ' ' | append: product.tags | downcase
+              assign is_card_product = false
+              if classifier contains 'trading card' or classifier contains 'sealed card' or classifier contains 'card box' or classifier contains 'booster' or classifier contains 'card pack' or classifier contains 'single card' or classifier contains 'kayou card' or classifier contains '卡牌'
+                assign is_card_product = true
+              endif
+            %}
+            {% if classifier contains 'card binder' %}
+              {% assign is_card_product = true %}
+            {% endif %}
+            {% capture card_product_token %}|{{ product.id }}|{% endcapture %}
+            {% unless new_product_ids contains card_product_token %}
+            {% if is_card_product %}
+              {% liquid
+                assign cards_rendered = cards_rendered | plus: 1
+                assign product_alt = product.featured_image.alt | default: product.title
+              %}
+              <article class="p10-home-lanes__product" data-p10-home-product>
+                <a href="{{ product.url }}">
+                  <span class="p10-home-lanes__media">
+                    {% if product.featured_image != blank %}
+                      {{
+                        product.featured_image
+                        | image_url: width: 720
+                        | image_tag:
+                          loading: 'lazy',
+                          widths: '240, 360, 520, 720',
+                          sizes: '(min-width: 1100px) 25vw, (min-width: 760px) 33vw, 50vw',
+                          alt: product_alt
+                      }}
+                    {% else %}
+                      {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                    {% endif %}
+                  </span>
+                  <span class="p10-home-lanes__body">
+                    <span class="p10-home-lanes__meta">Cards</span>
+                    <strong>{{ product.title | escape }}</strong>
+                    <span class="p10-home-lanes__foot">
+                      <span>{% if product.price_varies %}From {% endif %}{{ product.price_min | money }}</span>
+                      <small>{% if product.available %}In stock{% else %}Sold out{% endif %}</small>
+                    </span>
+                  </span>
+                </a>
+              </article>
+              {% if cards_rendered >= section.settings.cards_limit %}{% break %}{% endif %}
+            {% endif %}
+            {% endunless %}
+          {% endfor %}
+        </div>
+      </section>
+    {% endif %}
+
+    {% if merch_collection != blank and merch_collection.products.size > 0 %}
+      <section class="p10-home-lanes__lane p10-home-lanes__lane--merch" data-home-lane="merch" data-home-lane-reveal>
+        <div class="p10-home-lanes__head">
+          <div>
+            <span>Character shelf</span>
+            <h3>{{ section.settings.merch_heading | default: 'Character Goods' | escape }}</h3>
+          </div>
+          <a href="{{ section.settings.merch_link | default: '/pages/collectible-merch' }}">{{ section.settings.merch_link_label | default: 'Browse all merch' | escape }}</a>
+        </div>
+        <div class="p10-home-lanes__grid">
+          {% assign merch_rendered = 0 %}
+          {% for product in merch_collection.products limit: section.settings.scan_limit %}
+            {% liquid
+              assign classifier = product.title | append: ' ' | append: product.type | append: ' ' | append: product.tags | downcase
+              assign is_card_product = false
+              if classifier contains 'trading card' or classifier contains 'sealed card' or classifier contains 'card box' or classifier contains 'booster' or classifier contains 'card pack' or classifier contains 'single card' or classifier contains 'kayou card' or classifier contains '卡牌'
+                assign is_card_product = true
+              endif
+            %}
+            {% if classifier contains 'card binder' %}
+              {% assign is_card_product = true %}
+            {% endif %}
+            {% unless is_card_product %}
+              {% liquid
+                assign merch_rendered = merch_rendered | plus: 1
+                assign product_alt = product.featured_image.alt | default: product.title
+              %}
+              <article class="p10-home-lanes__product" data-p10-home-product>
+                <a href="{{ product.url }}">
+                  <span class="p10-home-lanes__media">
+                    {% if product.featured_image != blank %}
+                      {{
+                        product.featured_image
+                        | image_url: width: 720
+                        | image_tag:
+                          loading: 'lazy',
+                          widths: '240, 360, 520, 720',
+                          sizes: '(min-width: 1100px) 25vw, (min-width: 760px) 33vw, 50vw',
+                          alt: product_alt
+                      }}
+                    {% else %}
+                      {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                    {% endif %}
+                  </span>
+                  <span class="p10-home-lanes__body">
+                    <span class="p10-home-lanes__meta">Character goods</span>
+                    <strong>{{ product.title | escape }}</strong>
+                    <span class="p10-home-lanes__foot">
+                      <span>{% if product.price_varies %}From {% endif %}{{ product.price_min | money }}</span>
+                      {% if product.available == false and product.price_min == 1 %}
+                        <small class="p10-home-lanes__display-only">Display only</small>
+                      {% else %}
+                        <small>{% if product.available %}In stock{% else %}Sold out{% endif %}</small>
+                      {% endif %}
+                    </span>
+                  </span>
+                </a>
+              </article>
+              {% if merch_rendered >= section.settings.merch_limit %}{% break %}{% endif %}
+            {% endunless %}
+          {% endfor %}
+        </div>
+      </section>
+    {% endif %}
+  </div>
+</section>
+
+{% stylesheet %}
+  .p10-home-lanes {
+    --lanes-ink: #16171a;
+    --lanes-paper: #ffffff;
+    --lanes-soft: #f4f5f3;
+    --lanes-line: #d9dce0;
+    --lanes-muted: #656a72;
+    --lanes-card: #7db4ee;
+    --lanes-merch: #ef8fb2;
+    --lanes-new: #e2c24f;
+    padding: 0 0 68px;
+    background: var(--lanes-paper);
+    color: var(--lanes-ink);
+  }
+
+  .p10-home-lanes *,
+  .p10-home-lanes *::before,
+  .p10-home-lanes *::after {
+    box-sizing: border-box;
+  }
+
+  .p10-home-lanes__shell {
+    width: min(1320px, calc(100% - 32px));
+    margin: 0 auto;
+  }
+
+  .p10-home-lanes__intro {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(260px, 0.55fr);
+    align-items: end;
+    gap: 30px;
+    padding: 48px 0 24px;
+    border-top: 1px solid var(--lanes-line);
+    border-bottom: 1px solid var(--lanes-line);
+  }
+
+  .p10-home-lanes__eyebrow {
+    margin: 0 0 9px;
+    color: #d94c72;
+    font-size: 11px;
+    font-weight: 900;
+    line-height: 1.2;
+    letter-spacing: 0;
+    text-transform: uppercase;
+  }
+
+  .p10-home-lanes__intro h2 {
+    max-width: 760px;
+    margin: 0;
+    font-size: 36px;
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: 0;
+  }
+
+  .p10-home-lanes__intro > p {
+    margin: 0;
+    color: var(--lanes-muted);
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  .p10-home-lanes__lane {
+    --lane-accent: var(--lanes-new);
+    padding: 28px 0 34px;
+    border-bottom: 1px solid var(--lanes-line);
+  }
+
+  .p10-home-lanes__lane--cards {
+    --lane-accent: var(--lanes-card);
+  }
+
+  .p10-home-lanes__lane--merch {
+    --lane-accent: var(--lanes-merch);
+  }
+
+  .p10-home-lanes__head,
+  .p10-home-lanes__head > div,
+  .p10-home-lanes__foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .p10-home-lanes__head {
+    align-items: end;
+    margin-bottom: 15px;
+  }
+
+  .p10-home-lanes__head > div {
+    align-items: baseline;
+    justify-content: flex-start;
+  }
+
+  .p10-home-lanes__head > div > span {
+    color: color-mix(in srgb, var(--lane-accent) 76%, var(--lanes-ink));
+    font-size: 10px;
+    font-weight: 900;
+    text-transform: uppercase;
+  }
+
+  .p10-home-lanes__head h3 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: 0;
+  }
+
+  .p10-home-lanes__head > a {
+    color: var(--lanes-ink);
+    font-size: 11px;
+    font-weight: 850;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .p10-home-lanes__grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .p10-home-lanes__product {
+    min-width: 0;
+  }
+
+  .p10-home-lanes__product > a {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    height: 100%;
+    overflow: hidden;
+    border: 1px solid var(--lanes-line);
+    border-radius: 6px;
+    background: #ffffff;
+    color: var(--lanes-ink);
+    text-decoration: none;
+    transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+  }
+
+  .p10-home-lanes__product > a:hover {
+    border-color: color-mix(in srgb, var(--lane-accent) 65%, var(--lanes-line));
+    box-shadow: 0 16px 34px rgba(20, 22, 26, 0.1);
+    transform: translateY(-3px);
+  }
+
+  .p10-home-lanes__product > a:focus-visible {
+    outline: 3px solid #2e7fdb;
+    outline-offset: 3px;
+  }
+
+  .p10-home-lanes__media {
+    position: relative;
+    display: grid;
+    place-items: center;
+    aspect-ratio: 1;
+    min-width: 0;
+    overflow: hidden;
+    border-bottom: 1px solid var(--lanes-line);
+    background: color-mix(in srgb, var(--lane-accent) 8%, var(--lanes-soft));
+  }
+
+  .p10-home-lanes__media img,
+  .p10-home-lanes__media svg {
+    position: absolute;
+    inset: 14px;
+    display: block;
+    width: calc(100% - 28px);
+    height: calc(100% - 28px);
+    max-width: none;
+    max-height: none;
+    object-fit: contain;
+  }
+
+  .p10-home-lanes__body {
+    display: grid;
+    grid-template-rows: auto minmax(40px, auto) auto;
+    gap: 7px;
+    min-width: 0;
+    padding: 12px;
+  }
+
+  .p10-home-lanes__meta {
+    color: color-mix(in srgb, var(--lane-accent) 76%, var(--lanes-ink));
+    font-size: 9px;
+    font-weight: 900;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  .p10-home-lanes__body strong {
+    display: -webkit-box;
+    overflow: hidden;
+    color: var(--lanes-ink);
+    font-size: 13px;
+    font-weight: 850;
+    line-height: 1.4;
+    letter-spacing: 0;
+    overflow-wrap: anywhere;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .p10-home-lanes__foot > span {
+    font-size: 14px;
+    font-weight: 900;
+  }
+
+  .p10-home-lanes__foot small {
+    color: var(--lanes-muted);
+    font-size: 9px;
+    font-weight: 800;
+    text-align: right;
+    text-transform: uppercase;
+  }
+
+  .p10-home-lanes__display-only {
+    color: #b54767 !important;
+  }
+
+  @media (max-width: 1050px) {
+    .p10-home-lanes__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 760px) {
+    .p10-home-lanes {
+      padding-bottom: 42px;
+    }
+
+    .p10-home-lanes__shell {
+      width: min(100% - 18px, 1320px);
+    }
+
+    .p10-home-lanes__intro {
+      grid-template-columns: 1fr;
+      gap: 10px;
+      padding: 34px 0 18px;
+    }
+
+    .p10-home-lanes__intro h2 {
+      font-size: 28px;
+    }
+
+    .p10-home-lanes__lane {
+      padding: 22px 0 28px;
+    }
+
+    .p10-home-lanes__head {
+      align-items: flex-start;
+    }
+
+    .p10-home-lanes__head > div {
+      display: grid;
+      gap: 4px;
+    }
+
+    .p10-home-lanes__head h3 {
+      font-size: 21px;
+    }
+
+    .p10-home-lanes__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .p10-home-lanes__media img,
+    .p10-home-lanes__media svg {
+      inset: 9px;
+      width: calc(100% - 18px);
+      height: calc(100% - 18px);
+    }
+
+    .p10-home-lanes__body {
+      grid-template-rows: auto minmax(52px, auto) auto;
+      padding: 10px;
+    }
+
+    .p10-home-lanes__foot {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .p10-home-lanes__foot small {
+      text-align: left;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .p10-home-lanes *,
+    .p10-home-lanes *::before,
+    .p10-home-lanes *::after {
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+    }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  (() => {
+    const init = () => {
+      document.querySelectorAll('[data-p10-home-product-lanes]').forEach((root) => {
+        if (root.dataset.homeLanesReady === 'true') return;
+        root.dataset.homeLanesReady = 'true';
+
+        const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+        if (reduced || !window.gsap || !('IntersectionObserver' in window)) return;
+
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            observer.unobserve(entry.target);
+            const cards = Array.from(entry.target.querySelectorAll('[data-p10-home-product]')).slice(0, 12);
+            window.gsap.fromTo(cards, { autoAlpha: 0, y: 10 }, {
+              autoAlpha: 1,
+              y: 0,
+              duration: 0.3,
+              stagger: 0.025,
+              ease: 'power2.out',
+              clearProps: 'transform,opacity,visibility',
+            });
+          });
+        }, { rootMargin: '0px 0px -10% 0px', threshold: 0.08 });
+
+        root.querySelectorAll('[data-home-lane-reveal]').forEach((lane) => observer.observe(lane));
+      });
+    };
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init, { once: true });
+    } else {
+      init();
+    }
+  })();
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "P10 home product lanes",
+  "tag": "section",
+  "class": "section-p10-home-product-lanes",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Current shelves" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "New cards. Character goods. No digging." },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "Fresh releases and collector goods stay in distinct, easy-to-scan lanes." },
+    { "type": "collection", "id": "new_arrivals_collection", "label": "New arrivals collection" },
+    { "type": "text", "id": "new_heading", "label": "New arrivals heading", "default": "New Arrivals" },
+    { "type": "text", "id": "new_link_label", "label": "New arrivals link label", "default": "View new arrivals" },
+    { "type": "range", "id": "new_limit", "label": "New arrivals limit", "min": 4, "max": 12, "step": 1, "default": 8 },
+    { "type": "collection", "id": "cards_collection", "label": "Cards source collection" },
+    { "type": "text", "id": "cards_heading", "label": "Cards heading", "default": "Latest Cards" },
+    { "type": "url", "id": "cards_link", "label": "Cards link" },
+    { "type": "text", "id": "cards_link_label", "label": "Cards link label", "default": "Shop cards" },
+    { "type": "range", "id": "cards_limit", "label": "Cards limit", "min": 4, "max": 12, "step": 1, "default": 8 },
+    { "type": "collection", "id": "merch_collection", "label": "Character goods source collection" },
+    { "type": "text", "id": "merch_heading", "label": "Character goods heading", "default": "Character Goods" },
+    { "type": "url", "id": "merch_link", "label": "Character goods link" },
+    { "type": "text", "id": "merch_link_label", "label": "Character goods link label", "default": "Browse all merch" },
+    { "type": "range", "id": "merch_limit", "label": "Character goods limit", "min": 4, "max": 12, "step": 1, "default": 8 },
+    { "type": "range", "id": "scan_limit", "label": "Products to scan per lane", "min": 12, "max": 50, "step": 1, "default": 32 }
+  ],
+  "presets": [
+    { "name": "P10 home product lanes" }
+  ]
+}
+{% endschema %}

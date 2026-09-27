@@ -1,0 +1,189 @@
+{% liquid
+  assign show_single_card_sidebar = false
+  if collection.handle == 'single'
+    assign show_single_card_sidebar = true
+  endif
+
+  assign p10_rarity_rows = 'PR::PR|ZR::ZR|SC::SC|AR::AR|BP::BP|OR::OR|XR::XR|USR::USR|UGR::UGR|SCR::SCR|SGR::SGR|LSR::LSR|UR::UR|HR::HR|CR::CR|SSR::SSR|SPR::SPR|SP::SP|RR::RR|ER::ER|GR::GR|TGR::TGR|MTR::MTR|PTR::PTR|TR::TR|FR::FR|LTSR::LTSR|LTR::LTR|ST::ST|SR::SR|R::R|U::U|C::C|N::N|BASE::BASE|HN::HN|TK::TK|MT::MT|SF::SF|YD::YD|ZP::ZP|40TH::40TH' | split: '|'
+  assign p10_hidden_rows = '◇ZR::Hidden Diamond ZR|◇AR::Hidden Diamond AR|◇CR::Hidden Diamond CR|Hidden Diamond UR::Hidden Diamond UR|Hidden Diamond LSR::Hidden Diamond LSR|Hidden Diamond SP::Hidden Diamond SP|Hidden Diamond N::Hidden Diamond N' | split: '|'
+  assign p10_has_hidden_rarities = false
+  for p10_row in p10_hidden_rows
+    assign p10_parts = p10_row | split: '::'
+    assign p10_tag = p10_parts | first
+    if collection.all_tags contains p10_tag
+      assign p10_has_hidden_rarities = true
+    endif
+  endfor
+%}
+
+{% if show_single_card_sidebar %}
+  <style>
+    #CollectionSection-{{ section.id }} .p10-single-card-sidebar-nav {
+      background: #fff9fd;
+      border: 1px solid #f5d5e4;
+      border-radius: 6px;
+      color: #232323;
+      margin: 0 0 18px;
+      overflow: hidden;
+    }
+
+    #CollectionSection-{{ section.id }} .p10-single-card-sidebar-nav__head {
+      border-bottom: 1px solid #f5d5e4;
+      padding: 16px 16px 12px;
+    }
+
+    #CollectionSection-{{ section.id }} .p10-single-card-sidebar-nav__eyebrow {
+      color: #ed5d86;
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0;
+      line-height: 1.2;
+      margin: 0 0 5px;
+      text-transform: uppercase;
+    }
+
+    #CollectionSection-{{ section.id }} .p10-single-card-sidebar-nav__title {
+      font-family: var(--font-heading-family);
+      font-size: 18px;
+      font-weight: 800;
+      line-height: 1.2;
+      margin: 0;
+      text-transform: none;
+    }
+
+    #CollectionSection-{{ section.id }} .p10-single-card-sidebar-nav__body {
+      padding: 8px 14px 14px;
+    }
+
+    #CollectionSection-{{ section.id }} .p10-single-card-sidebar-nav__link,
+    #CollectionSection-{{ section.id }} .p10-single-card-sidebar-nav__summary {
+      align-items: center;
+      border-radius: 4px;
+      color: #232323;
+      display: flex;
+      font-size: 13px;
+      font-weight: 700;
+      justify-content: space-between;
+      line-height: 1.35;
+      min-height: 34px;
+      padding: 8px 10px;
+      text-decoration: none;
+    }
+
+    #CollectionSection-{{ section.id }} .p10-single-card-sidebar-nav__link:hover,
+    #CollectionSection-{{ section.id }} .p10-single-card-sidebar-nav__summary:hover,
+    #CollectionSection-{{ section.id }} .p10-single-card-sidebar-nav__link.is-active {
+      background: #fbe8f1;
+      color: #ed5d86;
+    }
+
+    #CollectionSection-{{ section.id }} .p10-single-card-sidebar-nav__summary {
+      cursor: pointer;
+      list-style: none;
+      margin-top: 6px;
+      text-transform: uppercase;
+    }
+
+    #CollectionSection-{{ section.id }} .p10-single-card-sidebar-nav__summary::-webkit-details-marker {
+      display: none;
+    }
+
+    #CollectionSection-{{ section.id }} .p10-single-card-sidebar-nav__summary::after {
+      color: #ed5d86;
+      content: "+";
+      font-size: 16px;
+      font-weight: 800;
+      margin-left: 10px;
+    }
+
+    #CollectionSection-{{ section.id }} details[open] > .p10-single-card-sidebar-nav__summary::after {
+      content: "-";
+    }
+
+    #CollectionSection-{{ section.id }} .p10-single-card-sidebar-nav__group {
+      border-top: 1px solid rgba(245, 213, 228, .75);
+      margin-top: 6px;
+      padding-top: 6px;
+    }
+
+    #CollectionSection-{{ section.id }} .p10-single-card-sidebar-nav__children {
+      padding: 0 0 4px 10px;
+    }
+
+    #CollectionSection-{{ section.id }} .p10-single-card-sidebar-nav__children .p10-single-card-sidebar-nav__link {
+      font-size: 12px;
+      font-weight: 700;
+      min-height: 30px;
+      padding-left: 10px;
+    }
+
+    #CollectionSection-{{ section.id }} .p10-single-card-sidebar-nav__note {
+      color: #777;
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      line-height: 1.35;
+      padding: 8px 10px 0;
+    }
+
+    @media (max-width: 1024px) {
+      #CollectionSection-{{ section.id }} .p10-single-card-sidebar-nav {
+        margin-top: 12px;
+      }
+    }
+  </style>
+
+  <nav class="p10-single-card-sidebar-nav" aria-label="KAYOU MLP single-card rarity navigation">
+    <div class="p10-single-card-sidebar-nav__head">
+      <span class="p10-single-card-sidebar-nav__eyebrow">Single Card Navigator</span>
+      <h2 class="p10-single-card-sidebar-nav__title">Find Single Cards</h2>
+    </div>
+
+    <div class="p10-single-card-sidebar-nav__body">
+      <a class="p10-single-card-sidebar-nav__link{% if current_tags == blank %} is-active{% endif %}" href="{{ routes.collections_url }}/single">
+        <span>All single cards</span>
+      </a>
+
+      <details class="p10-single-card-sidebar-nav__group" open>
+        <summary class="p10-single-card-sidebar-nav__summary">Rarity Grades</summary>
+        <div class="p10-single-card-sidebar-nav__children">
+          {% for p10_row in p10_rarity_rows %}
+            {% liquid
+              assign p10_parts = p10_row | split: '::'
+              assign p10_tag = p10_parts | first
+              assign p10_label = p10_parts | last
+            %}
+            {% if collection.all_tags contains p10_tag %}
+              <a class="p10-single-card-sidebar-nav__link{% if current_tags contains p10_tag %} is-active{% endif %}" href="{{ routes.collections_url }}/single/{{ p10_tag | handleize }}">
+                <span>{{ p10_label }}</span>
+              </a>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </details>
+
+      {% if p10_has_hidden_rarities %}
+        <details class="p10-single-card-sidebar-nav__group" open>
+          <summary class="p10-single-card-sidebar-nav__summary">Hidden Grades</summary>
+          <div class="p10-single-card-sidebar-nav__children">
+            {% for p10_row in p10_hidden_rows %}
+              {% liquid
+                assign p10_parts = p10_row | split: '::'
+                assign p10_tag = p10_parts | first
+                assign p10_label = p10_parts | last
+              %}
+              {% if collection.all_tags contains p10_tag %}
+                <a class="p10-single-card-sidebar-nav__link{% if current_tags contains p10_tag %} is-active{% endif %}" href="{{ routes.collections_url }}/single/{{ p10_tag | handleize }}">
+                  <span>{{ p10_label }}</span>
+                </a>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </details>
+      {% endif %}
+
+      <span class="p10-single-card-sidebar-nav__note">Only rarity grades used by current single-card listings appear here.</span>
+    </div>
+  </nav>
+{% endif %}

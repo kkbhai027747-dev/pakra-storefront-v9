@@ -1,0 +1,39 @@
+@supports (content-visibility: auto) {
+  body.template-index .p10-home-shopping-hub,
+  body.template-index .p10-new-arrivals,
+  body.template-index .prisma-category-guide,
+  body.template-index .tcg-full-bleed-banner,
+  body.template-index .p10-merch-paths,
+  body.template-index .p10-footer-bestsellers {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 720px;
+  }
+
+  body.template-index .p10-footer-bestsellers {
+    contain-intrinsic-size: auto 820px;
+  }
+}
+
+@media screen and (max-width: 749px) {
+  body.template-index .p10-home-shopping-hub,
+  body.template-index .p10-new-arrivals,
+  body.template-index .prisma-category-guide,
+  body.template-index .tcg-full-bleed-banner,
+  body.template-index .p10-merch-paths,
+  body.template-index .p10-footer-bestsellers {
+    overflow-anchor: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.template-index .p10-home-shopping-hub *,
+  body.template-index .p10-new-arrivals *,
+  body.template-index .prisma-category-guide *,
+  body.template-index .p10-merch-paths *,
+  body.template-index .p10-footer-bestsellers * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}

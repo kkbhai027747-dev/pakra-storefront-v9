@@ -1,0 +1,1692 @@
+{% liquid
+  assign section_id = 'p10-ip-arknights-' | append: section.id
+  assign arknights_collection = section.settings.source_collection
+  if arknights_collection == blank
+    assign arknights_collection = collections['arknights']
+  endif
+
+  assign collection_url = section.settings.primary_link
+  if collection_url == blank and arknights_collection != blank
+    assign collection_url = arknights_collection.url
+  endif
+  if collection_url == blank
+    assign collection_url = '/collections/arknights'
+  endif
+
+  assign card_box_url = section.settings.card_box_link
+  if card_box_url == blank
+    assign card_box_url = collection_url
+  endif
+%}
+
+<section id="{{ section_id }}" class="p10-ip-arknights" data-p10-ip-arknights>
+  <div class="p10-ip-arknights__anchor" id="{{ section.settings.anchor_id | default: 'arknights-collector-zone' | escape }}"></div>
+  <div class="p10-ip-arknights__void" aria-hidden="true">
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+  <div class="p10-ip-arknights__split-field" aria-hidden="true">
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+  <div class="p10-ip-arknights__motion-archive" aria-hidden="true">
+    <div class="p10-ip-arknights__motion-panel">
+      <img
+        src="{{ 'p10-arknights-pageantry-archive.jpg' | asset_url }}"
+        alt=""
+        width="910"
+        height="751"
+        loading="eager"
+        decoding="async"
+      >
+    </div>
+    <div class="p10-ip-arknights__motion-logo">
+      <img
+        src="{{ 'p10-ip-arknights.png' | asset_url }}"
+        alt=""
+        width="720"
+        height="720"
+        loading="eager"
+        decoding="async"
+      >
+    </div>
+    <span class="p10-ip-arknights__motion-slice"></span>
+    <span class="p10-ip-arknights__motion-slice"></span>
+    <span class="p10-ip-arknights__motion-slice"></span>
+    <span class="p10-ip-arknights__motion-signal"></span>
+    <span class="p10-ip-arknights__motion-signal"></span>
+    <span class="p10-ip-arknights__motion-signal"></span>
+  </div>
+
+  <div class="p10-ip-arknights__nav">
+    <a class="p10-ip-arknights__back" href="{{ section.settings.back_link | default: '/collections' }}">
+      <span aria-hidden="true">&larr;</span>
+      <span>{{ section.settings.back_label | default: 'Back' | escape }}</span>
+    </a>
+  </div>
+
+  <div class="p10-ip-arknights__layout">
+    <div class="p10-ip-arknights__hero">
+      <div class="p10-ip-arknights__cut-index" aria-hidden="true">
+        <span>01</span>
+        <span>02</span>
+        <span>03</span>
+      </div>
+      <div class="p10-ip-arknights__copy">
+        <p class="p10-ip-arknights__eyebrow" data-arknights-intro>{{ section.settings.eyebrow | default: 'Arknights collector zone' | escape }}</p>
+        <h1 class="p10-ip-arknights__heading" data-arknights-intro>{{ section.settings.heading | default: 'Arknights' | escape }}</h1>
+        <p class="p10-ip-arknights__subheading" data-arknights-intro>
+          {{ section.settings.subheading | default: 'A focused V4 destination for Arknights cards, character goods, and blind-box formats.' | escape }}
+        </p>
+        <div class="p10-ip-arknights__actions" data-arknights-intro>
+          <a class="p10-ip-arknights__primary-link" href="{{ collection_url }}">Shop Arknights</a>
+          <a class="p10-ip-arknights__secondary-link" href="{{ card_box_url }}">View card box</a>
+        </div>
+      </div>
+
+      <div class="p10-ip-arknights__map" aria-label="Arknights shopping paths" data-arknights-intro>
+        <div class="p10-ip-arknights__map-brand">
+          <span class="p10-ip-arknights__logo-frame">
+            <img
+              src="{{ 'p10-ip-arknights.png' | asset_url }}"
+              alt="Rhodes Island"
+              width="720"
+              height="720"
+              loading="eager"
+              decoding="async"
+            >
+          </span>
+          <span>
+            <b>Rhodes Island</b>
+            <small>Arknights route index</small>
+          </span>
+        </div>
+
+        <div class="p10-ip-arknights__path-grid">
+          <a href="{{ card_box_url }}">
+            <span>Cards</span>
+            <strong>Sealed box / badges</strong>
+          </a>
+          <a href="{{ collection_url }}">
+            <span>Character goods</span>
+            <strong>Plush and acrylic</strong>
+          </a>
+          <a href="{{ collection_url }}">
+            <span>Blind boxes</span>
+            <strong>Figures and charms</strong>
+          </a>
+        </div>
+
+        <div class="p10-ip-arknights__filter-bar" aria-label="Product categories">
+          <span>Card box</span>
+          <span>Plush</span>
+          <span>Blind box</span>
+          <span>Acrylic</span>
+          <span>Badge</span>
+          <span>Stationery</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="arknights-product-paths" class="p10-ip-arknights__products">
+    <div class="p10-ip-arknights__products-header" data-arknights-reveal>
+      <div>
+        <p class="p10-ip-arknights__eyebrow">Product paths</p>
+        <h2>Arknights arrivals</h2>
+      </div>
+      <a href="{{ collection_url }}">View all</a>
+    </div>
+
+    <div class="p10-ip-arknights__lane">
+      {% if arknights_collection != blank and arknights_collection.all_products_count > 0 %}
+        {% for product in arknights_collection.products limit: 8 %}
+          {% liquid
+            assign product_image_alt = product.title
+            if product.featured_image != blank and product.featured_image.alt != blank
+              assign product_image_alt = product.featured_image.alt
+            endif
+          %}
+          <article class="p10-ip-arknights__tile" data-arknights-tile>
+            <a class="p10-ip-arknights__tile-image" href="{{ product.url }}" aria-label="{{ product.title | escape }}">
+              {% if product.featured_image != blank %}
+                {{
+                  product.featured_image
+                  | image_url: width: 520
+                  | image_tag:
+                    loading: 'eager',
+                    decoding: 'async',
+                    widths: '220, 320, 420, 520',
+                    sizes: '(min-width: 990px) 18vw, 44vw',
+                    alt: product_image_alt,
+                    class: 'p10-ip-arknights__tile-img'
+                }}
+              {% else %}
+                <img
+                  src="{{ 'p10-ip-arknights.png' | asset_url }}"
+                  alt="{{ product.title | escape }}"
+                  width="520"
+                  height="520"
+                  loading="eager"
+                  decoding="async"
+                  class="p10-ip-arknights__tile-img"
+                >
+              {% endif %}
+            </a>
+            <div class="p10-ip-arknights__tile-body">
+              <h3>{{ product.title | escape }}</h3>
+              <div class="p10-ip-arknights__tile-meta">
+                <span>{{ product.variants.size }} option{% unless product.variants.size == 1 %}s{% endunless %}</span>
+                <span>{{ product.price_min | money }}</span>
+              </div>
+            </div>
+          </article>
+        {% endfor %}
+      {% else %}
+        <article class="p10-ip-arknights__empty">
+          <strong>Arknights collection connected</strong>
+          <span>Products will appear here when the collection is available in this theme preview.</span>
+        </article>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js" defer></script>
+<script>
+  (() => {
+    const rootId = {{ section_id | json }};
+
+    function initArknightsMotion(tries = 0) {
+      const root = document.getElementById(rootId);
+      if (!root || root.p10ArknightsMotionReady) return;
+      if (!window.gsap) {
+        if (tries < 22) window.setTimeout(() => initArknightsMotion(tries + 1), 90);
+        return;
+      }
+
+      const gsap = window.gsap;
+      const ScrollTrigger = window.ScrollTrigger;
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
+
+      const q = gsap.utils.selector(root);
+      const introItems = gsap.utils.toArray(q('[data-arknights-intro]'));
+      const routeItems = gsap.utils.toArray(q('.p10-ip-arknights__path-grid a, .p10-ip-arknights__filter-bar span'));
+      const revealItems = gsap.utils.toArray(q('[data-arknights-reveal]'));
+      const productTiles = gsap.utils.toArray(q('[data-arknights-tile]'));
+      const vectorLines = gsap.utils.toArray(q('.p10-ip-arknights__void span, .p10-ip-arknights__split-field span'));
+      const motionArchive = q('.p10-ip-arknights__motion-archive')[0];
+
+      root.p10ArknightsMotionReady = true;
+      root.setAttribute('data-p10-arknights-motion', 'ready');
+      gsap.set([...introItems, ...routeItems, ...revealItems, ...productTiles], { autoAlpha: 1 });
+      if (reduceMotion) return;
+
+      const introLift = gsap.utils.distribute({ base: 12, amount: 18, from: 'start' });
+      gsap.timeline({ defaults: { duration: 0.64, ease: 'power3.out' } })
+        .fromTo(introItems, { y: (index) => introLift(index), autoAlpha: 0 }, { y: 0, autoAlpha: 1, stagger: 0.055 })
+        .fromTo(routeItems, { y: 14, autoAlpha: 0 }, { y: 0, autoAlpha: 1, stagger: 0.035 }, '<0.18');
+
+      productTiles.slice(0, 10).forEach((tile) => {
+        const xTo = gsap.quickTo(tile, 'x', { duration: 0.22, ease: 'power2.out' });
+        const yTo = gsap.quickTo(tile, 'y', { duration: 0.22, ease: 'power2.out' });
+        tile.addEventListener('pointermove', (event) => {
+          if (window.innerWidth < 990) return;
+          const rect = tile.getBoundingClientRect();
+          const xRatio = (event.clientX - rect.left) / rect.width - 0.5;
+          const yRatio = (event.clientY - rect.top) / rect.height - 0.5;
+          xTo(gsap.utils.clamp(-6, 6, xRatio * 8));
+          yTo(gsap.utils.clamp(-5, 5, yRatio * 7));
+        });
+        tile.addEventListener('pointerleave', () => {
+          xTo(0);
+          yTo(0);
+        });
+      });
+
+      if (!ScrollTrigger) return;
+
+      ScrollTrigger.batch(revealItems, {
+        start: 'top 88%',
+        once: true,
+        onEnter: (batch) => {
+          gsap.fromTo(
+            batch,
+            { y: 18, autoAlpha: 0 },
+            { y: 0, autoAlpha: 1, duration: 0.5, stagger: 0.06, ease: 'power2.out', overwrite: true }
+          );
+        }
+      });
+
+      ScrollTrigger.batch(productTiles, {
+        start: 'top 90%',
+        once: true,
+        batchMax: () => (window.innerWidth < 760 ? 2 : 4),
+        onEnter: (batch) => {
+          gsap.fromTo(
+            batch,
+            { y: 24, autoAlpha: 0, scale: 0.985 },
+            { y: 0, autoAlpha: 1, scale: 1, duration: 0.52, stagger: 0.055, ease: 'power2.out', overwrite: true }
+          );
+        }
+      });
+
+      if (motionArchive) {
+        gsap.to(motionArchive, {
+          yPercent: () => (window.innerWidth < 990 ? -3 : -9),
+          ease: 'none',
+          scrollTrigger: {
+            trigger: root,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1
+          }
+        });
+      }
+
+      gsap.to(vectorLines.slice(0, 8), {
+        x: (index) => gsap.utils.clamp(-22, 22, (index % 2 === 0 ? 1 : -1) * (10 + index * 2)),
+        y: (index) => gsap.utils.clamp(-16, 16, ((index % 3) - 1) * 8),
+        ease: 'none',
+        scrollTrigger: {
+          trigger: root,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 1.2
+        }
+      });
+
+      window.setTimeout(() => ScrollTrigger.refresh(), 300);
+    }
+
+    function boot() {
+      initArknightsMotion();
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', boot, { once: true });
+    } else {
+      boot();
+    }
+    window.addEventListener('load', () => initArknightsMotion(), { once: true });
+  })();
+</script>
+
+{% stylesheet %}
+  .p10-ip-arknights {
+    --p10-void-ink: #111018;
+    --p10-void-muted: #666170;
+    --p10-void-blue: #4f63c6;
+    --p10-void-line: rgba(17,16,24,0.14);
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    padding: 36px 0 88px;
+    background:
+      linear-gradient(103deg, rgba(255,255,255,0.99) 0 38%, rgba(242,240,242,0.96) 38% 61%, rgba(255,255,255,0.99) 61%),
+      repeating-linear-gradient(90deg, rgba(17,16,24,0.035) 0 1px, transparent 1px 92px),
+      repeating-linear-gradient(0deg, rgba(17,16,24,0.025) 0 1px, transparent 1px 118px);
+    color: var(--p10-void-ink);
+  }
+
+  .p10-ip-arknights::before,
+  .p10-ip-arknights::after {
+    position: absolute;
+    z-index: 0;
+    content: "";
+    pointer-events: none;
+  }
+
+  .p10-ip-arknights::before {
+    top: 102px;
+    left: 6%;
+    width: min(64vw, 940px);
+    height: 470px;
+    border: 1px solid rgba(17,16,24,0.12);
+    border-right: 0;
+    clip-path: polygon(0 0, 91% 0, 100% 100%, 6% 100%);
+    transform: skewX(-11deg);
+    transform-origin: top left;
+  }
+
+  .p10-ip-arknights::after {
+    right: 8%;
+    bottom: 18%;
+    width: min(38vw, 520px);
+    height: 1px;
+    background: rgba(17,16,24,0.18);
+    transform: rotate(-18deg);
+  }
+
+  .p10-ip-arknights *,
+  .p10-ip-arknights *::before,
+  .p10-ip-arknights *::after {
+    box-sizing: border-box;
+  }
+
+  .p10-ip-arknights__anchor {
+    position: absolute;
+    top: 0;
+  }
+
+  .p10-ip-arknights__void {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .p10-ip-arknights__void span {
+    position: absolute;
+    display: block;
+    opacity: 0.72;
+  }
+
+  .p10-ip-arknights__void span:nth-child(1) {
+    top: 178px;
+    left: 52%;
+    width: 34vw;
+    height: 1px;
+    background: rgba(17,16,24,0.24);
+    transform: rotate(-28deg);
+  }
+
+  .p10-ip-arknights__void span:nth-child(2) {
+    top: 332px;
+    right: 11%;
+    width: 168px;
+    height: 168px;
+    border: 1px solid rgba(17,16,24,0.11);
+    border-left: 0;
+  }
+
+  .p10-ip-arknights__void span:nth-child(3) {
+    top: 540px;
+    left: 17%;
+    width: 30vw;
+    height: 1px;
+    background: rgba(79,99,198,0.3);
+    transform: rotate(11deg);
+  }
+
+  .p10-ip-arknights__void span:nth-child(4) {
+    right: 28%;
+    bottom: 340px;
+    width: 1px;
+    height: 210px;
+    background: rgba(17,16,24,0.16);
+    transform: rotate(17deg);
+  }
+
+  .p10-ip-arknights__void span:nth-child(5) {
+    top: 118px;
+    right: 23%;
+    width: 62px;
+    height: 7px;
+    border-top: 1px solid rgba(17,16,24,0.4);
+    border-bottom: 1px solid rgba(17,16,24,0.22);
+  }
+
+  .p10-ip-arknights__void span:nth-child(6) {
+    left: 7%;
+    bottom: 620px;
+    width: 130px;
+    height: 86px;
+    border: 1px dashed rgba(17,16,24,0.17);
+    border-right: 0;
+  }
+
+  .p10-ip-arknights__split-field {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .p10-ip-arknights__split-field span {
+    position: absolute;
+    display: block;
+    border: 1px solid rgba(17,16,24,0.14);
+    background: rgba(255,255,255,0.32);
+  }
+
+  .p10-ip-arknights__split-field span:nth-child(1) {
+    top: 132px;
+    left: 7%;
+    width: min(47vw, 680px);
+    height: 500px;
+    border-right: 0;
+    clip-path: polygon(0 0, 87% 0, 100% 100%, 0 100%);
+    transform: skewX(-13deg) translateX(-52px);
+  }
+
+  .p10-ip-arknights__split-field span:nth-child(2) {
+    top: 206px;
+    right: 5%;
+    width: min(38vw, 560px);
+    height: 390px;
+    border-left: 3px solid rgba(17,16,24,0.82);
+    clip-path: polygon(11% 0, 100% 0, 100% 100%, 0 100%);
+    transform: translate(58px, -30px);
+  }
+
+  .p10-ip-arknights__split-field span:nth-child(3) {
+    top: 360px;
+    left: 33%;
+    width: min(50vw, 760px);
+    height: 2px;
+    border: 0;
+    background: rgba(79,99,198,0.46);
+    transform: rotate(13deg);
+  }
+
+  .p10-ip-arknights__split-field span:nth-child(4) {
+    top: 96px;
+    left: 58%;
+    width: 2px;
+    height: 570px;
+    border: 0;
+    background: rgba(17,16,24,0.26);
+    transform: rotate(15deg);
+  }
+
+  .p10-ip-arknights__motion-archive {
+    position: absolute;
+    inset: 74px 0 auto;
+    z-index: 0;
+    height: 610px;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .p10-ip-arknights__motion-panel {
+    position: absolute;
+    top: 42px;
+    right: min(8vw, 110px);
+    width: min(52vw, 720px);
+    height: 420px;
+    opacity: 0.18;
+    clip-path: polygon(16% 0, 100% 0, 86% 100%, 0 100%);
+    filter: grayscale(1) contrast(1.08);
+    mix-blend-mode: multiply;
+    transform: rotate(-2deg) translate3d(0,0,0);
+    transform-origin: center;
+    animation: p10-archive-breathe 16s ease-in-out infinite alternate;
+    will-change: transform, opacity;
+  }
+
+  .p10-ip-arknights__motion-panel::before,
+  .p10-ip-arknights__motion-panel::after {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    content: "";
+  }
+
+  .p10-ip-arknights__motion-panel::before {
+    background:
+      repeating-linear-gradient(90deg, rgba(17,16,24,0.16) 0 1px, transparent 1px 34px),
+      repeating-linear-gradient(0deg, rgba(255,255,255,0.2) 0 1px, transparent 1px 17px);
+    opacity: 0.34;
+    animation: p10-scan-drift 9s linear infinite;
+  }
+
+  .p10-ip-arknights__motion-panel::after {
+    background:
+      linear-gradient(105deg, transparent 0 42%, rgba(255,255,255,0.72) 42% 46%, transparent 46% 100%),
+      linear-gradient(180deg, rgba(255,255,255,0.4), rgba(255,255,255,0.05));
+    opacity: 0.58;
+  }
+
+  .p10-ip-arknights__motion-panel img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.05);
+    animation: p10-image-drift 18s ease-in-out infinite alternate;
+    will-change: transform;
+  }
+
+  .p10-ip-arknights__motion-logo {
+    position: absolute;
+    top: 248px;
+    left: 46%;
+    width: 118px;
+    aspect-ratio: 1;
+    opacity: 0.13;
+    filter: grayscale(1) contrast(1.6);
+    transform: rotate(12deg);
+    animation: p10-logo-pulse 11s ease-in-out infinite;
+    will-change: transform, opacity;
+  }
+
+  .p10-ip-arknights__motion-logo img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .p10-ip-arknights__motion-slice,
+  .p10-ip-arknights__motion-signal {
+    position: absolute;
+    display: block;
+    pointer-events: none;
+    will-change: translate, opacity;
+  }
+
+  .p10-ip-arknights__motion-slice:nth-of-type(1) {
+    top: 108px;
+    right: 23%;
+    width: 360px;
+    height: 18px;
+    background: rgba(17,16,24,0.8);
+    transform: rotate(-13deg);
+    animation: p10-slice-drift-a 10s ease-in-out infinite alternate;
+  }
+
+  .p10-ip-arknights__motion-slice:nth-of-type(2) {
+    top: 246px;
+    right: 8%;
+    width: 290px;
+    height: 2px;
+    background: rgba(79,99,198,0.52);
+    transform: rotate(8deg);
+    animation: p10-slice-drift-b 13s ease-in-out infinite alternate;
+  }
+
+  .p10-ip-arknights__motion-slice:nth-of-type(3) {
+    top: 430px;
+    right: 35%;
+    width: 210px;
+    height: 10px;
+    background: rgba(17,16,24,0.18);
+    transform: rotate(-20deg);
+    animation: p10-slice-drift-c 12s ease-in-out infinite alternate;
+  }
+
+  .p10-ip-arknights__motion-signal:nth-of-type(4) {
+    top: 168px;
+    right: 14%;
+    width: 1px;
+    height: 310px;
+    background: rgba(17,16,24,0.26);
+    transform: rotate(9deg);
+    animation: p10-signal-breathe 8s ease-in-out infinite alternate;
+  }
+
+  .p10-ip-arknights__motion-signal:nth-of-type(5) {
+    top: 68px;
+    left: 16%;
+    width: min(54vw, 770px);
+    height: 1px;
+    background: rgba(17,16,24,0.24);
+    transform: rotate(-7deg);
+    animation: p10-signal-slide 15s ease-in-out infinite alternate;
+  }
+
+  .p10-ip-arknights__motion-signal:nth-of-type(6) {
+    right: 11%;
+    bottom: 46px;
+    width: 150px;
+    height: 86px;
+    border: 1px solid rgba(17,16,24,0.12);
+    border-left: 0;
+    animation: p10-signal-box 12s ease-in-out infinite alternate;
+  }
+
+  .p10-ip-arknights__void span,
+  .p10-ip-arknights__split-field span,
+  .p10-ip-arknights__hero::before,
+  .p10-ip-arknights__hero::after,
+  .p10-ip-arknights__cut-index {
+    will-change: translate, opacity;
+  }
+
+  .p10-ip-arknights__void span:nth-child(1),
+  .p10-ip-arknights__split-field span:nth-child(3) {
+    animation: p10-line-float-a 12s ease-in-out infinite alternate;
+  }
+
+  .p10-ip-arknights__void span:nth-child(3),
+  .p10-ip-arknights__split-field span:nth-child(4) {
+    animation: p10-line-float-b 16s ease-in-out infinite alternate;
+  }
+
+  .p10-ip-arknights__void span:nth-child(4),
+  .p10-ip-arknights__split-field span:nth-child(1) {
+    animation: p10-line-float-c 14s ease-in-out infinite alternate;
+  }
+
+  .p10-ip-arknights__void span:nth-child(2),
+  .p10-ip-arknights__void span:nth-child(5),
+  .p10-ip-arknights__void span:nth-child(6),
+  .p10-ip-arknights__split-field span:nth-child(2) {
+    animation: p10-line-pulse 10s ease-in-out infinite alternate;
+  }
+
+  .p10-ip-arknights__cut-index {
+    animation: p10-index-tick 7s steps(2, end) infinite alternate;
+  }
+
+  @keyframes p10-archive-breathe {
+    0% {
+      opacity: 0.14;
+      transform: rotate(-2deg) translate3d(-12px, 2px, 0) scale(0.995);
+    }
+    100% {
+      opacity: 0.22;
+      transform: rotate(-1.2deg) translate3d(12px, -8px, 0) scale(1.015);
+    }
+  }
+
+  @keyframes p10-image-drift {
+    0% { transform: scale(1.05) translate3d(-12px, 0, 0); }
+    100% { transform: scale(1.08) translate3d(14px, -8px, 0); }
+  }
+
+  @keyframes p10-scan-drift {
+    0% { background-position: 0 0, 0 0; }
+    100% { background-position: 68px 0, 0 34px; }
+  }
+
+  @keyframes p10-logo-pulse {
+    0%, 100% {
+      opacity: 0.1;
+      transform: rotate(12deg) scale(0.98);
+    }
+    50% {
+      opacity: 0.18;
+      transform: rotate(12deg) scale(1.04);
+    }
+  }
+
+  @keyframes p10-slice-drift-a {
+    0% { translate: -10px 0; opacity: 0.7; }
+    100% { translate: 12px -7px; opacity: 0.9; }
+  }
+
+  @keyframes p10-slice-drift-b {
+    0% { translate: 8px 6px; opacity: 0.46; }
+    100% { translate: -14px -5px; opacity: 0.72; }
+  }
+
+  @keyframes p10-slice-drift-c {
+    0% { translate: -8px -4px; opacity: 0.34; }
+    100% { translate: 14px 8px; opacity: 0.62; }
+  }
+
+  @keyframes p10-signal-breathe {
+    0% { translate: 0 -10px; opacity: 0.22; }
+    100% { translate: 10px 12px; opacity: 0.42; }
+  }
+
+  @keyframes p10-signal-slide {
+    0% { translate: -18px 0; opacity: 0.22; }
+    100% { translate: 22px -6px; opacity: 0.34; }
+  }
+
+  @keyframes p10-signal-box {
+    0% { translate: 0 8px; opacity: 0.16; }
+    100% { translate: -14px -8px; opacity: 0.28; }
+  }
+
+  @keyframes p10-line-float-a {
+    0% { translate: -7px 2px; opacity: 0.48; }
+    100% { translate: 9px -6px; opacity: 0.78; }
+  }
+
+  @keyframes p10-line-float-b {
+    0% { translate: 8px -4px; opacity: 0.42; }
+    100% { translate: -12px 7px; opacity: 0.72; }
+  }
+
+  @keyframes p10-line-float-c {
+    0% { translate: 0 8px; opacity: 0.28; }
+    100% { translate: 10px -8px; opacity: 0.52; }
+  }
+
+  @keyframes p10-line-pulse {
+    0% { opacity: 0.28; }
+    100% { opacity: 0.62; }
+  }
+
+  @keyframes p10-index-tick {
+    0% { translate: 0 0; opacity: 0.68; }
+    100% { translate: 6px -2px; opacity: 0.9; }
+  }
+
+  @keyframes p10-mobile-archive-breathe {
+    0% {
+      opacity: 0.035;
+      transform: rotate(-2deg) translate3d(-8px, 2px, 0) scale(0.995);
+    }
+    100% {
+      opacity: 0.065;
+      transform: rotate(-1deg) translate3d(8px, -5px, 0) scale(1.012);
+    }
+  }
+
+  @keyframes p10-mobile-logo-pulse {
+    0%, 100% {
+      opacity: 0.035;
+      transform: rotate(10deg) scale(0.98);
+    }
+    50% {
+      opacity: 0.07;
+      transform: rotate(13deg) scale(1.02);
+    }
+  }
+
+  @keyframes p10-mobile-line-breathe {
+    0% { translate: -4px 1px; opacity: 0.07; }
+    100% { translate: 7px -4px; opacity: 0.14; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .p10-ip-arknights__motion-archive *,
+    .p10-ip-arknights__void span,
+    .p10-ip-arknights__split-field span,
+    .p10-ip-arknights__cut-index {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+
+  .p10-ip-arknights__nav,
+  .p10-ip-arknights__layout,
+  .p10-ip-arknights__products {
+    position: relative;
+    z-index: 1;
+    width: min(100% - 48px, 1280px);
+    margin: 0 auto;
+  }
+
+  .p10-ip-arknights__nav {
+    padding: 4px 0 92px;
+  }
+
+  .p10-ip-arknights__back {
+    display: inline-flex;
+    min-height: 36px;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 16px;
+    border: 1px solid rgba(17,16,24,0.14);
+    border-radius: 0;
+    background: rgba(255,255,255,0.72);
+    color: var(--p10-void-ink);
+    font-size: 11px;
+    font-weight: 900;
+    line-height: 1;
+    text-decoration: none;
+    text-transform: uppercase;
+    box-shadow: 14px 14px 0 rgba(17,16,24,0.04);
+    transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
+    will-change: transform;
+  }
+
+  .p10-ip-arknights__back:hover,
+  .p10-ip-arknights__back:focus-visible {
+    border-color: rgba(17,16,24,0.36);
+    background: rgba(255,255,255,0.92);
+    box-shadow: 10px 10px 0 rgba(17,16,24,0.08);
+    transform: translate3d(2px, 2px, 0);
+  }
+
+  .p10-ip-arknights__back:focus-visible,
+  .p10-ip-arknights__primary-link:focus-visible,
+  .p10-ip-arknights__secondary-link:focus-visible,
+  .p10-ip-arknights__products-header a:focus-visible,
+  .p10-ip-arknights__path-grid a:focus-visible,
+  .p10-ip-arknights__tile a:focus-visible {
+    outline: 2px solid var(--p10-void-blue);
+    outline-offset: 3px;
+  }
+
+  .p10-ip-arknights__layout {
+    position: relative;
+    min-height: 470px;
+  }
+
+  .p10-ip-arknights__hero {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(300px, 0.95fr) minmax(360px, 0.78fr);
+    gap: clamp(48px, 8vw, 128px);
+    align-items: center;
+    max-width: 1110px;
+    min-height: 470px;
+    margin: 0 auto;
+  }
+
+  .p10-ip-arknights__hero::before,
+  .p10-ip-arknights__hero::after {
+    position: absolute;
+    content: "";
+    pointer-events: none;
+  }
+
+  .p10-ip-arknights__hero::before {
+    top: -54px;
+    left: 5%;
+    width: 94%;
+    height: 2px;
+    background: rgba(17,16,24,0.34);
+    transform: rotate(-9deg);
+  }
+
+  .p10-ip-arknights__hero::after {
+    top: 30px;
+    right: 44%;
+    width: 96px;
+    height: 96px;
+    border-top: 12px solid rgba(17,16,24,0.88);
+    border-left: 1px solid rgba(17,16,24,0.22);
+    background: transparent;
+    transform: rotate(15deg);
+  }
+
+  .p10-ip-arknights__cut-index {
+    position: absolute;
+    top: 26px;
+    left: 51%;
+    z-index: 2;
+    display: grid;
+    gap: 16px;
+    padding-left: 12px;
+    border-left: 2px solid rgba(17,16,24,0.82);
+    transform: translateX(-34px) rotate(4deg);
+  }
+
+  .p10-ip-arknights__cut-index span {
+    display: block;
+    width: 42px;
+    height: 18px;
+    border-top: 1px solid rgba(17,16,24,0.34);
+    color: rgba(17,16,24,0.6);
+    font-size: 9px;
+    font-weight: 900;
+    line-height: 18px;
+    text-align: right;
+  }
+
+  .p10-ip-arknights__copy {
+    position: relative;
+    max-width: 520px;
+    padding: 18px 0 18px 20px;
+    border-left: 8px solid rgba(17,16,24,0.88);
+    transform: translate(-34px, 18px);
+  }
+
+  .p10-ip-arknights__copy::before {
+    position: absolute;
+    top: -46px;
+    left: -48px;
+    z-index: -1;
+    width: 122%;
+    height: 136%;
+    border: 1px solid rgba(17,16,24,0.14);
+    border-right: 0;
+    content: "";
+    clip-path: polygon(0 0, 92% 0, 100% 100%, 0 100%);
+    transform: translate(-24px, 12px) skewX(-7deg);
+  }
+
+  .p10-ip-arknights__copy::after {
+    position: absolute;
+    right: -62px;
+    bottom: 14px;
+    width: 116px;
+    height: 11px;
+    background: rgba(17,16,24,0.86);
+    content: "";
+    pointer-events: none;
+    transform: rotate(-21deg);
+  }
+
+  .p10-ip-arknights__copy > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .p10-ip-arknights__eyebrow {
+    margin: 0 0 14px;
+    color: var(--p10-void-blue);
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 0.09em;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  .p10-ip-arknights__heading {
+    max-width: 620px;
+    margin: 0;
+    color: var(--p10-void-ink);
+    font-size: clamp(54px, 6vw, 92px);
+    font-weight: 950;
+    letter-spacing: 0;
+    line-height: 0.94;
+  }
+
+  .p10-ip-arknights__heading::first-line {
+    letter-spacing: 0.015em;
+  }
+
+  .p10-ip-arknights__subheading {
+    max-width: 560px;
+    margin: 22px 0 0;
+    color: var(--p10-void-muted);
+    font-size: 15px;
+    font-weight: 650;
+    line-height: 1.58;
+  }
+
+  .p10-ip-arknights__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 30px;
+  }
+
+  .p10-ip-arknights__primary-link,
+  .p10-ip-arknights__secondary-link,
+  .p10-ip-arknights__products-header a {
+    display: inline-flex;
+    min-height: 42px;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 18px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 900;
+    line-height: 1;
+    text-decoration: none;
+    transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease, background 160ms ease, color 160ms ease;
+    will-change: transform;
+  }
+
+  .p10-ip-arknights__primary-link {
+    background: var(--p10-void-ink);
+    color: #ffffff;
+  }
+
+  .p10-ip-arknights__secondary-link {
+    border: 1px solid rgba(17,16,24,0.16);
+    background: rgba(255,255,255,0.58);
+    color: var(--p10-void-ink);
+  }
+
+  .p10-ip-arknights__primary-link:hover,
+  .p10-ip-arknights__primary-link:focus-visible,
+  .p10-ip-arknights__secondary-link:hover,
+  .p10-ip-arknights__secondary-link:focus-visible,
+  .p10-ip-arknights__products-header a:hover,
+  .p10-ip-arknights__products-header a:focus-visible {
+    transform: translate3d(0, -2px, 0);
+    box-shadow: 8px 8px 0 rgba(17,16,24,0.11);
+  }
+
+  .p10-ip-arknights__secondary-link:hover,
+  .p10-ip-arknights__secondary-link:focus-visible {
+    border-color: rgba(17,16,24,0.42);
+    background: rgba(255,255,255,0.9);
+  }
+
+  .p10-ip-arknights__map {
+    position: relative;
+    overflow: hidden;
+    padding: 24px;
+    border: 1px solid rgba(17,16,24,0.18);
+    border-radius: 0;
+    background: #ffffff;
+    box-shadow: 30px 30px 0 rgba(17,16,24,0.055);
+    clip-path: polygon(0 0, 100% 0, 94% 100%, 0 100%);
+    transform: translate(52px, -26px) rotate(-0.8deg);
+  }
+
+  .p10-ip-arknights__map::before {
+    position: absolute;
+    inset: -42px 58px 42px -54px;
+    z-index: -1;
+    border: 1px solid rgba(17,16,24,0.18);
+    content: "";
+    transform: translate(-18px, 24px) skewX(-7deg);
+  }
+
+  .p10-ip-arknights__map::after {
+    display: none;
+    content: none;
+  }
+
+  .p10-ip-arknights__map > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .p10-ip-arknights__map-brand {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-bottom: 22px;
+    transform: translateX(-8px);
+  }
+
+  .p10-ip-arknights__logo-frame {
+    display: flex;
+    width: 120px;
+    aspect-ratio: 1;
+    overflow: hidden;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    border-radius: 0;
+    background: #050506;
+  }
+
+  .p10-ip-arknights__logo-frame img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .p10-ip-arknights__map-brand b {
+    display: block;
+    color: var(--p10-void-ink);
+    font-size: 24px;
+    font-weight: 950;
+    letter-spacing: 0;
+    line-height: 1;
+  }
+
+  .p10-ip-arknights__map-brand small {
+    display: block;
+    margin-top: 7px;
+    color: var(--p10-void-muted);
+    font-size: 12px;
+    font-weight: 850;
+    line-height: 1.2;
+  }
+
+  .p10-ip-arknights__path-grid {
+    display: grid;
+    grid-template-columns: 0.92fr 1.08fr 0.94fr;
+    gap: 14px;
+    padding: 20px 0;
+    border-top: 1px solid rgba(17,16,24,0.12);
+    border-bottom: 1px solid rgba(17,16,24,0.12);
+  }
+
+  .p10-ip-arknights__path-grid a:nth-child(1) {
+    transform: none;
+  }
+
+  .p10-ip-arknights__path-grid a:nth-child(2) {
+    transform: none;
+  }
+
+  .p10-ip-arknights__path-grid a:nth-child(3) {
+    transform: none;
+  }
+
+  .p10-ip-arknights__path-grid a {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    min-height: 90px;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 14px;
+    border: 1px solid rgba(17,16,24,0.13);
+    border-radius: 0;
+    background: rgba(255,255,255,0.94);
+    color: var(--p10-void-ink);
+    text-decoration: none;
+    transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease, background 160ms ease;
+    will-change: transform;
+  }
+
+  .p10-ip-arknights__path-grid a:hover,
+  .p10-ip-arknights__path-grid a:focus-visible {
+    z-index: 3;
+    border-color: rgba(17,16,24,0.34);
+    background: #ffffff;
+    box-shadow: 8px 8px 0 rgba(17,16,24,0.07);
+    transform: translate3d(0, -3px, 0);
+  }
+
+  .p10-ip-arknights__path-grid a::after {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 18px;
+    height: 1px;
+    background: rgba(79,99,198,0.5);
+    content: "";
+    pointer-events: none;
+  }
+
+  .p10-ip-arknights__path-grid span {
+    color: var(--p10-void-blue);
+    font-size: 10px;
+    font-weight: 900;
+    text-transform: uppercase;
+  }
+
+  .p10-ip-arknights__path-grid strong {
+    font-size: 14px;
+    font-weight: 900;
+    line-height: 1.2;
+  }
+
+  .p10-ip-arknights__filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 18px;
+  }
+
+  .p10-ip-arknights__filter-bar span {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    min-height: 34px;
+    align-items: center;
+    padding: 9px 14px;
+    border: 1px solid rgba(17,16,24,0.16);
+    border-radius: 0;
+    background: #ffffff;
+    color: var(--p10-void-ink);
+    font-size: 11px;
+    font-weight: 900;
+    line-height: 1;
+    box-shadow: 0 0 0 rgba(17,16,24,0);
+  }
+
+  .p10-ip-arknights__products {
+    margin-top: 96px;
+  }
+
+  .p10-ip-arknights__products-header {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 18px;
+  }
+
+  .p10-ip-arknights__products-header::before {
+    position: absolute;
+    top: -28px;
+    left: -32px;
+    width: min(46vw, 560px);
+    height: 1px;
+    background: rgba(17,16,24,0.24);
+    content: "";
+    transform: rotate(-8deg);
+  }
+
+  .p10-ip-arknights__products-header h2 {
+    margin: 0;
+    color: var(--p10-void-ink);
+    font-size: clamp(28px, 3vw, 42px);
+    font-weight: 950;
+    letter-spacing: 0;
+    line-height: 1;
+  }
+
+  .p10-ip-arknights__products-header a {
+    border-radius: 0;
+    background: var(--p10-void-ink);
+    color: #ffffff;
+  }
+
+  .p10-ip-arknights__lane {
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 14px !important;
+  }
+
+  .p10-ip-arknights__tile,
+  .p10-ip-arknights__empty {
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    flex: none !important;
+    overflow: hidden;
+    border: 1px solid rgba(17,16,24,0.1);
+    border-radius: 0;
+    background: rgba(255,255,255,0.76);
+    box-shadow: 14px 16px 0 rgba(17,16,24,0.035);
+    transition: border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
+    will-change: transform;
+  }
+
+  .p10-ip-arknights__tile:hover,
+  .p10-ip-arknights__tile:focus-within {
+    border-color: rgba(17,16,24,0.26);
+    background: rgba(255,255,255,0.92);
+    box-shadow: 10px 12px 0 rgba(17,16,24,0.08);
+  }
+
+  .p10-ip-arknights__tile:nth-child(4n + 2) {
+    transform: none;
+  }
+
+  .p10-ip-arknights__tile:nth-child(4n + 3) {
+    transform: none;
+  }
+
+  .p10-ip-arknights__tile:nth-child(4n + 4) {
+    transform: none;
+  }
+
+  .p10-ip-arknights__tile-image {
+    display: flex;
+    aspect-ratio: 1 / 0.72;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+    background: rgba(255,255,255,0.72);
+  }
+
+  .p10-ip-arknights__tile-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .p10-ip-arknights__tile-body {
+    display: flex;
+    min-height: 118px;
+    flex-direction: column;
+    padding: 14px;
+  }
+
+  .p10-ip-arknights__tile-body h3 {
+    display: -webkit-box;
+    min-height: 54px;
+    margin: 0;
+    overflow: hidden;
+    color: var(--p10-void-ink);
+    font-size: 14px;
+    font-weight: 900;
+    line-height: 1.28;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+
+  .p10-ip-arknights__tile-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: auto;
+    padding-top: 12px;
+    color: var(--p10-void-blue);
+    font-size: 11px;
+    font-weight: 900;
+    line-height: 1.1;
+  }
+
+  .p10-ip-arknights__empty {
+    grid-column: 1 / -1;
+    padding: 22px;
+  }
+
+  .p10-ip-arknights__empty strong,
+  .p10-ip-arknights__empty span {
+    display: block;
+  }
+
+  .p10-ip-arknights__empty strong {
+    color: var(--p10-void-ink);
+    font-size: 18px;
+    font-weight: 950;
+  }
+
+  .p10-ip-arknights__empty span {
+    margin-top: 8px;
+    color: var(--p10-void-muted);
+    font-size: 13px;
+    font-weight: 750;
+  }
+
+  @media (max-width: 1320px) {
+    .p10-ip-arknights__layout {
+      min-height: 430px;
+    }
+  }
+
+  @media (max-width: 989px) {
+    .p10-ip-arknights {
+      padding: 24px 0 60px;
+    }
+
+    .p10-ip-arknights__nav,
+    .p10-ip-arknights__layout,
+    .p10-ip-arknights__products {
+      width: min(100% - 32px, 900px);
+    }
+
+    .p10-ip-arknights__nav {
+      padding-bottom: 44px;
+    }
+
+    .p10-ip-arknights__motion-archive {
+      inset: 18px 0 auto;
+      height: 1040px;
+    }
+
+    .p10-ip-arknights__motion-panel {
+      top: 330px;
+      right: -320px;
+      width: 620px;
+      height: 520px;
+      opacity: 0.055;
+      clip-path: polygon(28% 0, 100% 0, 84% 100%, 0 100%);
+      animation-name: p10-mobile-archive-breathe;
+    }
+
+    .p10-ip-arknights__motion-logo {
+      top: 472px;
+      left: 68%;
+      width: 92px;
+      opacity: 0.045;
+      animation-name: p10-mobile-logo-pulse;
+    }
+
+    .p10-ip-arknights__motion-slice,
+    .p10-ip-arknights__motion-signal {
+      animation-name: p10-mobile-line-breathe;
+    }
+
+    .p10-ip-arknights__motion-slice:nth-of-type(1) {
+      top: 150px;
+      right: -126px;
+      width: 180px;
+      height: 5px;
+      opacity: 0.12;
+    }
+
+    .p10-ip-arknights__motion-slice:nth-of-type(2) {
+      top: 430px;
+      right: -96px;
+      width: 190px;
+      opacity: 0.12;
+    }
+
+    .p10-ip-arknights__motion-slice:nth-of-type(3),
+    .p10-ip-arknights__motion-signal:nth-of-type(4),
+    .p10-ip-arknights__motion-signal:nth-of-type(6) {
+      opacity: 0.1;
+    }
+
+    .p10-ip-arknights__motion-signal:nth-of-type(5) {
+      top: 96px;
+      left: 64%;
+      width: 34vw;
+      opacity: 0.12;
+    }
+
+    .p10-ip-arknights__motion-slice:nth-of-type(1),
+    .p10-ip-arknights__motion-slice:nth-of-type(2),
+    .p10-ip-arknights__motion-slice:nth-of-type(3),
+    .p10-ip-arknights__motion-signal:nth-of-type(4),
+    .p10-ip-arknights__motion-signal:nth-of-type(5),
+    .p10-ip-arknights__motion-signal:nth-of-type(6) {
+      animation-name: p10-mobile-line-breathe;
+    }
+
+    .p10-ip-arknights__hero {
+      grid-template-columns: minmax(0, 1fr);
+      min-height: 0;
+      gap: 34px;
+    }
+
+    .p10-ip-arknights__hero::before {
+      top: -26px;
+      left: 12%;
+      width: 72%;
+      opacity: 0.22;
+      transform: rotate(-5deg);
+    }
+
+    .p10-ip-arknights__hero::after {
+      display: none;
+    }
+
+    .p10-ip-arknights__split-field span {
+      opacity: 0.16;
+    }
+
+    .p10-ip-arknights__split-field span:nth-child(1) {
+      top: 144px;
+      left: -74%;
+      width: 128vw;
+      height: 360px;
+    }
+
+    .p10-ip-arknights__split-field span:nth-child(2) {
+      top: 410px;
+      right: -36%;
+      width: 66vw;
+      height: 260px;
+      border-left-width: 1px;
+      opacity: 0.12;
+    }
+
+    .p10-ip-arknights__split-field span:nth-child(3) {
+      top: 560px;
+      left: 42%;
+      width: 50vw;
+      opacity: 0.18;
+    }
+
+    .p10-ip-arknights__split-field span:nth-child(4) {
+      top: 236px;
+      right: 8px;
+      left: auto;
+      height: 260px;
+      opacity: 0.12;
+    }
+
+    .p10-ip-arknights__cut-index {
+      top: -4px;
+      right: 4px;
+      left: auto;
+      gap: 10px;
+      opacity: 0.34;
+      transform: translateY(-12px) rotate(4deg);
+    }
+
+    .p10-ip-arknights__copy,
+    .p10-ip-arknights__map {
+      transform: none;
+    }
+
+    .p10-ip-arknights__map {
+      clip-path: none;
+    }
+
+    .p10-ip-arknights__copy {
+      z-index: 2;
+      padding: 16px 0 18px 16px;
+      border-left-width: 6px;
+      background: linear-gradient(90deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.72) 72%, rgba(255,255,255,0) 100%);
+    }
+
+    .p10-ip-arknights__copy::before {
+      top: -18px;
+      left: -18px;
+      width: calc(100% + 30px);
+      height: calc(100% + 34px);
+      opacity: 0.52;
+      background: rgba(255,255,255,0.58);
+    }
+
+    .p10-ip-arknights__copy::after {
+      right: 10px;
+      bottom: -10px;
+      width: 84px;
+      height: 5px;
+      opacity: 0.14;
+    }
+
+    .p10-ip-arknights__heading {
+      font-size: clamp(38px, 12vw, 58px);
+    }
+
+    .p10-ip-arknights__subheading {
+      max-width: 340px;
+      color: rgba(17,16,24,0.7);
+    }
+
+    .p10-ip-arknights__void span:nth-child(1),
+    .p10-ip-arknights__void span:nth-child(3),
+    .p10-ip-arknights__void span:nth-child(4) {
+      opacity: 0.34;
+    }
+
+    .p10-ip-arknights__path-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .p10-ip-arknights__path-grid a,
+    .p10-ip-arknights__tile:nth-child(n) {
+      transform: none;
+    }
+
+    .p10-ip-arknights__lane {
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      gap: 10px !important;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .p10-ip-arknights__map {
+      padding: 14px;
+    }
+
+    .p10-ip-arknights__map-brand {
+      align-items: flex-start;
+    }
+
+    .p10-ip-arknights__logo-frame {
+      width: 86px;
+      flex: 0 0 86px;
+    }
+
+    .p10-ip-arknights__map-brand b {
+      font-size: 20px;
+    }
+
+    .p10-ip-arknights__actions {
+      flex-direction: column;
+    }
+
+    .p10-ip-arknights__primary-link,
+    .p10-ip-arknights__secondary-link {
+      width: 100%;
+    }
+
+    .p10-ip-arknights__tile-body {
+      min-height: 112px;
+      padding: 11px;
+    }
+
+    .p10-ip-arknights__tile-image {
+      aspect-ratio: 1 / 0.86;
+      padding: 8px;
+    }
+
+    .p10-ip-arknights__tile-body h3 {
+      min-height: 48px;
+      font-size: 12px;
+      line-height: 1.24;
+    }
+
+    .p10-ip-arknights__tile-meta {
+      padding-top: 10px;
+      font-size: 10px;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "P10 Arknights IP Lounge",
+  "tag": "section",
+  "class": "section-p10-ip-arknights",
+  "settings": [
+    {
+      "type": "collection",
+      "id": "source_collection",
+      "label": "Source collection"
+    },
+    {
+      "type": "text",
+      "id": "anchor_id",
+      "label": "Anchor ID",
+      "default": "arknights-collector-zone"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Arknights collector zone"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Arknights"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "A focused V4 destination for Arknights cards, character goods, and blind-box formats."
+    },
+    {
+      "type": "url",
+      "id": "primary_link",
+      "label": "Primary link"
+    },
+    {
+      "type": "url",
+      "id": "card_box_link",
+      "label": "Card box link"
+    },
+    {
+      "type": "url",
+      "id": "back_link",
+      "label": "Back link"
+    },
+    {
+      "type": "text",
+      "id": "back_label",
+      "label": "Back label",
+      "default": "Back"
+    }
+  ],
+  "presets": [
+    {
+      "name": "P10 Arknights IP Lounge"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,159 @@
+{%- comment -%}
+  Blocks unavailable variants from storefront product forms when the theme
+  still renders old add-to-cart or dynamic checkout controls.
+{%- endcomment -%}
+<script>
+(function () {
+  if (window.location.pathname.replace(/\/$/, '') === '/search') {
+    var params = new URLSearchParams(window.location.search || '');
+    var query = String(params.get('q') || '').trim().toLowerCase();
+    var routes = {
+      'english cards': '/collections/english-card-boxes',
+      'english card': '/collections/english-card-boxes',
+      'chinese cards': '/collections/cn-trading-card-boxes',
+      'chinese card': '/collections/cn-trading-card-boxes',
+      'cn cards': '/collections/cn-trading-card-boxes',
+      'cn card': '/collections/cn-trading-card-boxes',
+      'tcg': '/collections/tcg-card-boxes',
+      'tcg cards': '/collections/tcg-card-boxes',
+      'tcg card': '/collections/tcg-card-boxes',
+      'trading card game': '/collections/tcg-card-boxes',
+      'ccg': '/collections/ccg-card-boxes',
+      'ccg cards': '/collections/ccg-card-boxes',
+      'ccg card': '/collections/ccg-card-boxes',
+      'collectible card game': '/collections/ccg-card-boxes'
+    };
+    if (routes[query]) {
+      window.location.replace(routes[query]);
+      return;
+    }
+  }
+
+  var productMatch = window.location.pathname.match(/\/products\/([^/?#]+)/);
+  if (!productMatch) return;
+
+  var handle = productMatch[1];
+  var productData = null;
+  var variantById = {};
+  var guardMessage = 'Sold out';
+
+  function getVariantId() {
+    var forms = Array.prototype.slice.call(document.querySelectorAll('form[action*="/cart/add"]'));
+    for (var i = 0; i < forms.length; i += 1) {
+      var field = forms[i].querySelector('[name="id"]');
+      if (field && field.value) return String(field.value);
+    }
+    var standalone = document.querySelector('[name="id"]');
+    return standalone && standalone.value ? String(standalone.value) : '';
+  }
+
+  function selectedVariant() {
+    var id = getVariantId();
+    return id && variantById[id] ? variantById[id] : null;
+  }
+
+  function variantAvailable() {
+    var variant = selectedVariant();
+    if (variant) return variant.available === true;
+    return productData ? productData.available === true : true;
+  }
+
+  function guardedButtons() {
+    return Array.prototype.slice.call(document.querySelectorAll([
+      'form[action*="/cart/add"] [type="submit"]',
+      'form[action*="/cart/add"] button[name="add"]',
+      '[data-btn-addtocart]',
+      '[data-btn-addToCart]',
+      '#product-add-to-cart',
+      '.shopify-payment-button button',
+      '.shopify-payment-button__button'
+    ].join(',')));
+  }
+
+  function setDisabled(button, disabled) {
+    if (!button) return;
+    if (disabled) {
+      if (!button.dataset.prismaOriginalText) {
+        button.dataset.prismaOriginalText = (button.textContent || '').trim();
+      }
+      button.disabled = true;
+      button.setAttribute('aria-disabled', 'true');
+      button.classList.add('prisma-stock-guard-disabled');
+      if (/add to cart|buy|shop/i.test(button.textContent || '')) {
+        button.textContent = guardMessage;
+      }
+    } else if (button.classList.contains('prisma-stock-guard-disabled')) {
+      button.disabled = false;
+      button.removeAttribute('aria-disabled');
+      button.classList.remove('prisma-stock-guard-disabled');
+      if (button.dataset.prismaOriginalText) {
+        button.textContent = button.dataset.prismaOriginalText;
+      }
+    }
+  }
+
+  function syncGuard() {
+    if (!productData) return;
+    var blocked = !variantAvailable();
+    document.documentElement.classList.toggle('prisma-stock-guard-active', blocked);
+    guardedButtons().forEach(function (button) { setDisabled(button, blocked); });
+  }
+
+  function blockUnavailable(event) {
+    if (!productData || variantAvailable()) return;
+    var target = event.target;
+    var form = target && target.closest ? target.closest('form[action*="/cart/add"]') : null;
+    var button = target && target.closest
+      ? target.closest('[data-btn-addtocart], [data-btn-addToCart], #product-add-to-cart, .shopify-payment-button button, .shopify-payment-button__button')
+      : null;
+    if (!form && !button) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    syncGuard();
+  }
+
+  function installListeners() {
+    document.addEventListener('submit', blockUnavailable, true);
+    document.addEventListener('click', blockUnavailable, true);
+    document.addEventListener('change', function (event) {
+      if (event.target && event.target.matches && event.target.matches('[name="id"], .product-form__radio, select')) {
+        setTimeout(syncGuard, 0);
+        setTimeout(syncGuard, 120);
+      }
+    }, true);
+    document.addEventListener('variant:change', function () { setTimeout(syncGuard, 0); }, true);
+    document.addEventListener('variantChanged', function () { setTimeout(syncGuard, 0); }, true);
+    new MutationObserver(function () { syncGuard(); }).observe(document.documentElement, { childList: true, subtree: true });
+  }
+
+  function loadProduct() {
+    fetch('/products/' + encodeURIComponent(handle) + '.js', { credentials: 'same-origin' })
+      .then(function (response) { return response.ok ? response.json() : null; })
+      .then(function (json) {
+        if (!json) return;
+        productData = json;
+        variantById = {};
+        (json.variants || []).forEach(function (variant) {
+          variantById[String(variant.id)] = variant;
+        });
+        syncGuard();
+        setTimeout(syncGuard, 400);
+        setTimeout(syncGuard, 1400);
+      })
+      .catch(function () {});
+  }
+
+  installListeners();
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadProduct);
+  } else {
+    loadProduct();
+  }
+})();
+</script>
+<style>
+  .prisma-stock-guard-disabled {
+    cursor: not-allowed !important;
+    opacity: .55 !important;
+  }
+</style>

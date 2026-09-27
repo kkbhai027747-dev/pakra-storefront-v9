@@ -1,0 +1,49 @@
+{%- liquid
+  assign prisma_hide_full_bundle = false
+  case product.handle
+    when 'kayou-mlp-fu-lai-gift-box-2-sp-card-bundle', 'kayou-mlp-qi-meng-party-1-sgr-card-bundle', 'kayou-mlp-qi-meng-party-2-sgr-card-bundle'
+      assign prisma_hide_full_bundle = true
+  endcase
+
+  assign prisma_full_bundle_variant = blank
+  assign prisma_first_single_variant = blank
+  if prisma_hide_full_bundle
+    for variant in product.variants
+      if variant.title == 'Full Bundle'
+        assign prisma_full_bundle_variant = variant
+      elsif prisma_first_single_variant == blank and variant.available
+        assign prisma_first_single_variant = variant
+      endif
+    endfor
+    if prisma_first_single_variant == blank
+      for variant in product.variants
+        unless variant.title == 'Full Bundle'
+          assign prisma_first_single_variant = variant
+          break
+        endunless
+      endfor
+    endif
+  endif
+-%}
+{%- if prisma_hide_full_bundle and prisma_full_bundle_variant != blank and prisma_first_single_variant != blank -%}
+  <script>
+    (() => {
+      const hiddenVariantId = {{ prisma_full_bundle_variant.id | json }};
+      const fallbackVariantId = {{ prisma_first_single_variant.id | json }};
+      const selectedVariantId = {{ product.selected_or_first_available_variant.id | json }};
+      const params = new URLSearchParams(window.location.search);
+      const requestedVariantId = params.get('variant');
+      const shouldReplace =
+        requestedVariantId === String(hiddenVariantId) ||
+        (!requestedVariantId && String(selectedVariantId) === String(hiddenVariantId));
+
+      if (!shouldReplace) return;
+
+      params.set('variant', fallbackVariantId);
+      const query = params.toString();
+      window.location.replace(
+        window.location.pathname + (query ? `?${query}` : '') + window.location.hash
+      );
+    })();
+  </script>
+{%- endif -%}

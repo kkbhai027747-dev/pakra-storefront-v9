@@ -1,0 +1,11 @@
+{
+  "name": "pakra-storefront-v9",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "map": "node dev/theme-map.mjs",
+    "check": "node dev/theme-map.mjs --check",
+    "impact": "node dev/theme-map.mjs --impact",
+    "test:dev": "node --test dev/test/*.test.mjs"
+  }
+}

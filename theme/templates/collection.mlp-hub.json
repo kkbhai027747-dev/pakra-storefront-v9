@@ -1,0 +1,133 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "banner": {
+      "type": "main-collection-banner",
+      "settings": {
+        "show_breadcrumb": true,
+        "breadcrumb_alignment": "left",
+        "breadcrumb_color": "",
+        "breadcrumb_bg": "",
+        "breadcrumb_gradient": "",
+        "breadcrumb_color_mb": "",
+        "breadcrumb_bg_mb": "#f6f6f6",
+        "breadcrumb_gradient_mb": "",
+        "show_page_title": true,
+        "page_title_alignment": "left",
+        "container": "container",
+        "padding_full_width": 0,
+        "mg_top_desktop": 0,
+        "mg_top_tablet": 0,
+        "mg_top_mobile": 0,
+        "mg_bottom_desktop": 0,
+        "mg_bottom_tablet": 0,
+        "mg_bottom_mobile": 0,
+        "layout": "1"
+      }
+    },
+    "product-grid": {
+      "type": "main-collection-product-grid",
+      "settings": {
+        "colors_bg": "",
+        "colors_bg_gradient": "",
+        "container": "container",
+        "padding_full_width": 0,
+        "mg_top_desktop": 0,
+        "mg_top_tablet": 0,
+        "mg_top_mobile": 0,
+        "mg_bottom_desktop": 0,
+        "mg_bottom_tablet": 0,
+        "mg_bottom_mobile": 0,
+        "show_sidebar": true,
+        "show_sidebar_collapse": true,
+        "enable_sticky": false,
+        "sidebar_layout": "layout_1",
+        "sidebar_collapse_default": "expand",
+        "sidebar_type": "vertical",
+        "sidebar_position": "left",
+        "sidebar_heading_font": "font_1",
+        "sidebar_heading_font_size": 14,
+        "sidebar_heading_font_weight": "700",
+        "sidebar_heading_text_transform": "uppercase",
+        "show_filter": true,
+        "filter_swatch": "Color",
+        "filter_swatch_type": "color",
+        "filter_rectangle": "Size",
+        "filter_display_type": "scroll",
+        "max_item_per_filter": 10,
+        "filter_label_all": "",
+        "filter_hidden_tag_list": "",
+        "show_toolbar": true,
+        "show_sorting": true,
+        "show_item_per_page": true,
+        "show_view_as": true,
+        "products_per_page": "20",
+        "layout": "3",
+        "show_infinite_scrolling": "show_more",
+        "show_banner": false,
+        "show_banner_1": true,
+        "banner_position_1": "4",
+        "link_banner_1": "",
+        "show_banner_2": true,
+        "banner_position_2": "5",
+        "link_banner_2": "",
+        "show_banner_3": true,
+        "banner_position_3": "12",
+        "link_banner_3": ""
+      }
+    },
+    "collection-list": {
+      "type": "collection-list",
+      "settings": {
+        "container": "container",
+        "padding_full_width": 0,
+        "mg_top_desktop": 50,
+        "mg_top_tablet": 50,
+        "mg_top_mobile": 50,
+        "mg_bottom_desktop": 50,
+        "mg_bottom_tablet": 50,
+        "mg_bottom_mobile": 50,
+        "section_bg_color": "",
+        "section_bg_gradient": "",
+        "enable_heading_sticky": false,
+        "title": "",
+        "title_color": "",
+        "title_fs": 50,
+        "title_fs_mb": 24,
+        "title_fw": "800",
+        "title_mg_bottom": 50,
+        "title_mg_bottom_mb": 24,
+        "view_all": "",
+        "link_view_all": "",
+        "color_view_all": "#3c3c3c",
+        "color_view_all_hover": "#3c3c3c",
+        "image_ratio": "adapt",
+        "portrait_aspect_ratio": 112,
+        "collection_align": "left",
+        "co_title_font_size": 40,
+        "co_title_font_size_mb": 16,
+        "co_title_font_weight": "600",
+        "co_title_text_transform": "none",
+        "mg_bottom_co_title": 12,
+        "co_title_color": "#ffffff",
+        "button_co_title": "Shop the collection",
+        "fontsize_co_button": 15,
+        "color_co_button": "#ffffff",
+        "color_co_button_hover": "#ffffff"
+      }
+    }
+  },
+  "order": [
+    "banner",
+    "product-grid",
+    "collection-list"
+  ]
+}

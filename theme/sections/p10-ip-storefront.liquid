@@ -1,0 +1,1089 @@
+{{ 'p10-ip-storefront.css' | asset_url | stylesheet_tag }}
+{{ 'p10-ip-sidebar.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'p10-ip-storefront.js' | asset_url }}" defer="defer"></script>
+
+{%- if request.page_type == 'collection' -%}
+  {%- if template.suffix == 'pokemon-tcg-cn' or template.suffix == 'pokemon-tcg-en' -%}
+    {%- style -%}
+      #P10IpStorefront-{{ section.id }} .p10-ip-storefront__media-frame {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: minmax(0, 1fr);
+      }
+    {%- endstyle -%}
+  {%- endif -%}
+{%- endif -%}
+
+{%- liquid
+  assign source_collection = section.settings.source_collection
+  assign universal_source_collection = section.settings.universal_source_collection
+  assign universal_publisher = section.settings.universal_publisher
+  assign universal_product_type = section.settings.universal_product_type
+  assign isolate_card_type = section.settings.isolate_card_type
+  assign prioritize_stock = false
+  if section.settings.ip_key == 'pokemon' and universal_product_type == 'TCG'
+    assign prioritize_stock = true
+  endif
+  assign universal_market = section.settings.universal_market
+  assign storefront_heading = section.settings.heading | default: page.title
+  assign directory_ip_key = storefront_heading | handleize
+  assign directory_publisher_key = universal_publisher | handleize
+  assign directory_product_type_key = universal_product_type | handleize
+  assign directory_market_key = universal_market | handleize
+  assign directory_ip_url = routes.collections_url | append: '?ip=' | append: directory_ip_key
+  assign directory_publisher_url = directory_ip_url
+  if universal_publisher != blank
+    assign directory_publisher_url = directory_publisher_url | append: '&publisher=' | append: directory_publisher_key
+  endif
+  assign directory_product_type_url = directory_publisher_url
+  if universal_product_type != blank
+    assign directory_product_type_url = directory_product_type_url | append: '&product_type=' | append: directory_product_type_key
+  endif
+  assign directory_market_url = directory_product_type_url
+  if universal_market != blank
+    assign directory_market_url = directory_market_url | append: '&market=' | append: directory_market_key
+  endif
+  assign current_route_level = 'ip'
+  if universal_publisher != blank
+    assign current_route_level = 'publisher'
+  endif
+  if universal_product_type != blank
+    assign current_route_level = 'product_type'
+  endif
+  if universal_market != blank
+    assign current_route_level = 'market'
+  endif
+  assign lane_order_value = section.settings.lane_order | default: 'sealed,merch'
+  assign lane_order = lane_order_value | split: ','
+  if isolate_card_type
+    assign lane_order = 'sealed' | split: ','
+  endif
+  assign legacy_ip_hub = false
+  assign isolated_ip_keys = 'disney,marvel,dc,pokemon' | split: ','
+  if isolated_ip_keys contains section.settings.ip_key
+    if page.handle == section.settings.ip_key and template.suffix == section.settings.ip_key
+      assign legacy_route_types = 'ccg,tcg,merch' | split: ','
+      if section.settings.ip_key == 'pokemon'
+        assign legacy_route_types = 'tcg,merch' | split: ','
+      endif
+      assign legacy_ip_hub = true
+      for legacy_route_type in legacy_route_types
+        assign legacy_route_handle = section.settings.ip_key | append: '-' | append: legacy_route_type
+        assign legacy_route_page = pages[legacy_route_handle]
+        if legacy_route_page.id == blank
+          assign legacy_ip_hub = false
+        endif
+      endfor
+    endif
+  endif
+  assign rendered_ids = '|'
+  assign sealed_product_types = 'trading card box|trading card boxes|trading card pack|trading card packs|sealed card box|sealed card pack|sealed trading cards|tcg cards|ccg cards' | split: '|'
+  assign first_valid_lane = ''
+  for lane_key in lane_order
+    assign enable_setting = 'enable_' | append: lane_key
+    assign lane_enabled = section.settings[enable_setting]
+    assign lane_has_source = false
+
+    if lane_enabled
+      for block in section.blocks
+        if block.type == 'lane_source' and block.settings.lane == lane_key and block.settings.collection != blank
+          assign route_source_matches = true
+          if universal_source_collection != blank and block.settings.collection.handle != universal_source_collection.handle
+            assign route_source_matches = false
+          endif
+
+          if route_source_matches
+            assign lane_has_source = true
+            break
+          endif
+        endif
+      endfor
+    endif
+
+    if first_valid_lane == blank and lane_enabled and lane_has_source
+      assign first_valid_lane = lane_key
+    endif
+  endfor
+-%}
+
+{%- if legacy_ip_hub -%}
+<section
+  class="p10-ip-storefront p10-ip-storefront--{{ section.settings.skin }}"
+  id="P10IpStorefront-{{ section.id }}"
+  data-p10-ip-storefront
+  data-p10-ip-legacy-hub
+  data-ip-key="{{ section.settings.ip_key | escape }}"
+>
+  <div class="p10-ip-storefront__inner">
+    <header class="p10-ip-storefront__module-head">
+      <p class="p10-ip-storefront__section-kicker">Shop by product type</p>
+      <h1 class="p10-ip-storefront__heading">{{ storefront_heading | escape }}</h1>
+    </header>
+    <nav class="p10-ip-storefront__explore-grid" aria-label="{{ storefront_heading | escape }} product types">
+      {%- for legacy_route_type in legacy_route_types -%}
+        {%- liquid
+          assign legacy_route_handle = section.settings.ip_key | append: '-' | append: legacy_route_type
+          assign legacy_route_page = pages[legacy_route_handle]
+          assign legacy_route_label = legacy_route_type | upcase
+          if legacy_route_type == 'merch'
+            assign legacy_route_label = 'Merch & Collectibles'
+          endif
+        -%}
+        <a class="p10-ip-storefront__explore-card" href="{{ legacy_route_page.url }}" data-p10-ip-type-route="{{ legacy_route_type }}">
+          <strong>{{ legacy_route_label | escape }}</strong>
+          <span aria-hidden="true">→</span>
+        </a>
+      {%- endfor -%}
+    </nav>
+    {%- if section.settings.show_page_content and page.content != blank -%}
+      <div class="p10-ip-storefront__overview rte">{{ page.content }}</div>
+    {%- endif -%}
+  </div>
+</section>
+{%- else -%}
+<section
+  class="p10-ip-storefront p10-ip-storefront--{{ section.settings.skin }}"
+  id="P10IpStorefront-{{ section.id }}"
+  data-p10-ip-storefront
+  data-ip-key="{{ section.settings.ip_key | escape }}"
+  data-ip-heading="{{ storefront_heading | escape }}"
+  data-universal-publisher="{{ universal_publisher | escape }}"
+  data-universal-product-type="{{ universal_product_type | escape }}"
+  data-universal-market="{{ universal_market | escape }}"
+  data-universal-source-collection="{{ universal_source_collection.handle | escape }}"
+  data-default-lane="{{ first_valid_lane | escape }}"
+  data-initial-products-desktop="{{ section.settings.initial_products_desktop }}"
+  data-initial-products-mobile="{{ section.settings.initial_products_mobile }}"
+  data-load-more-step="{{ section.settings.load_more_step }}"
+  data-keep-empty-intents="{{ section.settings.keep_empty_intents }}"
+>
+  {%- if source_collection == blank and request.design_mode -%}
+    <div class="p10-ip-storefront__editor-warning">
+      Select the broad IP source collection before enabling product lanes.
+    </div>
+  {%- endif -%}
+
+  <div class="p10-ip-storefront__inner">
+    {%- if universal_publisher != blank or universal_product_type != blank or universal_market != blank -%}
+      <nav class="p10-ip-storefront__breadcrumb" aria-label="Shopping route">
+        <ol>
+          <li>
+            <a href="{{ directory_ip_url | escape }}"{% if current_route_level == 'ip' %} aria-current="page"{% endif %}>
+              {{- storefront_heading | escape -}}
+            </a>
+          </li>
+          {%- if universal_publisher != blank -%}
+            <li>
+              <a href="{{ directory_publisher_url | escape }}"{% if current_route_level == 'publisher' %} aria-current="page"{% endif %}>
+                {{- universal_publisher | escape -}}
+              </a>
+            </li>
+          {%- endif -%}
+          {%- if universal_product_type != blank -%}
+            <li>
+              <a href="{{ directory_product_type_url | escape }}"{% if current_route_level == 'product_type' %} aria-current="page"{% endif %}>
+                {{- universal_product_type | escape -}}
+              </a>
+            </li>
+          {%- endif -%}
+          {%- if universal_market != blank -%}
+            <li>
+              <a href="{{ directory_market_url | escape }}" aria-current="page">
+                {{- universal_market | escape -}}
+              </a>
+            </li>
+          {%- endif -%}
+        </ol>
+      </nav>
+    {%- endif -%}
+
+    {%- if section.settings.show_intro_header -%}
+      <header
+        class="p10-ip-storefront__hero p10-ip-storefront__hero--no-media"
+        data-ip-heading="{{ storefront_heading | escape }}"
+      >
+        <div class="p10-ip-storefront__hero-copy">
+          {%- if section.settings.logo != blank -%}
+            {{
+              section.settings.logo
+              | image_url: width: 420
+              | image_tag:
+                loading: 'eager',
+                widths: '160, 240, 320, 420',
+                sizes: '170px',
+                alt: storefront_heading,
+                class: 'p10-ip-storefront__logo'
+            }}
+          {%- endif -%}
+          {%- if section.settings.eyebrow != blank -%}
+            <p class="p10-ip-storefront__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+          {%- endif -%}
+          <h1 class="p10-ip-storefront__heading">{{ storefront_heading | escape }}</h1>
+          {%- if section.settings.subheading != blank -%}
+            <p class="p10-ip-storefront__subheading">{{ section.settings.subheading | escape }}</p>
+          {%- endif -%}
+          {%- if section.settings.show_search -%}
+            <div class="p10-ip-storefront__search" role="search">
+              <label for="P10IpSearch-{{ section.id }}">Search this {{ storefront_heading | escape }} hub</label>
+              <div class="p10-ip-storefront__search-control">
+                <input
+                  id="P10IpSearch-{{ section.id }}"
+                  type="search"
+                  inputmode="search"
+                  autocomplete="off"
+                  placeholder="Search {{ storefront_heading | escape }} products"
+                  data-product-search
+                >
+                <button type="button" data-product-search-clear hidden>Clear</button>
+              </div>
+            </div>
+          {%- endif -%}
+        </div>
+      </header>
+    {%- endif -%}
+
+    {%- if first_valid_lane != blank -%}
+      <button
+        type="button"
+        class="p10-ip-storefront__filter-trigger"
+        data-filter-open
+        aria-controls="P10IpFilters-{{ section.id }}"
+        aria-expanded="false"
+      >
+        Browse {{ section.settings.heading | default: page.title | escape }}
+      </button>
+
+      <div
+        class="p10-ip-storefront__filter-drawer"
+        id="P10IpFilters-{{ section.id }}"
+        data-filter-drawer
+        aria-hidden="true"
+      >
+        <button
+          type="button"
+          class="p10-ip-storefront__filter-backdrop"
+          data-filter-close
+          aria-label="Close navigation"
+        ></button>
+        <div
+          class="p10-ip-storefront__filter-panel"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="P10IpFiltersTitle-{{ section.id }}"
+        >
+          <div class="p10-ip-storefront__filter-header">
+            <h2 id="P10IpFiltersTitle-{{ section.id }}">Browse this IP</h2>
+            <button type="button" data-filter-close>Close</button>
+          </div>
+          <div class="p10-ip-storefront__filter-body" data-filter-drawer-body>
+            {%- render 'p10-ip-sidebar',
+              section: section,
+              page: page,
+              lane_order: lane_order,
+              first_valid_lane: first_valid_lane,
+              variant: 'mobile'
+            -%}
+          </div>
+          <div class="p10-ip-storefront__filter-actions">
+            <button type="button" class="p10-ip-storefront__filter-apply" data-filter-apply>
+              View selected products
+            </button>
+            <button type="button" class="p10-ip-storefront__filter-reset" data-filter-reset>
+              Reset
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="p10-ip-storefront__framework">
+        {%- render 'p10-ip-sidebar',
+          section: section,
+          page: page,
+          lane_order: lane_order,
+          first_valid_lane: first_valid_lane,
+          variant: 'desktop'
+        -%}
+        <main class="p10-ip-storefront__main" data-ip-storefront-main tabindex="-1">
+          <div class="p10-ip-storefront__lanes">
+      {%- if source_collection != blank -%}
+        {%- for lane_key in lane_order -%}
+          {%- liquid
+            assign enable_setting = 'enable_' | append: lane_key
+            assign label_setting = lane_key | append: '_label'
+            assign copy_setting = lane_key | append: '_copy'
+            assign link_setting = lane_key | append: '_link'
+            assign lane_enabled = section.settings[enable_setting]
+            assign lane_has_source = false
+            assign lane_rendered_count = 0
+            assign available_product_cards = ''
+            assign unavailable_product_cards = ''
+
+            if lane_enabled
+              for block in section.blocks
+                if block.type == 'lane_source' and block.settings.lane == lane_key and block.settings.collection != blank
+                  assign route_source_matches = true
+                  if universal_source_collection != blank and block.settings.collection.handle != universal_source_collection.handle
+                    assign route_source_matches = false
+                  endif
+
+                  if route_source_matches
+                    assign lane_has_source = true
+                    break
+                  endif
+                endif
+              endfor
+            endif
+          -%}
+
+          {%- if lane_enabled and lane_has_source -%}
+            <section
+              class="p10-ip-storefront__lane{% if lane_key == first_valid_lane %} is-active{% endif %}"
+              id="P10IpLane-{{ section.id }}-{{ lane_key }}"
+              data-lane-panel="{{ lane_key }}"
+              aria-labelledby="P10IpLaneTitle-{{ section.id }}-{{ lane_key }}"
+            >
+              <div class="p10-ip-storefront__lane-head">
+                <div>
+                  <p class="p10-ip-storefront__section-kicker">Shop by product type</p>
+                  <h2 id="P10IpLaneTitle-{{ section.id }}-{{ lane_key }}">
+                    {{ section.settings[label_setting] | escape }}
+                  </h2>
+                  <p>{{ section.settings[copy_setting] | escape }}</p>
+                </div>
+                {%- if section.settings[link_setting] != blank and lane_key != 'merch' -%}
+                  <a href="{{ section.settings[link_setting] }}">
+                    View the full collection
+                    <span aria-hidden="true">→</span>
+                  </a>
+                {%- endif -%}
+              </div>
+
+              <p class="p10-ip-storefront__results" aria-live="polite" data-results-copy>
+                Showing selected {{ section.settings[label_setting] | downcase | escape }}.
+              </p>
+
+              <div class="p10-ip-storefront__shelf-grid" data-product-grid>
+                {%- for block in section.blocks -%}
+                  {%- if block.type == 'lane_source' and block.settings.lane == lane_key and block.settings.collection != blank -%}
+                    {%- assign route_source_matches = true -%}
+                    {%- if universal_source_collection != blank and block.settings.collection.handle != universal_source_collection.handle -%}
+                      {%- assign route_source_matches = false -%}
+                    {%- endif -%}
+                    {%- if route_source_matches -%}
+                      {%- assign lane_collection = block.settings.collection -%}
+                      {%- paginate lane_collection.products by 250 -%}
+                        {%- for product in lane_collection.products -%}
+                      {%- liquid
+                        assign belongs_to_ip = false
+                        assign belongs_to_card_lane = false
+                        assign product_collection_handles = ''
+                        assign source_type_allowed = true
+                        assign normalized_product_type = product.type | strip | downcase
+
+                        if block.settings.allowed_product_types != blank
+                          assign source_type_allowed = false
+                          assign allowed_product_types = block.settings.allowed_product_types | split: ','
+                          for allowed_product_type in allowed_product_types
+                            assign normalized_allowed_type = allowed_product_type | strip | downcase
+                            if normalized_product_type == normalized_allowed_type
+                              assign source_type_allowed = true
+                              break
+                            endif
+                          endfor
+                        endif
+
+                        if lane_key == 'merch' and sealed_product_types contains normalized_product_type
+                          assign source_type_allowed = false
+                        endif
+
+                        for product_collection in product.collections
+                          assign product_collection_handles = product_collection_handles | append: ',' | append: product_collection.handle | append: ','
+                          if product_collection.handle == source_collection.handle
+                            assign belongs_to_ip = true
+                          endif
+                          if product_collection.handle == 'type-sealed-cards'
+                            assign belongs_to_card_lane = true
+                          endif
+                          if lane_key == 'merch' and product_collection.handle == 'type-sealed-cards'
+                            assign source_type_allowed = false
+                          endif
+                        endfor
+
+                        if isolate_card_type
+                          assign product_is_ccg = false
+                          assign product_is_tcg = false
+                          for product_tag in product.tags
+                            assign normalized_product_tag = product_tag | strip | downcase
+                            if normalized_product_tag == 'ccg' or normalized_product_tag == 'ccg cards'
+                              assign product_is_ccg = true
+                            elsif normalized_product_tag == 'tcg' or normalized_product_tag == 'tcg cards'
+                              assign product_is_tcg = true
+                            endif
+                          endfor
+                          if belongs_to_card_lane == false
+                            assign source_type_allowed = false
+                          endif
+                          if universal_product_type == 'CCG'
+                            if product_is_ccg == false or product_is_tcg
+                              assign source_type_allowed = false
+                            endif
+                          elsif universal_product_type == 'TCG'
+                            if product_is_tcg == false or product_is_ccg
+                              assign source_type_allowed = false
+                            endif
+                          else
+                            assign source_type_allowed = false
+                          endif
+                        endif
+
+                        if belongs_to_ip == false and block.settings.additional_product_handles != blank and lane_key != 'merch' and isolate_card_type != true
+                          assign additional_product_handles = block.settings.additional_product_handles | downcase | replace: ' ', ''
+                          assign additional_product_handles = ',' | append: additional_product_handles | append: ','
+                          assign product_handle_token = ',' | append: product.handle | downcase | append: ','
+                          if additional_product_handles contains product_handle_token
+                            assign belongs_to_ip = true
+                          endif
+                        endif
+
+                        assign product_token = '|' | append: product.id | append: '|'
+                        assign already_rendered = false
+                        if rendered_ids contains product_token
+                          assign already_rendered = true
+                        endif
+                      -%}
+
+                      {%- capture product_eligibility -%}
+                        {%- render 'p10-ip-storefront-product-eligibility',
+                          product: product,
+                          excluded_collection_handles: section.settings.excluded_collection_handles
+                        -%}
+                      {%- endcapture -%}
+                      {%- assign product_eligibility = product_eligibility | strip -%}
+
+                      {%- if product_eligibility == 'allowed' and source_type_allowed and belongs_to_ip and already_rendered == false -%}
+                        {%- capture product_card -%}
+                          {%- render 'p10-ip-storefront-product-card',
+                            product: product,
+                            lane: lane_key,
+                            intent_handles: product_collection_handles,
+                            show_sold_out: prioritize_stock
+                          -%}
+                        {%- endcapture -%}
+                        {%- if prioritize_stock -%}
+                          {%- if product.available -%}
+                            {%- assign available_product_cards = available_product_cards | append: product_card -%}
+                          {%- else -%}
+                            {%- assign unavailable_product_cards = unavailable_product_cards | append: product_card -%}
+                          {%- endif -%}
+                        {%- else -%}
+                          {{- product_card -}}
+                        {%- endif -%}
+                        {%- assign rendered_ids = rendered_ids | append: product.id | append: '|' -%}
+                        {%- assign lane_rendered_count = lane_rendered_count | plus: 1 -%}
+                      {%- endif -%}
+
+                        {%- endfor -%}
+                      {%- endpaginate -%}
+                    {%- endif -%}
+                  {%- endif -%}
+                {%- endfor -%}
+                {{- available_product_cards -}}
+                {{- unavailable_product_cards -}}
+              </div>
+
+              <button type="button" class="p10-ip-storefront__load-more" data-load-more hidden>
+                Load more
+              </button>
+
+              <div class="p10-ip-storefront__no-results" data-no-results hidden>
+                <p>No matching products are available in this route right now.</p>
+                {%- if section.settings.empty_state_link != blank and lane_key != 'merch' -%}
+                  <a href="{{ section.settings.empty_state_link }}">Browse all IP products</a>
+                {%- endif -%}
+              </div>
+
+              {%- if lane_rendered_count == 0 and request.design_mode -%}
+                <div class="p10-ip-storefront__editor-warning">
+                  This lane has selected collections but no products passed the IP membership guard.
+                </div>
+              {%- endif -%}
+            </section>
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+        </main>
+      </div>
+    {%- endif -%}
+
+    {%- assign explore_count = 0 -%}
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'explore_link' and block.settings.link != blank -%}
+        {%- assign explore_count = explore_count | plus: 1 -%}
+      {%- endif -%}
+    {%- endfor -%}
+
+    {%- if explore_count > 0 -%}
+      <section class="p10-ip-storefront__explore">
+        <div class="p10-ip-storefront__module-head">
+          <p class="p10-ip-storefront__section-kicker">Explore this IP</p>
+          <h2>Continue by series, character, or collector guide.</h2>
+        </div>
+        <div class="p10-ip-storefront__explore-grid">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'explore_link' and block.settings.link != blank -%}
+              <a
+                class="p10-ip-storefront__explore-card"
+                href="{{ block.settings.link }}"
+                {{ block.shopify_attributes }}
+              >
+                {%- if block.settings.eyebrow != blank -%}
+                  <span>{{ block.settings.eyebrow | escape }}</span>
+                {%- endif -%}
+                <strong>{{ block.settings.label | escape }}</strong>
+                <span aria-hidden="true">→</span>
+              </a>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </section>
+    {%- endif -%}
+
+    {%- if section.settings.show_content -%}
+      <section class="p10-ip-storefront__content">
+        <div class="p10-ip-storefront__module-head">
+          <p class="p10-ip-storefront__section-kicker">Collector resources</p>
+          <h2>Read before you choose.</h2>
+        </div>
+        <div class="p10-ip-storefront__content-grid">
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'content_link' -%}
+              {%- assign featured_article = block.settings.article -%}
+              {%- if featured_article != blank -%}
+                <a
+                  class="p10-ip-storefront__content-card"
+                  href="{{ featured_article.url }}"
+                  {{ block.shopify_attributes }}
+                >
+                  {%- if featured_article.image != blank -%}
+                    {{
+                      featured_article.image
+                      | image_url: width: 900
+                      | image_tag:
+                        loading: 'lazy',
+                        widths: '320, 480, 640, 900',
+                        sizes: '(min-width: 990px) 30vw, 90vw',
+                        alt: featured_article.image.alt | default: featured_article.title
+                    }}
+                  {%- endif -%}
+                  <span>{{ block.settings.eyebrow | default: 'Guide' | escape }}</span>
+                  <strong>{{ block.settings.title | default: featured_article.title | escape }}</strong>
+                  {%- if featured_article.excerpt != blank -%}
+                    <p>{{ featured_article.excerpt | strip_html | truncate: 120 }}</p>
+                  {%- endif -%}
+                </a>
+              {%- elsif block.settings.fallback_link != blank -%}
+                <a
+                  class="p10-ip-storefront__content-card p10-ip-storefront__content-card--text"
+                  href="{{ block.settings.fallback_link }}"
+                  {{ block.shopify_attributes }}
+                >
+                  <span>{{ block.settings.eyebrow | default: 'Resource' | escape }}</span>
+                  <strong>{{ block.settings.title | escape }}</strong>
+                  <span aria-hidden="true">Read →</span>
+                </a>
+              {%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </section>
+    {%- endif -%}
+
+    {%- if section.settings.show_page_content and page.content != blank -%}
+      <section class="p10-ip-storefront__overview" aria-labelledby="P10IpOverview-{{ section.id }}">
+        <p class="p10-ip-storefront__section-kicker">Collector overview</p>
+        <h2 id="P10IpOverview-{{ section.id }}">About {{ storefront_heading | escape }}</h2>
+        <div class="p10-ip-storefront__overview-copy rte">{{ page.content }}</div>
+      </section>
+    {%- endif -%}
+
+    {%- if section.settings.single_card_catalog_link != blank -%}
+      <p class="p10-ip-storefront__single-catalog-link">
+        <a href="{{ section.settings.single_card_catalog_link }}">
+          Looking for single cards? Visit the dedicated Single Card Catalog
+          <span aria-hidden="true">→</span>
+        </a>
+      </p>
+    {%- endif -%}
+  </div>
+</section>
+{%- endif -%}
+
+{%- if request.page_type == 'page' -%}
+  {%- liquid
+    assign storefront_schema_description = section.settings.subheading
+    if page.content != blank
+      assign storefront_schema_description = page.content | strip_html | strip_newlines | strip | truncate: 320
+    endif
+  -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "name": {{ storefront_heading | json }},
+      "description": {{ storefront_schema_description | json }},
+      "url": {{ canonical_url | json }},
+      "about": {
+        "@type": "Thing",
+        "name": {{ storefront_heading | json }}
+      },
+      "breadcrumb": {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": {{ shop.url | json }}
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Shop by IP",
+            "item": {{ shop.url | append: routes.collections_url | json }}
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": {{ storefront_heading | json }},
+            "item": {{ canonical_url | json }}
+          }
+        ]
+      }
+    }
+  </script>
+{%- elsif request.page_type == 'collection' -%}
+  {%- render 'schema', collection: collection -%}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "P10 IP Storefront",
+  "tag": "section",
+  "class": "section-p10-ip-storefront",
+  "max_blocks": 40,
+  "settings": [
+    {
+      "type": "select",
+      "id": "ip_key",
+      "label": "IP profile",
+      "options": [
+        { "value": "mlp", "label": "My Little Pony" },
+        { "value": "naruto", "label": "Naruto" },
+        { "value": "harry-potter", "label": "Harry Potter" },
+        { "value": "powerpuff", "label": "The Powerpuff Girls" },
+        { "value": "inuyasha", "label": "Inuyasha" },
+        { "value": "arknights", "label": "Arknights" },
+        { "value": "pokemon", "label": "Pokémon" },
+        { "value": "disney", "label": "Disney" },
+        { "value": "marvel", "label": "Marvel" },
+        { "value": "dc", "label": "DC" }
+      ],
+      "default": "mlp"
+    },
+    {
+      "type": "select",
+      "id": "skin",
+      "label": "Visual skin",
+      "options": [
+        { "value": "mlp", "label": "My Little Pony" },
+        { "value": "naruto", "label": "Naruto" },
+        { "value": "harry-potter", "label": "Harry Potter" },
+        { "value": "powerpuff", "label": "The Powerpuff Girls" },
+        { "value": "inuyasha", "label": "Inuyasha" },
+        { "value": "arknights", "label": "Arknights" },
+        { "value": "pokemon", "label": "Pokémon" },
+        { "value": "disney", "label": "Disney" },
+        { "value": "marvel", "label": "Marvel" },
+        { "value": "dc", "label": "DC" }
+      ],
+      "default": "mlp"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "COLLECTOR STORE"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Shop by IP"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Introduction",
+      "default": "Choose a product type first, then narrow the collection by series or shopping goal."
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "IP logo"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image_desktop",
+      "label": "Desktop hero image"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image_mobile",
+      "label": "Mobile hero image"
+    },
+    {
+      "type": "collection",
+      "id": "source_collection",
+      "label": "Broad IP collection",
+      "info": "Every displayed product must also belong to this collection."
+    },
+    {
+      "type": "header",
+      "content": "Universal storefront route"
+    },
+    {
+      "type": "text",
+      "id": "universal_publisher",
+      "label": "Publisher"
+    },
+    {
+      "type": "text",
+      "id": "universal_product_type",
+      "label": "Product type"
+    },
+    {
+      "type": "checkbox",
+      "id": "isolate_card_type",
+      "label": "Isolate CCG or TCG card products",
+      "info": "Require exact IP membership, sealed-card classification and only the selected CCG or TCG tags. Untagged or conflicting products are excluded.",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "universal_market",
+      "label": "Market"
+    },
+    {
+      "type": "collection",
+      "id": "universal_source_collection",
+      "label": "Exact route collection",
+      "info": "Limits the shared storefront, sidebar, and product grid to this configured collection source."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_intro_header",
+      "label": "Show page introduction header",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search",
+      "label": "Show local product search",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "lane_order",
+      "label": "Product type order",
+      "options": [
+        { "value": "sealed,merch", "label": "Sealed, then merchandise" },
+        { "value": "merch,sealed", "label": "Merchandise, then sealed" }
+      ],
+      "default": "sealed,merch"
+    },
+    {
+      "type": "header",
+      "content": "Sealed card boxes"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sealed",
+      "label": "Enable sealed lane",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "sealed_label",
+      "label": "Sealed lane label",
+      "default": "Sealed card boxes"
+    },
+    {
+      "type": "textarea",
+      "id": "sealed_copy",
+      "label": "Sealed lane description",
+      "default": "Display boxes, booster-style releases, starter decks, and sealed card products."
+    },
+    {
+      "type": "url",
+      "id": "sealed_link",
+      "label": "Full sealed collection link"
+    },
+    {
+      "type": "header",
+      "content": "Merch and collectibles"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_merch",
+      "label": "Enable merchandise lane",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "merch_label",
+      "label": "Merchandise lane label",
+      "default": "Merch & collectibles"
+    },
+    {
+      "type": "textarea",
+      "id": "merch_copy",
+      "label": "Merchandise lane description",
+      "default": "Figures, plush, charms, acrylic displays, blind boxes, and character goods."
+    },
+    {
+      "type": "url",
+      "id": "merch_link",
+      "label": "Full merchandise collection link"
+    },
+    {
+      "type": "range",
+      "id": "initial_products_desktop",
+      "label": "Initial products on desktop",
+      "min": 4,
+      "max": 24,
+      "step": 4,
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "initial_products_mobile",
+      "label": "Initial products on mobile",
+      "min": 2,
+      "max": 16,
+      "step": 2,
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "load_more_step",
+      "label": "Products added per click",
+      "min": 4,
+      "max": 24,
+      "step": 4,
+      "default": 12
+    },
+    {
+      "type": "text",
+      "id": "excluded_collection_handles",
+      "label": "Protected single-card collection handles",
+      "default": "single,singles-gallery",
+      "info": "Safety rule. Keep the existing single-card collection handles here."
+    },
+    {
+      "type": "url",
+      "id": "single_card_catalog_link",
+      "label": "Dedicated single-card catalog link"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_content",
+      "label": "Show collector resources",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_page_content",
+      "label": "Show page content as collector overview",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "keep_empty_intents",
+      "label": "Keep configured empty routes visible",
+      "default": false,
+      "info": "Useful for new IP hubs whose CCG, TCG, or merchandise inventory is still being prepared."
+    },
+    {
+      "type": "url",
+      "id": "empty_state_link",
+      "label": "Empty-state fallback link",
+      "info": "Used only as a visible link. It never supplies fallback products."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "lane_source",
+      "name": "Collection source",
+      "settings": [
+        {
+          "type": "select",
+          "id": "lane",
+          "label": "Product type",
+          "options": [
+            { "value": "sealed", "label": "Sealed card boxes" },
+            { "value": "merch", "label": "Merch & collectibles" }
+          ],
+          "default": "sealed"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Exact source collection",
+          "info": "Products are read only from this selected collection."
+        },
+        {
+          "type": "text",
+          "id": "allowed_product_types",
+          "label": "Exact allowed product types, comma separated",
+          "info": "Leave blank to allow all non-single-card products from this source."
+        },
+        {
+          "type": "textarea",
+          "id": "additional_product_handles",
+          "label": "Exact product handle exceptions, comma separated",
+          "info": "Use only for verified IP products missing from the broad IP collection."
+        }
+      ]
+    },
+    {
+      "type": "intent",
+      "name": "Shopping goal",
+      "settings": [
+        {
+          "type": "select",
+          "id": "lane",
+          "label": "Product type",
+          "options": [
+            { "value": "sealed", "label": "Sealed card boxes" },
+            { "value": "merch", "label": "Merch & collectibles" }
+          ],
+          "default": "sealed"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Button label",
+          "default": "Latest series"
+        },
+        {
+          "type": "select",
+          "id": "filter_kind",
+          "label": "Filter by",
+          "options": [
+            { "value": "collection", "label": "Collection" },
+            { "value": "product_type", "label": "Product type" },
+            { "value": "product_tag", "label": "Exact product tags" },
+            { "value": "product_handle", "label": "Exact product handles" }
+          ],
+          "default": "collection"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Exact filter collection",
+          "info": "The button filters already validated products by exact collection membership."
+        },
+        {
+          "type": "text",
+          "id": "product_types",
+          "label": "Exact product types, comma separated",
+          "info": "Used only when Filter by is Product type."
+        },
+        {
+          "type": "textarea",
+          "id": "product_tags",
+          "label": "Exact product tags, comma separated",
+          "info": "Used only when Filter by is Exact product tags. Matching is exact and case-insensitive."
+        },
+        {
+          "type": "textarea",
+          "id": "product_handles",
+          "label": "Exact product handles, comma separated",
+          "info": "Used only when Filter by is Exact product handles."
+        },
+        {
+          "type": "select",
+          "id": "classification_level",
+          "label": "Sidebar classification level",
+          "options": [
+            { "value": "unclassified", "label": "Choose a classification level" },
+            { "value": "series", "label": "Series / Product Line" },
+            { "value": "product_format", "label": "Product Format" }
+          ],
+          "default": "unclassified"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link when no filter collection is selected"
+        }
+      ]
+    },
+    {
+      "type": "explore_link",
+      "name": "Explore link",
+      "settings": [
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Eyebrow",
+          "default": "COLLECTOR PATH"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Series index"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    },
+    {
+      "type": "content_link",
+      "name": "Collector resource",
+      "settings": [
+        {
+          "type": "text",
+          "id": "eyebrow",
+          "label": "Eyebrow",
+          "default": "COLLECTOR GUIDE"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Custom title"
+        },
+        {
+          "type": "article",
+          "id": "article",
+          "label": "Article"
+        },
+        {
+          "type": "url",
+          "id": "fallback_link",
+          "label": "Text-only fallback link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "P10 IP Storefront"
+    }
+  ]
+}
+{% endschema %}
